@@ -540,14 +540,14 @@ Split work              Separate unrelated changes into different commits
 
 ---
 
-### Without Staging Area
+#### Without Staging Area
 ```bash
 # Some systems commit all changes at once
 svn commit -m "Everything changed"  # No control!
 ```
 ---
 
-### With Staging Area
+#### With Staging Area
 ```bash
 # Git lets you choose
 git add login.js           # Stage only login changes
@@ -559,7 +559,7 @@ git commit -m "Add signup" # Different commit
 
 ---
 
-## Adding Files
+### Adding Files
 
 ```bash
 # Add a specific file
@@ -581,7 +581,7 @@ git add -u
 
 ---
 
-## Checking whats staged
+### Checking whats staged
 
 ```bash
 # See status
@@ -591,3 +591,146 @@ git status
 git diff --staged
 git diff --cached  # Same thing
 ```
+
+---
+
+### Unstaging File
+
+```bash
+# Unstage a specific file (keep changes)
+git restore --staged filename.js
+
+# Older syntax (still works)
+git reset HEAD filename.js
+
+# Unstage all files
+git restore --staged .
+git reset HEAD
+```
+
+---
+
+## Partial Staging with git add -p
+
+The -p (or --patch) flag lets you interactively choose which parts of a file to stage:
+
+```bash
+git add -p filename.js (or any other file)
+```
+
+Git will show you each change (called a "hunk") and ask what to do:
+
+    @@ -1,5 +1,7 @@
+    function login() {
+    +  // Added validation
+    validateInput();
+    +  logAttempt();
+    return authenticate();
+    }
+    Stage this hunk [y,n,q,a,d,s,e,?]?
+
+Options:
+
+    y - Stage this hunk
+    n - Don't stage this hunk
+    q - Quit (don't stage remaining)
+    a - Stage this and all remaining hunks
+    d - Don't stage this or remaining hunks
+    s - Split into smaller hunks
+    e - Manually edit the hunk
+
+---
+
+### The index File
+
+The staging area is stored in .git/index. This binary file tracks:
+
+    Which files are staged
+    Their content (as blob references)
+    File permissions and timestamps
+
+You can inspect it with:
+```bash
+git ls-files --stage
+```
+
+---
+
+### Staging Deleted Files
+
+when you delete a file, you need to stage the deltion
+
+```bash
+# Delete and stage in one command
+git rm filename.js
+
+# Or manually
+rm filename.js
+git add filename.js  # Stages the deletion
+```
+
+---
+
+### Staging Renamed Files
+
+Git tracks renames through content similarity:
+
+```bash
+# Rename and stage in one command
+git mv oldname.js newname.js
+
+# Or manually
+mv oldname.js newname.js
+git add oldname.js newname.js
+```
+
+---
+
+## Staging Area Best Practices
+
+---
+
+### Review Before Commiting
+
+Always check what you're about to commit:
+
+```bash
+git diff --staged  # See the actual changes
+git status         # See which files
+```
+
+---
+
+### Make Aomic Commits
+
+Each commit should represent one logical change:
+
+```bash
+# Good: Separate concerns
+git add auth.js
+git commit -m "Add authentication logic"
+
+git add auth.test.js
+git commit -m "Add auth tests"
+```
+
+---
+
+### Dont Stage Debug Code
+
+Use "git add -p" to leave console.log statements out:
+
+```bash
+git add -p
+# Answer 'n' to debug code hunks
+# Answer 'y' to real changes
+```
+
+---
+
+### Use Staging as a Review Step
+
+The staging area is your chance to review changes before making them permanent.
+
+---
+
