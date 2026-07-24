@@ -515,3 +515,79 @@ git mv oldname.js newname.js
 # Commit the rename
 git commit -m "Rename oldname.js to newname.js"
 ```
+
+---
+
+# Lesson 5 - Understanding the staging area
+
+---
+
+It's an intermediate area between your working directory and the repository where you prepare commits.
+
+---
+
+## What is Staging Area
+
+Only changes in the staging area will be included in the next commit
+
+The staging area gives you fine-grained control:
+
+Benefit	                        Description
+Selective commits       Choose exactly which changes to commit
+Review changes          See what's about to be committed
+Logical commits         Group related changes together
+Split work              Separate unrelated changes into different commits
+
+---
+
+### Without Staging Area
+```bash
+# Some systems commit all changes at once
+svn commit -m "Everything changed"  # No control!
+```
+---
+
+### With Staging Area
+```bash
+# Git lets you choose
+git add login.js           # Stage only login changes
+git commit -m "Fix login"  # Commit just that
+
+git add signup.js          # Stage signup changes separately
+git commit -m "Add signup" # Different commit
+```
+
+---
+
+## Adding Files
+
+```bash
+# Add a specific file
+git add filename.js
+
+# Add multiple files
+git add file1.js file2.js
+
+# Add all files in a directory
+git add src/
+
+# Add all changes (new, modified, deleted)
+git add .
+git add -A
+
+# Add only modified and deleted files (not new)
+git add -u
+```
+
+---
+
+## Checking whats staged
+
+```bash
+# See status
+git status
+
+# See staged changes
+git diff --staged
+git diff --cached  # Same thing
+```
