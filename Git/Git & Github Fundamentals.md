@@ -701,7 +701,7 @@ git status         # See which files
 
 ---
 
-### Make Aomic Commits
+### Make Atomic Commits
 
 Each commit should represent one logical change:
 
@@ -734,3 +734,178 @@ The staging area is your chance to review changes before making them permanent.
 
 ---
 
+# Lesson 6 - Making Meaningful Commits
+
+---
+
+Commits are the building blocks of Git history. Each commit is a snapshot of your project at a point in time. Learning to make good commits is essential for maintaining a useful project history.
+
+---
+
+## What is a Commit
+
+A commit is a permanent snapshot that contains:
+
+---
+
+### Commit Componenets
+
+    Component	        Description
+SHA Hash        Unique 40-character identifier
+Author          Who created the changes
+Committer       Who made the commit (usually same as author)
+Date            When the commit was made
+Parent          The previous commit (or commits for merges)
+Message         Description of the changes
+Tree            Snapshot of the entire project
+
+---
+
+## Creating Commits
+
+---
+
+### Basic Commit
+
+```bash
+# Stage changes first
+git add filename.js
+
+# Commit with a message
+git commit -m "Add login validation"
+```
+
+---
+
+### Multi-Line Commit Messages
+
+```bash
+# Opens your editor
+git commit
+
+# Or inline with -m (use multiple -m flags)
+git commit -m "Add login validation" -m "This includes email format checking and password strength requirements."
+```
+
+---
+
+### Stage and Commit Together
+
+```bash
+# Only works for already-tracked files
+git commit -am "Update all tracked files"
+```
+
+---
+
+## Viewing Commits
+
+```bash
+# Full log
+git log
+
+# One line per commit
+git log --oneline
+
+# Show diffs
+git log -p
+
+# Last 3 commits
+git log -3
+
+# Show stats (files changed)
+git log --stat
+
+# Pretty format
+git log --pretty=format:"%h %an %ar - %s"
+
+# Graphical branch history
+git log --oneline --graph --all
+```
+
+---
+
+## Amending Commis
+
+---
+
+### Fix the last Commit message
+
+```bash
+git commit --amend -m "New Message"
+```
+
+--
+
+### Add Forgotten files to new commit
+
+```bash
+git add forgotten-file.js
+git commit --amend --no-edit
+```
+Warning: Only amend commits that haven't been pushed!
+
+---
+
+## Atomic Commits
+An atomic commit is a self-contained unit of change:
+
+---
+
+### Characteristics of atomic commits:
+
+1. Single purpose: One logical change per commit
+2. Complete: The project works after each commit
+3. Independent: Can be reverted without side effects
+4. Reviewable: Easy to understand and review
+
+---
+
+### Empty Commits
+Sometimes you need a commit without file changes:
+
+```bash
+git commit --allow-empty -m "Trigger CI build"
+```
+
+Use cases:
+    Triggering CI/CD pipelines
+    Marking milestones
+    Documentation-only commits
+
+---
+
+### Signing Commits
+For security, you can sign commits with GPG:
+
+```bash
+# Configure GPG key
+git config --global user.signingkey YOUR_KEY_ID
+
+# Sign a commit
+git commit -S -m "Signed commit"
+
+# Always sign commits
+git config --global commit.gpgsign true
+```
+
+---
+
+### Commit Templates
+Create a template for consistent messages:
+
+```bash
+# Create template file
+cat > ~/.gitmessage << 'EOF'
+
+# Title: Summary, imperative, 50 chars or less
+
+# Body: Explain *what* and *why* (not *how*). Wrap at 72 chars.
+
+# Issue references:
+# Fixes #
+EOF
+
+# Configure Git to use it
+git config --global commit.template ~/.gitmessage
+```
