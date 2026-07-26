@@ -219,10 +219,11 @@ git amend
 ---
 
 # Lesson 3
- 
+
 ## Creating your First Repository
 
 ### What is a repository
+
 A repository (or "repo") is simply a folder that Git monitors for changes. It contains:
 Your project files
 A hidden .git directory with all version history
@@ -230,16 +231,18 @@ A hidden .git directory with all version history
 ---
 
 ### Creating a Repository
+
 1. Initialize a Repository
+
 ```bash
 git init
 ```
 
 This creates .git directory containing:
-    HEAD        - Points to current directory
-    config      - Repository configurations
-    objects/    - stores all contents (Commits, trees, blobs)
-    refs/       - stores branch and tag references
+HEAD - Points to current directory
+config - Repository configurations
+objects/ - stores all contents (Commits, trees, blobs)
+refs/ - stores branch and tag references
 
     .git/
     ├── HEAD           # Current branch reference
@@ -267,10 +270,11 @@ git status
 ### File Stages
 
     State               Description
-Untracked       Git doesn't know about this file
-Unmodified      Tracked file with no changes
-Modified        Tracked file that has been changed
-Staged          Changes marked for the next commit
+
+Untracked Git doesn't know about this file
+Unmodified Tracked file with no changes
+Modified Tracked file that has been changed
+Staged Changes marked for the next commit
 
 ---
 
@@ -280,7 +284,8 @@ Use "git add" to start tracking file
 
 ```bash
 git add .
-``` 
+```
+
 ---
 
 ### Making First Commit
@@ -311,7 +316,7 @@ git log --oneline
 
 ### Re-initializing a Repo
 
-Running "git init"  in an existing repository is safe - it wont overwrite anything
+Running "git init" in an existing repository is safe - it wont overwrite anything
 
 ---
 
@@ -322,9 +327,10 @@ Running "git init"  in an existing repository is safe - it wont overwrite anythi
 ## The Three Working Area
 
     Area	                Description
-Working Directory   The files you see and edit
-Staging Area        Changes queued for the next commit
-Repository          Permanent storage of all commits
+
+Working Directory The files you see and edit
+Staging Area Changes queued for the next commit
+Repository Permanent storage of all commits
 
 ---
 
@@ -333,6 +339,7 @@ Repository          Permanent storage of all commits
 ---
 
 ### Step 1: Make Changes
+
 Edit files in your working directory:
 
 ```bash
@@ -342,6 +349,7 @@ echo "function greet() { return 'Hello!'; }" > utils.js
 ---
 
 ### Step 2: Check Status
+
 See what's changed:
 
 ```bash
@@ -351,6 +359,7 @@ git status
 ---
 
 ### Step 3: Stage Change
+
 Add files to the staging area:
 
 ```bash
@@ -360,6 +369,7 @@ git add utils.js
 ---
 
 ### Step 4: Commit
+
 Save the staged changes:
 
 ```bash
@@ -369,6 +379,7 @@ git commit -m "Add utils.js with greet function"
 ---
 
 ### Step 5: Repeat
+
 Continue making changes, staging, and committing.
 
 ---
@@ -424,6 +435,7 @@ git commit --amend
 ## Viewing Changes
 
 "Git Diff": See what changed in the working directory (unstaged changes):
+
 ```bash
 git diff
 ```
@@ -486,6 +498,7 @@ git show --stat abc1234
 ## Removing and Moving Files
 
 ---
+
 ### 1. Removing Files
 
 ```bash
@@ -532,22 +545,25 @@ Only changes in the staging area will be included in the next commit
 
 The staging area gives you fine-grained control:
 
-Benefit	                        Description
-Selective commits       Choose exactly which changes to commit
-Review changes          See what's about to be committed
-Logical commits         Group related changes together
-Split work              Separate unrelated changes into different commits
+Benefit Description
+Selective commits Choose exactly which changes to commit
+Review changes See what's about to be committed
+Logical commits Group related changes together
+Split work Separate unrelated changes into different commits
 
 ---
 
 #### Without Staging Area
+
 ```bash
 # Some systems commit all changes at once
 svn commit -m "Everything changed"  # No control!
 ```
+
 ---
 
 #### With Staging Area
+
 ```bash
 # Git lets you choose
 git add login.js           # Stage only login changes
@@ -650,6 +666,7 @@ The staging area is stored in .git/index. This binary file tracks:
     File permissions and timestamps
 
 You can inspect it with:
+
 ```bash
 git ls-files --stage
 ```
@@ -751,13 +768,14 @@ A commit is a permanent snapshot that contains:
 ### Commit Componenets
 
     Component	        Description
-SHA Hash        Unique 40-character identifier
-Author          Who created the changes
-Committer       Who made the commit (usually same as author)
-Date            When the commit was made
-Parent          The previous commit (or commits for merges)
-Message         Description of the changes
-Tree            Snapshot of the entire project
+
+SHA Hash Unique 40-character identifier
+Author Who created the changes
+Committer Who made the commit (usually same as author)
+Date When the commit was made
+Parent The previous commit (or commits for merges)
+Message Description of the changes
+Tree Snapshot of the entire project
 
 ---
 
@@ -843,11 +861,13 @@ git commit --amend -m "New Message"
 git add forgotten-file.js
 git commit --amend --no-edit
 ```
+
 Warning: Only amend commits that haven't been pushed!
 
 ---
 
 ## Atomic Commits
+
 An atomic commit is a self-contained unit of change:
 
 ---
@@ -862,6 +882,7 @@ An atomic commit is a self-contained unit of change:
 ---
 
 ### Empty Commits
+
 Sometimes you need a commit without file changes:
 
 ```bash
@@ -869,13 +890,14 @@ git commit --allow-empty -m "Trigger CI build"
 ```
 
 Use cases:
-    Triggering CI/CD pipelines
-    Marking milestones
-    Documentation-only commits
+Triggering CI/CD pipelines
+Marking milestones
+Documentation-only commits
 
 ---
 
 ### Signing Commits
+
 For security, you can sign commits with GPG:
 
 ```bash
@@ -892,6 +914,7 @@ git config --global commit.gpgsign true
 ---
 
 ### Commit Templates
+
 Create a template for consistent messages:
 
 ```bash
@@ -909,3 +932,338 @@ EOF
 # Configure Git to use it
 git config --global commit.template ~/.gitmessage
 ```
+
+---
+
+# Lesson 7: Viewing Commit History
+
+---
+
+Git keeps a complete record of every change ever made to your project. Learning to navigate and explore this history is essential for understanding your codebase and tracking down issues.
+
+---
+
+## The git log commit
+
+The primary tool for viewing history is git log:
+
+```bash
+git log
+```
+
+---
+
+## Log Formatting Options
+
+---
+
+### One-Line Format
+
+```bash
+git log --oneline
+```
+
+---
+
+### Graph View
+
+```bash
+git log --oneline --graph
+```
+
+---
+
+#### Include all branches
+
+```bash
+git log --oneline --graph -all
+```
+
+---
+
+### Custom Format
+
+```bash
+git log --pretty=format:"%h %an %ar - %s"
+```
+
+| Placeholder | Meaning                                            | Example                           |
+| ----------- | -------------------------------------------------- | --------------------------------- |
+| `%h`        | Short commit hash                                  | `a1b2c3d`                         |
+| `%H`        | Full commit hash (SHA-1/SHA-256 depending on repo) | `a1b2c3d4e5f...`                  |
+| `%an`       | Author name                                        | `John Smith`                      |
+| `%ae`       | Author email                                       | `john@email.com`                  |
+| `%aD`       | Author date (RFC 2822 format)                      | `Mon, 25 Jul 2026 12:30:00 +0000` |
+| `%ad`       | Author date                                        | `Mon Jul 25 12:30:00 2026 +0000`  |
+| `%ar`       | Author date, relative                              | `2 hours ago`                     |
+| `%at`       | Author date as UNIX timestamp                      | `1785328200`                      |
+| `%ai`       | Author date (ISO 8601 format)                      | `2026-07-25 12:30:00 +0000`       |
+| `%cn`       | Committer name                                     | `John Smith`                      |
+| `%ce`       | Committer email                                    | `john@email.com`                  |
+| `%cD`       | Committer date (RFC 2822 format)                   | `Mon, 25 Jul 2026 12:30:00 +0000` |
+| `%cd`       | Committer date                                     | `Mon Jul 25 12:30:00 2026 +0000`  |
+| `%cr`       | Committer date, relative                           | `2 hours ago`                     |
+| `%ct`       | Committer date as UNIX timestamp                   | `1785328200`                      |
+| `%ci`       | Committer date (ISO 8601 format)                   | `2026-07-25 12:30:00 +0000`       |
+| `%s`        | Commit message subject (first line)                | `Fix login bug`                   |
+| `%f`        | Sanitized subject for filenames                    | `fix-login-bug`                   |
+| `%b`        | Commit message body                                | `Added validation logic`          |
+| `%B`        | Raw commit message (subject + body)                | `Full message`                    |
+| `%d`        | Ref names (branches/tags)                          | `(HEAD -> main)`                  |
+| `%D`        | Ref names without parentheses                      | `HEAD -> main, origin/main`       |
+| `%p`        | Parent commit hashes (short)                       | `a1b2c3d`                         |
+| `%P`        | Parent commit hashes (full)                        | `a1b2c3d4e5...`                   |
+| `%N`        | Commit notes                                       | `Notes attached to commit`        |
+| `%T`        | Tree hash                                          | `Project snapshot hash`           |
+| `%t`        | Short tree hash                                    | `Short tree hash`                 |
+
+---
+
+## Limiting Log Output
+
+---
+
+### By Number
+
+```bash
+git log -5              # Last 5 commits
+git log -n 10           # Last 10 commits
+```
+
+---
+
+### By Date
+
+```bash
+git log --since="2025-01-01"
+git log --after="2 weeks ago"
+git log --until="2025-01-15"
+git log --before="yesterday"
+```
+
+---
+
+### By Author
+
+```bash
+git log --author="Jane"
+git log --author="jane@example.com"
+111
+```
+
+---
+
+### By Message Content
+
+```bash
+git log --grep="bug"
+git log --grep="fix" --grep="auth" --all-match  # Both terms
+```
+
+---
+
+### By File Changes
+
+```bash
+git log -- path/to/file.js
+git log -- src/
+```
+
+---
+
+### By Content Changes
+
+```bash
+# Find commits that changed a specific string
+git log -S "functionName"
+
+# Find commits matching a regex
+git log -G "function.*validate"
+```
+
+---
+
+## Viewing Commit Details
+
+---
+
+### git show
+
+View the full details of a specific commit:
+
+```bash
+# Show latest commit
+git show
+
+# Show specific commit
+git show a1b2c3d # a1b2c3 represents the hash value
+
+# Show just the message
+git show -s a1b2c3d
+
+# Show stats only
+git show --stat a1b2c3d
+
+# Show specific file from a commit
+git show a1b2c3d:path/to/file.js
+```
+
+---
+
+### git diff between commits
+
+```bash
+# Compare two commits
+git diff a1b2c3d b2c3d4e
+
+# Compare commit with current state
+git diff a1b2c3d
+
+# Show only file names
+git diff --name-only a1b2c3d b2c3d4e
+
+# Show stats
+git diff --stat a1b2c3d b2c3d4e
+```
+
+---
+
+## Navigating History
+
+---
+
+### HEAD and reference
+
+HEAD - Current commit
+HEAD~1 - One commit before HEAD
+HEAD~2 - Two commits before HEAD
+HEAD^ - Parent of HEAD (same as HEAD~1)
+HEAD^^ - Grandparent of HEAD
+
+main - Latest commit on main branch
+main~3 - Three commits before main
+
+Example
+
+```bash
+# Show the previous commit
+git show HEAD~1
+
+# Diff between 3 commits ago and now
+git diff HEAD~3 HEAD # Show me the difference in file contents between the commit that is 5 commits behind HEAD and the current HEAD commit.
+
+# Log from specific point
+git log HEAD~5..HEAD # basically means "show me the log of commits from head 5 to head"
+```
+
+---
+
+## The git shortlog Command
+
+Summarize commits by author:
+
+```bash
+git shortlog
+```
+
+Output:
+Name 1:
+commits
+Name 2:
+commits
+...
+
+---
+
+### Count by author
+
+```bash
+git shortlog -sn
+```
+
+Output
+{number of commits} Name 1
+{number of commits} Name 2
+...
+
+---
+
+## Blame: Finding who changed what
+
+The git blame command shows who last modified each line:
+
+```bash
+git blame path/to/file.js
+```
+
+---
+
+### Blame Options
+
+```bash
+# Specific line range
+git blame -L 10,20 file.js
+
+# Show email instead of name
+git blame -e file.js
+
+# Ignore whitespace changes
+git blame -w file.js
+```
+
+---
+
+## Finding Bugs with git bisect 
+Binary search through history to find when a bug was introduced:
+
+```bash
+# Start bisecting
+git bisect start
+
+# Mark current version as bad
+git bisect bad
+
+# Mark known good version
+git bisect good v1.0.0
+
+# Git checks out a middle commit
+# Test and mark as good or bad
+git bisect good   # or: git bisect bad
+
+# Repeat until found
+# Git tells you: "abc123 is the first bad commit"
+
+# End bisecting
+git bisect reset
+```
+
+---
+
+## Creating Useful Aliases
+Set up aliases for common log formats:
+
+```bash
+# Pretty log with graph
+git config --global alias.lg "log --oneline --graph --decorate"
+
+# Detailed log
+git config --global alias.ll "log --pretty=format:'%C(yellow)%h%Creset %s %C(cyan)(%ar)%Creset %C(blue)<%an>%Creset'"
+
+# Log with files changed
+git config --global alias.lf "log --oneline --stat"
+```
+
+---
+
+## Visual Tools
+
+Visual Tools
+Many GUI tools make history exploration easier:
+
+    gitk: Built-in visual history browser
+    git log --graph: ASCII art in terminal
+    GitHub/GitLab: Web interfaces
+    VS Code GitLens: Extension with inline blame
+    Fork, GitKraken, Sourcetree: Desktop GUI clients
+
+---
