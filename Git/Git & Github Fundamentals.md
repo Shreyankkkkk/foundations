@@ -2,7 +2,7 @@
 
 ---
 
-# Lesson 1 — Git Fundamentals
+# Lesson 1 — Git and Why Version Control
 
 ## Objective
 
@@ -20,7 +20,7 @@ These notes are documentation of my learning process, not a complete Git textboo
 
 ---
 
-# Lesson 2 — Git Configuration
+# Lesson 2 — Installing and Git Configuration
 
 ## Configuration Levels
 
@@ -78,7 +78,7 @@ git config --global core.editor "nano"
 
 ---
 
-# Line Endings
+## Line Endings
 
 Git handles line endings differently between operating systems.
 
@@ -98,7 +98,7 @@ Git normalizes these differences so developers can collaborate across different 
 
 ---
 
-## Why Line Endings Exist
+### Why Line Endings Exist
 
 Historically:
 
@@ -126,7 +126,7 @@ LF
 
 ---
 
-## Git Solution
+### Git Solution
 
 Git internally prefers LF.
 
@@ -146,7 +146,7 @@ git config --global core.autocrlf input
 
 ---
 
-# Colorful Output
+## Colorful Output
 
 Enable colored Git output:
 
@@ -156,7 +156,7 @@ git config --global color.ui auto
 
 ---
 
-# Git Aliases
+## Git Aliases
 
 Aliases create shortcuts for commonly used commands.
 
@@ -218,7 +218,7 @@ git amend
 
 ---
 
-# Lesson 3
+# Lesson 3: Creating First Repository
 
 ## Creating your First Repository
 
@@ -613,15 +613,15 @@ git diff --cached  # Same thing
 ### Unstaging File
 
 ```bash
-# Unstage a specific file (keep changes)
+# Unstage a specific file (keep changes in working directory)
 git restore --staged filename.js
 
 # Older syntax (still works)
+git reset HEAD
 git reset HEAD filename.js
 
 # Unstage all files
 git restore --staged .
-git reset HEAD
 ```
 
 ---
@@ -1213,7 +1213,8 @@ git blame -w file.js
 
 ---
 
-## Finding Bugs with git bisect 
+## Finding Bugs with git bisect
+
 Binary search through history to find when a bug was introduced:
 
 ```bash
@@ -1240,6 +1241,7 @@ git bisect reset
 ---
 
 ## Creating Useful Aliases
+
 Set up aliases for common log formats:
 
 ```bash
@@ -1267,3 +1269,189 @@ Many GUI tools make history exploration easier:
     Fork, GitKraken, Sourcetree: Desktop GUI clients
 
 ---
+
+# Lesson 8: Undoing Changes
+
+Everyone makes mistakes. Git provides several ways to undo changes, from simple fixes to complete reverts. Understanding these tools will save you from many headaches.
+
+---
+
+## The Undo ToolKit
+
+| Situation | Solution |
+|---|---|
+| Unstage a file | `git restore --staged <file>` |
+| Discard working changes | `git restore <file>` |
+| Modify the last commit | `git commit --amend` |
+| Undo commits (keep changes) | `git reset --soft <commit>` |
+| Undo commits (lose changes) | `git reset --hard <commit>` |
+| Undo a pushed commit | `git revert <commit>` |
+
+---
+
+## Discarding Working Directory Changes
+
+When you want to throw away changes you haven't staged:
+
+```bash
+# Discard changes to a specific file
+git restore filename.js
+
+# Discard all working directory changes
+git restore .
+
+# Older syntax (still works)
+git checkout -- filename.js
+```
+
+---
+
+### Restore a File from a specific commit
+
+```bash
+# Get file from previous commit
+git restore --source HEAD~1 filename.js
+
+# Get file from specific commit
+git restore --source abc123 filename.js
+```
+
+---
+
+## Understanding git reset
+
+The git reset command moves the branch pointer and optionally modifies the staging area and working directory.
+
+---
+
+### Three Reset Modes
+
+| Reset Mode | Moves HEAD | Clears Staging Area | Clears Working Directory |
+|---|:---:|:---:|:---:|
+| `--soft` | ✓ | ✗ | ✗ |
+| `--mixed` *(default)* | ✓ | ✓ | ✗ |
+| `--hard` | ✓ | ✓ | ✓ |
+
+---
+
+### Soft Reset
+
+Moves HEAD but keeps everything staged:
+
+```bash
+git reset --soft HEAD~1
+```
+
+Use case: Combine multiple commits into one.
+
+---
+
+### Mixed Reset (Default)
+
+Moves HEAD and unstages changes:
+
+```bash
+git reset HEAD~1
+# Some as: git reset --mixed HEAD~1
+```
+
+---
+
+### Hard Reset
+
+Moves HEAD and discards all changes
+
+```bash
+git reset --hard HEAD~1
+```
+
+WARNING:    This is destructive! All changes are lost
+USE CASE:   Completely discrad recent commits
+
+---
+
+## Using git Revert
+
+Unlike reset, "revert" creates a new commit that undoes changes. This is safe for pushed commits.
+
+```bash
+# Revert the last commit
+git revert HEAD
+
+# Revert a specific commit
+git revert abc123
+
+# Revert without auto-commit (stage changes only)
+git revert --no-commit abc123
+```
+
+---
+
+### Reset vs Revert
+
+| Aspect | Reset | Revert |
+|---|---|---|
+| Modifies history | Yes | No |
+| Safe for pushed commits | No | Yes |
+| Creates new commit | No | Yes |
+
+---
+
+## Recovering from mistakes
+
+---
+
+### The Reflog
+
+git keeps a log of all HEAD movements
+
+```bash
+git reflog
+```
+
+---
+
+### Reover a "LOST" Commit
+
+if you accidentally reset too far:
+
+```bash
+# Find the lost commit in reflog
+git reflog
+
+# Reset back to it
+git reset --hard abc123
+
+# Or create a new branch pointing to it
+git branch recovered abc123
+```
+
+the reflog keeps entries for about 90 days
+
+```bash
+#   A--B--C--D (bug) 
+#        | 
+#       E -- F -- G
+```
+
+---
+
+## Cleaning Untracked Files
+
+Remove files that arent tracked by git
+
+```bash
+# See what would be removed (dry run)
+git clean -n
+
+# Remove untracked files
+git clean -f
+
+# Remove untracked files and directories
+git clean -fd
+
+# Remove ignored files too
+git clean -fdx
+```
+
+Warning: git clean permanently deletes files!
