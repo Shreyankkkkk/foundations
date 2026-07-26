@@ -1455,3 +1455,88 @@ git clean -fdx
 ```
 
 Warning: git clean permanently deletes files!
+
+---
+
+# Lesson 9: What are Branches
+
+Branches are one of Git's most powerful features. They allow you to work on different features, fixes, or experiments in isolation without affecting the main codebase.
+
+---
+
+## Understanding Branches
+
+A branch is simply a pointer to a commit. When you create a branch, Git creates a new pointer—it doesn't copy any files.
+
+The default branch (usually main or master) is just a branch like any other.
+
+---
+
+## Why Use Branches?
+
+| Benefit | Description |
+|---|---|
+| Isolation | Work on features without affecting stable code |
+| Parallel development | Multiple features developed simultaneously |
+| Experimentation | Try ideas without risk |
+| Code review | Review changes before merging |
+| Releases | Maintain different versions |
+
+---
+
+## The HEAD Pointer
+
+Head is a special pointer that indicates your current position in the repository.
+
+- Usually points to branch name (eg: HEAD -> main -> commit)
+- When you commit, the current branch moves forward
+- When you checkout a branch, HEAD moves to that branch
+
+---
+
+### Detach Head
+
+if HEAD points directly to a commit (not a branch), youre in "Detached HEAD" state:
+
+```bash
+git checkout abc1234
+```
+
+this is useful for looking at old commits, but be carful, commits made here right be lost if you dont create a branch
+
+---
+
+## Visualizing Branches
+
+```bash
+# See all branches
+git branch
+
+# See branches with last commit
+git branch -v
+
+# See all branches including remote
+git branch -a
+
+# Visual log with branches
+git log --oneline --graph -- all
+```
+
+---
+
+## Branch Naming
+
+Branches can have almost any name, but follows these conentions:
+
+## Common Prefixes
+
+| Prefix | Use |
+|---|---|
+| `feature/` | New features |
+| `bugfix/` | Bug fixes |
+| `hotfix/` | Urgent production fixes |
+| `release/` | Release preparation |
+| `docs/` | Documentation |
+| `test/` | Testing |
+
+---
