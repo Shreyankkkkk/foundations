@@ -1832,3 +1832,286 @@ git reflog
 # Create branch pointing to it
 git branch rescue abc123
 ```
+
+---
+
+# Lesson 11: Merging Branches
+
+After developing a feature on a branch, you'll want to integrate it back into your main branch. This is called merging.
+
+---
+
+## What is Merging?
+
+Merging combines the changes from one branch into another:
+
+```bash
+# Before merge:
+# main:      A ← B ← C
+#                     \
+# feature:             D ← E
+
+# After merge:
+# main:      A ← B ← C ← ← ← M
+#                     \     /
+# feature:             D ← E
+```
+
+---
+
+## Types of Merges
+
+---
+
+### Fast Forward Merge
+
+when the target branch has no new commits since the source branched off:
+
+```bash
+# Before:
+# main:      A ← B ← C
+#                   ↑
+#                  main
+# feature:           D ← E
+#                       ↑
+#                     feature
+
+# After (fast-forward):
+# main:      A ← B ← C ← D ← E
+#                            ↑
+#                          main
+#                          feature
+```
+
+Git just moves the main pointer forward. No merge commit needed.
+
+```bash
+git switch main
+git merge feature
+#fast forward merge
+```
+
+---
+
+### Three-Way Merge
+
+when both branches have new commits:
+
+```bash
+# Before:
+# main:      A ← B ← C ← F
+#                    \
+# feature:            D ← E
+
+# After:
+# main:      A ← B ← C ← F ← M
+#                    \     /
+# feature:            D ← E
+```
+
+Git creates merge commit (M) with two parents
+
+```bash
+git switch main
+git merge feature
+# Three way merge, creates merge commit
+```
+
+---
+
+## Performing a Merge
+
+---
+
+### Basic Merge
+
+```bash
+# Switch to the target branch
+git switch main
+
+# Merge the source branch
+git merge feature
+
+# The feature branch still exists
+git branch -d feature  # Delete if done
+```
+
+---
+
+#### Merge with Custom Messages
+
+```bash
+git merge feature -m "Merge feature branch: add user login"
+```
+
+---
+
+### No Fast - Forward
+
+force a merge commit even when fast-forward is possible:
+
+```bash
+git merge --no--ff feature
+
+# With --no-ff:
+# main:      A ← B ← C ← ← ← M
+#                    \     /
+# feature:            D ← E
+#
+# Without --no-ff (fast-forward):
+# main:      A ← B ← C ← D ← E
+#                          ↑
+#                        (feature history lost)
+```
+
+---
+
+### Squash Merge
+
+Combine all commits into a single commit:
+
+```bash
+git merge --sqaush feature
+git commit -m "Add Login Feature"
+
+# Before:
+# feature:  D ← E ← F (3 commits)
+
+# After squash merge:
+# main:     ... ← X (single commit with all changes)
+```
+
+the feature branch commits are combined. Original Hitory is lost in main
+
+---
+
+## Merge Options
+
+| Option | Description |
+|---|---|
+| `--no-ff` | Always create a merge commit, even if Git could perform a fast-forward merge |
+| `--ff-only` | Only perform the merge if it can be completed as a fast-forward merge; otherwise fail |
+| `--squash` | Combine all changes from the branch into one set of changes and create a single commit on the current branch |
+| `--no-commit` | Perform the merge but stop before creating the merge commit, allowing manual changes before committing |
+| `--abort` | Cancel an ongoing merge and return the repository to the state before the merge started |
+| `--edit` | Open the editor to modify the default merge commit message |
+| `--no-edit` | Accept the default merge commit message without opening an editor |
+| `--strategy=<strategy>` | Choose a specific merge strategy |
+| `--strategy-option=<option>` | Pass additional options to the selected merge strategy |
+| `--verify-signatures` | Verify that the commits being merged have valid GPG signatures |
+| `--allow-unrelated-histories` | Allow merging branches that do not share a common ancestor |
+| `-m <message>` | Provide a custom merge commit message |
+
+---
+
+## Understanding Merge Commits
+
+A merge commit has two (or more) parents
+
+```bash
+git log --oneline
+# abc123 Merge branch 'feature' into main
+# def456 Add login form (from feature)
+# 789abc Update homepage (from main)
+
+git show abc123
+# Shows merge commit with both parents
+```
+
+---
+
+## Merge Strategies
+
+Git uses different strategies depending on the situation:
+
+---
+
+### Recursive (Default):
+
+Used for three-way merges. Handles most cases well.
+
+```bash
+git merge -s recursive feature
+```
+
+---
+
+### Ours
+
+keeps our version of everything (dicard their changes):
+
+```bash
+git merge -s ours feature
+```
+
+---
+
+### Octopus
+
+Merge multiple branches at once:
+
+```bash
+git merge feature1 feature2 feature3
+```
+
+---
+
+## Viewing Merge History
+
+```bash
+# See merge commits
+git log --merges
+
+# See non-merge commits
+git log --no-merges
+
+# Graphical view
+git log --oneline --graph
+
+# First-parent only (main branch history)
+git log --first-parent
+```
+
+---
+
+## Aborting a Merge
+
+if something goes wrong during a merge:
+
+```bash
+git merge --abort
+```
+
+this restores your branch to the state before the merge started
+
+---
+
+## Good Practises
+
+```bash
+
+1. Update Before Merging
+
+    git switch main
+    git pull                    # Get latest changes
+    git switch feature
+    git merge main              # Update feature with main's changes
+    # Resolve any conflicts
+    git switch main
+    git merge feature           # Now merge feature to main
+
+2. Use --no-ff for feature branches
+
+    git merge --no-ff feature -m "Merge feature: user authentication"
+
+3. Delete Merged Branches
+
+    git branch -d features
+    # keep your branch list clean
+
+4. Test before merging
+    # Always verify that merge doesn't break anything:
+    git merge feature
+    npm test
+    npm run build
+```
