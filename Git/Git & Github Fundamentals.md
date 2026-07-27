@@ -2257,3 +2257,240 @@ git add file.js
 ```
 
 ---
+
+# Lesson 13: Introduction to Remotes
+
+So far, we've worked with local repositories. To collaborate with others, you need to connect to remote repositories—copies of your project hosted on a server.
+
+---
+
+## What is remote?
+
+A remote is a refrence to repository hosted elsewhere like github, gitlab or bibucket
+
+---
+
+## Why use remotes:
+
+| Benefit       | Description                             |
+| ------------- | --------------------------------------- |
+| Backup        | Your code is safely stored in the cloud |
+| Collaboration | Share code with team members            |
+| Deployment    | Deploy from a central location          |
+| CI/CD         | Trigger automated tests and builds      |
+| Code Review   | Review changes before merging           |
+
+---
+
+## The origin remote
+
+when you close a repository, git automatically creates a remote called "origin"
+
+```bash
+git clone https://github.com/user/repo.git
+cd repo
+
+git remote -v
+# origin  https://github.com/user/repo.git (fetch)
+# origin  https://github.com/user/repo.git (push)
+```
+
+"origin" is just a converntion, the default name for the primary remote
+
+---
+
+## Managing Remotes
+
+---
+
+### View Remotes
+
+```bash
+# List remote names
+git remote
+
+# List with URLs
+git remote -v
+
+# Show detailed info
+git remote show origin
+```
+
+---
+
+### Add a remote
+
+```bash
+git remote add upstream https://github.com/original/repo.git
+```
+
+now you have two remotes
+
+- "origin" - Your fork
+- "upstream" - the original repo
+
+---
+
+### Rename a remote
+
+```bash
+git remote rename origin github
+```
+
+---
+
+### Change remote URL
+
+```bash
+git remove set-url origin git@githum.com:user/repo.git
+```
+
+---
+
+### Remove a remote
+
+```bash
+git remote remove upstream
+```
+
+---
+
+## Remote tracking branches
+
+when you fetch from a remote, git creates a remote-tracking branches:
+remote tracking branches like "origin/main" are read only references to where the remote branches were last time you fetched
+
+---
+
+### View remote tracking branches
+
+```bash
+# All branches including remote-tracking
+git branch -a
+
+# Remote-tracking only
+git branch -r
+```
+
+---
+
+## Understanding Remote URLS
+
+---
+
+### HTTPS URLS
+
+    https://github.com/username/repository.git
+
+    Works through firewalls
+    Requires username/password or token
+    Easier to set up
+
+### SSH URLS
+
+    git@github.com:username/repository.git
+
+    Requires SSH key setup
+    No password prompts after setup
+    More secure
+
+---
+
+#### Switching between protocols
+
+```bash
+# Check current URL
+git remote -v
+
+# Switch to SSH
+git remote set-url origin git@github.com:user/repo.git
+
+# Switch to HTTPS
+git remote set-url origin https://github.com/user/repo.git
+```
+
+---
+
+## Multiple remotes
+
+you can have multiple remotes for differnt purposes
+
+```bash
+# Your fork (Fork basically means make a copy of that repository and put that in my own repositories)
+git remote add origin git@github.com:you/project.git
+
+# Original project (to get updates)
+git remote add upstream git@github.com:org/project.git
+
+# Deployment server
+git remote add production ssh://deploy@server.com/var/git/project.git
+```
+
+Common remote names:
+
+    origin - Your primary remote (your fork)
+    upstream - Original project you forked from
+    production - Production server
+    staging - Staging server
+
+---
+
+## The fetch, push and pull cycle
+
+```bash
+#              ┌──────────────────────┐
+#              │    Remote Server     │
+#              │    (e.g., GitHub)    │
+#              └──────────────────────┘
+#                   ↑           ↓
+#              push │           │ fetch
+#                   │           ↓
+#              ┌──────────────────────┐
+#              │   Your Local Repo    │
+#              │                      │
+#              │   origin/main ←────── fetched data
+#              │   main ←────────────── your work
+#              │                      │
+#              └──────────────────────┘
+```
+
+1. Fetch
+   Means:
+   "Go check GitHub and download any new information, but don't touch my current work."
+
+2. Pull
+   Means:
+   "Fetch the updates and apply them to my current branch."
+
+3. Push
+   Means:
+   "Send my local commits to GitHub."
+
+---
+
+## Remote Configuration
+
+Remote settings are stored in .git/config.
+
+```bash
+[remote "origin"]
+    url = git@github.com:user/repo.git
+    fetch = +refs/heads/*:refs/remotes/origin/*
+
+[remote "upstream"]
+    url = https://github.com/org/repo.git
+    fetch = +refs/heads/*:refs/remotes/upstream/*
+
+[branch "main"]
+    remote = origin
+    merge = refs/heads/main
+```
+
+You can edit this directly or use git config:
+
+```bash
+git config remote.origin.url
+git config remote.origin.url "new-url"
+```
+
+---
