@@ -1278,14 +1278,14 @@ Everyone makes mistakes. Git provides several ways to undo changes, from simple 
 
 ## The Undo ToolKit
 
-| Situation | Solution |
-|---|---|
-| Unstage a file | `git restore --staged <file>` |
-| Discard working changes | `git restore <file>` |
-| Modify the last commit | `git commit --amend` |
-| Undo commits (keep changes) | `git reset --soft <commit>` |
-| Undo commits (lose changes) | `git reset --hard <commit>` |
-| Undo a pushed commit | `git revert <commit>` |
+| Situation                   | Solution                      |
+| --------------------------- | ----------------------------- |
+| Unstage a file              | `git restore --staged <file>` |
+| Discard working changes     | `git restore <file>`          |
+| Modify the last commit      | `git commit --amend`          |
+| Undo commits (keep changes) | `git reset --soft <commit>`   |
+| Undo commits (lose changes) | `git reset --hard <commit>`   |
+| Undo a pushed commit        | `git revert <commit>`         |
 
 ---
 
@@ -1326,11 +1326,11 @@ The git reset command moves the branch pointer and optionally modifies the stagi
 
 ### Three Reset Modes
 
-| Reset Mode | Moves HEAD | Clears Staging Area | Clears Working Directory |
-|---|:---:|:---:|:---:|
-| `--soft` | ✓ | ✗ | ✗ |
-| `--mixed` *(default)* | ✓ | ✓ | ✗ |
-| `--hard` | ✓ | ✓ | ✓ |
+| Reset Mode            | Moves HEAD | Clears Staging Area | Clears Working Directory |
+| --------------------- | :--------: | :-----------------: | :----------------------: |
+| `--soft`              |     ✓      |          ✗          |            ✗             |
+| `--mixed` _(default)_ |     ✓      |          ✓          |            ✗             |
+| `--hard`              |     ✓      |          ✓          |            ✓             |
 
 ---
 
@@ -1365,8 +1365,8 @@ Moves HEAD and discards all changes
 git reset --hard HEAD~1
 ```
 
-WARNING:    This is destructive! All changes are lost
-USE CASE:   Completely discrad recent commits
+WARNING: This is destructive! All changes are lost
+USE CASE: Completely discrad recent commits
 
 ---
 
@@ -1389,11 +1389,11 @@ git revert --no-commit abc123
 
 ### Reset vs Revert
 
-| Aspect | Reset | Revert |
-|---|---|---|
-| Modifies history | Yes | No |
-| Safe for pushed commits | No | Yes |
-| Creates new commit | No | Yes |
+| Aspect                  | Reset | Revert |
+| ----------------------- | ----- | ------ |
+| Modifies history        | Yes   | No     |
+| Safe for pushed commits | No    | Yes    |
+| Creates new commit      | No    | Yes    |
 
 ---
 
@@ -1429,8 +1429,8 @@ git branch recovered abc123
 the reflog keeps entries for about 90 days
 
 ```bash
-#   A--B--C--D (bug) 
-#        | 
+#   A--B--C--D (bug)
+#        |
 #       E -- F -- G
 ```
 
@@ -1474,13 +1474,13 @@ The default branch (usually main or master) is just a branch like any other.
 
 ## Why Use Branches?
 
-| Benefit | Description |
-|---|---|
-| Isolation | Work on features without affecting stable code |
-| Parallel development | Multiple features developed simultaneously |
-| Experimentation | Try ideas without risk |
-| Code review | Review changes before merging |
-| Releases | Maintain different versions |
+| Benefit              | Description                                    |
+| -------------------- | ---------------------------------------------- |
+| Isolation            | Work on features without affecting stable code |
+| Parallel development | Multiple features developed simultaneously     |
+| Experimentation      | Try ideas without risk                         |
+| Code review          | Review changes before merging                  |
+| Releases             | Maintain different versions                    |
 
 ---
 
@@ -1530,13 +1530,305 @@ Branches can have almost any name, but follows these conentions:
 
 ## Common Prefixes
 
-| Prefix | Use |
-|---|---|
-| `feature/` | New features |
-| `bugfix/` | Bug fixes |
-| `hotfix/` | Urgent production fixes |
-| `release/` | Release preparation |
-| `docs/` | Documentation |
-| `test/` | Testing |
+| Prefix     | Use                     |
+| ---------- | ----------------------- |
+| `feature/` | New features            |
+| `bugfix/`  | Bug fixes               |
+| `hotfix/`  | Urgent production fixes |
+| `release/` | Release preparation     |
+| `docs/`    | Documentation           |
+| `test/`    | Testing                 |
 
 ---
+
+# Lesson 10: Creating and Switching Branches
+
+Now that you understand what branches are, let's learn how to create, switch between, and manage them.
+
+---
+
+## Creating a New branch
+
+---
+
+### git branch
+
+Create a new branch:
+
+```bash
+git branch feature-login
+```
+
+this create the branch but doesnt switch to it. You're still on your current branch.
+
+---
+
+### git checkout -b (Classic way)
+
+Create and switch in one command
+
+```bash
+git checkout -b feature-login
+```
+
+---
+
+### git switch -c (Modern Way)
+
+The newer, more intuitive command:
+
+```bash
+git swtich -c feature-login
+```
+
+---
+
+## Switching Branches
+
+---
+
+### git checkout (Classic)
+
+```bash
+git checkout feature-login
+```
+
+---
+
+### git swtich (Modern)
+
+```bash
+git switch feature-login
+```
+
+---
+
+#### why git switch
+
+"git checkout" does many things (switch branches, restore files, etc.) "git switch" is dedicated to branch switching, making it clearer and safer
+
+```bash
+# These do the same thing:
+git checkout main
+git switch main
+
+# But only checkout can restore files:
+git checkout -- file.js    # Restore file
+# git switch -- file.js    # Doesn't work
+```
+
+---
+
+## Creating Branches from Specific Points
+
+---
+
+### From another Branch
+
+```bash
+# create branch from main (while on any branch)
+git branch {name} main
+
+#Create and switch
+git switch -c {name} main
+```
+
+---
+
+### From a specific commit
+
+```bash
+# Create branch from commit
+git branch {branch_name} {hash_value}
+
+# Create and switch
+git switch -c {branch_name} {hash_value}
+```
+
+---
+
+### From a specific tag
+
+---
+
+#### Creating a tag
+
+A tag is just a name attached to a specific commit, but unlike a branch, it doesn't move.
+
+```bash
+# A --- B --- C --- D --- E
+#                  ^      ^
+#               v1.0.0   main
+
+git tag {tag_label}
+
+#if you wanna create a tag at a specific commit
+git tag {tag_label} {hash_value}
+```
+
+---
+
+```bash
+git switch -c {branch_name} {tag_name}
+```
+
+---
+
+## Listing Branches
+
+```bash
+# List local branches
+git branch
+
+# List with more info
+git branch -v
+
+# List all branches (including remote)
+git branch -a
+
+# List remote branches only
+git branch -r
+
+# List branches containing a commit
+git branch --contains abc123
+
+# List merged branches
+git branch --merged
+
+# List unmerged branches
+git branch --no-merged
+```
+
+NOTE: The \* indicates the current branch.
+
+---
+
+## Renaming Branches
+
+```bash
+# Rename current branch
+git branch -m new-name
+
+# Rename specific branch
+git branch -m old-name new-name
+
+# Force rename (even if new name exists)
+git branch -M new-name
+```
+
+---
+
+### Renaming the default branch
+
+```bash
+# Rename master to main
+git branch -m master main
+
+# Update remote (if applicable)
+git push -u origin main
+git push origin --delete master
+```
+
+---
+
+## Deleting Branches
+
+---
+
+### Delete Merged Branches
+
+```bash
+# Delete a branch
+git branch -d {branch_name}
+
+# Force delete a branch
+git branch -D {branch_name}
+```
+
+git will refuse if the branch isnt merged, if its -d
+otherwise force delete it if its -D
+
+
+---
+
+## Switching with Uncommitted Changes
+
+Case 1: No Conflict
+
+if your changes dont conflict with the target branch, Git carries them over:
+
+```bash
+# Make changes to file.js
+git switch other-branch
+# Changes come with you
+```
+
+Case 2: Conflict
+
+if changes would be overwritten, Git prevents the switch:
+
+```bash
+error: Your local changes to the following files would be overwritten by checkout:
+        file.js
+Please commit your changes or stash them before you switch branches.
+```
+
+Solution:
+
+```bash
+# Option 1: Commit your changes
+git commit -am "WIP: save work"
+git switch other-branch
+
+# Option 2: Stash your changes
+git stash
+git switch other-branch
+git stash pop  # Later, restore changes
+
+# Option 3: Discard changes (careful!)
+git restore .
+git switch other-branch
+```
+
+---
+
+## The detached HEAD State
+
+sometimes you need to look at an old commit
+
+```bash
+git checkout abc123 (hash)
+```
+
+---
+
+### Workign in detached HEAD
+
+you can make commits, but they are not on any branch
+
+```bash
+git checkout abc123
+# make changes
+git commit -m "Experimental Change"
+```
+
+---
+
+### Keeping Detached HEAD Commits
+
+if you wnat ot keep commits made in detached HEAD:
+
+```bash
+# While still in detached HEAD
+git switch -c my-experiment
+# Now your commits are on a branch
+```
+
+or if you already switched away:
+
+```bash
+# Find the commit in reflog
+git reflog
+# Create branch pointing to it
+git branch rescue abc123
+```
