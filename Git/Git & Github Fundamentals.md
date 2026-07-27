@@ -1748,7 +1748,6 @@ git branch -D {branch_name}
 git will refuse if the branch isnt merged, if its -d
 otherwise force delete it if its -D
 
-
 ---
 
 ## Switching with Uncommitted Changes
@@ -1987,20 +1986,20 @@ the feature branch commits are combined. Original Hitory is lost in main
 
 ## Merge Options
 
-| Option | Description |
-|---|---|
-| `--no-ff` | Always create a merge commit, even if Git could perform a fast-forward merge |
-| `--ff-only` | Only perform the merge if it can be completed as a fast-forward merge; otherwise fail |
-| `--squash` | Combine all changes from the branch into one set of changes and create a single commit on the current branch |
-| `--no-commit` | Perform the merge but stop before creating the merge commit, allowing manual changes before committing |
-| `--abort` | Cancel an ongoing merge and return the repository to the state before the merge started |
-| `--edit` | Open the editor to modify the default merge commit message |
-| `--no-edit` | Accept the default merge commit message without opening an editor |
-| `--strategy=<strategy>` | Choose a specific merge strategy |
-| `--strategy-option=<option>` | Pass additional options to the selected merge strategy |
-| `--verify-signatures` | Verify that the commits being merged have valid GPG signatures |
-| `--allow-unrelated-histories` | Allow merging branches that do not share a common ancestor |
-| `-m <message>` | Provide a custom merge commit message |
+| Option                        | Description                                                                                                  |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `--no-ff`                     | Always create a merge commit, even if Git could perform a fast-forward merge                                 |
+| `--ff-only`                   | Only perform the merge if it can be completed as a fast-forward merge; otherwise fail                        |
+| `--squash`                    | Combine all changes from the branch into one set of changes and create a single commit on the current branch |
+| `--no-commit`                 | Perform the merge but stop before creating the merge commit, allowing manual changes before committing       |
+| `--abort`                     | Cancel an ongoing merge and return the repository to the state before the merge started                      |
+| `--edit`                      | Open the editor to modify the default merge commit message                                                   |
+| `--no-edit`                   | Accept the default merge commit message without opening an editor                                            |
+| `--strategy=<strategy>`       | Choose a specific merge strategy                                                                             |
+| `--strategy-option=<option>`  | Pass additional options to the selected merge strategy                                                       |
+| `--verify-signatures`         | Verify that the commits being merged have valid GPG signatures                                               |
+| `--allow-unrelated-histories` | Allow merging branches that do not share a common ancestor                                                   |
+| `-m <message>`                | Provide a custom merge commit message                                                                        |
 
 ---
 
@@ -2115,3 +2114,146 @@ this restores your branch to the state before the merge started
     npm test
     npm run build
 ```
+
+---
+
+# Lesson 12: Resolving Merge Conflicts
+
+Merge conflicts occur when Git can't automatically combine changes from different branches. This happens when the same lines of code are modified differently in both branches.
+
+---
+
+## When do conflicts occur?
+
+- The same lines are changed in both branches
+- A file is modified in one branch and deleted in another
+- The same file is added with different content in both branches
+
+---
+
+## Anatomy of a Conflict
+
+when a conflict occurs
+
+```bash
+# function greet() {
+# <<<<<<< HEAD
+#   return "Hello World";
+# =======
+#   return "Hello Git";
+# >>>>>>> feature
+```
+
+Everything between <<<<<<< and ======= is YOUR version. Everything between ======= and >>>>>>> is THEIR version.
+
+---
+
+## Conflict resolution process
+
+1. Attempt to merge
+2. Check Status
+3. Open the conflicted file and edit the file to resolve the conflict
+4. Mark as resolved
+5. Complete the Merge
+
+---
+
+## Resolution Strategies
+
+---
+
+### Keep Ours
+
+Keep your version, discard theirs:
+
+---
+
+### Keep theirs
+
+Keep their version, discard yours:
+
+---
+
+### Combine both
+
+Merge the logic from both:
+
+---
+
+### Rewrite Completely
+
+Sometimes neither version is right
+
+---
+
+## Using Merge tools
+
+---
+
+### built in merge tool
+
+```bash
+git mergetool
+```
+
+git will open your configured merge tool.
+
+---
+
+### Configure a merge tool
+
+```bash
+# Use VS Code
+git config --global merge.tool vscode
+# Tell Git to use VS Code as the merge conflict tool.
+git config --global mergetool.vscode.cmd 'code --wait $MERGED'
+# Tell Git how to open the conflicted file in VS Code and wait until it is resolved.
+
+# Use vimdiff
+git config --global merge.tool vimdiff
+```
+
+---
+
+### VS Code Conflict Resolution
+
+VS Code shows conflict markers with helpful buttons:
+
+    "Accept Current Change" (yours)
+    "Accept Incoming Change" (theirs)
+    "Accept Both Changes"
+    "Compare Changes"
+
+---
+
+## Check conflicting status
+
+```bash
+# See conflicted files
+git diff --name-only --diff-filter=U
+
+# See conflict details
+git diff
+
+# See specific file
+git diff file.js
+```
+
+---
+
+## Using git checkout during conflicts
+
+During a conflict, you can choose versions:
+
+```bash
+# Use our version entirely
+git checkout --ours file.js
+
+# Use their version entirely
+git checkout --theirs file.js
+
+# Then mark as resolved
+git add file.js
+```
+
+---
