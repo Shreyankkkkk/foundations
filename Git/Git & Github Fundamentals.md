@@ -2673,10 +2673,10 @@ Understanding the difference between "fetch" and "pull" is crucial for workign w
 
 ## The Key difference
 
-| Command | What it does |
-|---|---|
+| Command     | What it does                         |
+| ----------- | ------------------------------------ |
 | `git fetch` | Downloads changes, doesn't integrate |
-| `git pull` | Downloads changes AND merges them |
+| `git pull`  | Downloads changes AND merges them    |
 
 ---
 
@@ -2726,6 +2726,7 @@ git fetch --prune
 # Fetch tags
 git fetch --tags
 ```
+
 ---
 
 ### After Fetching
@@ -2790,3 +2791,262 @@ git pull origin main # Done!
 
 ---
 
+# Lesson 16 - Tracking Branches
+
+Tracking branches create a connection between your local branches and remote branches, making push and pull operations simpler and more intuitive.
+
+---
+
+## What is tracking branch?
+
+A tracking branch is a local branch that has a direct relationship with a remote branch:
+
+When a local branch tracks a remote branch:
+
+- git push knows where to push
+- git pull knows where to pull from
+- git status shows how far ahead/behind you are
+
+```bash
+# Local Branch         Remote-Tracking Branch       Remote Branch
+# main         ←────→  origin/main          ←────→  origin's main
+# feature      ←────→  origin/feature       ←────→  origin's feature
+```
+
+---
+
+## Setting up Tracking
+
+---
+
+### When cloning
+
+when you clone a repository, "main" is auotmatically set up to track "origin/main":
+
+```bash
+git clone https://github.com/user/repo.git
+cd repo
+
+git status
+# On branch main
+# Your branch is up to date with 'origin/main'.
+```
+
+---
+
+### When Pushing a new branch
+
+Use "-u" or "--set-upstream" to set up tracking
+
+```bash
+git push -u origin feature
+```
+
+Feature tracks origin/feature
+
+---
+
+### For exisiting branches
+
+```bash
+# Set upstream for current branch
+git branch --set-upstream-to=origin/feature
+
+# Short form
+git branch -u origin/feature
+```
+
+---
+
+### When checking out remote branches
+
+```bash
+# If there is no local branch but there is a remote branch
+
+# Automatic tracking if branch name matches
+git checkout feature
+# If origin/feature exists, local 'feature' will track it
+
+# Or explicitly
+# Tracing remote branches that dont exist yet
+    # when you create a new branch and watnt to push it:
+
+    # create branch
+    git checkout -b feature origin/feature
+
+    # Push and set up tracking in one command
+    git push -u origin new-feature
+```
+
+---
+
+## Viewign trackig information
+
+---
+
+### git branch with verbose flag
+
+```bash
+git branch -vv
+
+# Output:
+    #* main      abc123 [origin/main] Latest commit message
+    #  feature   def456 [origin/feature: ahead 2] Add new feature
+    #  bugfix    789abc [origin/bugfix: behind 3] Fix bug
+    #  local     111222 Work in progress  # No tracking (no brackets)
+```
+
+The brackets show
+
+- which remote branch is tracked
+- how many commits ahead/behind
+
+---
+
+### git status
+
+```bash
+git status
+```
+
+shows tracking information
+
+```bash
+# on branch feature
+#   Your branch is ahead of 'origin/feature' by 2 commits.
+#   (use "git push" to publish your local commits)
+```
+
+---
+
+### Using git remote show
+
+```bash
+git remote show origin
+```
+
+shows which local branches track which remote branches
+
+---
+
+## Ahead and Behind
+
+When your local branch and remote branch have diverged:
+
+    git status
+    # Your branch and 'origin/main' have diverged,
+    # and have 2 and 3 different commits each, respectively.
+
+Check specific counts:
+
+```bash
+# Commits ahead of origin
+git rev-list --count origin/main..main
+
+# Commits behind origin
+git rev-list --count main..origin/main
+
+# Both
+git rev-list --left-right --count main...origin/main
+# Output: 2    3  (2 ahead, 3 behind)
+```
+
+---
+
+## Changing or Removing tracking
+
+---
+
+### Change what a branch tracks
+
+```bash
+# change current branch tracking to another remote branch
+git branch -u origin/other-branch
+```
+
+---
+
+### Remove tracking
+
+```bash
+# remove current branch tracking
+git branch --unset-upstream
+```
+
+---
+
+### Change for a specific branch
+
+```bash
+git branch -u origin/main feature
+```
+
+---
+
+## Trackign and Push/Pull
+
+- Without tracking
+  you must specify remote and branch
+
+```bash
+git push origin feature
+git pull origin feature
+```
+
+- With tracking
+  just use the commands directly
+
+```bash
+git push
+git pull
+```
+
+git knows where to push/pull from
+
+---
+
+## Fetching and Tracking
+
+after fetching, new remote branches appear:
+
+```bash
+git fetch origin
+git branch -r
+#origin/main
+#origin/feature
+#origin/new-branch (new!)
+```
+
+to work on the new branch
+
+```bash
+# Automatic tracking if names match
+git checkout new-branch
+
+# Or explicitly
+git checkout -b new-branch origin/new-branch
+```
+
+---
+
+## The Upstream Configuration
+
+Trackign is stored in ".git/config"
+
+```bash
+[branch "feature"]
+    remote = origin
+    merge = refs/heads/feature
+```
+
+You can view it with
+
+```bash
+git config --get branch.feature.remote
+# origin
+
+git config --get branch.feature.merge
+# refs/heads/feature
+```
+
+---
