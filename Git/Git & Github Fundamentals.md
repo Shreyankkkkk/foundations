@@ -3196,3 +3196,197 @@ gh pr create --title "Feature" --body "Description"
 ```
 
 ---
+
+# Lesson 18 - Creating Repositories on Github
+
+There are several ways to create a repositories on Github. This lesson covers all the methods and options
+
+---
+
+## Creating a new Repsoitory
+
+---
+
+### Via Web Interface
+
+1. Click the + button in the top right
+2. Select New repository
+3. Fill in the details:
+
+**Field Description**
+Repository name URL-friendly name (e.g., my-project)
+Description Brief explanation (optional)
+Visibility Public or Private
+Initialize Add README, .gitignore, license
+
+---
+
+### Repository Naming
+
+Good names are:
+
+- Lowercase with hyphens: my-awesome-project
+- Descriptive: react-todo-app
+- Concise: blog-api
+
+Avoid:
+
+- Spaces (use hyphens instead)
+- Special characters
+- Generic names like project1
+
+---
+
+## Initialization Options
+
+---
+
+### README.md
+
+A README.md is the first thing visitors see:
+
+```bash
+# Project Name
+Brief description of what this project does.
+
+## Installation
+Enter all the installations
+```
+
+---
+
+## Creating from template
+
+---
+
+### Using Template Repositories
+
+Some repos are marked as template:
+
+1. Go to template repository
+2. Click "Use this template"
+3. Choose "Create a new repository"
+4. Name your new repo
+   Your repo will have the same files but a fresh git history
+
+---
+
+### Making your Repo a Template
+
+Settings → General → Check "Template repository"
+
+---
+
+## Repository settings
+
+---
+
+### After Creation
+
+Navigate to settings tab:
+| Setting | Purpose |
+|---------|---------|
+| General | Name, visibility, features |
+| Collaborators | Add team members |
+| Branches | Protection rules |
+| Pages | Host static website |
+| Secrets | Environment variables for Actions |
+
+---
+
+### Branch Protection
+
+Protect important branches:
+
+Branch: main
+Rules:
+
+- ✓ Require pull request before merging
+- ✓ Require approvals: 1
+- ✓ Require status checks to pass
+- ✓ Require branches to be up to date
+
+---
+
+### Features to Enable/Disable
+
+- Issues
+- Wiki
+- Projects
+- Discussions
+- Sponsorship
+
+---
+
+## Repository Visibility
+
+---
+
+### Changing Visibility
+
+Settings → General → Danger Zone → Change visibility
+⚠️ Warning: Making a private repo public exposes all history!
+
+---
+
+### Visibility Options
+
+**Option Use Case**
+Public Open source, portfolio projects
+Private Work projects, sensitive code
+
+---
+
+## Repository best practices
+
+---
+
+### Include these files
+
+├── README.md # Project documentation
+├── LICENSE # How others can use it
+├── .gitignore # Files to exclude
+├── CONTRIBUTING.md # How to contribute
+├── CODE_OF_CONDUCT.md # Community guidelines
+├── CHANGELOG.md # Version history
+└── .github/
+├── ISSUE_TEMPLATE/
+├── PULL_REQUEST_TEMPLATE.md
+└── workflows/ # GitHub Actions
+
+---
+
+### Good README structure
+
+1. Title and badges
+2. Description: What, why
+3. Installation: How to set up
+4. Usage: Basic examples
+5. API/Documentation: Link or details
+6. Contributing: How to help
+7. License: Legal terms
+
+---
+
+## Archiving and Deleting
+
+---
+
+### Archive
+
+Settings → Danger Zone → Archive
+
+    Makes repo read-only
+    Keeps all history
+    Good for deprecated projects
+
+---
+
+### Delete
+
+Settings → Danger Zone → Delete
+
+    ⚠️ Permanent - cannot be undone
+    Type repo name to confirm
+
+---
