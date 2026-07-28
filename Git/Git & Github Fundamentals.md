@@ -4051,3 +4051,169 @@ Some projects use bot commands in templates:
 <!-- /run-benchmarks -->
 
 ---
+
+# Lesson 24 - Draft Pull Requests
+
+Draft pull requests let you share work-in-progress code without requesting a full review. They're perfect for getting early feedback, showing your approach, or collaborating on incomplete features.
+
+---
+
+## What is draft PR?
+
+A draft PR is marked as "not ready for review":
+
+Draft PRs:
+    Can't be merged accidentally
+    Don't send review requests
+    Run CI checks (if configured)
+    Can receive comments and feedback
+
+---
+
+## When to use Draft PRs
+
+| Scenario | Use Draft? |
+|----------|------------|
+| Early feedback on approach | ✅ |
+| Work in progress | ✅ |
+| Blocked by dependency | ✅ |
+| Sharing for collaboration | ✅ |
+| Running CI before ready | ✅ |
+| Ready for full review | ❌ Use regular PR |
+| Quick, simple fix | ❌ Use regular PR |
+
+---
+
+## Creating a draft PR
+
+---
+
+### From github Web UI
+
+1. Push your branch
+2. Click "Compare & pull request"
+3. Click the arrow on "Create pull request"
+4. Select "Create draft pull request"
+
+---
+
+### Converting Existing PR to Draft
+
+1. Go to PR
+2. Click "Convert to draft" in the sidebar
+
+Note: This removes existing review requests
+
+---
+
+## Draft PR Best Practices
+
+Clear Titles
+    Indicate work-in-progress status:
+Describe what you need
+    Be specific about what feedback you want:
+        Status : {Body}
+        Whats Done: {Body}
+        Whats Not Done: {Body}
+Use Task Lists
+    Track progress within the PR:
+        Progress : {Steps followed with ticks or crosses}
+Update Regularly
+    Keep the PR Description Current
+        Check off completed tasks
+        Note blockers or questions
+        Summarize recent changes
+
+---
+
+## Working with Draft PRs
+
+---
+
+### Getting feedbacks
+Even as a draft, you can:
+
+- Request informal reviews from teammates
+- @ mention specific people for input
+- Ask questions in comments
+
+---
+
+### Running CI
+
+Most CI systems run on drafts:
+
+- Catch build issues early
+- Run tests as you develop
+- Check code coverage
+
+---
+
+### Collaborating
+
+Multiple people can push to a draft:
+
+---
+
+## Converting To Ready
+
+when your work is complete:
+
+1. Scroll to bottom of PR
+2. Click "Ready for review"
+3. This sends notifications to reviewers
+
+---
+
+## Draft PR Workflow
+
+┌──────────────────────────────────────────────────┐
+│                    DRAFT PR                      │
+├──────────────────────────────────────────────────┤
+│                                                  │
+│  1. Create draft PR early                        │
+│         ↓                                        │
+│  2. Push commits as you work                     │
+│         ↓                                        │
+│  3. Get informal feedback                        │
+│         ↓                                        │
+│  4. Watch CI results                             │
+│         ↓                                        │
+│  5. Complete task list                           │
+│         ↓                                        │
+│  6. Self-review                                  │
+│         ↓                                        │
+│  7. Mark as "Ready for review"                   │
+│         ↓                                        │
+│  8. Formal code review                           │
+│         ↓                                        │
+│  9. Merge                                        │
+│                                                  │
+└──────────────────────────────────────────────────┘
+
+---
+
+## Draft PRs vs Branches
+
+Why open a draft PR instead of just working on the branch
+
+| Draft PR | Branch Only |
+|----------|-------------|
+| Visible progress | Hidden work |
+| Early feedback possible | No review until ready |
+| CI runs automatically | Manual CI trigger |
+| Discussion in one place | Scattered communication |
+| Clear intent to merge | Unknown destination |
+
+---
+
+## Common Patterns
+
+| Pattern | Purpose |
+|---------|---------|
+| **Stacked PRs** | Split a large feature into multiple smaller PRs that depend on each other. Each PR focuses on one part of the feature, making changes easier to review and allowing feedback before the entire feature is completed. |
+| **Long-Running Features** | Used for features that take weeks or longer to finish. A Draft PR keeps the team updated on progress, shows the current development status, and allows feedback throughout the development process instead of waiting for one large final PR. |
+| **RFC (Request for Comments) PRs** | Used to propose an idea or design before writing the full implementation. Allows teammates to discuss the approach, suggest alternatives, and identify problems early before significant development time is spent. |
+
+---
+
