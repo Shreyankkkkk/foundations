@@ -2494,3 +2494,173 @@ git config remote.origin.url "new-url"
 ```
 
 ---
+
+# Lesson 14 - Pushing and Pulling
+
+Pushing and pulling are how you synchronize changes between your local repository and remote repositories.
+
+---
+
+## Git Push
+
+Pushing uploads your local commits to a remove repository
+
+---
+
+### Basic Push
+
+```bash
+git push origin main
+```
+
+this pushes your local main branch to the origin remote.
+
+---
+
+### Push Current Branch
+
+```bash
+git push
+```
+
+if your branch is tracking a remote branch, this pushes to it.
+
+---
+
+### Push with upstream
+
+```bash
+git push -u origin feature
+or
+git push --set-upstream origin feature
+```
+
+the -u flag 1. Pushes the branch 2. Sets up tracking (so future git push and git pull just work)
+
+    (Basically, this creates a branch on remote and sets up a connection between local branch and the remote branch, so everytime i commit on the local branch and push it, github or any other cloud serive platform knows that it needs to push to that default branch and not get confused with other branches in the same repository)
+
+---
+
+### Push all branches
+
+```bash
+git push --all origin
+```
+
+    (basically, pushes all branches to their respective remote default branches that it represents)
+
+---
+
+### Push tags
+
+```bash
+#push specific tag
+git push origin {Tag}
+
+# Push all tags
+git push origin --tags
+```
+
+    (basically, in my local computer i have commits with specific tags, if i want github to remember that this commit has tag this, it needs to know, for that we do git push origin tag, so it tells git that this commit has tag, if there are multiple tags on my local computer, all of them get pushed. You are pushing tag references so each commit corresponds to a tag reference, thats why github can understand even if an older commit has a tag and adds it)
+
+---
+
+### Push Rejections
+
+if the remote has commits you don't have:
+and you try to push, git throws an error
+so to solve this, you gotta pull first from github, all the new commits and then push
+
+or force push the commit but in this case, new commits on github will be lost
+
+---
+
+## Git Pull
+
+Pulling downlaods and integrates remote changes
+
+---
+
+### Basic Pull
+
+```bash
+git pull origin main
+```
+
+this is equivalent to
+git fetch origin main
+git merge origin/main
+
+---
+
+### Pull Current Branch
+
+```bash
+git pull
+```
+
+if tracking is set up, pulls from the tracked remote branch to local branch.
+
+---
+
+### Pull with rebase
+
+```bash
+git pull --rebase origin main
+```
+
+instead of merging, this rebases your changes on top of remote changes. Creates a cleaner history
+
+    (basically, let me temporarily removey your work, pull and merge the new work and THEN add your work back so it becomes clearer)
+
+---
+
+## The Push Pull Workflow
+
+```bash
+# Start of day: Get latest changes
+git pull origin main
+
+# Make your changes
+# ... edit files ...
+
+# Commit your work
+git add .
+git commit -m "Add feature"
+
+# Before pushing, get any new changes
+git pull origin main
+
+# Push your changes
+git push origin main
+```
+
+---
+
+## Configuring Default Behaviour
+
+---
+
+### Set Push Default
+
+```bash
+# Push current branch to matching remote branch
+git config --global push.default current
+
+# Only push if upstream is set
+git config --global push.default simple  # (default)
+```
+
+---
+
+### Set Pull Default
+
+```bash
+# Always rebase on pull
+git config --global pull.rebase true
+
+# Always merge on pull (default)
+git config --global pull.rebase false
+```
+
+---
