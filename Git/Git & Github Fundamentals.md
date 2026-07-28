@@ -2664,3 +2664,129 @@ git config --global pull.rebase false
 ```
 
 ---
+
+# Lesson 15 - Fetch vs Pull
+
+Understanding the difference between "fetch" and "pull" is crucial for workign with remote repositories effectively.
+
+---
+
+## The Key difference
+
+| Command | What it does |
+|---|---|
+| `git fetch` | Downloads changes, doesn't integrate |
+| `git pull` | Downloads changes AND merges them |
+
+---
+
+## Git Fetch
+
+```bash
+git fetch origin
+```
+
+fetch downloads remote changes without affecting your working directory:
+
+---
+
+### What Fetch Does
+
+1. Contacts the remote repository
+2. Downloads any new commits
+3. Updates remote-tracking branches (e.g., origin/main)
+4. Does NOT change your local branches
+5. Does NOT change your working directory
+
+---
+
+### Why use fetch?
+
+    Safe: Won't mess up your current work
+    Preview: See what changed before integrating
+    Control: Decide when and how to integrate
+
+---
+
+### Fetch Commands
+
+```bash
+# Fetch all branches from origin
+git fetch origin
+
+# Fetch specific branch
+git fetch origin main
+
+# Fetch from all remotes
+git fetch --all
+
+# Fetch and prune deleted branches
+git fetch --prune
+
+# Fetch tags
+git fetch --tags
+```
+---
+
+### After Fetching
+
+View what was fetched:
+
+```bash
+# See the difference
+git log main..origin/main
+
+# See what commits are new
+git log --oneline origin/main ^main
+
+# View the changes
+git diff main origin/main
+```
+
+then intergrate when ready:
+
+```bash
+# Merge the fetched changes
+git merge origin/main
+
+# Or rebase
+git rebase origin/main
+```
+
+---
+
+## When to use Each
+
+---
+
+### Use Fetch When
+
+- You want to see what changed before integrating
+- You're not sure if you want to integrate yet
+- You want to integrate differently (rebase vs merge)
+- You want to compare branches before merging
+- You're working on something delicate and don't want surprises
+
+```bash
+git fetch origin
+git log --oneline main..origin/main  # What's new?
+git diff main origin/main             # What changed?
+# Looks good, now merge
+git merge origin/main
+```
+
+---
+
+### Use Pull When
+
+- You just want the latest changes quickly
+- You trust the remote changes
+- You're starting fresh work and need to update first
+- Simple workflow with no local uncommitted work
+
+```bash
+git pull origin main # Done!
+```
+
+---
+
