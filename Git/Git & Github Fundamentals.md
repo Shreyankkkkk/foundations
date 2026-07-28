@@ -3599,6 +3599,8 @@ git clone --filter=blob:none https://github.com/owner/large-repo.git
 
 # Lesson 20 - Good practices for github profile
 
+Your GitHub profile is your developer identity. A well-crafted profile helps with job opportunities, networking, and building credibility in the developer community.
+
 ---
 
 # Lesson 21 - Pull Request Basics
@@ -3647,14 +3649,16 @@ Explain what and why
 ### Labels
 
 Categorize your PR (Pull Request)
-    bug, feature, enhancement
-    documentation, refactor
-    breaking-change, needs-review
-    
+bug, feature, enhancement
+documentation, refactor
+breaking-change, needs-review
+
 ### Reviewers
+
 Request specific people to review your code.
 
 ### Assignees
+
 Who's responsible for the PR.
 
 ### Linked Issues
@@ -3670,21 +3674,21 @@ Connect to related issues:
 ## The PR Lifecycle
 
 1. Create Branch
-       ↓
+   ↓
 2. Make Commits
-       ↓
+   ↓
 3. Push to GitHub
-       ↓
+   ↓
 4. Create PR ←────────────────┐
-       ↓                      │
-5. CI Checks Run              │
-       ↓                      │
+   ↓ │
+5. CI Checks Run │
+   ↓ │
 6. Code Review ─── Requested Changes
-       ↓
+   ↓
 7. Approval
-       ↓
+   ↓
 8. Merge
-       ↓
+   ↓
 9. Delete Branch
 
 ---
@@ -3693,13 +3697,13 @@ Connect to related issues:
 
 Github can run automated checks
 
-| Check | Purpose |
-|-------|---------|
-| **CI Tests** | Run automated tests |
-| **Linting** | Check code style |
-| **Build** | Verify it builds |
+| Check        | Purpose                  |
+| ------------ | ------------------------ |
+| **CI Tests** | Run automated tests      |
+| **Linting**  | Check code style         |
+| **Build**    | Verify it builds         |
 | **Security** | Scan for vulnerabilities |
-| **Coverage** | Check test coverage |
+| **Coverage** | Check test coverage      |
 
 PRs can require checks to pass before merging.
 
@@ -3794,6 +3798,7 @@ Click "merge pull request" when approved and checks pass
 ---
 
 ### Closing Without Merging
+
 For PRs that won't be merged:
 
     Click "Close pull request"
@@ -3807,3 +3812,59 @@ For draft PRs, click "Ready for review" when done.
 
 ---
 
+# Lesson 22 - Code Review Best Practices
+
+Code review is a critical part of software development. It catches bugs, improves code quality, shares knowledge, and builds team cohesion.
+
+---
+
+## Why Code Review?
+
+| Benefit               | Description                             |
+| --------------------- | --------------------------------------- |
+| **Quality**           | Catch bugs before they reach production |
+| **Knowledge sharing** | Learn from each other's code            |
+| **Consistency**       | Maintain code standards                 |
+| **Mentoring**         | Help junior developers grow             |
+| **Documentation**     | Comments explain the "why"              |
+
+---
+
+## The Review Process
+
+---
+
+### As a reviewer
+
+1. Understand the context: Read the PR description
+2. Check the big picture: Does the approach make sense?
+3. Review the code: Look at the implementation
+4. Test if needed: Pull and run locally
+5. Leave constructive feedback: Be helpful, not harsh
+6. Approve or request changes: Make a decision
+
+---
+
+### As an Author
+
+1. Self-review first: Check your own code
+2. Write a good description: Help reviewers understand
+3. Keep PRs small: Easier to review
+4. Respond promptly: Keep the process moving
+5. Be open to feedback: Code review is collaborative
+
+---
+
+## Github Review Features
+
+Use this to mark parts of the code
+
+| Prefix          | Meaning                        |
+| --------------- | ------------------------------ |
+| **nit:**        | Minor suggestion, not blocking |
+| **question:**   | Seeking clarification          |
+| **suggestion:** | Optional improvement           |
+| **important:**  | Must be addressed              |
+| **blocking:**   | Cannot merge until fixed       |
+
+---
