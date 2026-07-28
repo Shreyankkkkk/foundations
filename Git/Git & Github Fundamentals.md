@@ -3596,3 +3596,214 @@ git clone --filter=blob:none https://github.com/owner/large-repo.git
 - Check network connection
 
 ---
+
+# Lesson 20 - Good practices for github profile
+
+---
+
+# Lesson 21 - Pull Request Basics
+
+Pull requests (PRs) are how you propose changes on GitHub. They're the center of collaborative development, enabling code review, discussion, and automated testing before changes are merged.
+
+---
+
+## What is a pull request
+
+A pull request says "I have changes in my branch that i'd like to merge into your branch"
+
+Despite the name "pull" request, youre actually askign the maintainer to pull your changes into their branch.
+
+---
+
+## Creating a pull request
+
+---
+
+### From github web UI
+
+1. Push your branch to GitHub
+2. Go to the repository
+3. Click "Compare & pull request" (appears after pushing)
+4. Or: Pull requests tab → New pull request
+
+---
+
+## Pull Request Components
+
+---
+
+### Title
+
+Short, descriptive summary:
+✅ "Add user authentication with JWT"
+✅ "Fix memory leak in image processor"
+❌ "Changes"
+❌ "Fix bug"
+
+### Description
+
+Explain what and why
+
+### Labels
+
+Categorize your PR (Pull Request)
+    bug, feature, enhancement
+    documentation, refactor
+    breaking-change, needs-review
+    
+### Reviewers
+Request specific people to review your code.
+
+### Assignees
+Who's responsible for the PR.
+
+### Linked Issues
+
+Connect to related issues:
+
+    "Closes # 123" (auto-closes when merged)
+    "Fixes # 456"
+    "Relates to # 789"
+
+---
+
+## The PR Lifecycle
+
+1. Create Branch
+       ↓
+2. Make Commits
+       ↓
+3. Push to GitHub
+       ↓
+4. Create PR ←────────────────┐
+       ↓                      │
+5. CI Checks Run              │
+       ↓                      │
+6. Code Review ─── Requested Changes
+       ↓
+7. Approval
+       ↓
+8. Merge
+       ↓
+9. Delete Branch
+
+---
+
+## PR Status Checks
+
+Github can run automated checks
+
+| Check | Purpose |
+|-------|---------|
+| **CI Tests** | Run automated tests |
+| **Linting** | Check code style |
+| **Build** | Verify it builds |
+| **Security** | Scan for vulnerabilities |
+| **Coverage** | Check test coverage |
+
+PRs can require checks to pass before merging.
+
+---
+
+## Viewing a Pull Request
+
+---
+
+### Files Changed Tab
+
+Shows the diff
+
+    Green: Added lines
+    Red: Removed lines
+    Yellow: Modified files
+
+---
+
+### Conversation Tab
+
+    Description
+    Comments and discussion
+    Review summaries
+    Check statuses
+
+---
+
+### Commits Tab
+
+List of all commits in the PR.
+
+---
+
+### Checks Tab
+
+Status of automated checks.
+
+---
+
+## Updating a Pull Request
+
+---
+
+### Adding more commmits
+
+Simply push more commits to the same branch
+The PR automatically updates
+
+---
+
+### Keeping up with base branch
+
+if the target branch has new commits
+
+```bash
+# Merge approach
+git fetch origin
+git checkout feature
+git merge origin/main
+git push
+
+# Merge approach
+git checkout feature
+git pull origin main
+git push
+
+#------------------------------------------------------------------
+
+# Rebase approach (cleaner history) - fetch merge
+git fetch origin
+git checkout feature
+git rebase origin/main
+git push --force-with-lease
+
+# Rebase approach (cleaner history) - pull
+git checkout feature
+git pull --rebase origin main
+git push --force-with-lease
+```
+
+---
+
+## Closing Pull Requests
+
+---
+
+### Merging
+
+Click "merge pull request" when approved and checks pass
+
+---
+
+### Closing Without Merging
+For PRs that won't be merged:
+
+    Click "Close pull request"
+    Leave a comment explaining why
+
+---
+
+### Draft → Ready
+
+For draft PRs, click "Ready for review" when done.
+
+---
+
