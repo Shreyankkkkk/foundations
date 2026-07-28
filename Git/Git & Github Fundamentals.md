@@ -3390,3 +3390,209 @@ Settings → Danger Zone → Delete
     Type repo name to confirm
 
 ---
+
+# Lesson 19 - Cloning and Forking
+
+There are two ways to get a copy of a repository: cloding (for your own repos or to work locally) and forking (to contribute to others' repos)
+
+---
+
+## Cloning Repositories
+
+Cloning creates a local copy of a remote repository.
+
+---
+
+### Basic Clone
+
+```bash
+# HTTPS
+git clone https://github.com/owner/repository.git
+
+# SSH (recommended)
+git clone git@github.com:owner/repository.git
+
+# GitHub CLI
+gh repo clone owner/repository
+```
+
+---
+
+### What Clone Does
+
+1. Creates a directory named after the repo
+2. Downloads all files and history
+3. Sets up origin remote pointing to the source
+4. Checks out the default branch
+
+---
+
+#### Clone Options
+
+```bash
+# Clone to specific folder
+git clone https://github.com/owner/repo.git my-folder
+
+# Clone specific branch
+git clone -b develop https://github.com/owner/repo.git
+
+# Shallow clone (only recent history)
+git clone --depth 1 https://github.com/owner/repo.git
+
+# Clone with submodules
+git clone --recursive https://github.com/owner/repo.git
+```
+
+---
+
+#### After Cloning
+
+```bash
+cd repository
+
+# See the remote
+git remote -v
+# origin  https://github.com/owner/repository.git (fetch)
+# origin  https://github.com/owner/repository.git (push)
+
+# See branches
+git branch -a
+
+# Start working
+git checkout -b my-feature
+```
+
+---
+
+## Forking Repositories
+
+A fork if your personal copy of someone else's repository on Github.
+
+---
+
+### Why Fork?
+
+| Use Case        | Description                          |
+| --------------- | ------------------------------------ |
+| Contributing    | Make changes to propose back         |
+| Experimentation | Try ideas without affecting original |
+| Starting point  | Use as a base for your own project   |
+| Archiving       | Keep a copy of important code        |
+
+---
+
+### How to Fork
+
+1. Go to the repository on GitHub
+2. Click the Fork button
+3. Choose where to fork (your account or organization)
+4. Wait for GitHub to copy the repo
+
+---
+
+### The fork workflow
+
+Step 1:
+Click "Fork" on original repository
+Step 2:
+Clone your fork
+
+    "git clone https://github.com/owner/repo.git"
+
+Step 3:
+Add upstream remote to keep track of changes made by the owner of original repository
+
+    "git remote add upstream https://github.com/owner/repo.git"
+    "git remote -v" - To check the remotes
+
+Step 4: - Always start by fetching the new changes made by the original owner - Merge the changes into your main branch, this merges the commits in your local computer - Push the new changes into your github fork (repository)
+
+    - "git fetch upstream"
+    - "git checkout main"
+      "git merge upstream/main"
+    - "git push origin main"
+
+Step 5:
+Make changes and then push them, note all the changes should be made in another branch and then push it onto main branch
+
+    "git checkout -b new_changes"
+    "git push -u origin new_changes"
+
+---
+
+## When to clone vs fork
+
+---
+
+### Clone when
+
+- It's your own repository
+- You have direct push access
+- You just want a local copy to browse
+- You're working on a private team project
+
+---
+
+### Fork when
+
+- You want to contribute to someone else's project
+- You don't have push access
+- You want your own copy to modify
+- You want to propose changes via pull request
+
+---
+
+## Submodules
+
+some repositories contain other repositories
+
+```bash
+# Clone with submodules
+git clone --recursive https://github.com/owner/repo.git
+
+# Initialize submodules after clone
+git submodule init
+git submodule update
+
+# Update submodules
+git submodule update --remote
+```
+
+---
+
+## Large Repositories
+
+for very large repositories
+
+```bash
+# Shallow clone (faster, less history)
+git clone --depth 1 https://github.com/owner/large-repo.git
+
+# Later, get more history if needed
+git fetch --unshallow
+
+# Partial clone (Git 2.22+)
+git clone --filter=blob:none https://github.com/owner/large-repo.git
+```
+
+---
+
+## Troubleshooting
+
+---
+
+### Permission Denied
+
+- Check SSH key is added to GitHub
+- Verify repository access permissions
+- Use HTTPS with personal access token
+
+---
+
+### Slow Clone
+
+- Use shallow clone: --depth 1
+- Clone specific branch only
+- Check network connection
+
+---
