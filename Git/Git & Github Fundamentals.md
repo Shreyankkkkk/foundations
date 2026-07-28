@@ -3868,3 +3868,186 @@ Use this to mark parts of the code
 | **blocking:**   | Cannot merge until fixed       |
 
 ---
+
+# Lesson 23 - PR Templates
+
+Pull request templates help ensure all PRs include necessary information. They guide contributors and maintain consistency across your project.
+
+---
+
+## Why us PR Templates?
+
+| Benefit          | Description                            |
+| ---------------- | -------------------------------------- |
+| **Consistency**  | Every PR has the same structure        |
+| **Completeness** | Don't forget important information     |
+| **Efficiency**   | Less back-and-forth asking for details |
+| **Onboarding**   | New contributors know what's expected  |
+
+---
+
+## Creating a PR Template
+
+---
+
+### Single Template
+
+Create a file at one of these locations
+
+    .github/PULL_REQUEST_TEMPLATE.md
+    .github/pull_request_template.md
+    docs/pull_request_template.md
+    PULL_REQUEST_TEMPLATE.md
+
+The ".github/" location is most common.
+
+---
+
+### Basic Template Example
+
+Summary
+Changes Made
+Type of Change
+Testing
+Checklist
+Related Issues
+
+---
+
+## Multiple Templates
+
+for projects with different types of PRs:
+
+---
+
+### Directory Structure
+
+.github/
+└── PULL_REQUEST_TEMPLATE/
+├── bug_fix.md
+├── feature.md
+└── documentation.md
+
+---
+
+### Using Template Links
+
+When creating a PR, add a query parameter:
+https://github.com/owner/repo/compare/main...feature?template=feature.md
+or use the template dropdown in Github UI
+
+---
+
+## Template Types
+
+---
+
+### Feature Template
+
+Feature Description
+Motivation - Why is this feature needed
+Implementation Detials
+Screenshots
+Breaking Changes
+Migration Guide
+Checklist
+
+---
+
+### Bug fix template
+
+Bug description
+Boot Cause
+Solution
+Steps to Reproduce
+Before/After
+Testing
+Related Issues
+
+---
+
+### Documentation Template
+
+Documentation Change
+Reasons for Change
+Affected Pages
+Preview Link
+Checklist
+
+---
+
+## Template Best Practices
+
+Keep it Concise
+Use Comments for Guidance
+Make Checklists Actionable
+Include Examples
+
+---
+
+## Conditional Sections
+
+Use HTML comments for optional sections:
+Screenshots
+Breaking Changes
+
+---
+
+## Integrating with Issues
+
+Link templates to issue templates
+Related Issues
+Link issues using Keywords - Closes #123 (closes when merged) - Fixes #456 (same as closes) - Relates to #789 (just links)
+
+---
+
+## Template Configuration
+
+---
+
+### Enforce Template Usage
+
+In repository settings:
+Require PR Description
+Use branch protection rules
+
+---
+
+### Default Labels
+
+You can suggest labels in templates:
+<!-- Please add appropriate labels: bug, feature, docs -->
+but automatic labeling requires Github Actions or bots
+
+---
+
+## Automation with Templates
+
+GitHub Actions Integration
+Templates can prompt for automation:
+
+---
+
+### Deployment
+
+- [ ] Ready for staging deployment
+- [ ] Needs production deployment
+
+<!--
+Check 'Ready for staging' to trigger automatic deployment.
+A maintainer will handle production deployment.
+-->
+
+---
+
+### Bot Commands
+
+Some projects use bot commands in templates:
+
+## Bot Commands
+
+<!-- Uncomment to use -->
+<!-- /deploy staging -->
+<!-- /run-benchmarks -->
+
+---
