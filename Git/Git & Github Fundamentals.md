@@ -3050,3 +3050,149 @@ git config --get branch.feature.merge
 ```
 
 ---
+
+# Lesson 17 - Introduction to Github
+
+GitHub is the world's largest platform for hosting and collaborating on Git repositories. It adds powerful features on top of Git that make collaboration easier.
+
+---
+
+## What is GitHub?
+
+Github is a web-based platform that provides:
+
+- _Repository hosting_ : Store your Git repos in the cloud
+- _Collaboration tools_ : Work with teams on code
+- _Social features_ : Follow developers, star projects
+- _Project management_ : Issues, projects, milestones
+- _Automation_ : GitHub Actions for CI/CD
+- _Documentation_ : Wikis, README rendering
+
+---
+
+## Git vs Github
+
+| Git                      | GitHub                 |
+| ------------------------ | ---------------------- |
+| Version control software | Cloud hosting platform |
+| Runs on your computer    | Runs in the cloud      |
+| Command-line tool        | Web interface + API    |
+| Free, open source        | Free tier + paid plans |
+| Works offline            | Requires internet      |
+
+You can use git without github (using gitlab, bitbucket, or self-hosted) but most developers use github.
+
+---
+
+## Github Concepts
+
+---
+
+### Repository
+
+A repository on github contains:
+
+- Your project files
+- Complete git history
+- Issues and discussions
+- Pull requests
+- Project settings
+
+---
+
+### Owner Types
+
+**Type Description**
+User - Personal account (github.com/username)
+Organization - Team/Company account (githum.com/org)
+
+---
+
+### Visibility
+
+**Visibility Who can see**
+Public Anyone on the internet
+Private Only you and collaborators
+Internal Organization members (Enterprise)
+
+---
+
+## The Github Interface
+
+| Tab           | Purpose                       |
+| ------------- | ----------------------------- |
+| Code          | Browse files, view README     |
+| Issues        | Bug reports, feature requests |
+| Pull requests | Proposed code changes         |
+| Actions       | CI/CD workflows               |
+| Projects      | Kanban boards, planning       |
+| Wiki          | Documentation                 |
+| Security      | Vulnerability alerts          |
+| Insights      | Analytics, graphs             |
+| Settings      | Repository configuration      |
+
+---
+
+## Github Features
+
+---
+
+### Stars
+
+"Starring" a repository is like bookmarking it:
+
+- Shows appreciation
+- Saves to your starred list
+- Helps repositories gain visibility
+
+---
+
+### Forks
+
+A fork is your personal copy of someone else's repository:
+
+- Full copy under your account
+- Can Make changes freely
+- User for contributing to projects
+
+---
+
+### Watch
+
+get notifications about repository activity:
+
+- _Participating_: Issues/PRs you're involved in
+- _All Activity_: Every issue, PR, commit
+- _Ignore_: No notifications
+- _Custom_: Choose what to watch
+
+---
+
+## The Github CLI
+
+Github provides a CLI tool called "gh":
+(basically, "I control GitHub features through commands instead of clicking buttons.")
+
+```bash
+# YOU DO NOT NEED IT RIGHT NOW, ITS FOR THE FUTURE
+
+# Install (macOS)
+brew install gh
+
+# Authenticate
+gh auth login
+
+# Create repo
+gh repo create my-project --public
+
+# Clone repo
+gh repo clone owner/repo
+
+# Create issue
+gh issue create --title "Bug" --body "Description"
+
+# Create PR
+gh pr create --title "Feature" --body "Description"
+```
+
+---
