@@ -4639,3 +4639,152 @@ The forking workflow is the standard open source contribution instead of pushing
 
 ---
 
+# Lesson 29 - Rebasing vs Merging
+
+Rebasing and Merging are two ways to integrate changes between branches. Understanding when to use each is crucial for maintening a clean git history.
+
+---
+
+## The difference
+
+---
+
+### Merge
+
+Creates a new commit that combines two branches
+
+### Rebase
+
+Replays commits on top of another branch
+
+---
+
+## When to use Each
+
+---
+
+### Use Merge When
+
+| Scenario | Why |
+|---|---|
+| Integrating shared branches | Preserves full history |
+| Public/shared branches | Safe, no rewriting |
+| Want to see branch history | Merge commit shows integration point |
+| Working with others on same branch | Less confusion |
+
+---
+
+### Use Rebase When
+
+| Scenario | Why |
+|---|---|
+| Cleaning up personal branch | Creates linear history |
+| Before merging feature branch | Cleaner PR history |
+| Updating from main | Avoids unnecessary merge commits |
+| Want linear history | Easier to read |
+
+---
+
+## Basic Rebase
+
+```bash
+git checkout {branch}
+git rebase main
+```
+
+This replays branch commits on top of main
+
+---
+
+### What Happens
+
+1. Git finds common ancestor
+2. Saves your commits temporarily
+3. Resets to target branch
+4. Replays your commits one by one
+5. You now have new commits (new hashes)
+
+---
+
+## Golden Rule of Rebasing
+
+Never rebase **public/shared branches!**
+
+```bash
+# NEVER do this:
+git checkout main
+git rebase feature  # ❌ Rewrites main history!
+```
+
+Only rebase branches that:
+- Are local only
+- Are your personal feature branch
+- Haven't been shared/pushed (or you'll force push to YOUR fork only)
+
+---
+
+## Comparing Histories
+
+---
+
+### Merge History
+
+```bash
+git log --oneline --graph
+
+*   e7f8g9h (HEAD -> main) Merge branch 'feature'
+|\
+| * d5e6f7g Add feature part 2
+| * c4d5e6f Add feature part 1
+|/
+* b3c4d5e Previous work
+* a2b3c4d Initial commit
+Rebase History
+```
+---
+
+### Rebase Hisotry
+
+```bash
+git log --oneline --graph
+
+* d5e6f7g (HEAD -> main) Add feature part 2
+* c4d5e6f Add feature part 1
+* b3c4d5e Previous work
+* a2b3c4d Initial commit
+```
+
+---
+
+## Pros and Cons
+
+---
+
+### Merge
+
+Pros:
+    Safe for shared branches
+    Preserves complete history
+    Easy conflict resolution (once)
+    Non-destructive
+Cons:
+    Creates merge commits
+    History can be messy
+    Harder to read linear history
+
+---
+
+## Rebase
+
+Pros:
+    Clean, linear history
+    Easier to understand
+    No merge commits
+    Better for bisecting
+Cons:
+    Rewrites history (dangerous if shared)
+    Can be confusing for beginners
+    Must resolve conflicts per commit
+    Requires force push
+
+---
