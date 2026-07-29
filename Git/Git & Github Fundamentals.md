@@ -4245,51 +4245,51 @@ Every new feature of fix gets its own branch
 - Branches are merged via pull requests
 - Feature branches are deleted after merging/
 
----    
+---
 
 ## The Workflow
 
 Step 1:
-    Update Main
-        git switch main
-        git pull origin main
-    
+Update Main
+git switch main
+git pull origin main
+
 Step 2:
-    Create Feature Branch
-        git swithc -c feature/user-authentication
+Create Feature Branch
+git swithc -c feature/user-authentication
 
 Step 3:
-    Develop
-        git add .
-        git commit -m "Message"
-        git push -u origin feature/user-authentication
+Develop
+git add .
+git commit -m "Message"
+git push -u origin feature/user-authentication
 
 Step 4:
-    Stay updated
-        git fetch origin
-        git merge origin/main
-        or
-        git rebase origin/main
+Stay updated
+git fetch origin
+git merge origin/main
+or
+git rebase origin/main
 
 Step 5:
-    Create a pull request
-        On Github:
-            Open a pull request
-            Request reviews
-            address feedback
-            get approbal
+Create a pull request
+On Github:
+Open a pull request
+Request reviews
+address feedback
+get approbal
 
-Step 6: 
-    Merge
-        After approval
-            merge the PR on github
-            Delete the feature branch
+Step 6:
+Merge
+After approval
+merge the PR on github
+Delete the feature branch
 
 Step 7:
-    Clean up Locally
-        git checkout main
-        git pull origin main
-        git branch -d feature/user-authentication
+Clean up Locally
+git checkout main
+git pull origin main
+git branch -d feature/user-authentication
 
     Explanation:
     whatever branch you are on, switch to the main branch and then get the new data thats on cloud
@@ -4316,13 +4316,144 @@ Step 7:
 
 ## Git naming conventions
 
-| Prefix | Use Case |
-|--------|----------|
-| **feature/** | New features |
-| **bugfix/** | Bug fixes |
-| **hotfix/** | Urgent production fixes |
-| **refactor/** | Code refactoring |
-| **docs/** | Documentation |
-| **test/** | Test additions |
+| Prefix        | Use Case                |
+| ------------- | ----------------------- |
+| **feature/**  | New features            |
+| **bugfix/**   | Bug fixes               |
+| **hotfix/**   | Urgent production fixes |
+| **refactor/** | Code refactoring        |
+| **docs/**     | Documentation           |
+| **test/**     | Test additions          |
+
+---
+
+# Lesson 26 - Gitflow Workflow
+
+Gitflow is a robust branching model designed for projects withs chedules releases. It provides a strict framework for managing features, releases and hotfixes.
+
+---
+
+## Overview
+
+Git flow uses multiple long running branches:
+
+```bash
+#         hotfix
+#            ↓
+# main  ────●────────────●────────────●────
+#           ↑            ↑            ↑
+#           │            │            │
+# release   │      ●──●──┘            │
+#           ↑      ↑                  │
+#           │      │                  │
+# develop ──●──●───●──●──●────────●───┘
+#              ↑      ↑           ↑
+#              │      │           │
+# feature      ●──●   ●──●──●     │
+```
+
+---
+
+## Branch Types
+
+| Branch       | Purpose             | Lifetime  |
+| ------------ | ------------------- | --------- |
+| **main**     | Production code     | Permanent |
+| **develop**  | Integration branch  | Permanent |
+| **feature/** | New features        | Temporary |
+| **release/** | Release preparation | Temporary |
+| **hotfix/**  | Production fixes    | Temporary |
+
+---
+
+## Main Branches
+
+---
+
+### main (or master)
+
+- Always reflects production state
+- Only receives merges from release and hotfix
+- Every merge is tagged with a version
+
+---
+
+### develop
+
+- Main integration branch
+- Reflects latest development changes
+- Features merge here
+- Branches off from main initially
+
+---
+
+## Supporting Branches
+
+---
+
+### Feature Branches
+
+Branch from "develop" merges into "develop"
+
+---
+
+### Release Branches
+
+Branch from "develop" merges into "develop" and "main"
+
+---
+
+### Hotfix Branches
+
+Branch from "main" merges into "main" and "develop"
+
+---
+
+## Git-flow tool
+
+A tool to simplify gitflow commands
+
+Git Flow is mainly designed for software development projects where there are:
+
+    multiple developers
+    production releases
+    testing environments
+    long-running features
+    versioned releases
+
+---
+
+## Gitflow vs Feature Branch
+
+| Gitflow                        | Feature Branch        |
+| ------------------------------ | --------------------- |
+| Multiple long-running branches | Single main branch    |
+| Scheduled releases             | Continuous deployment |
+| More structured                | More flexible         |
+| Release branches for prep      | No release branches   |
+| Complex                        | Simple                |
+
+---
+
+## When to use Gitflow
+
+---
+
+### Good For
+
+    Products with scheduled releases
+    Multiple versions in production
+    Dedicated QA/release process
+    Enterprise software
+    Mobile apps with store reviews
+
+---
+
+### Not Ideal For
+
+    Continuous deployment
+    Small teams/projects
+    Web apps with frequent deploys
+    Projects needing simplicity
 
 ---
