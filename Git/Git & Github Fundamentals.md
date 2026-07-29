@@ -4604,3 +4604,38 @@ Pair programming can replace formal review
 *Quick feedback*: Issues caught immediately
 
 ---
+
+# Lesson 28 - Forking Workflow
+
+The forking workflow is the standard open source contribution instead of pushing to a shared repository, each developer has their own fork, making contributions via pull requests
+
+---
+
+## How it Works
+
+┌──────────────────────────────────────────────────────────┐
+│                 UPSTREAM (Original Repo)                 │
+│                 github.com/org/project                   │
+│                                                          │
+│              ←── Pull Request ←──                        │
+│                                 ↑                        │
+└─────────────────────────────────│────────────────────────┘
+                                  │
+                    ┌─────────────┴─────────────┐
+                    │                           │
+┌───────────────────┴───────┐   ┌───────────────┴───────┐
+│     YOUR FORK             │   │   THEIR FORK          │
+│  github.com/you/project   │   │  github.com/them/...  │
+│                           │   │                       │
+│      ↑ push    ↓ clone    │   │                       │
+└───────────────────────────┘   └───────────────────────┘
+           │
+┌──────────┴───────────────────────────────────────────────┐
+│                    YOUR LOCAL MACHINE                    │
+│                                                          │
+│  origin → your fork                                      │
+│  upstream → original repo                                │
+└──────────────────────────────────────────────────────────┘
+
+---
+
