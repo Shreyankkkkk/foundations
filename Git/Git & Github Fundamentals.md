@@ -4016,7 +4016,9 @@ Use branch protection rules
 ### Default Labels
 
 You can suggest labels in templates:
+
 <!-- Please add appropriate labels: bug, feature, docs -->
+
 but automatic labeling requires Github Actions or bots
 
 ---
@@ -4063,24 +4065,24 @@ Draft pull requests let you share work-in-progress code without requesting a ful
 A draft PR is marked as "not ready for review":
 
 Draft PRs:
-    Can't be merged accidentally
-    Don't send review requests
-    Run CI checks (if configured)
-    Can receive comments and feedback
+Can't be merged accidentally
+Don't send review requests
+Run CI checks (if configured)
+Can receive comments and feedback
 
 ---
 
 ## When to use Draft PRs
 
-| Scenario | Use Draft? |
-|----------|------------|
-| Early feedback on approach | ✅ |
-| Work in progress | ✅ |
-| Blocked by dependency | ✅ |
-| Sharing for collaboration | ✅ |
-| Running CI before ready | ✅ |
-| Ready for full review | ❌ Use regular PR |
-| Quick, simple fix | ❌ Use regular PR |
+| Scenario                   | Use Draft?        |
+| -------------------------- | ----------------- |
+| Early feedback on approach | ✅                |
+| Work in progress           | ✅                |
+| Blocked by dependency      | ✅                |
+| Sharing for collaboration  | ✅                |
+| Running CI before ready    | ✅                |
+| Ready for full review      | ❌ Use regular PR |
+| Quick, simple fix          | ❌ Use regular PR |
 
 ---
 
@@ -4109,20 +4111,20 @@ Note: This removes existing review requests
 ## Draft PR Best Practices
 
 Clear Titles
-    Indicate work-in-progress status:
+Indicate work-in-progress status:
 Describe what you need
-    Be specific about what feedback you want:
-        Status : {Body}
-        Whats Done: {Body}
-        Whats Not Done: {Body}
+Be specific about what feedback you want:
+Status : {Body}
+Whats Done: {Body}
+Whats Not Done: {Body}
 Use Task Lists
-    Track progress within the PR:
-        Progress : {Steps followed with ticks or crosses}
+Track progress within the PR:
+Progress : {Steps followed with ticks or crosses}
 Update Regularly
-    Keep the PR Description Current
-        Check off completed tasks
-        Note blockers or questions
-        Summarize recent changes
+Keep the PR Description Current
+Check off completed tasks
+Note blockers or questions
+Summarize recent changes
 
 ---
 
@@ -4131,6 +4133,7 @@ Update Regularly
 ---
 
 ### Getting feedbacks
+
 Even as a draft, you can:
 
 - Request informal reviews from teammates
@@ -4168,27 +4171,27 @@ when your work is complete:
 ## Draft PR Workflow
 
 ┌──────────────────────────────────────────────────┐
-│                    DRAFT PR                      │
+│ DRAFT PR │
 ├──────────────────────────────────────────────────┤
-│                                                  │
-│  1. Create draft PR early                        │
-│         ↓                                        │
-│  2. Push commits as you work                     │
-│         ↓                                        │
-│  3. Get informal feedback                        │
-│         ↓                                        │
-│  4. Watch CI results                             │
-│         ↓                                        │
-│  5. Complete task list                           │
-│         ↓                                        │
-│  6. Self-review                                  │
-│         ↓                                        │
-│  7. Mark as "Ready for review"                   │
-│         ↓                                        │
-│  8. Formal code review                           │
-│         ↓                                        │
-│  9. Merge                                        │
-│                                                  │
+│ │
+│ 1. Create draft PR early │
+│ ↓ │
+│ 2. Push commits as you work │
+│ ↓ │
+│ 3. Get informal feedback │
+│ ↓ │
+│ 4. Watch CI results │
+│ ↓ │
+│ 5. Complete task list │
+│ ↓ │
+│ 6. Self-review │
+│ ↓ │
+│ 7. Mark as "Ready for review" │
+│ ↓ │
+│ 8. Formal code review │
+│ ↓ │
+│ 9. Merge │
+│ │
 └──────────────────────────────────────────────────┘
 
 ---
@@ -4197,23 +4200,129 @@ when your work is complete:
 
 Why open a draft PR instead of just working on the branch
 
-| Draft PR | Branch Only |
-|----------|-------------|
-| Visible progress | Hidden work |
-| Early feedback possible | No review until ready |
-| CI runs automatically | Manual CI trigger |
+| Draft PR                | Branch Only             |
+| ----------------------- | ----------------------- |
+| Visible progress        | Hidden work             |
+| Early feedback possible | No review until ready   |
+| CI runs automatically   | Manual CI trigger       |
 | Discussion in one place | Scattered communication |
-| Clear intent to merge | Unknown destination |
+| Clear intent to merge   | Unknown destination     |
 
 ---
 
 ## Common Patterns
 
-| Pattern | Purpose |
-|---------|---------|
-| **Stacked PRs** | Split a large feature into multiple smaller PRs that depend on each other. Each PR focuses on one part of the feature, making changes easier to review and allowing feedback before the entire feature is completed. |
-| **Long-Running Features** | Used for features that take weeks or longer to finish. A Draft PR keeps the team updated on progress, shows the current development status, and allows feedback throughout the development process instead of waiting for one large final PR. |
-| **RFC (Request for Comments) PRs** | Used to propose an idea or design before writing the full implementation. Allows teammates to discuss the approach, suggest alternatives, and identify problems early before significant development time is spent. |
+| Pattern                            | Purpose                                                                                                                                                                                                                                       |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Stacked PRs**                    | Split a large feature into multiple smaller PRs that depend on each other. Each PR focuses on one part of the feature, making changes easier to review and allowing feedback before the entire feature is completed.                          |
+| **Long-Running Features**          | Used for features that take weeks or longer to finish. A Draft PR keeps the team updated on progress, shows the current development status, and allows feedback throughout the development process instead of waiting for one large final PR. |
+| **RFC (Request for Comments) PRs** | Used to propose an idea or design before writing the full implementation. Allows teammates to discuss the approach, suggest alternatives, and identify problems early before significant development time is spent.                           |
 
 ---
 
+# Lesson 25 - Feature Branch Workflow
+
+The feature branch workflow is one of the most populat git workflow. It's simple, flexible and works great for teams of any size
+
+---
+
+## Core Concept
+
+Every new feature of fix gets its own branch
+
+```bash
+# main:     ─────●─────────●─────────●─────
+#                ↑         ↑         ↑
+# feature-a:     └──●──●──→│         │
+#                          │         │
+# feature-b:               └──●──●──→│
+#                                    │
+# bugfix-x:                          └──●──→
+```
+
+- main is always stable / deployable
+- features are developed in isolation
+- Branches are merged via pull requests
+- Feature branches are deleted after merging/
+
+---    
+
+## The Workflow
+
+Step 1:
+    Update Main
+        git switch main
+        git pull origin main
+    
+Step 2:
+    Create Feature Branch
+        git swithc -c feature/user-authentication
+
+Step 3:
+    Develop
+        git add .
+        git commit -m "Message"
+        git push -u origin feature/user-authentication
+
+Step 4:
+    Stay updated
+        git fetch origin
+        git merge origin/main
+        or
+        git rebase origin/main
+
+Step 5:
+    Create a pull request
+        On Github:
+            Open a pull request
+            Request reviews
+            address feedback
+            get approbal
+
+Step 6: 
+    Merge
+        After approval
+            merge the PR on github
+            Delete the feature branch
+
+Step 7:
+    Clean up Locally
+        git checkout main
+        git pull origin main
+        git branch -d feature/user-authentication
+
+    Explanation:
+    whatever branch you are on, switch to the main branch and then get the new data thats on cloud
+    To do that, git fetch origin main (basically, connect with the origin (remote repository) and download the new data of main)
+    this can be done with pull as well however pull directly merges it
+
+    once you pull the data from main, your local computer has main so now there are two branches main, git being smart, made a workaround, to access the data, it stores it in origin/main
+
+    now what you do is, switch the branch, create a new branch with appropriate name, to do that git checkout -b {branch name} / git swtich -c {branch name}
+
+    then you make your changes to the file and add and push the data onto the new branch
+
+    the first time you push onto the branch, you gotta do git push -u origin {branch name}, so that github can get updated to make a branch called origin/{branch name} and add the updates there, if you do just git push, github does not know where to push it cause that branch doesnt exist on cloud
+
+    then you always gotta stay updated with the new remote main changes, for that git fetch origin main git merge origin/main
+    or you can do git pull --rebase origin main
+
+    now you are constantly updating any new changes that has been made in the main branch, and your changes are stores in your local branch that you created
+
+    now create a pull request, and then once its approved, merge your changes onto the remote main branch and then delete the local branch you made
+    git branch -d {branch name}
+
+---
+
+## Git naming conventions
+
+| Prefix | Use Case |
+|--------|----------|
+| **feature/** | New features |
+| **bugfix/** | Bug fixes |
+| **hotfix/** | Urgent production fixes |
+| **refactor/** | Code refactoring |
+| **docs/** | Documentation |
+| **test/** | Test additions |
+
+---
