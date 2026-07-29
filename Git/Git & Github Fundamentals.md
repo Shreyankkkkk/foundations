@@ -4459,6 +4459,7 @@ Git Flow is mainly designed for software development projects where there are:
 ---
 
 # Lesson 27 - Trunk Based Development
+
 Trunk-Based Development (TBD) is a branching strategy where developers work in short-lived branches (or directly on main) and merge frequently. It's designed for continuous integration and rapid deployment.
 
 ---
@@ -4524,10 +4525,10 @@ They are to control what part of the code are active and to immediately swtich b
 
 Ship incomplete features behind flags:
 Benefits
-        Merge incomplete work
-        Gradual rollout
-        Easy rollback
-        A/B Testing
+Merge incomplete work
+Gradual rollout
+Easy rollback
+A/B Testing
 
 ---
 
@@ -4537,28 +4538,28 @@ For large changes, create an abstraction layer:
 
 Step 1: Create abstraction
 ┌──────────────────────┐
-│  Abstraction Layer   │
+│ Abstraction Layer │
 ├──────────────────────┤
-│   Old Implementation │
+│ Old Implementation │
 └──────────────────────┘
 
 Step 2: Build new behind abstraction
 ┌──────────────────────┐
-│  Abstraction Layer   │
+│ Abstraction Layer │
 ├──────────────────────┤
 │ Old │ New (disabled) │
 └──────────────────────┘
 
 Step 3: Switch to new
 ┌──────────────────────┐
-│  Abstraction Layer   │
+│ Abstraction Layer │
 ├──────────────────────┤
-│     New (active)     │
+│ New (active) │
 └──────────────────────┘
 
 Step 4: Remove old
 ┌──────────────────────┐
-│  New Implementation  │
+│ New Implementation │
 └──────────────────────┘
 
 ---
@@ -4566,11 +4567,11 @@ Step 4: Remove old
 ### Strong CI/CD (Continous Intergration / Continous Delivery)
 
 Every commit triggers
-    Automated tests
-    Linkting
-    Build Verification
-    Security Scans
-    Deployment to staging
+Automated tests
+Linkting
+Build Verification
+Security Scans
+Deployment to staging
 
 ---
 
@@ -4584,24 +4585,24 @@ Pair programming can replace formal review
 
 ## Trunk Based vs Gitflow
 
-| Trunk-Based | Gitflow |
-|---|---|
-| One main branch | Multiple long-lived branches |
-| Short-lived branches | Long-lived feature branches |
-| Continuous deployment | Scheduled releases |
-| Feature flags | Feature branches |
-| Simple | Complex |
-| High discipline required | More structure provided |
+| Trunk-Based              | Gitflow                      |
+| ------------------------ | ---------------------------- |
+| One main branch          | Multiple long-lived branches |
+| Short-lived branches     | Long-lived feature branches  |
+| Continuous deployment    | Scheduled releases           |
+| Feature flags            | Feature branches             |
+| Simple                   | Complex                      |
+| High discipline required | More structure provided      |
 
 ---
 
 ## Benefits
 
-*Faster integration*: No merge hell
-*Continuous delivery*: Always deployable
-*Reduced complexity*: Fewer branches to manage
-*Team collaboration*: Everyone sees all changes
-*Quick feedback*: Issues caught immediately
+_Faster integration_: No merge hell
+_Continuous delivery_: Always deployable
+_Reduced complexity_: Fewer branches to manage
+_Team collaboration_: Everyone sees all changes
+_Quick feedback_: Issues caught immediately
 
 ---
 
@@ -4614,27 +4615,27 @@ The forking workflow is the standard open source contribution instead of pushing
 ## How it Works
 
 ┌──────────────────────────────────────────────────────────┐
-│                 UPSTREAM (Original Repo)                 │
-│                 github.com/org/project                   │
-│                                                          │
-│              ←── Pull Request ←──                        │
-│                                 ↑                        │
+│ UPSTREAM (Original Repo) │
+│ github.com/org/project │
+│ │
+│ ←── Pull Request ←── │
+│ ↑ │
 └─────────────────────────────────│────────────────────────┘
-                                  │
-                    ┌─────────────┴─────────────┐
-                    │                           │
-┌───────────────────┴───────┐   ┌───────────────┴───────┐
-│     YOUR FORK             │   │   THEIR FORK          │
-│  github.com/you/project   │   │  github.com/them/...  │
-│                           │   │                       │
-│      ↑ push    ↓ clone    │   │                       │
-└───────────────────────────┘   └───────────────────────┘
-           │
+│
+┌─────────────┴─────────────┐
+│ │
+┌───────────────────┴───────┐ ┌───────────────┴───────┐
+│ YOUR FORK │ │ THEIR FORK │
+│ github.com/you/project │ │ github.com/them/... │
+│ │ │ │
+│ ↑ push ↓ clone │ │ │
+└───────────────────────────┘ └───────────────────────┘
+│
 ┌──────────┴───────────────────────────────────────────────┐
-│                    YOUR LOCAL MACHINE                    │
-│                                                          │
-│  origin → your fork                                      │
-│  upstream → original repo                                │
+│ YOUR LOCAL MACHINE │
+│ │
+│ origin → your fork │
+│ upstream → original repo │
 └──────────────────────────────────────────────────────────┘
 
 ---
@@ -4665,23 +4666,23 @@ Replays commits on top of another branch
 
 ### Use Merge When
 
-| Scenario | Why |
-|---|---|
-| Integrating shared branches | Preserves full history |
-| Public/shared branches | Safe, no rewriting |
-| Want to see branch history | Merge commit shows integration point |
-| Working with others on same branch | Less confusion |
+| Scenario                           | Why                                  |
+| ---------------------------------- | ------------------------------------ |
+| Integrating shared branches        | Preserves full history               |
+| Public/shared branches             | Safe, no rewriting                   |
+| Want to see branch history         | Merge commit shows integration point |
+| Working with others on same branch | Less confusion                       |
 
 ---
 
 ### Use Rebase When
 
-| Scenario | Why |
-|---|---|
-| Cleaning up personal branch | Creates linear history |
-| Before merging feature branch | Cleaner PR history |
-| Updating from main | Avoids unnecessary merge commits |
-| Want linear history | Easier to read |
+| Scenario                      | Why                              |
+| ----------------------------- | -------------------------------- |
+| Cleaning up personal branch   | Creates linear history           |
+| Before merging feature branch | Cleaner PR history               |
+| Updating from main            | Avoids unnecessary merge commits |
+| Want linear history           | Easier to read                   |
 
 ---
 
@@ -4717,6 +4718,7 @@ git rebase feature  # ❌ Rewrites main history!
 ```
 
 Only rebase branches that:
+
 - Are local only
 - Are your personal feature branch
 - Haven't been shared/pushed (or you'll force push to YOUR fork only)
@@ -4741,6 +4743,7 @@ git log --oneline --graph
 * a2b3c4d Initial commit
 Rebase History
 ```
+
 ---
 
 ### Rebase Hisotry
@@ -4763,28 +4766,130 @@ git log --oneline --graph
 ### Merge
 
 Pros:
-    Safe for shared branches
-    Preserves complete history
-    Easy conflict resolution (once)
-    Non-destructive
+Safe for shared branches
+Preserves complete history
+Easy conflict resolution (once)
+Non-destructive
 Cons:
-    Creates merge commits
-    History can be messy
-    Harder to read linear history
+Creates merge commits
+History can be messy
+Harder to read linear history
 
 ---
 
 ## Rebase
 
 Pros:
-    Clean, linear history
-    Easier to understand
-    No merge commits
-    Better for bisecting
+Clean, linear history
+Easier to understand
+No merge commits
+Better for bisecting
 Cons:
-    Rewrites history (dangerous if shared)
-    Can be confusing for beginners
-    Must resolve conflicts per commit
-    Requires force push
+Rewrites history (dangerous if shared)
+Can be confusing for beginners
+Must resolve conflicts per commit
+Requires force push
+
+---
+
+---
+
+# Lesson 30 - Interactive Rebase
+
+Interactive rebase is a powerful tool for rewriting commit history. You can squash, reorder, edit and even delete commits before sharing your work
+
+---
+
+## What is Interactive Rebase
+
+Interactive rebase "Git rebase -i" lets you modify commits:
+
+- Squash: Combine multiple commits into one
+- Reword: Change commit messages
+- Edit: Modify commit content
+- Reorder: Change commit order
+- Drop: Remove commits entirely
+- Fixup: Squash without keeping the message
+
+---
+
+## Starting Interactive Rebase
+
+```bash
+# Rebase last 3 commits
+git rebase -i HEAD~3
+
+# Rebase from specific commit (not including it)
+git rebase -i abc123
+
+# Rebase onto main
+git rebase -i main
+```
+
+---
+
+## The Interactive Editor
+
+When you run "git rebase -i HEAD~3" an editor opens:
+
+```bash
+pick abc1234 Add user model
+pick def5678 Add user validation
+pick 789abcd Fix typo in user model
+
+# Rebase 123abc4..789abcd onto 123abc4 (3 commands)
+
+#------------------------------------------------------------------
+# Commands:
+# p, pick = use commit
+    # Literally does nothing to that commit
+
+# r, reword = use commit, but edit the commit message
+    # change commit messages without changing content
+
+# e, edit = use commit, but stop for amending
+    # Stop and modify a commit
+
+# s, squash = use commit, but meld into previous commit
+    # Combines multiple commits into one
+
+# f, fixup = like "squash", but discard this commit's log message
+    # Like squash but discards the commit message
+
+# x, exec = run command (the rest of the line) using shell
+
+# d, drop = remove commit
+    # Remove a commit entirely
+
+#------------------------------------------------------------------
+
+# These lines can be re-ordered; they are executed from top to bottom.
+# If you remove a line here THAT COMMIT WILL BE LOST.
+```
+
+## Common Workflops
+
+1. Clean up before PR
+   reword, pick, edit, squash, etc
+
+2. Combine WIP Commits
+
+3. Split a commit
+   Use edit to stop at a commit
+
+---
+
+## Safety Tips
+
+1. Create backup branch
+
+```bash
+git branch backup-before-rebase
+git rebase -i HEAD-5
+# If something goes wrong
+git checkout backup-before-rebase
+or
+git reset --hard checkout backup-before-rebase #to preserve "Main" label
+```
 
 ---
