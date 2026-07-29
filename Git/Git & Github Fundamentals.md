@@ -4457,3 +4457,150 @@ Git Flow is mainly designed for software development projects where there are:
     Projects needing simplicity
 
 ---
+
+# Lesson 27 - Trunk Based Development
+Trunk-Based Development (TBD) is a branching strategy where developers work in short-lived branches (or directly on main) and merge frequently. It's designed for continuous integration and rapid deployment.
+
+---
+
+## Core Principles
+
+- Single source of truth: One main branch (trunk)
+- Short-lived branches: Hours to days, not weeks
+- Frequent integration: Multiple merges per day
+- Always releasable: Trunk is always deployable
+
+---
+
+## How It Works
+
+---
+
+## Small Changes, Fast Merges
+
+```bash
+# Create short-lived branches
+git checkout main
+git pull
+git checkout -b {temp_branch_name}
+
+# Make small, focused change
+git add .
+git commit -m "Message"
+
+# Push and create PR
+git push -u origin "temp_branch_name"
+
+# Merge same day after review
+# Then delete branch
+```
+
+---
+
+## or Commit Directly
+
+Some teams commit directly to main:
+
+```bash
+git checkout main
+git pull
+# Make changes
+git add .
+git commit -m "Message"
+git push
+```
+
+This requires strong CI and team discipline
+
+---
+
+## Key Practices
+
+---
+
+### Feature Flags
+
+They are to control what part of the code are active and to immediately swtich back to another version if something breaks
+
+Ship incomplete features behind flags:
+Benefits
+        Merge incomplete work
+        Gradual rollout
+        Easy rollback
+        A/B Testing
+
+---
+
+### Branch by Abstraction
+
+For large changes, create an abstraction layer:
+
+Step 1: Create abstraction
+┌──────────────────────┐
+│  Abstraction Layer   │
+├──────────────────────┤
+│   Old Implementation │
+└──────────────────────┘
+
+Step 2: Build new behind abstraction
+┌──────────────────────┐
+│  Abstraction Layer   │
+├──────────────────────┤
+│ Old │ New (disabled) │
+└──────────────────────┘
+
+Step 3: Switch to new
+┌──────────────────────┐
+│  Abstraction Layer   │
+├──────────────────────┤
+│     New (active)     │
+└──────────────────────┘
+
+Step 4: Remove old
+┌──────────────────────┐
+│  New Implementation  │
+└──────────────────────┘
+
+---
+
+### Strong CI/CD (Continous Intergration / Continous Delivery)
+
+Every commit triggers
+    Automated tests
+    Linkting
+    Build Verification
+    Security Scans
+    Deployment to staging
+
+---
+
+### Code Review at Speed
+
+Small PRs = Fast reviews
+Automated checks reduce manual work
+Pair programming can replace formal review
+
+---
+
+## Trunk Based vs Gitflow
+
+| Trunk-Based | Gitflow |
+|---|---|
+| One main branch | Multiple long-lived branches |
+| Short-lived branches | Long-lived feature branches |
+| Continuous deployment | Scheduled releases |
+| Feature flags | Feature branches |
+| Simple | Complex |
+| High discipline required | More structure provided |
+
+---
+
+## Benefits
+
+*Faster integration*: No merge hell
+*Continuous delivery*: Always deployable
+*Reduced complexity*: Fewer branches to manage
+*Team collaboration*: Everyone sees all changes
+*Quick feedback*: Issues caught immediately
+
+---
