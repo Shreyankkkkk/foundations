@@ -6911,3 +6911,329 @@ git branch --sort=-committerdate
 ```
 
 ---
+
+# Lesson 40 - Keeping History Clean
+
+A clean Git history makes debugging, code review, and project maintenance much easier. This lesson covers techniques for maintaining a readable, useful commit history.
+
+---
+
+## Why clean history matters?
+
+Clean history helps with:
+
+    Debugging (using git bisect)
+    Code review
+    Understanding changes
+    Generating changelogs
+    Reverting specific changes
+
+---
+
+## Rewriting History (Before Push)
+
+---
+
+### Amend last commit
+
+```bash
+git commit --amend -m "Better message"
+
+git add forgetting.js
+git commit --amend --no-edit
+```
+
+---
+
+### Interactive Rebase
+
+```bash
+git rebase -i HEAD~5
+```
+
+You can:
+
+Squash: Combine commits
+Reword: Change messages
+Reorder: Change order
+Drop: Remove commits
+Edit: Modify content
+
+---
+
+### Autosquasd Fixup
+
+```bash
+# Create fixup commit
+git commit --fixup abc123
+
+# Autosquash during rebase
+git rebase -i --autosquash main
+```
+
+---
+
+## Commit Hooks
+
+Enfore standards with git hooks
+Git hooks automatically run scripts during Git operations.
+Common hooks:
+
+**Hook Purpose**
+pre-commit Check code before committing
+commit-msg Validate commit messages
+
+git add .
+git commit -m "message"
+        |
+        ↓
+   Git runs hook
+        |
+        ↓
+  Check passes?
+        |
+     Yes → Commit created
+     No  → Commit blocked
+
+---
+
+### Pre-Commit
+
+runs before a commit is created
+
+```bash
+git commit -m "Add login feature"
+```
+
+"Lint" refers to an automatic code checker.
+A linter is a program that reads your code and looks for problems before you run it.
+
+if lint passes:
+    commit created
+if lint fails:
+    commit blocked
+
+```bash
+#!/bin/sh
+# .git/hooks/pre-commit
+
+# Run linting
+npm run lint
+if [ $? -ne 0 ]; then
+    echo "Linting failed. Fix errors before committing."
+    exit 1
+fi
+```
+
+if the code follows this format, lint passes
+using linux convetion, 0 = success, anything else failure
+
+---
+
+### Commit msg
+
+Runs after you write the commit message but before the commit is created.
+
+you run
+git commit -m "Add Login features"
+
+commit-msg hook
+        |
+        ↓
+Is this message acceptable?
+
+Valid message?
+accept
+
+Invalid message?
+block
+
+```bash
+#!/bin/sh
+# .git/hooks/commit-msg
+
+# Validate commit message format
+if ! grep -qE "^(feat|fix|docs|style|refactor|test|chore): .+" "$1"; then
+    echo "Invalid commit message format"
+    echo "Use: type: description"
+    exit 1
+fi
+```
+
+```bash
+^(feat|fix|docs|style|refactor|test|chore): .+
+
+# this means the message must start from
+# feat:
+# fix:
+# docs:
+# style:
+# refactor:
+# test:
+# chore:
+```
+
+---
+
+#### Where Hooks live
+
+Inside every git repository 
+.git/
+ └── hooks/
+      ├── pre-commit
+      ├── commit-msg
+      └── ...
+git automatically checks this folder
+
+---
+
+### Husky
+
+The problem with normal Git hooks:
+
+They are inside:
+.git/hooks/
+
+The .git folder is not committed into a shared repository
+
+**Meaning:**
+*Developer A* has:
+    pre-commit hook
+
+*Developer B* clones the repo:
+    No hook exists
+
+Everyone has different rules.
+
+_*Husky*_ Solves this Issue
+    Husky stores hooks in project itself
+
+```bash
+project/
+│
+├── .husky/
+│    ├── pre-commit
+│    └── commit-msg
+│
+├── package.json
+└── src/
+```
+
+```bash
+# {
+#   "husky": {
+#     "hooks": {
+#       "pre-commit": "npm run lint",
+#       "commit-msg": "commitlint"
+#     }
+#   }
+# }
+```
+
+**Meaning**:
+Before commit:
+npm run lint
+
+When writing commit message:
+commitlint
+
+checks the message.
+
+---
+
+## Cleaning Up branches
+
+---
+
+### Delete Merges Branches
+
+```bash
+# List merged branches
+git branch --merged main
+
+# Delete merged (except main)
+git branch --merged main | grep -v main | xargs git branch -d
+
+# Delete remote merged branches
+git fetch --prune
+    # git fetch origin main
+    # git remote prune origin
+```
+
+NOTE: Prune means remove stale references that no longer exist.
+    Basically: clean up dead pointers.
+
+---
+
+### Regular Cleanup
+
+```bash
+# See stale remote-tracking branches
+git remote prune origin --dry-run
+
+# Prune them
+git remote prune origin
+
+    #Look at the remote called origin, find remote-tracking branches that no longer exist on the server, and delete those stale references locally.
+```
+
+---
+
+## Revert vs Reset
+
+---
+
+### For pushed commits
+
+Use "revert" (Creates new commit):
+```bash
+git revert abc123
+# Creates: Revert original message
+```
+
+### For unpushed commits
+
+Use "Reset"
+```bash
+git reset --soft HEAD~1   # Keep changes staged
+git reset --mixed HEAD~1  # Keep changes unstaged
+git reset --hard HEAD~1   # Discard changes
+```
+
+---
+
+## Best Practices Summary
+
+---
+
+### Before Committing
+
+1. Self-review: Check your changes
+2. Stage selectively: Only related changes
+3. Write good message: Clear, imperative, descriptive
+
+---
+
+### Before Pushing
+
+1. Clean up WIP: Squash/reword if needed
+2. Rebase on main: Ensure up to date
+3. Run tests: Everything should pass
+
+---
+
+### Branch Management
+
+1. Delete merged branches: Keep list clean
+2. Prune regularly: Remove stale references
+3. Follow naming: Consistent conventions
+
+---
+
+### Team Workflow
+
+1. Agree on conventions: Document standards
+2. Use tools: Hooks, linting
+3. Review history: Part of PR review
+
+---
