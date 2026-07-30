@@ -5424,3 +5424,90 @@ Add to a project board (Kanban-style tracking).
 5. Close stale issues: Keep list manageable
 
 ---
+
+# Lesson 34 - Github Projects
+
+GitHub Projects provides Kanban-style project management directly in your repository. It helps teams plan, track, and manage work visually.
+
+---
+
+## What is github project?
+
+Projects are flexible boards for organizing issues and pull requests
+
+┌─────────────┬─────────────┬─────────────┬─────────────┐
+│ To Do │ In Progress │ In Review │ Done │
+├─────────────┼─────────────┼─────────────┼─────────────┤
+│ Issue #1 │ Issue #3 │ PR #5 │ Issue #2 │
+│ Issue #4 │ PR #6 │ │ PR #4 │
+│ Issue #7 │ │ │ │
+└─────────────┴─────────────┴─────────────┴─────────────┘
+
+---
+
+## Project Template
+
+Github offers
+
+**Template Description**
+Board Classic Kanban columns
+Table Spreadsheet-style view
+Roadmap Timeline view
+Custom Start from scratch
+
+---
+
+### Common Views
+
+| View    | Purpose                                            |
+| ------- | -------------------------------------------------- |
+| Board   | Kanban board (To Do → In Progress → Done)          |
+| Table   | Spreadsheet-style tracking with custom fields      |
+| Roadmap | Timeline view for planning releases and milestones |
+
+---
+
+### Typical Workflow
+
+1. Create a new project
+2. Add issues or pull requests
+3. Move items as work progresses
+4. Track project status visually
+
+Example:
+
+To Do → In Progress → In Review → Done
+
+---
+
+### Common Custom Fields
+
+| Field     | Example                 |
+| --------- | ----------------------- |
+| Status    | Todo, In Progress, Done |
+| Assignee  | Person responsible      |
+| Priority  | High, Medium, Low       |
+| Due Date  | Deadlines               |
+| Iteration | Sprint tracking         |
+
+---
+
+### Useful Features
+
+- Add Issues and Pull Requests
+- Create Draft items
+- Drag-and-drop workflow
+- Built-in automation
+- Filters and saved views
+- Progress insights
+
+---
+
+### Best Practices
+
+- Keep project boards updated
+- Limit work in progress (WIP)
+- Review backlog regularly
+- Use consistent statuses across the team
+
+---
