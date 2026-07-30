@@ -1,0 +1,18 @@
+programming/git-github/Context_Transfers/
+
+# Ignore folders not currently part of the repository
+
+Assets/
+docs/
+Engineering/
+Finance/
+Mathematics/
+Playground/
+Snippets/
+University/
+School/
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
