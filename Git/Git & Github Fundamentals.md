@@ -6735,3 +6735,179 @@ github.com/github/gitignore
 - Use global ignores for personal files like IDE and OS settings.
 
 ---
+
+# Lesson 39 - Branch Naming Conventions
+
+Consistent branch naming makes it easier to understand what's being worked on, automate workflows and maintain a clean repository
+
+---
+
+## Why Naming Conventions?
+
+Good names help with:
+
+**Benefit Example**
+Clarity feature/user-auth vs stuff
+Sorting All features grouped together
+Automation CI can detect branch type
+Communication Team knows what's in progress
+Cleanup Easy to identify stale branches
+
+---
+
+## Common Naming Patterns
+
+---
+
+### Type Prefixes
+
+```bash
+feature/    - New features
+bugfix/     - Bug fixes
+hotfix/     - Urgent production fixes
+release/    - Release preparation
+docs/       - Documentation
+test/       - Test additions
+refactor/   - Code refactoring
+chore/      - Maintenance tasks
+```
+
+---
+
+### Full Format
+
+```bash
+<type>/<issue-id>-<short-description>
+
+
+Examples:
+feature/AUTH-123-add-login
+bugfix/BUG-456-fix-redirect
+hotfix/SEC-789-patch-vulnerability
+docs/update-api-reference
+```
+
+---
+
+### Alternative Formats
+
+```bash
+# With username
+alice/feature/user-auth
+
+# With date
+2025-01/feature/user-auth
+
+# Just description (simpler teams)
+add-user-authentication
+```
+
+---
+
+## Naming Rules
+
+1. Use Lower case
+2. Use hypens, not spaces or undersscores
+3. Be desciptive but concise
+4. Include issue reference
+
+---
+
+## Type Specific Guidelines
+
+Feature branches
+feature/{new feature}
+
+Bugfix branches
+bugfix/{non-urgent bug fix}
+
+Hotfix branches
+hotfix/{urgent production fixes}
+
+Release branches
+release/{tag}
+
+Documentation branches
+docs/{documentation title}
+
+---
+
+## Long-Running Branches
+
+---
+
+### Permanent Branches
+
+main - Production code
+develop - Integration branch
+staging - Pre-production testing
+
+---
+
+### Temporary Branches
+
+feature/_ - Short-lived (days)
+bugfix/_ - Short-lived (days)
+release/\* - Limited duration (weeks)
+
+---
+
+## Branch Lifecycle
+
+---
+
+### Creation
+
+```bash
+# Create with meaningful name
+git checkout -b feature/AUTH-123-add-login
+```
+
+---
+
+### During Work
+
+```bash
+# Keep updated
+git pull origin main
+git rebase main  # or merge
+```
+
+---
+
+### After Merge
+
+```bash
+# Delete locally
+git branch -d feature/AUTH-123-add-login
+
+# Delete remotely
+git push origin --delete feature/AUTH-123-add-login
+```
+
+---
+
+## Viewing Branches
+
+---
+
+### List by Pattern
+
+```bash
+# All feature branches
+git branch --list 'feature/*'
+
+# Remote features
+git branch -r --list 'origin/feature/*'
+```
+
+---
+
+### Sort by Date
+
+```bash
+# Most recent first
+git branch --sort=-committerdate
+```
+
+---
