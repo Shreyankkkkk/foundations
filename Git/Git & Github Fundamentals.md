@@ -5457,7 +5457,7 @@ Custom Start from scratch
 
 ---
 
-### Common Views
+## Common Views
 
 | View    | Purpose                                            |
 | ------- | -------------------------------------------------- |
@@ -5467,7 +5467,7 @@ Custom Start from scratch
 
 ---
 
-### Typical Workflow
+## Typical Workflow
 
 1. Create a new project
 2. Add issues or pull requests
@@ -5480,7 +5480,7 @@ To Do → In Progress → In Review → Done
 
 ---
 
-### Common Custom Fields
+## Common Custom Fields
 
 | Field     | Example                 |
 | --------- | ----------------------- |
@@ -5492,7 +5492,7 @@ To Do → In Progress → In Review → Done
 
 ---
 
-### Useful Features
+## Useful Features
 
 - Add Issues and Pull Requests
 - Create Draft items
@@ -5503,11 +5503,309 @@ To Do → In Progress → In Review → Done
 
 ---
 
-### Best Practices
+## Best Practices
 
 - Keep project boards updated
 - Limit work in progress (WIP)
 - Review backlog regularly
 - Use consistent statuses across the team
+
+---
+
+# Lesson 35 - Github actions introduction
+
+GitHub Actions automates workflows directly in your repository. Build, test, and deploy code; respond to events; automate repetitive tasks—all in GitHub.
+
+---
+
+## GitHub Actions
+
+GitHub Actions is GitHub's built-in CI/CD and automation platform. It allows workflows to run automatically in response to GitHub events such as pushing code, opening a pull request, creating an issue, or on a schedule.
+
+---
+
+## Workflow Hierarchy
+
+```text
+Event
+   ↓
+Workflow
+   ↓
+Job(s)
+   ↓
+Step(s)
+```
+
+| Component | Purpose                                                 |
+| --------- | ------------------------------------------------------- |
+| Event     | Trigger that starts a workflow                          |
+| Workflow  | Entire automation process                               |
+| Job       | Collection of related steps executed on the same runner |
+| Step      | Individual command or reusable action                   |
+| Action    | Reusable unit of automation                             |
+
+---
+
+### Workflow Files
+
+Workflows are stored inside:
+
+```text
+.github/workflows/
+```
+
+Each workflow is defined using YAML (`.yml`).
+
+Example:
+
+```text
+.github/
+└── workflows/
+    ├── ci.yml
+    ├── deploy.yml
+    └── lint.yml
+```
+
+---
+
+### Workflow Triggers (`on`)
+
+A workflow starts when one or more events occur.
+
+| Event               | Description                          |
+| ------------------- | ------------------------------------ |
+| `push`              | Code pushed to repository            |
+| `pull_request`      | Pull request created or updated      |
+| `schedule`          | Runs automatically using cron syntax |
+| `workflow_dispatch` | Manual execution from GitHub         |
+| `issues`            | Issue created or modified            |
+
+Example:
+
+```yaml
+on:
+  push:
+    branches: [main]
+
+  pull_request:
+    branches: [main]
+
+  workflow_dispatch:
+```
+
+---
+
+### Jobs
+
+A workflow contains one or more jobs.
+
+Properties:
+
+- Runs on a virtual machine (runner)
+- Jobs execute in parallel by default
+- Dependencies can be created using `needs`
+
+Example:
+
+```text
+Build
+   ↓
+Test
+   ↓
+Deploy
+```
+
+```yaml
+jobs:
+  build:
+
+  test:
+    needs: build
+
+  deploy:
+    needs: test
+```
+
+---
+
+### Steps
+
+Each job consists of one or more steps.
+
+A step can:
+
+- Execute shell commands (`run`)
+- Execute reusable actions (`uses`)
+
+Examples:
+
+```yaml
+- run: npm test
+```
+
+```yaml
+- uses: actions/checkout@v4
+```
+
+---
+
+## Common GitHub Actions
+
+| Action                    | Purpose                        |
+| ------------------------- | ------------------------------ |
+| `actions/checkout`        | Clone repository into runner   |
+| `actions/setup-node`      | Install Node.js                |
+| `actions/cache`           | Cache dependencies             |
+| `actions/upload-artifact` | Share build files between jobs |
+
+---
+
+## Environment Variables
+
+Environment variables can be defined at:
+
+- Workflow level
+- Job level
+- Step level
+
+Example:
+
+```yaml
+env:
+  NODE_ENV: production
+```
+
+---
+
+## Secrets
+
+Store sensitive information securely.
+
+Examples:
+
+- API Keys
+- Access Tokens
+- Deployment Credentials
+- Database Passwords
+
+Access inside workflows:
+
+```yaml
+${{ secrets.API_KEY }}
+```
+
+Never hardcode sensitive information.
+
+---
+
+## Matrix Builds
+
+Run the same job across multiple environments.
+
+Example:
+
+- Node 18
+- Node 20
+- Ubuntu
+- Windows
+
+Instead of writing multiple jobs, define a matrix.
+
+Useful for:
+
+- Multiple operating systems
+- Multiple language versions
+- Cross-platform testing
+
+---
+
+## Conditional Execution
+
+Control when steps execute.
+
+Examples:
+
+```text
+Only on push
+
+Only on main branch
+
+Only if previous step succeeds
+
+Only if previous step fails
+
+Always run
+```
+
+Useful for:
+
+- Deployment
+- Cleanup
+- Notifications
+
+---
+
+## Typical CI Pipeline
+
+```text
+Push
+   ↓
+Checkout Repository
+   ↓
+Install Dependencies
+   ↓
+Run Linter
+   ↓
+Run Tests
+   ↓
+Build Project
+   ↓
+Deploy (optional)
+```
+
+---
+
+## Common Use Cases
+
+- Continuous Integration (CI)
+- Continuous Deployment (CD)
+- Automatic Testing
+- Code Linting
+- Building Applications
+- Deploying Applications
+- Scheduled Tasks
+- Repository Automation
+
+---
+
+## Viewing Workflow Runs
+
+Repository
+
+→ Actions Tab
+
+Select a workflow
+
+View:
+
+- Jobs
+- Steps
+- Logs
+- Success / Failure
+
+---
+
+## Key Takeaways
+
+- GitHub Actions automates repository workflows.
+- Workflows are written in YAML.
+- Workflows live inside `.github/workflows/`.
+- Events trigger workflows.
+- Workflows contain jobs.
+- Jobs contain steps.
+- Steps either execute commands (`run`) or reusable actions (`uses`).
+- Jobs run in parallel unless dependencies are specified using `needs`.
+- Store sensitive data using GitHub Secrets.
+- Matrix builds allow testing across multiple environments.
 
 ---
