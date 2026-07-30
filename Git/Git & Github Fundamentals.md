@@ -6035,3 +6035,106 @@ Use semantic versioning (semVer):
         Initial release.
 
 ---
+
+# Lesson 37 - Writing Good commit messages
+
+Commit messages are documentation for your project's history. Good messages make debugging, code review, and collaboration much easier.
+
+---
+
+## Why Commit Messages Matter
+
+Your future self and teammates will thank you:
+
+```bash
+# Bad history - useless
+abc123 fix
+def456 update
+789abc changes
+fedcba stuff
+
+# Good history - tells a story
+abc123 Fix null pointer exception in user lookup
+def456 Add email validation to signup form
+789abc Refactor database connection pooling
+fedcba Update dependencies to fix security vulnerability
+```
+
+---
+
+## The Anatomy of a Good Message
+
+---
+
+### Structure
+
+```bash
+Subject line (50 chars or less)
+
+Body (72 chars per line, optional but recommended)
+Explain the what and why, not the how.
+
+Footer (optional)
+Closes #123
+```
+
+---
+
+#### Subject Line Rules
+
+    Limit to 50 characters: Git truncates longer lines
+    Capitalize first letter: "Add feature" not "add feature"
+    No period at the end: "Add feature" not "Add feature."
+    Use imperative mood: "Add" not "Added" or "Adds"
+
+---
+
+#### Body Rules
+
+    Blank line after subject: Separates subject from body
+    Wrap at 72 characters: For readability
+    Explain what and why: Code shows how
+    Reference issues: If applicable
+
+---
+
+## Imperative Mood
+
+Write as if giving a command:
+
+    "Add login validation"
+    "Fix memory leak"
+    "Update dependencies"
+    "Remove deprecated function"
+
+Tip: Your message should complete "If applied, this commit will..."
+"If applied, this commit will add login validation"
+
+---
+
+## Types
+
+Common types:
+
+| Type       | Purpose                      |
+| ---------- | ---------------------------- |
+| `feat`     | New feature                  |
+| `fix`      | Bug fix                      |
+| `docs`     | Documentation                |
+| `style`    | Formatting changes           |
+| `refactor` | Code restructuring           |
+| `perf`     | Performance improvements     |
+| `test`     | Tests                        |
+| `build`    | Build system or dependencies |
+| `ci`       | CI/CD configuration          |
+| `chore`    | Miscellaneous maintenance    |
+| `revert`   | Revert previous commit       |
+
+---
+
+## WIP Commits
+
+Avoid pushing WIP commits. Use interactive rebase to clean up:
+Squash or stash the WIP
+
+---
