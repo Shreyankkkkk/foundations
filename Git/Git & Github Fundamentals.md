@@ -4893,3 +4893,208 @@ git reset --hard checkout backup-before-rebase #to preserve "Main" label
 ```
 
 ---
+
+# Lesson 31 - Cherry Picking Commits
+
+Cherry-pick lets you apply specific commits from one branch to another without merging the entrie branch. Its like picking individual cherries from a tree.
+
+---
+
+## What is Cherry-Pick
+
+Cherry-pick copies a commit to your current branch:
+
+```bash
+#    Before:
+#    main:    A ← B ← C
+#                \
+#    feature:       D ← E ← F
+#
+#    After cherry-pick E onto main:
+#    main:    A ← B ← C ← E'
+#                \
+#    feature:       D ← E ← F
+```
+
+---
+
+## Basic Cherry Pick
+
+```bash
+# Switch to target branch
+git checkout target
+
+# Cherry-pick a specific commit
+git cherry-pick abc124
+```
+
+This applies the changes from commit "abc1234" to your current branch.
+
+---
+
+## Cherry Pick Options
+
+---
+
+### Multiple Commits
+
+```bash
+# Pick multiple commits
+git cherry-pick abc1234 def5678 789abcd
+
+# Pick a range (Exclude first commit)
+git cherry-pick abc1234..def5678
+
+# Pick a range (Include first commit)
+git cherry-pick abc1234^..def568
+```
+
+---
+
+### Without commiting
+
+```bash
+# Apply change but dont commit
+git cherry-pick --no-commit abc1234
+
+# Now you can modify or combine with other changes
+git commit -m "Custom Message"
+```
+
+---
+
+### Preserve Original Authorship
+
+```bash
+# Keep original author (default)
+git cherry-pick abc1234
+
+# Sign off
+git cherry-pick -s abc1234
+
+# basically its like "I certify that I am allowed to submit this change."
+# in the end it'll say, signed off by: your name + email address
+```
+
+---
+
+### Record Original Commit
+
+```bash
+# Add note about original commit
+git cherry-pick -x abc1234
+# Message: "cherry picked fromc ommit abc1234"
+```
+
+---
+
+## When to use cherry-pick
+
+Scenario 1: Hotfix to Multiple Branches
+Scenario 2: Pull Specific Feature from Feature Branch
+Scenario 3: Recover Lost Work
+Scenario 4: Backport to Older Version
+
+---
+
+## Handling Conflicts
+
+if the cherry-pick creates a conflict
+
+```bash
+git cherry-pick abc1234
+# CONFLICT!
+
+# Option 1: Resolve and continue
+# Edit conflicted files
+git add resolved-file.js
+git cherry-pick --continue
+
+# Option 2: Abort
+git cherry-pick --abort
+
+# Option 3: Skip this commit
+git cherry-pick --skip
+```
+
+---
+
+## Cherry-Pick vs Merge vs Rebase
+
+**Method Use Case**
+Merge Integrate entire branch
+Rebase Move/replay commits onto another branch
+Cherry-pick Copy specific commits
+
+---
+
+### When NOT to Cherry-Pick
+
+If you need the whole branch → Use merge
+If you're updating your branch → Use rebase
+If commits depend on each other → Cherry-pick all of them
+
+---
+
+## Cherry Pick and Merge Commits
+
+Merge commmits have two parents. You must specify which parent's diff to use
+
+```bash
+# Suppose after the merge it looks like this
+
+#                      --> Feature (-m 2)
+#                     |
+#              D --- E
+#             /       \
+#    A --- B --- C ---- M -> Merge Commit
+#                |
+#                --> Main (-m 1)
+
+# if merged in this way
+git checkout main
+git merge feature
+# -m 1 = main, -m 2 = feature
+
+# if merged in this way
+git checkout feature
+git merge main
+# -m 1 = feature, -m 2 = main
+```
+
+Usually
+-m 1: Changes from the merged branch
+-m 2: Changes from the base branch
+
+---
+
+## Tracking Cherry Picks
+
+---
+
+### Add reference in messages
+
+```bash
+git cherry-pick -x abc1234
+```
+
+---
+
+### Git notes
+
+```bash
+# Add note to commit
+git notes add -m "Cherry picked from feature branch"
+```
+
+---
+
+## Best practices
+
+_Use sparingly_: Cherry-pick is powerful but can create confusion
+_Document_: Use -x to track origin
+_Consider alternatives_: Merge or rebase might be better
+_Test thoroughly_: Cherry-picked code might lack dependencies
+_Don't double-merge_: Be careful if branch will be merged later
+
+---
