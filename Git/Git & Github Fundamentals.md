@@ -5348,3 +5348,79 @@ Dont let stshes pile up
 Consider commiting instead
 
 ---
+
+# Lesson 33
+
+GitHub Issues is a built-in issue tracking system. It's where teams report bugs, request features, ask questions, and discuss ideas.
+
+---
+
+## Creating an Issue
+
+From Web UI
+
+1. Go to repository
+2. Click "Issues" tab
+3. Click "New issue"
+4. Fill in title and description
+5. Click "Submit new issue"
+
+---
+
+## Issue compoenents
+
+Title
+Clear, descriptive summary:
+
+Description
+Use Markdown for formatting:
+
+Labels
+Categorize issues:
+
+| Label            | Purpose                 |
+| ---------------- | ----------------------- |
+| bug              | Something isn't working |
+| feature          | New feature request     |
+| enhancement      | Improvement to existing |
+| documentation    | Documentation only      |
+| good first issue | Good for newcomers      |
+| help wanted      | Extra attention needed  |
+| duplicate        | Already exists          |
+| wontfix          | Won't be addressed      |
+| priority: high   | Urgent                  |
+
+Assignees
+Who's responsible for the issue.
+
+Milestones
+Group issues for a release or sprint.
+
+Projects
+Add to a project board (Kanban-style tracking).
+
+---
+
+## Issue Best Practices
+
+---
+
+### For Reporters
+
+1. Search first: Check if it already exists
+2. Use templates: Fill them out completely
+3. Be specific: Exact steps, versions, environment
+4. Provide examples: Code, screenshots, logs
+5. One issue per topic: Don't combine unrelated things
+
+---
+
+### For Maintainers
+
+1. Respond promptly: Even if just acknowledging
+2. Label consistently: Use standard labels
+3. Link duplicates: Reference related issues
+4. Be welcoming: Encourage contributions
+5. Close stale issues: Keep list manageable
+
+---
