@@ -5809,3 +5809,229 @@ View:
 - Matrix builds allow testing across multiple environments.
 
 ---
+
+# Lesson 36 - Creating Releases
+
+Github releases lets you package and distribute versions of your software. They're build on git tags and provide a user-friendly way to download specific versions
+
+---
+
+## What are releases
+
+Releases are tagged snapshots of your projects
+
+Repository
+│
+├── v1.0.0 (Release)
+│ ├── Source code (zip/tar.gz)
+│ └── Compiled binaries
+│
+├── v1.1.0 (Release)
+│ ├── Source code
+│ └── Compiled binaries
+│
+└── v2.0.0 (Pre-release)
+└── Source code (beta)
+
+---
+
+## Tags vs Releases
+
+| Tags                            | Releases                                           |
+| ------------------------------- | -------------------------------------------------- |
+| Git feature                     | GitHub feature                                     |
+| Lightweight pointer to a commit | Built on top of a Git tag with additional metadata |
+| Created from Git or GitHub      | Usually created through the GitHub Releases page   |
+| Marks a specific commit/version | Marks a version and publishes it for users         |
+| No release notes                | Supports release notes and descriptions            |
+| Cannot attach files             | Can attach binaries, executables, ZIPs, etc.       |
+| Stored in Git history           | Stored on GitHub and associated with a tag         |
+| Primarily for versioning        | Primarily for distributing software releases       |
+
+Releases are built on top of tags
+
+---
+
+## Creating Tags
+
+---
+
+### Lightweight Tag
+
+```bash
+# Simple pointer to commit
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+---
+
+### Annotated Tag (Recommended)
+
+```bash
+# Tag with message, author, date
+git tag -a v1.0.0 -m "Release version 1.0.0"
+git push origin v1.0.0
+```
+
+---
+
+### Tag from Specific Commit
+
+```bash
+git tag -a v1.0.0 abc1234 -m "Release 1.0.0"
+```
+
+---
+
+### List Tags
+
+```bash
+git tag
+git tag -l "v1.*"  # Pattern matching
+```
+
+---
+
+### Delete Tag
+
+```bash
+# Local
+git tag -d v1.0.0
+
+# Remote
+git push origin --delete v1.0.0
+```
+
+---
+
+## Creating a Release
+
+1. Go to repository
+2. Click "Releases" (right sidebar)
+3. Click "Create a new release"
+4. Choose or create tag
+5. Fill in details
+6. Attach files
+7. Publish
+
+---
+
+## Release Componenets
+
+Tag
+Version Identifier
+Title
+Human-readable name
+Description
+Release notes in mardown
+Assets
+Attach downloadable files
+Compile binaries
+Installers
+Documentations
+Checksums
+Pre-release Flah
+Mar as pre-release (beta, alpha, RC)
+Shows warning to users
+Doesn't show as "latest"
+Latest Release
+Most recent non-pre-release is marked "Latest"
+
+---
+
+## Auto-Generated Release Notes
+
+GitHub can generate notes from merged PRs:
+
+---
+
+### Using Web UI
+
+Click "Generate release notes" button.
+
+---
+
+### Configuration
+
+Create ".github/release.yml"
+
+---
+
+## Semantic Versioning
+
+Use semantic versioning (semVer):
+
+```bash
+# MAJOR.MINOR.PATCH
+
+# v1.0.0 → v1.0.1 (patch: bug fixes)
+# v1.0.1 → v1.1.0 (minor: new features, backwards compatible)
+# v1.1.0 → v2.0.0 (major: breaking changes)
+```
+
+---
+
+## Downloading releases
+
+---
+
+### From web UI
+
+1. Go to Releases page
+2. Find version
+3. Download source or assets
+
+---
+
+### Direct URLs
+
+```bash
+# Source code
+# https://github.com/owner/repo/archive/refs/tags/v1.0.0.zip
+
+# Specific asset
+# https://github.com/owner/repo/releases/download/v1.0.0/app.zip
+
+# Latest release
+# https://github.com/owner/repo/releases/latest
+```
+
+---
+
+## Best Practices
+
+1.  Consistent Versioning
+    Use semantic versioning consistently.
+
+2.  Meaningful Release Notes
+    List all changes
+    Highlight breaking changes
+    Include upgrade instructions
+    Thank contributors
+
+3.  Test Before Release
+    Run full test suite on the tagged commit.
+
+4.  Sign Releases
+    For security-sensitive projects:
+    GPG-signed tags
+    Checksums for assets
+
+5.  Keep Changelog
+    Maintain a CHANGELOG.md:
+
+        # Changelog
+        ## [1.1.0] - 2025-01-15
+
+        ### Added
+        - New feature X
+
+        ### Fixed
+        - Bug in Y
+
+        ## [1.0.0] - 2025-01-01
+
+        Initial release.
+
+---
