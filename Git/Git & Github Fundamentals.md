@@ -4618,29 +4618,28 @@ The forking workflow is the standard open source contribution instead of pushing
 
 ## How it Works
 
-┌──────────────────────────────────────────────────────────┐
-│ UPSTREAM (Original Repo) │
-│ github.com/org/project │
-│ │
-│ ←── Pull Request ←── │
-│ ↑ │
-└─────────────────────────────────│────────────────────────┘
-│
-┌─────────────┴─────────────┐
-│ │
-┌───────────────────┴───────┐ ┌───────────────┴───────┐
-│ YOUR FORK │ │ THEIR FORK │
-│ github.com/you/project │ │ github.com/them/... │
-│ │ │ │
-│ ↑ push ↓ clone │ │ │
-└───────────────────────────┘ └───────────────────────┘
-│
-┌──────────┴───────────────────────────────────────────────┐
-│ YOUR LOCAL MACHINE │
-│ │
-│ origin → your fork │
-│ upstream → original repo │
-└──────────────────────────────────────────────────────────┘
+                    ┌─────────────────────────────┐
+                    │      UPSTREAM REPO          │
+                    │ github.com/org/project      │
+                    └──────────┬──────────┬───────┘
+                               ▲          ▲
+                        Pull Request  Pull Request
+                               │          │
+               ┌───────────────┘          └───────────────┐
+               │                                          │
+     ┌─────────┴─────────┐                    ┌───────────┴──────────┐
+     │     YOUR FORK     │                    │     THEIR FORK       │
+     │ github.com/you/...│                    │ github.com/them/...  │
+     └─────────┬─────────┘                    └──────────────────────┘
+               ▲
+        push   │   clone
+               │
+     ┌─────────┴──────────┐
+     │ YOUR LOCAL MACHINE │
+     │                    │
+     │ origin   → fork    │
+     │ upstream → original│
+     └────────────────────┘
 
 ---
 
@@ -5439,13 +5438,13 @@ GitHub Projects provides Kanban-style project management directly in your reposi
 
 Projects are flexible boards for organizing issues and pull requests
 
-┌─────────────┬─────────────┬─────────────┬─────────────┐
-│ To Do │ In Progress │ In Review │ Done │
-├─────────────┼─────────────┼─────────────┼─────────────┤
-│ Issue #1 │ Issue #3 │ PR #5 │ Issue #2 │
-│ Issue #4 │ PR #6 │ │ PR #4 │
-│ Issue #7 │ │ │ │
-└─────────────┴─────────────┴─────────────┴─────────────┘
+    ┌────────────────┬────────────────┬────────────────┬────────────────┐
+    │     TO DO      │  IN PROGRESS   │   IN REVIEW    │      DONE      │
+    ├────────────────┼────────────────┼────────────────┼────────────────┤
+    │ • Issue #1     │ • Issue #3     │ • PR #5        │ • Issue #2     │
+    │ • Issue #4     │ • PR #6        │                │ • PR #4        │
+    │ • Issue #7     │                │                │                │
+    └────────────────┴────────────────┴────────────────┴────────────────┘
 
 ---
 
