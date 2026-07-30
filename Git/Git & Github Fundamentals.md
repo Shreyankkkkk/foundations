@@ -4170,29 +4170,33 @@ when your work is complete:
 
 ## Draft PR Workflow
 
-┌──────────────────────────────────────────────────┐
-│ DRAFT PR │
-├──────────────────────────────────────────────────┤
-│ │
-│ 1. Create draft PR early │
-│ ↓ │
-│ 2. Push commits as you work │
-│ ↓ │
-│ 3. Get informal feedback │
-│ ↓ │
-│ 4. Watch CI results │
-│ ↓ │
-│ 5. Complete task list │
-│ ↓ │
-│ 6. Self-review │
-│ ↓ │
-│ 7. Mark as "Ready for review" │
-│ ↓ │
-│ 8. Formal code review │
-│ ↓ │
-│ 9. Merge │
-│ │
-└──────────────────────────────────────────────────┘
+**DRAFT PR**  
+▼
+Create Draft PR Early
+│
+▼
+Push Commits as You Work
+│
+▼
+Get Informal Feedback
+│
+▼
+Watch CI Results
+│
+▼
+Complete Task List
+│
+▼
+Self Review
+│
+▼
+Mark "Ready for Review"
+│
+▼
+Formal Code Review
+│
+▼
+Merge
 
 ---
 
