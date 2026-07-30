@@ -5098,3 +5098,253 @@ _Test thoroughly_: Cherry-picked code might lack dependencies
 _Don't double-merge_: Be careful if branch will be merged later
 
 ---
+
+# Lesson 32 - Stashing Changes
+
+Git stash temporarily shelves your changes so you can write on something else, then come back and reapply them later
+
+---
+
+## What is stashing
+
+Stashing is like putting your work in progress in a drawer:
+
+Working Directory Stash
+┌────────────────┐ ┌────────────────┐
+│ Modified │ │ │
+│ files │ ──git stash──→│ Saved for │
+│ (WIP) │ │ later │
+└────────────────┘ └────────────────┘
+↓ ↓
+(clean state) (retrieve when ready)~
+
+---
+
+## When to use stash
+
+| Scenario                  | Why Stash?                                 |
+| ------------------------- | ------------------------------------------ |
+| Switch branches mid-work  | Can't switch with uncommitted changes      |
+| Quick hotfix needed       | Save WIP, fix bug, return                  |
+| Pull with local changes   | Stash, pull, pop                           |
+| Test without your changes | Temporarily remove WIP                     |
+| Experiment                | Save current state before trying something |
+
+---
+
+## Basic Stashing
+
+---
+
+### Stash Changes
+
+```bash
+# Stash tracked, modified files
+git stash
+
+# Stash with a message
+git stash save "WIP: user authentication"
+# or
+git stash push -m "WIP: user authentication"
+```
+
+---
+
+### What gets stashed
+
+by defaut, stash saved
+
+- Modified tracked files
+- Staged changes
+
+Not stashed by default
+
+- Untracked files
+- Ignored files
+
+---
+
+### Include Untracked files
+
+```bash
+# Include untracked files
+git stash -u
+git stash --include-untracked
+
+# Include untracked AND ignored files
+git stash -a
+git stash --all
+```
+
+---
+
+## Viewing Stashes
+
+```bash
+git stash list
+```
+
+---
+
+### View Stash Contents
+
+```bash
+# Show summary of latest stash
+git stash show
+
+# Show full diff
+git stash show -p
+
+# Show specific stash
+git stash show stash@{number}
+git stash show -p stash@{number}
+```
+
+---
+
+## Retrieving Stashed Changes
+
+---
+
+### Pop (Apply and Remove)
+
+```bash
+# Apply latest stash and remove if from stash list
+git stash po
+
+# Pop specific stash
+git stash pop stash@{number}
+```
+
+---
+
+### Apply (Keep in stash)
+
+```bash
+# Apply latest stash but keep it in stash list
+git stash apply
+
+# Apply specific stash
+git stash apply stash@{number}
+```
+
+---
+
+### Difference between pop and apply
+
+**Command Action**
+pop Apply + Delete stash
+apple Apply, Keep stash
+
+---
+
+## Stash Operations
+
+---
+
+### Create branch from stash
+
+```bash
+# Create new branch and apply stash
+git stash branch {branch_name} stash@{number}
+```
+
+This
+Creates branch from commit where you started
+Applies the stash
+Drops the stash if successful
+
+---
+
+### Drop a Stash
+
+```bash
+# Delete specific stash
+git stash drop statsh@{number}
+
+# Delete all stashes
+git stash clear
+```
+
+---
+
+## Partial Stashni
+
+---
+
+### Stash only specific files
+
+```bash
+# Stash only specific files
+git stash push -m "Message" {File}
+
+# Stash multiple files
+git statsh push -m "Message" {file1} {file2} ... {fileN}
+```
+
+---
+
+### Interactive Stashing
+
+```bash
+git stash -p
+# or
+git stash push -p
+```
+
+git asks about each hunk
+
+---
+
+## Stash and Stage
+
+---
+
+### Keep staged Changes
+
+```bash
+# Stash only unstaged changes
+git stash --keep-index
+```
+
+---
+
+### Recreate Staging
+
+```bash
+# Apply stash and recreate staged/unstaged distinction
+git stash apply --index
+```
+
+---
+
+## Common Workflows
+
+---
+
+### Quick Context Swtich
+
+```bash
+# Working on feature
+# Boss: "Fix production bug"
+
+git stash push -m "WIP: Feature work"
+git checkout main
+git pull
+git checkout -b hotfix
+
+#--- fix bug
+git checkout feature-branch
+git stash pop
+# Continue feature bug
+```
+
+---
+
+## Best Practices
+
+Use Descriptive messages
+Dont let stshes pile up
+Consider commiting instead
+
+---
