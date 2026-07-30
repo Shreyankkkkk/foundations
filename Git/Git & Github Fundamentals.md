@@ -6985,15 +6985,15 @@ commit-msg Validate commit messages
 
 git add .
 git commit -m "message"
-        |
-        ↓
-   Git runs hook
-        |
-        ↓
-  Check passes?
-        |
-     Yes → Commit created
-     No  → Commit blocked
+|
+↓
+Git runs hook
+|
+↓
+Check passes?
+|
+Yes → Commit created
+No → Commit blocked
 
 ---
 
@@ -7009,9 +7009,9 @@ git commit -m "Add login feature"
 A linter is a program that reads your code and looks for problems before you run it.
 
 if lint passes:
-    commit created
+commit created
 if lint fails:
-    commit blocked
+commit blocked
 
 ```bash
 #!/bin/sh
@@ -7038,8 +7038,8 @@ you run
 git commit -m "Add Login features"
 
 commit-msg hook
-        |
-        ↓
+|
+↓
 Is this message acceptable?
 
 Valid message?
@@ -7077,12 +7077,12 @@ fi
 
 #### Where Hooks live
 
-Inside every git repository 
+Inside every git repository
 .git/
- └── hooks/
-      ├── pre-commit
-      ├── commit-msg
-      └── ...
+└── hooks/
+├── pre-commit
+├── commit-msg
+└── ...
 git automatically checks this folder
 
 ---
@@ -7097,16 +7097,16 @@ They are inside:
 The .git folder is not committed into a shared repository
 
 **Meaning:**
-*Developer A* has:
-    pre-commit hook
+_Developer A_ has:
+pre-commit hook
 
-*Developer B* clones the repo:
-    No hook exists
+_Developer B_ clones the repo:
+No hook exists
 
 Everyone has different rules.
 
 _*Husky*_ Solves this Issue
-    Husky stores hooks in project itself
+Husky stores hooks in project itself
 
 ```bash
 project/
@@ -7161,7 +7161,7 @@ git fetch --prune
 ```
 
 NOTE: Prune means remove stale references that no longer exist.
-    Basically: clean up dead pointers.
+Basically: clean up dead pointers.
 
 ---
 
@@ -7186,6 +7186,7 @@ git remote prune origin
 ### For pushed commits
 
 Use "revert" (Creates new commit):
+
 ```bash
 git revert abc123
 # Creates: Revert original message
@@ -7194,6 +7195,7 @@ git revert abc123
 ### For unpushed commits
 
 Use "Reset"
+
 ```bash
 git reset --soft HEAD~1   # Keep changes staged
 git reset --mixed HEAD~1  # Keep changes unstaged
