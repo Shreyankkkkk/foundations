@@ -395,3 +395,61 @@ Each of these tools extends Claude's capabilities into the specific environments
 | Claude in Chrome | Web research, email management, browser automation | Chrome browser sidebar |
 
 ---
+
+## Lesson 3 : What's Next?
+
+---
+
+### Course Summary
+
+---
+#### Getting started with Claude
+
+- Claude is an AI assistant built to be **helpful, harmless, and honest**. It can act as a thinking partner for complex work, not just a chatbot.
+- Claude is available through **web, desktop, and mobile apps**, with conversations syncing across devices.
+- Effective prompts set the stage by providing **context**, defining the **task/action**, and specifying **rules such as format and style**.
+
+#### Getting better results
+
+- **Iteration is key:** Treat Claude's first response as a starting point and refine it through conversation.
+- Generic responses or incorrect tone can usually be improved by providing **more specific context and instructions**.
+- **AI Fluency** consists of four competencies:
+  - **Delegation** — deciding what to give to AI
+  - **Description** — clearly communicating what you want
+  - **Discernment** — evaluating and judging AI outputs
+  - **Diligence** — checking and refining the work
+
+#### Organizing your work
+
+- **Projects** create dedicated workspaces with persistent knowledge, custom instructions, chat history, and team collaboration.
+- **Artifacts** are standalone outputs such as documents, code, diagrams, and interactive tools that Claude creates alongside the conversation.
+- **Skills** are instruction packages that teach Claude specialized workflows, including built-in document creation capabilities and custom skills you can create yourself.
+
+#### Expanding Claude's reach
+
+- **Connectors** link Claude to external tools such as Google Workspace, Slack, Notion, and other services, allowing it to work with your actual data.
+- **Enterprise Search** provides a dedicated way to search and synthesize information across an organization's connected knowledge sources.
+- **Research** performs systematic, multi-source investigations, allowing Claude to gather and synthesize information that would otherwise take hours or days to research manually.
+
+#### Putting it all together
+
+- Claude can support many different roles and workflows, including **sales, marketing, finance, HR, legal, research, and more**.
+- Claude is not limited to claude.ai. You can work with it through specialized tools such as **Claude Code, Slack, Excel, PowerPoint, Word, Outlook, and Chrome**.
+
+---
+
+## A word of encouragement
+
+The most important thing now is to **get started**. The skills from this course will improve with practice, and you'll gradually develop intuition for when and how Claude can help.
+
+**Start simple:**
+- Pick one recurring task from your work and try it with Claude.
+- Examples: drafting an email, summarizing meeting notes, or analyzing a spreadsheet.
+- See what happens, then iterate and adjust your approach.
+- Over time, learn which workflows and prompting styles work best for your specific needs.
+
+Remember: **Claude is designed to be a collaborator, not a replacement.** The best results come from combining Claude's capabilities with your own expertise, context, and judgment.
+
+You now have the foundation. **The rest comes from doing the work.**
+
+---
