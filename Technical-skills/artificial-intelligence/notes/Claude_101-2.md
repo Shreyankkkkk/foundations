@@ -261,3 +261,93 @@ Available on **Claude for Work (Team and Enterprise)** plans.
 
 ---
 
+## Lesson 2 : Creating with Artifacts
+
+### Learning Objectives
+
+- Explain what artifacts are and when Claude creates them
+- Share artifacts with colleagues and publish them publicly
+- Troubleshoot common artifact issues
+
+---
+
+### What Are Artifacts?
+
+- **Artifacts** are standalone, interactive outputs that Claude creates in a dedicated window alongside the conversation.
+- They display content in a usable format instead of leaving long code or text buried in the chat.
+- Examples include **working websites, interactive charts, and downloadable documents**.
+
+#### When Claude Creates an Artifact
+
+Claude automatically creates an artifact when the content:
+
+- Is **significant and self-contained**, typically 15+ lines.
+- Is likely to be **edited, iterated on, or reused**.
+- Is **complex enough to stand on its own** without the surrounding conversation.
+- Is something you'll likely want to **reference or use later**.
+
+---
+
+### Common Artifact Types
+
+- **Documents:** Markdown and plain text for meeting notes, reports, project plans, blog posts, and other text-heavy content.
+- **Code snippets:** Working code in languages such as Python, JavaScript, and C++. You can view, copy, or download the code.
+- **HTML pages:** Complete web pages using HTML, CSS, and JavaScript in a single file. Useful for landing pages, forms, interactive demos, and prototypes.
+- **SVG images:** Scalable vector graphics for logos, icons, illustrations, and other visual elements.
+- **Mermaid diagrams:** Flowcharts, sequence diagrams, Gantt charts, org charts, and other diagrams that can be refined.
+- **React components:** Interactive UI elements such as calculators, dashboards, games, and data visualizations with actual functionality.
+
+> **Note:** Word documents, Excel spreadsheets, PowerPoint presentations, and PDFs are created through Claude's separate file creation capability, not as artifacts. They are returned as downloadable files.
+
+---
+
+### Creating Your First Artifact
+
+- Create an artifact simply by **describing what you want**. Claude determines whether the output should be presented as an artifact.
+- Examples:
+  - Create a flowchart showing a customer onboarding process.
+  - Build an interactive dashboard for monthly expenses.
+  - Design a landing page for a productivity app.
+  - Write a reusable project brief template.
+- If Claude doesn't automatically create an artifact, explicitly ask:
+  - "Create this as an artifact."
+  - "Show me this in an artifact."
+
+#### Using an Artifact
+
+Artifacts appear in a **dedicated window** to the right of the conversation. You can:
+
+- **Preview:** See how the artifact looks.
+- **View code:** Inspect the underlying code.
+- **Copy:** Copy the content for use elsewhere.
+- **Download:** Save the artifact as a file to your computer.
+
+---
+
+### Sharing and Publishing Artifacts
+
+- **Copy or download:** Use the copy or download buttons to save an artifact or share it through other channels.
+- **Share within your organization:** Claude for Work (Team and Enterprise) users can share artifacts internally with colleagues. Shared artifacts require team authentication.
+- **Publish publicly:** Free, Pro, and Max users can publish artifacts so anyone with the link can access them.
+  - Only the selected artifact version becomes public; the conversation remains private.
+  - Anyone can view and interact with the artifact without a Claude account.
+  - Others can **remix** the artifact in their own Claude conversation and modify it.
+  - Published artifacts are publicly accessible through their link.
+  - Published artifacts are **not indexed by search engines**.
+  - You can unpublish an artifact at any time by removing public access.
+
+#### How to Publish
+
+- Click **Share** or **Publish** in the upper-right corner of the artifact.
+
+---
+
+### Tips for Getting the Most from Artifacts
+
+- **Be specific:** Clearly describe what you want the artifact to do and include important features or requirements.
+- **Describe the end user:** Tell Claude who will use the artifact so it can make appropriate design choices.
+- **Iterate incrementally:** Ask for one feature or change at a time to make it easier to identify issues and refine the result.
+- **Request artifacts when needed:** If Claude responds in chat instead of creating an artifact, ask: "Please create that as an artifact."
+
+---
+
