@@ -234,3 +234,180 @@ Enterprise Search has a **two-step setup**: an admin configures it for the organ
 - Which data sources would be most valuable to connect for your role?
 
 ---
+
+## Lesson 3 : Research for deep dives
+
+### Learning Objectives
+
+- Explain what Research does: systematic, multi-source investigation
+- Identify when to use Research for comprehensive information gathering
+- Understand how Research uses Thinking to plan its approach before it gathers information
+- Write effective Research prompts for complex investigations
+
+---
+
+### Researching with Claude
+
+- **Research is more than a single search.** Claude searches agentically, conducting multiple searches that build on each other and exploring different angles of a question.
+- **Research takes longer than a normal search.** Complex questions may take several minutes because Claude can run many searches across hundreds of sources and synthesize the findings.
+- **Research works with Thinking.** Claude can plan how to approach a complex question, break it into smaller parts, and then research each part.
+- **Citations make verification easier.** Research provides citations so you can check the sources and verify Claude's findings.
+
+---
+
+### What is Research?
+
+- **Research turns Claude into a systematic investigator**, rather than just a conversational assistant.
+- When enabled, Claude:
+  - Explores a question from **multiple angles**.
+  - Searches across the **web and connected integrations**.
+  - Cross-references information from different sources.
+  - Synthesizes findings into a **comprehensive response**.
+- Think of it as a **research assistant** that gathers and compares information while you work on something else.
+- Research is most useful when a question requires:
+  - **Multiple sources**
+  - **Different perspectives**
+  - **Cross-referencing**
+  - **Synthesis into actionable insights**
+- It is better suited to **thorough research** than quick, straightforward questions.
+
+---
+
+### When to Use Research
+
+The main pattern to remember:
+
+> **Multi-source synthesis → Research**  
+> **Single facts → Web search**  
+> **Pure reasoning → Thinking**  
+> **Company-specific questions → Enterprise Search**
+
+#### Use Research When You Need
+
+- Comprehensive reports that synthesize information from **multiple sources**.
+- In-depth analysis across the **web and connected integrations** such as Google Workspace.
+- Thorough investigations that would normally take **hours of manual work**.
+- **Comparative analysis**, such as evaluating competitors or vendors.
+- Reports with **citations** that you can verify.
+
+#### Good Use Cases
+
+- Market analysis and competitive research.
+- Planning complex projects such as team offsites or product launches.
+- Synthesizing information from email, calendars, and documents.
+- Creating technical documentation using multiple sources.
+- Preparing briefings that require **current, verified information**.
+
+#### Use Web Search Instead When
+
+- You need a **quick, specific fact**.
+- The answer only requires **one or two sources**.
+- **Speed matters more than comprehensiveness**.
+
+#### Use Thinking Instead When
+
+- You need deep reasoning on a complex problem that **doesn't require external information**.
+- You're working on mathematics, code debugging, or logical analysis.
+- The answer comes primarily from **reasoning through the problem**, rather than gathering information.
+
+#### Use Enterprise Search Instead When
+
+- You need answers from your **organization's internal knowledge**, such as documents, Slack, emails, or meeting notes.
+- You're onboarding and need to find company-specific **policies, processes, or past decisions**.
+- The question is specific to **your company**, rather than information available on the public web.
+
+---
+
+### How Research Works
+
+Research uses an **agentic, multi-step process** that goes beyond a simple web search. Claude decides what to investigate next based on what it has already found, pursuing leads and filling gaps automatically.
+
+1. **Plan the approach**
+   - Claude breaks down your request.
+   - Identifies what information it needs.
+   - Plans how to investigate the different aspects of the question.
+
+2. **Conduct multiple searches**
+   - Claude performs many searches instead of a single lookup.
+   - Searches build on one another.
+   - Claude uses previous findings to decide what to investigate next.
+   - It pursues useful leads and fills information gaps.
+
+3. **Synthesize findings**
+   - Claude combines information from multiple sources.
+   - Sources can include the **web and connected integrations** such as Gmail, Google Calendar, and Google Drive.
+   - Findings are compiled into a **comprehensive, organized report**.
+
+4. **Provide citations**
+   - Research reports link claims back to their sources.
+   - This makes it easy to **verify information and investigate sources further**.
+
+---
+
+### Using Research in Practice
+
+1. Click the **+** button in the bottom-left of the chat interface.
+2. Select **Research** from the menu. It will appear highlighted when active.
+3. Enter your prompt and submit it.
+4. Claude will work in the background while searching and analyzing. Progress indicators show its activity.
+
+> **Important:** Web search must be enabled for Research to work. You can enable it from the same **+** menu.
+
+---
+
+### Tips for Effective Research Prompts
+
+Since Research can take **minutes rather than seconds**, spending time on the prompt helps improve the quality and relevance of the results.
+
+- **Be specific about your goal**
+  - Clearly state what you want to learn, analyze, or decide.
+  - Avoid broad prompts when you need a focused investigation.
+
+- **Specify the structure you want**
+  - Tell Claude which sections, categories, or comparisons to include.
+  - Claude will organize its research around the structure you provide.
+
+- **Include relevant constraints**
+  - Provide important limits such as:
+    - Budget
+    - Timeline
+    - Geographic requirements
+    - Other criteria or parameters
+  - Constraints help Claude focus on relevant information.
+
+- **Ask Claude to refine your prompt**
+  - If you're unsure how to frame the research question, ask Claude to help improve the prompt **before enabling Research**.
+
+---
+
+### Working with Connected Integrations
+
+- Research becomes more powerful when **Google Workspace or other integrations** are connected.
+- Claude can combine information from your:
+  - Emails
+  - Calendar
+  - Documents
+  - Other connected tools
+  - The web
+- This allows Claude to **combine internal context with external research** in one investigation.
+
+#### Examples
+
+- Combine discussions from emails and Slack with research on industry best practices.
+- Review upcoming calendar meetings and research the companies you'll be meeting with.
+- Find internal documents about a topic and compare them with external competitor information.
+
+#### Steering Research with Integrations
+
+You can explicitly tell Claude where to look, for example:
+
+- "Pull relevant context from my Google Drive."
+- "Include insights from my recent emails on this topic."
+
+### Lesson Reflection
+
+- What tasks in your work require gathering information from multiple sources?
+- How could combining Research with connected integrations change your workflow?
+- What's a complex research question you've been avoiding because it would take too much time to investigate manually?
+
+---
