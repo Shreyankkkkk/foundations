@@ -1,8 +1,4 @@
-# Claude 101
-
----
-
-## Source and attribution
+# Source and attribution
 
 These notes are my personal study notes based on Anthropic's Claude 101 course.
 
@@ -12,10 +8,13 @@ These notes are my personal study notes based on Anthropic's Claude 101 course.
 - Copyright: © 2025 Anthropic. All rights reserved.
 
 These notes are independently written summaries for educational and reference purposes and are not official Anthropic course materials.
+---
+
+# Meet Claude
 
 ---
 
-## Lesson 1
+## Lesson 1 : What is Claude
 
 ### Learning Objectives
 
@@ -360,3 +359,467 @@ Claude is the **intelligence—the AI assistant** you're learning to work with t
 - For development workflows, you can explore **Claude Code in Action** for more information on using Claude in coding and development.
 
 ---
+
+## Lesson 2 : Your First Conversation with Claude
+
+### Learning Objectives
+
+- Start a new conversation with Claude and navigate the interface
+- Write effective prompts using clear, specific language
+- Upload files and images to provide Claude with additional context
+- Use follow-up messages to iterate and refine Claude's responses
+
+---
+
+### Getting started with Claude.ai
+
+Claude is an **AI collaborator** that combines its intelligence with your context and expertise to help you work through complex tasks.
+
+---
+
+#### Navigating the Claude interface
+
+The Claude interface provides several features for starting conversations, organizing work, and creating outputs.
+
+- **Chats**
+  - Create new conversations.
+  - Return to previous conversations.
+
+- **Projects**
+  - Organize related conversations in one place.
+  - Provide **persistent context** across conversations.
+  - Add **custom instructions** to guide Claude's behavior.
+
+- **Artifacts**
+  - Turn ideas into shareable:
+    - Apps
+    - Tools
+    - Content
+
+- All interactions with Claude begin with a **prompt**.
+- Your prompt, combined with the context you provide, influences Claude's response.
+- Claude works best when you communicate naturally, clearly, and conversationally, similar to how you would communicate with a coworker.
+
+---
+
+#### Crafting effective prompts
+
+A good prompt gives Claude enough information to understand **what you're trying to accomplish and how you want it done**.
+
+##### 1. Set the stage
+
+Provide the context Claude needs to understand the situation.
+
+Include:
+
+- Your role
+- The project or situation
+- Your objectives
+- Relevant background information
+
+##### 2. Define the task
+
+Clearly explain **what you want Claude to do**.
+
+For example:
+
+- Write
+- Analyze
+- Build
+- Summarize
+- Research
+- Transform
+
+##### 3. Specify the rules
+
+Explain how you want Claude to complete the task.
+
+You can specify:
+
+- Style
+- Tone
+- Format
+- Constraints
+- Examples to follow
+- Sources or research requirements
+
+##### Example of a structured prompt
+
+For an investor pitch deck for a new indie streaming app:
+
+- **Context:** Explain that the work is for an investor pitch deck.
+- **Task:** Provide the relevant content and analysis.
+- **Rules:** Use current web research with citations and structure the result as a professional report.
+
+> **A strong prompt combines context + task + rules.**
+
+---
+
+#### Adding context to your conversations
+
+Claude becomes more useful when you provide **specific context** related to your task.
+
+You can upload relevant documents and background information directly into a conversation, such as:
+
+- Company documents
+- Project files
+- Background research
+- PDFs
+- CSV files
+- DOCX files
+- Other supported file types
+
+Providing this information helps Claude understand your specific situation rather than relying only on the prompt itself.
+
+> **Context gives Claude the information it needs to tailor its response to your situation.**
+
+---
+
+#### Using search and tools
+
+The **Search and tools** menu allows Claude to access additional sources of information and capabilities.
+
+Examples include:
+
+- **Web search**
+  - Allows Claude to research current information.
+  - Useful for things such as current market data.
+
+- **Connected data sources**
+  - Can provide access to information from services such as Google Drive.
+  - Gives Claude additional context for your work.
+
+- Claude can choose the appropriate available tool when solving a request.
+
+---
+
+#### Choosing the right Claude model
+
+Claude offers different models with different capabilities.
+
+##### Claude Opus
+
+- Designed for the **most complex tasks**.
+- A large-scale model with hybrid reasoning capabilities.
+- Useful for tasks requiring extensive analysis.
+
+**Example:**
+
+- Multi-step financial analysis
+
+##### Claude Sonnet
+
+- Designed for **everyday use**.
+- Recommended as the default choice.
+- Balances capability, speed, and cost-effectiveness.
+- Suitable for most common tasks and conversations.
+
+> **Choose the model based on the complexity of the task.**
+
+---
+
+#### Extended thinking
+
+**Extended thinking** allows Claude to spend more time reasoning through complex problems before responding.
+
+- Particularly useful for:
+  - Complex analysis
+  - Difficult reasoning
+  - Problems requiring careful consideration
+- Can increase response latency.
+- Usually unnecessary for simple questions and everyday conversations.
+
+For straightforward tasks, start with **Sonnet with thinking mode off**. If the task requires deeper reasoning, you can switch models or enable thinking.
+
+---
+
+#### Research
+
+**Research** allows Claude to conduct systematic, multi-angle investigations.
+
+It can:
+
+- Break complex questions into smaller research tasks.
+- Explore many sources.
+- Consider multiple perspectives.
+- Produce comprehensive reports.
+- Include citations in its findings.
+
+Research can take approximately **5–45 minutes**, depending on the complexity of the investigation.
+
+> Research allows Claude to handle detailed investigative work while you focus on other high-value tasks.
+
+---
+
+#### Continuous collaboration with Claude
+
+Claude is most effective when you **continue the conversation** instead of treating each prompt as a one-off interaction.
+
+Through continued communication, you can:
+
+- Refine the result.
+- Correct misunderstandings.
+- Provide additional context.
+- Communicate your preferences.
+- Adjust the tone, structure, or level of detail.
+
+The goal is to work collaboratively:
+
+> **Claude brings AI intelligence. You bring the context and expertise that makes the work meaningful.**
+
+---
+
+#### Key takeaways
+
+- Claude is an **AI collaborator and thinking partner** that combines AI intelligence with your context and expertise.
+- Communicate with Claude like you would with a **coworker**: naturally, clearly, concisely, and conversationally.
+- Strong prompts generally include three elements:
+  - **Setting the stage:** Provide your role, objectives, and relevant context.
+  - **Defining the task:** Clearly explain what you want Claude to do.
+  - **Specifying rules:** Define the desired style, tone, format, constraints, or examples.
+- Providing **relevant files and background information** gives Claude the context it needs to produce more tailored responses.
+- **Projects** help organize work by providing persistent context and custom instructions.
+- **Artifacts** can turn ideas into shareable apps, tools, and content.
+- Choose the appropriate **Claude model** for the task:
+  - **Sonnet** for everyday tasks and a balance of capability, speed, and cost.
+  - **Opus** for more complex tasks requiring greater reasoning capabilities.
+  - **Extended thinking** for problems that benefit from deeper analysis.
+- **Research** allows Claude to conduct systematic investigations across multiple sources and produce comprehensive, cited reports.
+- Claude becomes more useful through **continued interaction** rather than one-off prompts, allowing you to refine results, provide feedback, and collaborate toward better outcomes.
+
+---
+
+### Starting your first conversation
+
+When you open Claude.ai, you'll see a clean interface with a **text input area** at the bottom of the screen.
+
+Your prompts can range from:
+
+- Simple questions
+- Brainstorming ideas
+- Writing and editing
+- Coding tasks
+- Complex requests to create files
+
+All interactions with Claude begin with a **prompt**, and the prompt combined with additional context influences Claude's response.
+
+---
+
+#### Writing effective prompts
+
+The best way to communicate with Claude is similar to how you would communicate with a **coworker**:
+
+- Naturally
+- Clearly
+- Concisely
+- Conversationally
+
+A strong prompt should give Claude enough information to understand both **what you need** and **how you want the task completed**.
+
+##### 1. Setting the stage
+
+Provide the context Claude needs to understand your situation.
+
+Consider:
+
+- What is your role?
+- What are your objectives?
+- What background information does Claude need to know?
+
+##### 2. Defining the task
+
+Clearly describe **what you want Claude to do**.
+
+For example:
+
+- Write
+- Analyze
+- Build
+- Research
+- Summarize
+
+Be specific about the outcome you want.
+
+##### 3. Specifying rules
+
+Explain how you want Claude to approach and present the work.
+
+You can specify:
+
+- Style
+- Tone
+- Format
+- Constraints
+- Examples to follow
+- Research or citation requirements
+
+---
+
+##### Putting it together
+
+A strong prompt can combine all three elements:
+
+> "I'm the marketing lead at an indie streaming startup, and we're preparing an investor pitch deck for Series A investors. Can you research the current state of the independent film streaming market and identify key trends, competitor positioning, and growth opportunities? Use current web research with citations and structure it as a professional report of up to 5 pages, with an executive summary, market analysis, competitive landscape, and growth opportunities."
+
+**Breaking down the prompt:**
+
+- **Setting the stage:** Establishes the user's role, the company context, and the objective.
+- **Defining the task:** Specifies the research to perform and the areas to investigate.
+- **Specifying rules:** Defines the research requirements, citation requirements, length, and report structure.
+
+> **A strong prompt gives Claude the context, task, and rules it needs to produce a useful result.**
+
+---
+
+#### The 4D Framework for AI Fluency
+
+The prompt framework is adapted from the **4D Framework for AI Fluency**, developed through research collaboration between Professor Rick Dakan of Ringling College of Art and Design and Professor Joseph Feller of University College Cork.
+
+The framework identifies four core competencies for effective collaboration with AI:
+
+- **Delegation**
+- **Description**
+- **Discernment**
+- **Diligence**
+
+These competencies support **efficient, effective, ethical, and safe** use of AI.
+
+---
+
+### Adding context
+
+You can give Claude additional context about your work through **file uploads, connectors, and custom preferences**.
+
+Providing relevant context helps Claude produce responses that are more specific and useful for your situation.
+
+#### File uploads
+
+Claude can analyze both **text and visual elements** in documents, including:
+
+- Text
+- Images
+- Charts
+- Graphics
+
+Supported file types include:
+
+- PDF
+- DOCX
+- CSV
+- TXT
+- PNG
+- JPEG
+
+#### Practical uses for file uploads
+
+- Upload a document and ask Claude to **summarize the key points**.
+- Share an image and ask Claude to **describe or analyze it**.
+- Attach a spreadsheet and ask Claude to **identify trends or patterns** in the data.
+- Upload code and ask Claude to **explain how it works or identify bugs**.
+
+Once a file is uploaded, Claude automatically attempts to **parse its contents**. The file appears as an attachment in the conversation, allowing you to ask Claude questions about it.
+
+#### Custom preferences
+
+If you want Claude to consider specific preferences in **every conversation**, you can configure them in:
+
+**Settings → General → "What personal preferences should Claude consider?"**
+
+This allows you to provide persistent preferences that Claude can use across conversations.
+
+---
+
+### Iterating on Claude's responses
+
+Conversations with Claude are designed to be **iterative**. Instead of trying to create the perfect prompt in one message, you can use a series of smaller prompts to guide Claude based on its responses.
+
+#### Ask follow-up questions
+
+Build on Claude's previous response by asking for:
+
+- More detail
+- A different perspective
+- Clarification
+- Expansion of a specific point
+
+**Examples:**
+
+> "Can you expand on the second point?"
+
+> "That's helpful, but can you make it more concise?"
+
+#### Provide feedback
+
+Tell Claude what worked and what needs to change.
+
+**Example:**
+
+> "This is good, but the tone is too formal. Can you make it more conversational?"
+
+This allows Claude to adjust its response based on your feedback.
+
+#### Redirect or restart
+
+If Claude misunderstands your request or goes in the wrong direction, **redirect the conversation** by clarifying what you actually meant.
+
+**Example:**
+
+> "Actually, I was asking about X, not Y. Let me clarify..."
+
+If the conversation has accumulated too much irrelevant context, you can also **start a new chat** to refresh the context and approach the task from scratch.
+
+#### Edit and resubmit prompts
+
+You can click the **pencil icon** on one of your previous messages to edit and resubmit the prompt.
+
+This is useful when you want to **refine the original request** rather than add another message to the conversation.
+
+> **Key idea:** Don't treat Claude's first response as the final answer. Guide, correct, and refine the conversation until the result meets your needs.
+
+---
+
+### Personalizing Claude
+
+Claude provides features that help it work more effectively for you over time by reducing the need to repeat your preferences and context.
+
+#### Memory
+
+**Memory** automatically saves useful context from your conversations, such as:
+
+- Your role
+- Preferences
+- Past decisions
+- Working style
+
+This means you don't have to repeat the same information every time you start a new conversation.
+
+**Example:**
+
+> If you tell Claude that you work in marketing at a B2B company, Claude can remember that context for future conversations.
+
+You can manage your memory at any time through **Settings**, including:
+
+- Reviewing what Claude remembers
+- Editing saved memories
+- Deleting memories
+
+Memory also **syncs across your devices**.
+
+#### Styles
+
+**Styles** allow you to customize how Claude communicates with you.
+
+You can:
+
+- Choose from preset styles, such as:
+  - Concise
+  - Formal
+  - Explanatory
+- Create a **custom style** by describing how you want Claude to write.
+
+Once configured, your selected style applies automatically across your conversations.
+
+> **Memory** helps Claude remember your context, while **Styles** control how Claude communicates with you.
+
+---
+
