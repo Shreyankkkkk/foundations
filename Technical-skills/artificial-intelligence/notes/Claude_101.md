@@ -1125,3 +1125,209 @@ The key distinction is **how much of the work you are directly coordinating**: C
 
 ---
 
+### Working with Claude, turn by turn
+
+This is Claude as a **thinking partner**, where the value comes from the back-and-forth interaction rather than a single finished response.
+
+#### When to use turn-by-turn collaboration
+
+- **The answer changes what you ask next**
+  - Useful for brainstorming, exploring unfamiliar information, and working through ideas where the next step depends on Claude's response.
+- **You want to stay involved**
+  - Useful for drafting, editing, and thinking through problems where your judgment matters throughout the process.
+- **The task is quick**
+  - Good for questions, rewrites, explanations, and other small tasks where setting up a larger workflow would add unnecessary overhead.
+
+#### Examples
+
+- Share a screenshot of an unfamiliar dashboard and ask Claude to explain the metrics, then follow up on which metrics matter most.
+- Talk through a presentation by voice, have Claude create an outline, provide feedback, and iterate on the structure.
+- Give Claude information from an ongoing project and work together to identify unfinished tasks and gaps.
+
+#### Desktop features
+
+In the Claude desktop app, turn-by-turn work happens in **Chat**. The desktop app also provides additional capabilities:
+
+- **Quick entry:** On Mac, double-tap the Option key to bring Claude up over your current work.
+- **Screenshots and window sharing:** On Mac, share what is currently visible on your screen with Claude.
+- **Dictation:** On Mac, speak your ideas or questions instead of typing them.
+- **Desktop connectors:** Connect local tools and services so Claude can work with information available on your computer.
+
+---
+
+### Handing work off to Claude
+
+**Agentic work** means delegating an entire piece of work to Claude rather than handling each step yourself. You describe the desired outcome, provide the necessary context, and Claude plans and executes the task before returning the result.
+
+#### When to hand work off
+
+- **The task has multiple steps**
+  - Useful when a task involves several actions that would normally be performed sequentially.
+  - Example: gather data → compare figures → write a summary → format the document.
+
+- **The output is a finished deliverable**
+  - Useful when you need a completed Word document, spreadsheet, presentation, PDF, or other file rather than a response to copy from chat.
+
+- **The work spans multiple tools**
+  - Claude can gather information from connected sources such as meeting notes, Slack, email, and spreadsheets.
+
+- **The task is recurring or scheduled**
+  - Tasks such as weekly reports, briefings, or routine reviews can be scheduled to run automatically.
+
+#### Staying in control
+
+Delegating work does not mean giving up oversight.
+
+- Claude may ask questions before starting to clarify the scope or required format.
+- Claude can present its plan before executing the task.
+- You can monitor its progress and the sources or files it is using.
+- Claude can pause for approval before performing important actions, such as sending an email or sharing a file.
+- You remain responsible for reviewing the final result and controlling what actions Claude takes.
+
+#### Examples
+
+- Ask Claude to search meeting notes, Slack, and email for previous pricing decisions and use the findings to update a presentation.
+- Give Claude a large collection of project documents and ask it to identify the most relevant files and produce a summary.
+- Set up a recurring Monday task that reviews messages, prepares a status update, and summarizes upcoming meetings.
+
+#### Cowork
+
+**Cowork** is the desktop environment for handing larger tasks off to Claude.
+
+Key capabilities include:
+
+- **Local folder access:** Claude can read files from a selected folder and save completed work back into it.
+- **Scheduled tasks:** Recurring tasks can run on a defined schedule and catch up if the computer or app was closed when they were scheduled.
+- **Subagents:** Large tasks can be divided among multiple background workers operating in parallel.
+- **Projects:** Related tasks can be organized with their own files, instructions, and memory.
+- **Browser use:** With Claude in Chrome, Claude can navigate websites and incorporate information directly into a task.
+- **Computer use:** Claude can operate a computer directly when a connector is unavailable, with permission controls for actions.
+- **Plugins:** Ready-made bundles of skills, connectors, and agents designed for specific workflows or roles.
+
+> **Chat** is primarily for working through a task with Claude turn by turn, while **Cowork** is designed for handing larger tasks over to Claude for execution.
+
+**Availability:** Cowork is available to Pro, Max, Team, and Enterprise users.
+
+---
+
+### Building Software with Claude Code
+
+- Claude Code provides a **development environment** where Claude can work directly inside a codebase.
+- Claude can:
+  - Read existing code
+  - Write and modify code
+  - Run commands
+  - Run/test software
+  - Show visual diffs of changes
+  - Use a built-in terminal
+  - Track changes with Git, allowing rollbacks
+
+#### Where Claude Code Can Work
+
+- **Local**
+  - Select a folder on your computer.
+  - Claude works directly with the files.
+  - Can use local tools and run a development server that can be previewed in a browser.
+
+- **Cloud**
+  - Connect a GitHub repository.
+  - Claude works in a cloud environment.
+  - Sessions continue even after closing the app.
+  - Useful for larger codebases or keeping development work off your machine.
+
+#### Claude's Autonomy Settings
+
+- **Manually approve:** Claude proposes every change and waits for approval.
+- **Accept edits:** Claude automatically applies file edits.
+- **Plan:** Claude creates a plan before making changes.
+
+#### Product Availability
+
+- Claude Code is located in the **Code tab** of the Claude desktop app.
+- Available on **Pro, Max, Team, and Enterprise** plans.
+- Multiple sessions can be run across projects.
+- Sessions can be filtered by:
+  - Environment (**Local / Cloud**)
+  - Status
+
+---
+
+### Working with Claude: 3 Modes
+
+Claude's desktop app provides three main ways to work:
+
+#### 1. Chat — Turn-by-Turn Collaboration
+- Claude acts as a **thinking partner**.
+- Best when the work depends on an ongoing back-and-forth conversation.
+- Useful for:
+  - Brainstorming
+  - Drafting and editing
+  - Asking questions
+  - Explaining unfamiliar information
+  - Working through ideas iteratively
+- The user stays involved in each step and guides Claude's responses.
+
+#### 2. Cowork — Delegate the Whole Task
+- Instead of handling each step yourself, give Claude the **desired outcome** and let it execute the workflow.
+- Best when:
+  - A task has multiple sequential steps
+  - You need a finished deliverable
+  - The work involves multiple tools or files
+  - The task should run repeatedly or on a schedule
+- Claude can:
+  - Access local folders
+  - Create and save deliverables
+  - Use scheduled tasks
+  - Use subagents for larger tasks
+  - Work with projects and connected tools
+  - Use browser/computer tools when available
+  - Use plugins for specialized workflows
+- **Key idea:** Chat = collaborate step-by-step; Cowork = delegate the workflow and review the result.
+
+#### 3. Claude Code — Build and Modify Software
+- Claude works **directly inside a codebase**.
+- Can read, write, modify, and test code, run commands, and work with Git.
+- Can operate:
+  - **Locally:** directly on files on your computer.
+  - **In the cloud:** through a connected GitHub repository.
+- Useful controls include:
+  - **Manually approve:** approve each proposed change.
+  - **Accept edits:** automatically apply file edits.
+  - **Plan:** Claude creates a plan before modifying the codebase.
+- Primarily intended for software development.
+
+### Core Distinction
+
+| Mode | Main purpose | User involvement |
+|---|---|---|
+| **Chat** | Think and work together | High — turn-by-turn |
+| **Cowork** | Delegate complete workflows | Medium — review and steer |
+| **Claude Code** | Develop and modify software | Variable — depends on approval settings |
+
+**Rule of thumb:**
+- Need to **think together** → Chat
+- Need to **hand off a workflow** → Cowork
+- Need to **build/modify software** → Claude Code
+
+---
+
+## Choosing the Right Shape for the Task
+
+Choose the **type of work first**, then choose the appropriate Claude tab.
+
+| You're about to… | The shape it takes | Where it lives today |
+|---|---|---|
+| Ask, brainstorm, draft, or think something through turn-by-turn | **Working with Claude, turn by turn** | Chat |
+| Hand off a multi-step task that produces a finished deliverable, spans multiple tools, or runs on a schedule | **Handing work off** | Cowork |
+| Write, test, run, and ship code in a codebase | **Building software** | Code tab (Local or Cloud) |
+
+### Lesson Reflection
+
+- Think about how you currently use Claude:
+  - Which tasks are genuinely turn-by-turn thinking?
+  - Which tasks are actually whole tasks being broken into multiple prompts out of habit?
+- Identify the task you'd most like to delegate.
+- If the task is **multi-step**, produces a **real file/deliverable**, or **spans multiple tools**, consider handing it off to Claude.
+- When handing off a task, describe the **desired outcome**, rather than starting with the first individual question.
+
+---
