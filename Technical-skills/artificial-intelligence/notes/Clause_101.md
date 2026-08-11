@@ -569,6 +569,12 @@ The goal is to work collaboratively:
 
 ---
 
+#### Video
+
+[Delegation Diligence Loop — YouTube](https://www.youtube.com/watch?v=0vZ_UVLhSQQ)
+
+---
+
 #### Key takeaways
 
 - Claude is an **AI collaborator and thinking partner** that combines AI intelligence with your context and expertise.
@@ -823,3 +829,256 @@ Once configured, your selected style applies automatically across your conversat
 
 ---
 
+## Lesson 3 : Getting Better Results
+
+### Learning Objective
+
+- Recognize common challenges when starting out with AI and use troubleshooting techniques to overcome them
+- Define AI Fluency and know where to go to learn more about working with AI in a fluent way
+- Explain how you might set up evals to better understand how Claude might perform with your unique workflows
+
+---
+
+### Common challenges and how to fix them
+
+When working with Claude, the response may not always match your expectations. This is normal and provides an opportunity to **refine your prompt and approach**.
+
+| Challenge | What's happening | How to fix it |
+|---|---|---|
+| **Claude's response is too generic** | The prompt doesn't provide enough context about your specific situation. | Add details about your **audience, role, objectives, and constraints**. |
+| **The response is too long or too short** | Claude is guessing the appropriate level of detail. | Specify the desired **length or level of detail**, such as "Keep this under 100 words" or "Give me a comprehensive analysis." |
+| **Claude didn't follow my format** | Claude understood what you wanted but not how you wanted it presented. | **Show rather than just tell**. Provide an example or explicitly describe the required structure. |
+| **Information sounds correct but is wrong** | Claude can sometimes generate plausible but incorrect information, particularly for specific facts or niche topics. | **Verify important information independently**. Ask Claude for sources or confidence levels, and use web search when appropriate. |
+| **The tone isn't right** | Claude's default helpful and professional tone may not match your needs. | Describe the desired tone in plain language and provide an **example** of the style you want. |
+
+#### Example: Adding context
+
+Instead of:
+
+> "Write an email about the project delay."
+
+Provide more context:
+
+> "Write an email to our enterprise client explaining that the software integration will be delayed by two weeks. They've been patient so far, but this is the second delay. Keep it professional but apologetic."
+
+**Key idea:** The more relevant context and clear constraints you provide, the more tailored Claude's response can be.
+
+---
+
+### The iteration mindset
+
+One of the most important habits when working with Claude is understanding that the **first prompt rarely produces a perfect result**.
+
+Treat the initial prompt as the **start of a conversation**, not a one-shot request.
+
+#### Treat first drafts as starting points
+
+- Review Claude's response.
+- Identify what is working and what needs improvement.
+- Refine the response through additional prompts and feedback.
+- Use each iteration to move closer to the desired result.
+
+#### Give specific feedback
+
+Specific feedback is more useful than vague instructions.
+
+Instead of:
+
+> "Make it shorter."
+
+Try:
+
+> "Cut the first two paragraphs and make the conclusion more action-oriented."
+
+Specific feedback gives Claude a clearer direction for the next iteration.
+
+#### Know when to start fresh
+
+If a conversation has gone significantly off track, it may be more efficient to **start a new chat** with a clearer prompt.
+
+Rather than spending multiple messages trying to redirect an increasingly confused conversation, reset the context and explain the task again.
+
+> **Key idea:** Treat Claude's first response as a draft. Review, give specific feedback, iterate, and start fresh when necessary.
+
+---
+
+### What is AI Fluency?
+
+**AI Fluency** is the ability to collaborate effectively with AI tools. It goes beyond knowing how to use AI features and involves developing the **judgment and skills to use AI effectively across different situations**.
+
+### The 4D Framework for AI Fluency
+
+The **4D Framework for AI Fluency** was developed through research collaboration between Professor Rick Dakan of Ringling College of Art and Design and Professor Joseph Feller of University College Cork.
+
+It identifies four core competencies:
+
+#### Delegation
+
+Deciding **what work should be done by humans, what should be done by AI, and how to divide tasks between them**.
+
+This involves:
+
+- Understanding your goals.
+- Understanding AI capabilities and limitations.
+- Making strategic decisions about how humans and AI should collaborate.
+
+#### Description
+
+Effectively **communicating with AI systems**.
+
+This includes:
+
+- Clearly defining desired outputs.
+- Guiding AI through a task.
+- Specifying desired behaviors and interactions.
+
+#### Discernment
+
+**Critically evaluating AI outputs and processes**.
+
+This involves assessing:
+
+- Quality
+- Accuracy
+- Appropriateness
+- Areas that need improvement
+
+#### Diligence
+
+Using AI **responsibly and ethically**.
+
+This includes:
+
+- Making thoughtful choices about AI systems and interactions.
+- Maintaining transparency about AI-assisted work.
+- Taking accountability for the final result.
+
+### Applying the 4D Framework
+
+The course has already introduced several of these competencies:
+
+- The **prompt framework** from Lesson 2 — setting the stage, defining the task, and specifying rules — is rooted in **Description**.
+- The troubleshooting techniques from this lesson draw on **Discernment** and **Diligence**.
+- Deciding when Claude should act as a thinking partner versus when a search box is sufficient involves **Delegation**.
+
+> **AI Fluency is not just knowing how to use AI. It's knowing how to collaborate with AI effectively, critically, and responsibly.**
+
+---
+
+### Evaluating Claude for Your Workflows
+
+As you start using Claude for recurring tasks, **evaluations (evals)** help you determine how well Claude actually performs for your specific workflow. Evals are a systematic way to test Claude's outputs and build better judgment about when and how to use it.
+
+#### Why Evals Matter
+
+Every workflow is different. Claude may perform extremely well on one type of task but require more context, examples, or human review for another.
+
+Evals can help you:
+
+- Identify where Claude provides the most value
+- Find tasks where Claude needs additional context or examples
+- Build confidence in Claude's outputs for recurring workflows
+- Determine where human review is still necessary
+
+#### A Simple Eval Process
+
+You don't need a complex evaluation system to get started. A basic eval can be done in four steps:
+
+1. **Gather examples** — Collect 5–10 examples of a task you regularly perform, such as emails, reports, analyses, or other work.
+2. **Create test prompts** — Write prompts that ask Claude to perform the same type of task using the context you would normally provide.
+3. **Compare outputs** — Evaluate Claude's responses against your existing examples and ask:
+   - Did Claude capture the important information?
+   - Is the tone and style appropriate?
+   - What is missing or could be improved?
+4. **Refine your approach** — Use the results to improve your prompts, provide better examples, or identify situations where human review is essential.
+
+Evals turn your experience with Claude from **"it seems good"** into a more systematic understanding of where Claude performs reliably and where it needs additional guidance.
+
+---
+
+### Delegation diligence loop
+
+The **delegation diligence loop** is a systematic way to determine whether AI can reliably perform a specific analytical task. Instead of blindly trusting AI-generated results, test its performance against data and analyses you already understand.
+
+#### Why it matters
+
+- AI can be useful for data analysis, but its outputs should not automatically be treated as correct.
+- Testing AI on known data helps identify:
+  - Where AI performs reliably
+  - Where additional context or instructions are needed
+  - Where AI has capability gaps
+  - Which tasks should or should not be delegated
+- The goal is to build **validated confidence**, rather than relying on assumptions about what AI can do.
+
+#### The delegation diligence loop
+
+1. **Identify a task to delegate**
+   - Choose a specific analytical task that you perform regularly.
+   - Be clear about what you want AI to handle and what you want to retain responsibility for.
+
+2. **Use known data**
+   - Find historical data where the analysis has already been completed.
+   - Make sure you know what the correct results should be so you can evaluate AI's output.
+
+3. **Reproduce the analysis with AI**
+   - Provide the necessary data, context, and instructions.
+   - Ask AI to perform the same analysis.
+
+4. **Evaluate the output**
+   - Compare AI's results against the known results.
+   - Check both the final conclusions and how AI arrived at them.
+   - Look for missing information, incorrect assumptions, or gaps in reasoning.
+
+5. **Refine the delegation**
+   - If AI makes mistakes, determine whether additional context or clearer instructions can fix the issue.
+   - Add the necessary information to future prompts.
+
+6. **Test again**
+   - Repeat the process after refining the approach.
+   - If AI consistently produces reliable results, you have a validated workflow.
+   - If repeated refinement does not resolve the problems, the task may not be suitable for delegation.
+
+#### Validation builds confidence, not responsibility
+
+- Validating AI's performance does **not** remove human responsibility.
+- Continue checking whether results make sense when working with new data.
+- Remain accountable for the final analysis and decisions.
+- Be transparent about AI's involvement when appropriate.
+
+#### Using AI when you're not a data expert
+
+AI can also help users who are less comfortable with data analysis by:
+
+- Writing or explaining spreadsheet formulas
+- Cleaning and reformatting messy data
+- Brainstorming analytical approaches
+- Explaining possible solutions step by step
+- Helping implement analytical workflows
+
+When using AI this way, continue asking for explanations and clarifications so that you understand the process rather than blindly accepting the output.
+
+#### General principle
+
+> **Test first → Validate → Refine → Test again → Delegate with confidence**
+
+The same approach can be applied to many recurring analytical tasks, including forecasting, survey analysis, reporting, budgeting, and data-driven decision-making.
+
+#### Video
+
+[Delegation Diligence Loop — YouTube](https://www.youtube.com/watch?v=Zzn-g8lvLMA)
+
+---
+
+#### Applying the evaluation approach
+
+To evaluate how Claude performs on a recurring data task:
+
+1. Find a dataset you have already analyzed manually.
+2. Create prompts asking Claude to perform the same analysis.
+3. Compare Claude's results with your original analysis.
+4. Identify patterns in what Claude gets right or wrong.
+5. Refine your prompts and repeat the evaluation.
+
+This lightweight evaluation builds intuition about where Claude works well, where it needs additional guidance, and where human review should be focused.
+
+---
