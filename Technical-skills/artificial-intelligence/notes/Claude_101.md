@@ -7,8 +7,7 @@ These notes are my personal study notes based on Anthropic's Claude 101 course.
 - Source: https://anthropic.skilljar.com/
 - Copyright: © 2025 Anthropic. All rights reserved.
 
-These notes are independently written summaries for educational and reference purposes and are not official Anthropic course materials.
----
+## These notes are independently written summaries for educational and reference purposes and are not official Anthropic course materials.
 
 # Meet Claude
 
@@ -843,13 +842,13 @@ Once configured, your selected style applies automatically across your conversat
 
 When working with Claude, the response may not always match your expectations. This is normal and provides an opportunity to **refine your prompt and approach**.
 
-| Challenge | What's happening | How to fix it |
-|---|---|---|
-| **Claude's response is too generic** | The prompt doesn't provide enough context about your specific situation. | Add details about your **audience, role, objectives, and constraints**. |
-| **The response is too long or too short** | Claude is guessing the appropriate level of detail. | Specify the desired **length or level of detail**, such as "Keep this under 100 words" or "Give me a comprehensive analysis." |
-| **Claude didn't follow my format** | Claude understood what you wanted but not how you wanted it presented. | **Show rather than just tell**. Provide an example or explicitly describe the required structure. |
+| Challenge                                   | What's happening                                                                                                    | How to fix it                                                                                                                     |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| **Claude's response is too generic**        | The prompt doesn't provide enough context about your specific situation.                                            | Add details about your **audience, role, objectives, and constraints**.                                                           |
+| **The response is too long or too short**   | Claude is guessing the appropriate level of detail.                                                                 | Specify the desired **length or level of detail**, such as "Keep this under 100 words" or "Give me a comprehensive analysis."     |
+| **Claude didn't follow my format**          | Claude understood what you wanted but not how you wanted it presented.                                              | **Show rather than just tell**. Provide an example or explicitly describe the required structure.                                 |
 | **Information sounds correct but is wrong** | Claude can sometimes generate plausible but incorrect information, particularly for specific facts or niche topics. | **Verify important information independently**. Ask Claude for sources or confidence levels, and use web search when appropriate. |
-| **The tone isn't right** | Claude's default helpful and professional tone may not match your needs. | Describe the desired tone in plain language and provide an **example** of the style you want. |
+| **The tone isn't right**                    | Claude's default helpful and professional tone may not match your needs.                                            | Describe the desired tone in plain language and provide an **example** of the style you want.                                     |
 
 #### Example: Adding context
 
@@ -1082,3 +1081,47 @@ To evaluate how Claude performs on a recurring data task:
 This lightweight evaluation builds intuition about where Claude works well, where it needs additional guidance, and where human review should be focused.
 
 ---
+
+## Lesson 4 : How you'll work with Claude on your desktop
+
+### Learning Objectives
+
+- Distinguish the ways you work with Claude on the desktop — working with Claude turn by turn, handing whole tasks off for Claude to run, and building software in your codebase
+- Recognize which shape of work a task calls for before you start it
+- Find where each way of working lives in the desktop app today
+
+---
+
+### Working with Claude on your desktop
+
+Claude's desktop app supports three main ways of working, each suited to a different type of task.
+
+#### Three ways of working with Claude
+
+- **Working with Claude, turn by turn**
+  - You and Claude collaborate through an ongoing conversation.
+  - You provide a request, review the response, give feedback, and guide subsequent revisions.
+  - The work develops through the back-and-forth interaction.
+
+- **Handing work off to Claude**
+  - You describe the desired outcome rather than manually directing every step.
+  - Claude can plan and execute the work, then return the completed result for you to review.
+  - Useful for tasks where you care more about the final outcome than managing each individual step.
+
+- **Building software with Claude Code**
+  - Claude works directly within a codebase.
+  - It can read and modify code, run commands, and test changes.
+  - Primarily designed for developers and software development workflows.
+
+#### Where each workflow happens
+
+| Workflow | Claude desktop location |
+|---|---|
+| Turn-by-turn collaboration | **Chat** |
+| Handing work off to Claude | **Cowork** |
+| Building software | **Code** |
+
+The key distinction is **how much of the work you are directly coordinating**: Chat is collaborative and iterative, Cowork allows Claude to take ownership of a larger task, and Claude Code works directly with software projects.
+
+---
+
