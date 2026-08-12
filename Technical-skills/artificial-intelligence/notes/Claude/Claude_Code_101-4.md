@@ -594,3 +594,232 @@ Skills are especially useful for repeated workflows such as code reviews, commit
 
 ---
 
+## Lesson 4 : MCP (Model Context Protocol)
+
+---
+
+### What is MCP?
+
+**Model Context Protocol (MCP)** is an open standard that allows Claude Code to connect to **external tools and data sources**.
+
+A lot of the context Claude needs may live outside the codebase:
+
+- Databases
+- Project management tools
+- Productivity applications
+- Public repositories
+- External documentation
+- Other developer tools
+
+MCP provides a standardized way for Claude Code to access this external context.
+
+The important idea is:
+
+> **MCP connects Claude Code to external tools and data so it can take actions and gather information beyond the local codebase.**
+
+### MCP and Tools
+
+In agentic AI, **tools** give an agent the ability to perform actions rather than simply return text.
+
+A traditional AI interaction might look like:
+
+**Prompt → Text response**
+
+An agent with tools can instead work like:
+
+**Prompt → Reason → Use tool → Receive result → Continue**
+
+For example:
+
+- **Linear MCP** can allow Claude Code to access project and issue information.
+- **Context7 MCP** can provide up-to-date documentation for dependencies.
+- Other MCP connectors can connect Claude Code to different external services.
+
+### MCP vs. API
+
+MCP and APIs are related, but they solve different problems.
+
+An **API** is a way for software to communicate with another software system.
+
+**MCP** is a standardized protocol designed specifically for connecting AI models and agents to tools and data sources.
+
+| | API | MCP |
+|---|---|---|
+| **Purpose** | Allows software to communicate with another service | Allows AI agents to discover and use external tools and data |
+| **Designed for** | Applications and software systems | AI models and agents |
+| **Interaction** | Application explicitly calls an endpoint | Agent can determine when a tool should be used |
+| **Tool discovery** | Usually requires the developer to know the available endpoints | Tools can expose their capabilities to the agent |
+| **Context** | Returns data requested by the application | Designed to provide models with the context and capabilities needed for a task |
+| **Standardization** | Each API has its own interface and conventions | MCP provides a common protocol for connecting AI agents to tools |
+| **Example** | Your application calls a GitHub API endpoint to retrieve a repository | Claude Code uses a GitHub MCP server to interact with GitHub through available tools |
+| **Main mental model** | **Software → Service** | **AI Agent → Tool/Data Source** |
+
+The key distinction is:
+
+> **An API is an interface that software uses to communicate with a service. MCP is a standardized interface that allows AI agents to discover and use tools and external context.**
+
+MCP servers can themselves communicate with underlying APIs or services. MCP therefore does **not necessarily replace APIs** — it provides an agent-friendly layer for interacting with external capabilities.
+
+### Adding an MCP Server
+
+You can add MCP servers with:
+
+```bash
+claude mcp add
+```
+
+There are two main types of MCP servers.
+
+#### HTTP Servers
+
+**HTTP servers** connect to remote services over the network.
+
+The server is hosted remotely, usually by the service provider.
+
+#### Stdio Servers
+
+**Stdio servers** run as local processes on your machine.
+
+They communicate with Claude Code through standard input and output.
+
+### Managing MCP Servers
+
+Inside a Claude Code session, use:
+
+```text
+/mcp
+```
+
+This allows you to:
+
+- See which MCP servers are connected
+- Check their status
+- Disable servers you don't need
+
+This is especially important because MCP servers have a cost in terms of context usage.
+
+### Scoping MCP Servers
+
+MCP servers can be configured at three different scopes.
+
+#### Local
+
+Available only in the **current project and only for you**.
+
+#### User
+
+Available across **all of your projects**.
+
+#### Project
+
+Configured through:
+
+```text
+.mcp.json
+```
+
+The `.mcp.json` file can be committed to version control.
+
+This allows everyone working on the project to automatically receive the same MCP server configuration.
+
+### MCP and Context Usage
+
+One of the most important things to understand about MCP is that connected servers can consume **context window space even when you aren't actively using them**.
+
+MCP servers provide tool definitions to Claude so that it knows what capabilities are available.
+
+If you connect many servers, all of those tool definitions can consume part of your available context.
+
+Therefore:
+
+> **More connected MCP servers ≠ automatically better.**
+
+If you aren't using a server, consider disabling it with:
+
+```text
+/mcp
+```
+
+### MCP vs. CLI Tools
+
+If an MCP-connected service already has a CLI equivalent, the CLI can sometimes be more context-efficient.
+
+For example:
+
+- GitHub → `gh`
+- AWS → `aws`
+
+A CLI does not require Claude Code to keep a large collection of persistent MCP tool definitions in its context.
+
+The general principle is:
+
+> **Use the simplest tool that gives Claude the capability it needs without unnecessarily consuming context.**
+
+### MCP vs. Skills
+
+A **Skill** can sometimes be a better choice than MCP when the goal is primarily to provide specialized instructions or workflows.
+
+Skills load their **name and description** first, allowing Claude to determine whether the skill is relevant before loading its full contents.
+
+This can be more context-efficient than keeping many MCP tool definitions available.
+
+A useful distinction is:
+
+**MCP → Gives Claude access to external tools and data**
+
+**Skill → Gives Claude specialized instructions for performing a task**
+
+### Tool Search
+
+If MCP tools consume more than **10% of the context window**, Claude Code can automatically switch to **tool search mode**.
+
+Instead of keeping all tools immediately available in context, Claude can discover the tools it needs on demand.
+
+This helps reduce context usage, although the video notes that on-demand discovery may be less reliable than having the relevant tools already available.
+
+### Key Mental Model
+
+Don't think of MCP as simply another API.
+
+Think of it as:
+
+> **"A standardized way for an AI agent to discover and interact with external tools and sources of context."**
+
+The broader architecture can look like:
+
+**Claude Code → MCP → External Tool / Service → Data or Action**
+
+The external service might itself use an API internally.
+
+### Recap
+
+**MCP = Standardized connection between AI agents and external tools/data.**
+
+It allows Claude Code to:
+
+- Access external information
+- Use third-party tools
+- Interact with project management systems
+- Retrieve current documentation
+- Connect to remote or local services
+- Perform actions outside the local codebase
+
+The main concepts are:
+
+**MCP → External tools and data**
+
+**API → Software-to-service communication**
+
+**Skill → Specialized task instructions**
+
+**CLI → Direct command-line interaction**
+
+MCP is powerful, but connected servers consume context. Keep only the servers you actually need active and use `/mcp` to manage them.
+
+---
+
+### Video
+
+[MCP — YouTube](https://www.youtube.com/watch?v=kkBFmwkDzdo)
+
+---
