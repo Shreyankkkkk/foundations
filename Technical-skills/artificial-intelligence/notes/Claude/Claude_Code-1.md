@@ -840,3 +840,552 @@ Do not use it casually on your normal machine or important projects.
 [Permission Modes - Youtube](https://www.youtube.com/watch?v=Fjg4O-ZcRSU)
 
 ---
+
+## Lesson 4 - Hooks
+
+---
+
+Hooks turn a rule from:
+
+> "Claude usually follows this."
+
+into:
+
+> "Claude cannot skip this."
+
+A hook is deterministic code that runs at a specific point in Claude's workflow.
+
+---
+
+### Why Use Hooks?
+
+`CLAUDE.md` contains guidance.
+
+For example:
+
+```text
+Always format code after editing.
+```
+
+Claude will usually follow it, but it is not guaranteed.
+
+A hook can enforce the behavior automatically.
+
+```text
+CLAUDE.md
+    ↓
+"Please do this"
+    ↓
+Claude decides whether to follow it
+
+
+Hook
+    ↓
+Code runs automatically
+    ↓
+Behavior is enforced
+```
+
+Use hooks for rules that **must not be skipped**.
+
+---
+
+### Important Hook Events
+
+Claude Code has many hook events, but these are the important ones to know.
+
+| Hook | When It Runs | Common Use |
+|---|---|---|
+| `PreToolUse` | Before a tool runs | Block or modify tool calls |
+| `PostToolUse` | After a successful tool runs | Formatting, linting |
+| `Stop` | When Claude tries to finish its turn | Check whether Claude is actually done |
+| `SubagentStop` | When a sub-agent finishes | Verify sub-agent results |
+| `PreCompact` | Before compaction | Prepare state/context |
+| `PostCompact` | After compaction | Run actions after compaction |
+| `InstructionsLoaded` | When instructions/rules load | Audit loaded instructions |
+| `SessionStart` | When a session starts | Initialize or restore context |
+
+---
+
+### `PreToolUse`
+
+`PreToolUse` is the main enforcement hook.
+
+It runs **before** a tool call happens.
+
+```text
+Claude wants to use a tool
+        ↓
+   PreToolUse
+        ↓
+ ┌──────┼──────┐
+ ↓      ↓      ↓
+allow  deny    ask
+ ↓      ↓      ↓
+run    stop   user decides
+```
+
+This makes it useful for preventing dangerous actions.
+
+---
+
+### PreToolUse Decisions
+
+A `PreToolUse` hook can return JSON containing:
+
+```text
+permissionDecision
+```
+
+Possible values:
+
+#### `allow`
+
+Allow the tool call.
+
+#### `deny`
+
+Block the tool call.
+
+#### `ask`
+
+Send the decision back to the user.
+
+#### `defer`
+
+Only relevant to certain non-interactive `-p` runs.
+
+Usually you will use:
+
+```text
+allow
+deny
+ask
+```
+
+---
+
+### PreToolUse JSON Structure
+
+Example:
+
+```json
+{
+  "hookSpecificOutput": {
+    "hookEventName": "PreToolUse",
+    "permissionDecision": "deny",
+    "permissionDecisionReason": "This command is not allowed."
+  }
+}
+```
+
+---
+
+### `updatedInput`
+
+`PreToolUse` can also modify the tool input instead of blocking it.
+
+Example concept:
+
+```text
+Claude creates command containing secret
+            ↓
+       PreToolUse
+            ↓
+      Secret detected
+            ↓
+       Replace secret
+            ↓
+      Modified command
+            ↓
+       Command runs
+```
+
+This is useful for things such as **redacting secrets**.
+
+#### Important
+
+`updatedInput` replaces the **entire input object**.
+
+Therefore, when modifying one field, make sure the other required fields are included as well.
+
+---
+
+### Exit Codes
+
+Hooks can also communicate using exit codes.
+
+| Exit Code | Meaning |
+|---|---|
+| `0` | Success |
+| `2` | Blocking error |
+| Anything else | Non-blocking error |
+
+---
+
+### Exit Code `0`
+
+`0` means the hook succeeded.
+
+If the hook prints JSON to standard output, Claude can parse it.
+
+For most events, plain text output is ignored.
+
+However, for:
+
+- `SessionStart`
+- `UserPromptSubmit`
+- `UserPromptExpansion`
+
+plain text can be added to Claude's context.
+
+This makes these events useful for injecting information back into the conversation.
+
+---
+
+### Exit Code `2`
+
+`2` means:
+
+> **Block this action.**
+
+Standard error is sent back to Claude as context.
+
+This is the main blocking exit code.
+
+It can also be used with `Stop` to tell Claude:
+
+> "You are not finished yet."
+
+---
+
+### Exit Code `1`
+
+Be careful with this one.
+
+```text
+exit 1
+```
+
+does **not** mean "block."
+
+It is a non-blocking error.
+
+If you need to prevent an action:
+
+```text
+exit 2
+```
+
+---
+
+### PostToolUse
+
+`PostToolUse` runs **after** a successful tool call.
+
+Useful for:
+
+- Auto-formatting
+- Auto-linting
+- Running checks
+- Feeding feedback back to Claude
+
+Important:
+
+> `PostToolUse` is too late to prevent the tool call because the tool has already executed.
+
+It can still provide information back to Claude.
+
+---
+
+### Stop
+
+`Stop` runs when Claude tries to finish its turn.
+
+This allows you to check whether Claude is actually finished.
+
+Example:
+
+```text
+Claude says:
+"I'm done."
+
+        ↓
+
+     Stop hook
+
+        ↓
+
+Are all required tests passing?
+        ↓
+   No → block stop
+        ↓
+Claude continues working
+```
+
+This is useful for enforcing completion requirements.
+
+---
+
+### SubagentStop
+
+`SubagentStop` works similarly to `Stop`, but for sub-agents.
+
+Use it when you want to verify the result of work performed by a sub-agent before considering that work complete.
+
+---
+
+### Compaction Hooks
+
+There are hooks around compaction:
+
+```text
+PreCompact
+    ↓
+Compaction
+    ↓
+PostCompact
+```
+
+However, there is an important distinction.
+
+If your goal is to **re-inject context into Claude after compaction**, use:
+
+```text
+SessionStart
+```
+
+with the:
+
+```text
+compact
+```
+
+matcher.
+
+Do not rely on `PostCompact` for this purpose.
+
+---
+
+### Preserving State Across Compaction
+
+A useful pattern:
+
+```text
+Long Claude session
+        ↓
+Conversation gets large
+        ↓
+Compaction
+        ↓
+SessionStart + compact matcher
+        ↓
+Print important state
+        ↓
+Claude receives the state
+```
+
+For example, the hook could provide:
+
+```text
+Files currently being worked on:
+- src/main.py
+- src/models.py
+- tests/test_models.py
+
+Current task:
+Refactoring the data processing pipeline.
+
+Current status:
+Tests 18/20 passing.
+```
+
+Claude can then continue with the important context instead of starting cold.
+
+---
+
+### `InstructionsLoaded`
+
+Runs when a `CLAUDE.md` or rule file is loaded.
+
+Useful for:
+
+- Auditing which instructions were loaded
+- Tracking instruction loading
+- Debugging instruction behavior
+
+---
+
+### `SessionStart`
+
+Runs when a session starts.
+
+Useful for:
+
+- Initializing the environment
+- Providing startup information
+- Restoring state
+- Re-injecting information after compaction
+
+A `startup` source can be used when you only want behavior on fresh starts.
+
+---
+
+### Real Guardrail: Redact Instead of Block
+
+A hook doesn't always have to say:
+
+```text
+NO.
+```
+
+It can modify the action.
+
+Example:
+
+```text
+Claude:
+
+curl ... sk_live_ABC123 ...
+```
+
+↓
+
+```text
+PreToolUse hook
+```
+
+↓
+
+```text
+Detect sk_live_
+```
+
+↓
+
+```text
+Replace with [REDACTED]
+```
+
+↓
+
+```text
+curl ... [REDACTED] ...
+```
+
+The command can still execute while the sensitive value is removed.
+
+This is the difference between:
+
+```text
+Block
+```
+
+and:
+
+```text
+Modify + allow
+```
+
+---
+
+### Hook vs CLAUDE.md vs Skill
+
+| Tool | Purpose |
+|---|---|
+| `CLAUDE.md` | General guidance and conventions |
+| Skill | Repeatable procedures |
+| Hook | Deterministic enforcement |
+
+Simple rule:
+
+> If Claude must not be able to skip it, use a hook.
+
+---
+
+### Useful Hook Patterns
+
+#### Auto-formatting
+
+```text
+Claude edits file
+      ↓
+PostToolUse
+      ↓
+Formatter runs
+```
+
+#### Blocking dangerous commands
+
+```text
+Claude requests command
+      ↓
+PreToolUse
+      ↓
+Check command
+      ↓
+Dangerous?
+  ↓        ↓
+ Yes       No
+  ↓         ↓
+deny      allow
+```
+
+#### Verification before finishing
+
+```text
+Claude wants to stop
+      ↓
+Stop hook
+      ↓
+Run tests/checks
+      ↓
+Pass?
+ ↓      ↓
+Yes     No
+ ↓       ↓
+allow   block
+         ↓
+     Claude continues
+```
+
+#### Preserving state
+
+```text
+Compaction
+    ↓
+SessionStart
+    ↓
+compact matcher
+    ↓
+Inject current state
+```
+
+---
+
+### Key Takeaways
+
+1. Hooks provide **deterministic enforcement**.
+2. `CLAUDE.md` gives guidance; hooks enforce behavior.
+3. `PreToolUse` is the main tool-call enforcement hook.
+4. `PreToolUse` can `allow`, `deny`, or `ask`.
+5. `PreToolUse` can modify tool inputs with `updatedInput`.
+6. `updatedInput` replaces the entire input object.
+7. Exit code `0` means success.
+8. Exit code `2` means blocking error.
+9. Exit code `1` is **not** a blocking error.
+10. `PostToolUse` is useful for formatting and linting.
+11. `Stop` can prevent Claude from ending a turn prematurely.
+12. `SubagentStop` applies the same idea to sub-agents.
+13. `SessionStart` can restore context after compaction using the `compact` matcher.
+14. `InstructionsLoaded` can help audit loaded instructions.
+15. Hooks can **modify** actions instead of only blocking them.
+16. Use hooks for rules that must be enforced every time.
+
+---
+
+### Video
+
+[Claude Code Hooks - Youtube](https://www.youtube.com/watch?v=8ALu1dk681s)
+
+---
