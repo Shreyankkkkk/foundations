@@ -823,3 +823,130 @@ MCP is powerful, but connected servers consume context. Keep only the servers yo
 [MCP — YouTube](https://www.youtube.com/watch?v=kkBFmwkDzdo)
 
 ---
+
+## Lesson 5 : Hooks
+
+---
+
+Hooks let you run commands at specific points in Claude Code's lifecycle. The key difference between hooks and prompts is that hooks are **deterministic** — they always run.
+
+### Why Use Hooks?
+
+You can tell Claude in `CLAUDE.md` to run Prettier after every file edit, but Claude may occasionally forget. A hook makes the behavior happen **every time, without exceptions**.
+
+Common use cases:
+
+- Auto-formatting after file edits
+- Logging executed commands for compliance
+- Blocking dangerous operations
+- Preventing modifications to production files
+- Sending notifications when Claude finishes a task
+
+### How Hooks Work
+
+Hooks are configured in `settings.json`. You choose:
+
+1. An **event** — when the hook should run
+2. An optional **matcher** — which tools the hook applies to
+3. A **command** — what should actually execute
+
+Common events:
+
+- **`UserPromptSubmit`** — runs when you submit a prompt, before Claude processes it
+- **`PreToolUse`** — runs before a tool call
+- **`PostToolUse`** — runs after a tool call completes
+- **`Notification`** — runs when Claude sends a notification
+- **`Stop`** — runs when Claude finishes responding
+
+You can configure hooks through `/hooks` inside Claude Code or directly in `settings.json`.
+
+### Practical Example: Auto-Formatting
+
+A common use case is automatically formatting files after Claude edits them.
+
+Use a **PostToolUse** hook with a matcher such as:
+
+```json
+"Edit|MultiEdit|Write"
+```
+
+The hook can inspect the file extension and run the appropriate formatter:
+
+- TypeScript/JavaScript → Prettier
+- Go → `gofmt`
+- Python → Ruff
+- etc.
+
+This guarantees formatting happens after Claude modifies a file.
+
+### Blocking Dangerous Operations
+
+**PreToolUse** hooks can block a tool call before it executes.
+
+The hook receives the tool name and input as JSON through `stdin`.
+
+#### Exit codes
+
+- **Exit code `0`** → allow the action
+- **Exit code `2`** → block the action
+  - The `stderr` message is sent back to Claude as feedback so it understands why the action was blocked and can adjust.
+- **Other non-zero codes** → report an error without necessarily blocking the action
+
+This allows you to enforce rules that must be **guaranteed**, rather than merely suggested.
+
+Examples:
+
+- Block writes to production configuration
+- Block `rm -rf` commands
+- Block commits directly to `main`
+- Prevent dangerous database operations
+
+> **Rule of thumb:** If something must happen every time without fail, use a hook instead of a prompt.
+
+### Project-Level Hooks
+
+Hooks configured in:
+
+```text
+.claude/settings.json
+```
+
+are project-level and can be committed to version control.
+
+This means the entire team gets the same hooks automatically.
+
+Use the `CLAUDE_PROJECT_DIR` environment variable when referencing project scripts so they work regardless of Claude's current working directory.
+
+### Hooks vs CLAUDE.md
+
+| CLAUDE.md | Hooks |
+|---|---|
+| Gives Claude instructions | Executes commands deterministically |
+| Claude can interpret and follow instructions | Commands always execute |
+| Good for coding conventions and project context | Good for enforcement and automation |
+| Claude may occasionally miss an instruction | Runs automatically at the configured lifecycle event |
+| "Prefer Prettier" | "Run Prettier after every edit" |
+
+#### Key distinction
+
+**CLAUDE.md = tell Claude what to do.**
+
+**Hooks = guarantee that something happens.**
+
+### Recap
+
+- Hooks provide **deterministic control** over Claude Code.
+- Use **PostToolUse** for things like formatting and logging.
+- Use **PreToolUse** to block dangerous operations.
+- Configure hooks with `/hooks` or `settings.json`.
+- Put project hooks in `.claude/settings.json` and commit them so the team shares the same rules.
+- Use `CLAUDE_PROJECT_DIR` when referencing project scripts.
+- If something needs to happen **every time without fail**, don't put it in a prompt — **put it in a hook**.
+
+---
+
+### Video
+
+[Hooks — YouTube](https://www.youtube.com/watch?v=IkaPHiMDazM)
+
+---
