@@ -646,3 +646,197 @@ The important distinction:
 [Building Verification Skills - Youtube](https://www.youtube.com/watch?v=soLPOXXAc1w)
 
 ---
+
+## Lesson 3 : Permission Modes
+
+---
+
+### Permission Modes
+
+Permission modes control what Claude is allowed to do without asking for approval.
+
+Instead of approving every action individually, choose a mode that matches the level of trust you are comfortable with.
+
+---
+
+### The Six Permission Modes
+
+| Mode | What Claude Can Do |
+|---|---|
+| **Manual** | Reads without prompting. Everything else requires approval. |
+| **Accept Edits** | Reads, edits files, and runs common file-system Bash commands without asking. |
+| **Plan** | Reads and researches, then proposes changes without editing. |
+| **Auto** | Accepts actions automatically, with a separate classifier model reviewing each action first. |
+| **Don't Ask** | Only pre-approved tools are allowed. Everything else is automatically denied. |
+| **Bypass Permissions** | Skips all permission checks. Only use inside an isolated container or VM. |
+
+---
+
+### Cycling Through Modes
+
+Press:
+
+```text
+Shift + Tab
+```
+
+This cycles through the everyday modes.
+
+The status bar shows the current permission mode.
+
+---
+
+### Auto Mode
+
+**Auto** is designed for hands-off work.
+
+Before each action runs:
+
+```text
+Claude wants to perform an action
+        ↓
+Classifier reviews the action
+        ↓
+Allowed → action runs
+Blocked → action does not run
+```
+
+The classifier checks whether Claude's **intent** matches what it is supposed to be doing.
+
+#### Examples of actions it may block
+
+- Production deployments
+- Production migrations
+- Force pushes
+- Piping downloaded code directly into a shell
+- Sending sensitive information to external endpoints
+- Destroying files needed for the session
+
+#### Examples of normal actions it may allow
+
+- Editing files in the local project
+- Installing dependencies from the lock file
+- Read-only requests
+- Pushing to your own branch
+
+---
+
+### What Auto Mode Does NOT Check
+
+The classifier checks **intent**, not whether the resulting code is correct.
+
+For example:
+
+```text
+You ask Claude to refactor authentication
+        ↓
+Claude writes broken authentication code
+        ↓
+Classifier sees a normal refactor
+        ↓
+Action is allowed
+```
+
+So Auto mode does **not** replace testing or verification.
+
+---
+
+### Auto Mode + Stop Hook
+
+For stronger protection, combine:
+
+```text
+Auto Mode
+    +
+Stop Hook
+```
+
+#### Auto Mode
+
+Checks what Claude is **trying to do** before each action.
+
+#### Stop Hook
+
+Checks whether the resulting code **actually works** after Claude finishes.
+
+```text
+           Claude works
+                ↓
+      ┌─────────┴─────────┐
+      ↓                   ↓
+ Auto classifier      Stop hook
+ checks intent        runs checks/tests
+      ↓                   ↓
+ Safe action?          Correct code?
+```
+
+Together:
+
+- **Auto mode → intent**
+- **Stop hook → correctness**
+
+---
+
+### Don't Ask Mode
+
+Use **Don't Ask** when nobody will be available to approve prompts.
+
+Good use cases:
+
+- CI pipelines
+- Scheduled jobs
+- Overnight tasks
+- Automated batches
+
+Only pre-approved tools are allowed.
+
+Anything outside the approved list is automatically denied rather than waiting for someone to respond.
+
+---
+
+### Bypass Permissions
+
+**Bypass Permissions** skips permission checks completely.
+
+It is equivalent to running Claude with dangerously skipped permissions.
+
+Only use it inside an **isolated container or virtual machine**.
+
+Do not use it casually on your normal machine or important projects.
+
+---
+
+### Choosing a Mode
+
+| Situation | Recommended Mode |
+|---|---|
+| Normal hands-on work | **Manual** |
+| Coding while reviewing changes afterward | **Accept Edits** |
+| Researching/planning before implementation | **Plan** |
+| Hands-off development | **Auto** |
+| CI / scheduled / unattended work | **Don't Ask** |
+| Fully isolated environment | **Bypass Permissions** |
+
+---
+
+### Key Takeaways
+
+1. Permission modes control what Claude can run without asking.
+2. **Manual** is the most hands-on everyday mode.
+3. **Accept Edits** is useful for normal coding iterations.
+4. **Plan** is for research and planning without modifications.
+5. **Auto** is the main hands-off mode.
+6. Auto uses a separate classifier to review actions before execution.
+7. The classifier checks **intent**, not whether the code is correct.
+8. Pair Auto with a **stop hook** for post-task verification.
+9. **Don't Ask** is designed for unattended runs.
+10. **Bypass Permissions** should only be used in isolated environments.
+11. Use `Shift + Tab` to cycle through permission modes.
+
+---
+
+### Video
+
+[Permission Modes - Youtube](https://www.youtube.com/watch?v=Fjg4O-ZcRSU)
+
+---
