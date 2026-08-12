@@ -238,3 +238,179 @@ The main principle is:
 
 ---
 
+## Lesson 2 : Subagents
+
+---
+
+### What are Subagents?
+
+Subagents are **specialized assistants that Claude Code can delegate tasks to**.
+
+Each subagent operates in its own **isolated context window** with its own system prompt and task. Once it finishes, it returns a summary to the main Claude Code session while the detailed work it performed remains isolated.
+
+The main benefit is **context management**.
+
+Instead of having the main agent spend its context window exploring files, running searches, and investigating implementation details, a subagent can handle that work separately and return only the information that matters.
+
+### How Subagents Work
+
+Normally, everything Claude Code does contributes to the main context window:
+
+- Reading files
+- Searching the codebase
+- Running commands
+- Searching the web
+- Receiving tool results
+- Reasoning about the results
+
+This can consume a significant amount of context, even when the main task only requires a small piece of information.
+
+With a subagent, the workflow becomes:
+
+**Main Agent → Delegate Task → Subagent Explores → Subagent Summarizes → Main Agent Receives Result**
+
+The subagent receives two main inputs:
+
+1. A **system prompt** that defines how the subagent should behave
+2. A **task description** from the main agent describing what it needs to accomplish
+
+The subagent then works independently using its available tools.
+
+Its file reads, searches, tool calls, and intermediate reasoning stay inside its own context window.
+
+Once finished, the main agent receives a **summary of the results** rather than the entire journey.
+
+### Why Context Isolation Matters
+
+Consider a task where you need to understand how refunds work in an unfamiliar payment system.
+
+Without a subagent, Claude might:
+
+- Search the codebase
+- Read 15 different files
+- Trace multiple function calls
+- Search for related services
+- Investigate different payment providers
+- Eventually determine which service handles refunds
+
+All of that exploration becomes part of the main context window.
+
+If you only needed the answer:
+
+> **"Which service handles refunds?"**
+
+then most of that exploration is unnecessary context for the main agent.
+
+A subagent can perform the investigation separately and return something like:
+
+> **"Refunds are handled by the PaymentService in `services/payment.ts`."**
+
+This gives you the **answer without the journey**.
+
+### The Tradeoff
+
+Subagents improve context efficiency, but there is a tradeoff.
+
+The main agent does **not** have access to the complete process the subagent went through.
+
+It receives the subagent's summary rather than:
+
+- Every file it inspected
+- Every search it performed
+- Every intermediate result
+- Every reasoning step
+
+This means the main context stays clean, but you lose some visibility into how the conclusion was reached.
+
+For straightforward research tasks where you only need the result, this tradeoff is often worthwhile.
+
+### Built-in Subagents
+
+Claude Code includes several built-in subagents.
+
+#### General-purpose subagent
+
+Used for **multi-step tasks that require both exploration and action**.
+
+#### Explore subagent
+
+Used for **fast codebase exploration and searching** when you need to understand where something is or how something works.
+
+#### Plan subagent
+
+Used during **Plan Mode** to research and analyze the codebase before presenting an implementation plan.
+
+Claude Code can also use **custom subagents** that you define yourself.
+
+### Creating Your Own Subagent
+
+Subagents are defined using **Markdown files with YAML frontmatter**.
+
+The easiest way to create one is through Claude Code:
+
+```text
+/agents
+```
+
+Then select **Create new agent**.
+
+Claude will walk you through configuring the subagent, including:
+
+- Its scope
+- Its purpose
+- The tools it can access
+- Its name and description
+- Its behavior
+- Its color
+
+Claude then generates the configuration for the subagent.
+
+The description also helps Claude determine **when the subagent should be used** based on the task you give it.
+
+### Customizing Subagents
+
+Subagents can be customized beyond their basic configuration.
+
+#### Persistent memory
+
+A subagent can have **persistent memory**, allowing it to retain information across conversations.
+
+This is useful when you repeatedly use the same specialized subagent on a project.
+
+#### Preload skills
+
+You can also preload skills into a subagent using the `skill` key and specifying the skills by name.
+
+Unlike skills in the main conversation, the **entire skill is loaded into the subagent's context**, so this should be used intentionally.
+
+### Key Mental Model
+
+Don't think of a subagent as simply another Claude conversation.
+
+Think of it as:
+
+> **"A separate worker that handles a focused task and returns only the result I need."**
+
+The main agent can delegate context-heavy work while keeping its own context focused on the actual feature or problem being solved.
+
+### Recap
+
+**Subagents = Focused work + Isolated context + Summarized results**
+
+They are especially useful when a task requires a lot of exploration but the main agent only needs the final answer.
+
+The workflow is:
+
+**Main Agent → Delegate → Subagent explores → Subagent summarizes → Main Agent continues**
+
+Subagents help Claude Code scale to longer and more complex tasks by keeping unnecessary exploration out of the main context window.
+
+They can be used through Claude Code's built-in subagents or customized with your own system prompts, tools, memory, and skills.
+
+---
+
+### Video
+
+[Subagents - YouTube](https://www.youtube.com/watch?v=jKErNxuxPXg)
+
+---
