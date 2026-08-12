@@ -487,3 +487,80 @@ Be specific in your prompts, disable unnecessary MCP servers, use skills where a
 
 ---
 
+## Lesson 3 : Code Review
+
+---
+
+### Code Review
+
+Claude Code includes several features that can make the Git workflow faster and reduce friction when reviewing and shipping changes.
+
+### Review with a Subagent
+
+Before pushing a PR, ask Claude to use a **subagent** to review the changes.
+
+The subagent runs in its own context window, giving the code review a **fresh perspective**. It does not carry the same bias as the main agent that just spent the session implementing the code.
+
+When creating a code-reviewer subagent, restrict it to **read-only tools**.
+
+A reviewer should:
+
+- Inspect the changes
+- Look for bugs or potential issues
+- Identify problems with the implementation
+- Provide feedback
+
+It should **not modify the files** it is reviewing.
+
+The reviewer configuration can also be checked into the repository so that the entire team uses the same code-review process.
+
+### The `/commit-push-pr` Skill
+
+The `/commit-push-pr` skill can handle the entire process of:
+
+**Commit → Push → Create PR**
+
+Instead of manually performing each step, you can run the skill and Claude will take care of the workflow.
+
+If you have a Slack MCP server configured with channels listed in your `CLAUDE.md`, Claude can also automatically post the PR link to the appropriate team channel.
+
+### Session Linking with `--from-pr`
+
+When Claude creates a PR through `gh pr create`, the Claude Code session can be linked to that PR automatically.
+
+This is useful when you need to return to the work later, for example:
+
+- Addressing review comments
+- Fixing a failing build
+- Making additional changes requested by the team
+- Continuing work on the same PR
+
+You can resume the previous session with:
+
+```bash
+claude --from-pr <PR_NUMBER>
+```
+
+This allows Claude to pick up the work associated with that PR rather than starting the task from scratch.
+
+### The Key Workflow
+
+A useful Git workflow with Claude Code is:
+
+**Implement → Review with Subagent → Commit → Push → Create PR → Resume with `--from-pr` if needed**
+
+The important idea is to **separate implementation from review**.
+
+The main agent focuses on building the feature, while a fresh subagent reviews the result without carrying the same context or assumptions.
+
+### Recap
+
+Claude Code provides several features that streamline the code-review and PR workflow:
+
+- **Subagent code review** — provides a fresh, unbiased review before pushing
+- **`/commit-push-pr`** — handles committing, pushing, and creating a PR in one workflow
+- **`--from-pr`** — lets you resume a Claude Code session associated with an existing PR
+
+These features reduce the amount of manual Git workflow management and make it easier to move from **implementation → review → PR → follow-up changes**.
+
+---
