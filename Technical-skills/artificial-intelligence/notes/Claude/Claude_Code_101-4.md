@@ -414,3 +414,183 @@ They can be used through Claude Code's built-in subagents or customized with you
 [Subagents - YouTube](https://www.youtube.com/watch?v=jKErNxuxPXg)
 
 ---
+
+## Lesson 3 : Skills
+
+---
+
+### What Are Skills?
+
+Skills allow you to teach Claude **how to perform a specific task once and have it automatically apply that knowledge whenever it is relevant**.
+
+Without skills, you may repeatedly explain the same instructions to Claude:
+
+- Your team's coding standards
+- How you want PR reviews structured
+- Your preferred commit message format
+- How documentation should be written
+- Your organization's design guidelines
+
+A skill turns these repeated instructions into reusable knowledge.
+
+### How Skills Work
+
+An **agent skill** is a collection of instructions, scripts, and resources that an agent can discover and use to complete a particular type of task more accurately and efficiently.
+
+In Claude Code, the core file is:
+
+```text
+skill.md
+```
+
+The skill's **description** is especially important because it tells Claude when the skill is relevant.
+
+The basic workflow is:
+
+**User request → Claude checks available skill descriptions → Matching skill is activated → Claude uses the skill**
+
+For example, if you have a skill specifically for code reviews and ask Claude:
+
+> "Review this PR."
+
+Claude can recognize that the request matches the skill's description and load the relevant instructions.
+
+### Where Skills Are Stored
+
+Skills can be stored at different levels depending on who should use them.
+
+#### Personal Skills
+
+Personal skills live in:
+
+```text
+~/.claude/skills
+```
+
+These follow you across your projects.
+
+They are useful for personal preferences such as:
+
+- Commit message style
+- Documentation format
+- How you like code explained
+- Personal coding preferences
+
+#### Project Skills
+
+Project skills live inside the repository:
+
+```text
+.claude/skills
+```
+
+These are shared with the project and can be committed to version control.
+
+Anyone who clones the repository can then use the same skills.
+
+Project skills are useful for team standards such as:
+
+- Code review standards
+- Brand guidelines
+- Preferred fonts
+- Color palettes
+- Documentation conventions
+- Team-specific workflows
+
+### Skills vs. CLAUDE.md
+
+Claude Code provides several ways to customize its behavior, but **skills are different because they are automatic and task-specific**.
+
+A `CLAUDE.md` file is loaded into every conversation.
+
+This makes `CLAUDE.md` appropriate for rules that should **always** apply.
+
+For example:
+
+> Always use TypeScript strict mode.
+
+Skills work differently.
+
+They are loaded **on demand when Claude determines that they are relevant**.
+
+For example, a PR review checklist does not need to occupy context while you are debugging a bug.
+
+Instead:
+
+**Debugging → PR review skill stays unloaded**
+
+**PR review → PR review skill becomes relevant and loads**
+
+This makes skills more efficient for specialized instructions because they do not unnecessarily consume the main context window.
+
+### Skills vs. Slash Commands
+
+Slash commands require you to explicitly invoke them.
+
+For example:
+
+```text
+/some-command
+```
+
+Skills do not require this.
+
+Claude can recognize when a request matches a skill and **apply it automatically**.
+
+The key difference is:
+
+**Slash command → You explicitly invoke it**
+
+**Skill → Claude recognizes when it is relevant**
+
+### When Should You Create a Skill?
+
+Skills work best for **specialized knowledge that applies to a specific type of task**.
+
+Good examples include:
+
+- Team code review standards
+- Preferred commit message formats
+- Documentation conventions
+- Brand guidelines
+- Design standards
+- Organization-specific workflows
+
+A useful rule is:
+
+> **If you find yourself explaining the same thing to Claude repeatedly, it may be a skill waiting to be written.**
+
+### Key Mental Model
+
+Don't think of skills as general instructions that Claude always needs.
+
+Think of them as:
+
+> **"Task-specific knowledge that Claude can automatically load when the situation calls for it."**
+
+This makes skills particularly useful for keeping specialized instructions out of the context window until they are actually needed.
+
+### Recap
+
+**Skills = Reusable + Task-specific + Automatically activated**
+
+They allow Claude Code to remember **how to perform specialized tasks** without requiring you to repeat the same instructions every time.
+
+The main distinction is:
+
+**CLAUDE.md → Always loaded**
+
+**Skills → Loaded when relevant**
+
+**Slash commands → Manually invoked**
+
+Skills are especially useful for repeated workflows such as code reviews, commit messages, documentation, and organizational standards.
+
+---
+
+### Video
+
+[Skills - YouTube](https://www.youtube.com/watch?v=bjdBVZa66oU)
+
+---
+
