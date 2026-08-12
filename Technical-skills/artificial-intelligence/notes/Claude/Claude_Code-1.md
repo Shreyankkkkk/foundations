@@ -219,7 +219,7 @@ Need parallel agents?
 
 ---
 
-## Lesson 2 : A CLAUDE.md THAT follows
+## Lesson 1 : A CLAUDE.md THAT follows
 
 ---
 
@@ -448,3 +448,201 @@ This allows the file to improve based on real problems encountered during develo
 
 ---
 
+## Lesson 2 : Verification Skills
+
+---
+
+### Why Build a Verification Skill First
+
+A verification skill automates the process of checking Claude's work after completing a task.
+
+Without one:
+- You ask Claude to make a change.
+- Claude finishes.
+- You have to remember to ask it to test and review the work.
+- If you forget, bad code can slip through.
+
+With one:
+1. Claude completes the task.
+2. The verification skill triggers.
+3. It runs the test suite.
+4. It reads the diff.
+5. It checks that tests were not weakened just to make them pass.
+6. It reports **pass or fail**, including the evidence.
+
+The key idea:
+
+> "Done" means the verification gates were actually run and their results were explicitly reported.
+
+Running tests alone is not enough. A test could have been weakened so that it passes regardless of whether the code works correctly.
+
+---
+
+### When to Create a Skill
+
+A skill is useful for repeated procedures.
+
+**Rule of thumb:**
+
+> If you've typed the same multi-step instruction twice, consider turning it into a skill.
+
+Examples:
+- Verification checklist
+- Release checklist
+- Migration procedure
+- Pre-PR checks
+- Repeated testing workflow
+
+---
+
+### A Skill Can Contain More Than `skill.md`
+
+A skill is a folder, not just a single file.
+
+Example:
+
+```text
+.claude/
+└── skills/
+    └── verification/
+        ├── skill.md
+        ├── reference.md
+        └── check.sh
+```
+
+#### `skill.md`
+
+Contains:
+- The skill name
+- The description that triggers it
+- The procedure Claude should follow
+
+Keep this file **short and focused**.
+
+#### `reference.md`
+
+Contains:
+- Detailed explanations
+- Reference material
+- Longer instructions
+
+Claude can read it when deeper information is needed.
+
+#### Scripts
+
+Scripts can be placed inside the skill folder.
+
+Example:
+
+```text
+check.sh
+```
+
+Claude can execute the script instead of loading the script's contents into its context.
+
+This allows a skill to carry its own tools.
+
+---
+
+### Keep Skills Lean
+
+The main `skill.md` should describe **what to do**.
+
+Move:
+- Long explanations → `reference.md`
+- Detailed reference material → reference files
+- Executable checks → scripts
+
+This keeps the main skill easy for Claude to follow.
+
+---
+
+### Instruction Surfaces
+
+Different types of instructions belong in different places.
+
+| Instruction | Where it belongs |
+|---|---|
+| Always-follow project conventions | `CLAUDE.md` |
+| Procedures for a specific type of task | Skill |
+| Reference material for a task | Skill reference files |
+| Rules that must be technically enforced | Hook |
+
+#### `CLAUDE.md`
+
+Use for conventions that apply broadly.
+
+Examples:
+- Naming rules
+- File locations
+- Project conventions
+
+#### Skills
+
+Use for procedures and reference material associated with particular tasks.
+
+Examples:
+- Verification procedure
+- Release procedure
+- Migration procedure
+- PR checklist
+
+#### Hooks
+
+Use when Claude **must not be able to skip the rule**.
+
+`CLAUDE.md` and skills are instructions Claude follows.
+
+A hook is code that actually runs and can enforce or block an action.
+
+---
+
+### Verification Skill Workflow
+
+```text
+Task completed
+      ↓
+Verification skill triggers
+      ↓
+Run tests
+      ↓
+Read diff
+      ↓
+Check tests were not weakened
+      ↓
+Collect evidence
+      ↓
+PASS / FAIL
+```
+
+The important distinction:
+
+**"Claude says it works" ≠ verified**
+
+**"Tests were run, diff was reviewed, tests were checked for weakening, and results were reported" = verified**
+
+---
+
+### Key Takeaways
+
+1. Build a verification skill early.
+2. Automate repeated checking procedures.
+3. Run tests automatically.
+4. Review the diff.
+5. Check that tests weren't weakened to produce a passing result.
+6. Report explicit evidence for pass/fail.
+7. Keep `skill.md` lean.
+8. Put detailed material in reference files.
+9. Put executable checks in scripts.
+10. Use `CLAUDE.md` for general conventions.
+11. Use skills for task-specific procedures.
+12. Use hooks for rules that must be enforced.
+13. Store project skills in `.claude/skills`.
+
+---
+
+### Video
+
+[Building Verification Skills - Youtube](https://www.youtube.com/watch?v=soLPOXXAc1w)
+
+---
