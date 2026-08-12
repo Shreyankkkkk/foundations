@@ -271,3 +271,156 @@ The choice of environment depends mainly on your preferred workflow rather than 
 
 ---
 
+## Lesson 2 : Your First Prompt
+
+---
+
+### Your First Prompt
+
+---
+
+#### Talking to Claude Code
+
+You interact with Claude Code much like you would with any other AI assistant, but because Claude Code can take actions inside your development environment, **how you prompt it and how much control you give it both matter**.
+
+When starting a task, you can choose how much oversight you want over Claude's actions.
+
+#### Auto-Accept vs. Approval
+
+Claude Code provides different permission modes that let you control whether Claude can make changes automatically or needs your approval.
+
+You can press `Shift + Tab` to cycle between the available modes.
+
+##### Approval mode
+
+Claude asks for your explicit permission before:
+
+- Editing or creating files
+- Running commands
+
+This gives you more direct control over what Claude does.
+
+##### Auto-accept mode
+
+Claude automatically approves file edits and file creation, but still asks for permission before running commands.
+
+There is no universally correct mode. The right choice depends on **how much control and oversight you want while Claude is working**.
+
+#### Plan Mode
+
+**Plan Mode** is another option available through the `Shift + Tab` menu.
+
+Instead of immediately making changes, Claude uses **read-only tools** to investigate the codebase and understand how the requested change could be implemented.
+
+During this process, Claude can:
+
+- Analyze the existing codebase
+- Research the suggested implementation
+- Ask clarifying questions
+- Identify relevant files and existing patterns
+- Develop a detailed implementation plan
+
+Once the investigation is complete, Claude provides a plan that can then be executed.
+
+Plan Mode is particularly useful for:
+
+- Complex changes
+- Multi-step feature implementations
+- Understanding an unfamiliar codebase
+- Safe code reviews
+- Tasks where you want to review the approach before changes are made
+
+A useful workflow is:
+
+**Prompt → Investigate → Ask clarifying questions → Create plan → Review plan → Execute**
+
+This gives you an opportunity to catch problems in the proposed approach **before Claude starts modifying the project**.
+
+#### Example: Adding a Dark Mode Toggle
+
+Suppose an application needs a dark mode feature.
+
+Instead of immediately asking Claude to modify the code, you can:
+
+1. Open the root directory of the project.
+2. Run `claude`.
+3. Press `Shift + Tab` until Plan Mode is selected.
+4. Give Claude a descriptive prompt explaining the desired outcome.
+5. Let Claude investigate the existing application.
+6. Review the proposed implementation plan.
+7. Approve the plan if it looks appropriate.
+8. Let Claude execute the implementation while maintaining the desired level of permission control.
+
+For example:
+
+> My app needs a dark mode implemented across the entire app. Can you create a toggle switch on the header that allows a user to toggle between light mode and dark mode? I need you to find a good contrast color that works based on my existing light theme.
+
+The important part is that the prompt describes the **desired outcome and relevant requirements**, rather than prescribing every individual coding step.
+
+Claude can then investigate the existing application and determine how the feature should fit into the current architecture and design.
+
+#### Prompting Principle
+
+When working with Claude Code, **be as descriptive as possible about what you want to achieve**.
+
+You don't necessarily need to tell Claude exactly how to implement the solution.
+
+Instead, provide enough context about:
+
+- The desired outcome
+- Important requirements
+- Existing behavior that should be preserved
+- Constraints or preferences
+- What the final result should look like
+
+Claude can then use the codebase and available tools to determine an appropriate implementation.
+
+#### Staying in the Loop
+
+You can choose how involved you want to be while Claude works.
+
+If you want more control, use approval-based permissions and review actions as Claude performs them.
+
+If you are comfortable with Claude making file changes automatically, auto-accept mode can reduce interruptions while still requiring approval for commands.
+
+For more complex work, **Plan Mode provides an additional safety and reasoning step before execution**.
+
+The goal is not to always maximize or minimize autonomy. Instead, choose the level of oversight that makes sense for the task and its potential consequences.
+
+#### Key Mental Model
+
+Don't think of prompting Claude Code as:
+
+> **"Tell Claude exactly which files to edit and which code to write."**
+
+A better approach is:
+
+> **"Clearly describe the outcome I want, provide the necessary context and constraints, and let Claude investigate the codebase and determine an implementation."**
+
+For complex tasks, add:
+
+> **Plan first → review → execute**
+
+This makes it easier to catch misunderstandings before they become changes in the codebase.
+
+#### Recap
+
+When using Claude Code:
+
+- **Be descriptive** about the outcome you want.
+- Choose between **Approval Mode** and **Auto-Accept Mode** based on how much oversight you want.
+- Use **Plan Mode** for complex changes, multi-step implementations, and safe code reviews.
+- Let Claude investigate the codebase before making complex changes.
+- **Review the plan before execution** when the task is consequential.
+- Stay involved when you want visibility into Claude's actions and decisions.
+
+**Good prompting + appropriate permissions + planning = more controlled agentic development.**
+
+---
+
+#### Video
+
+[Your First Claude Code Prompt](https://www.youtube.com/watch?v=gbetp6D7J_Q)
+
+---
+
