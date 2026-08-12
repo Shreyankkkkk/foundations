@@ -167,3 +167,144 @@ Its biggest limitations are the finite context window, the possibility of mistak
 
 ---
 
+## Lesson 2 : How Claude Code Works
+
+---
+
+### How Claude Code Works
+
+Claude Code is different from typical chat applications. Understanding how it works under the hood will help you use it more effectively.
+
+#### The Agentic Loop
+
+Claude Code is best explained through the **agentic loop**:
+
+1. You enter a prompt into Claude Code.
+2. Claude gathers the context it needs by interacting with the model, which returns text or a tool call that Claude Code can execute.
+3. It takes action — for example, editing a file or running a command.
+4. It verifies the results and determines whether they achieve what your prompt set out to do.
+5. If they do, Claude finishes and waits for the next prompt. If they don't, it loops back and tries again until the results are complete and verifiable.
+
+Throughout this loop, you can add context, interrupt, or steer the model to help guide it toward your goal.
+
+### The basic mental model
+
+**Prompt → Gather context → Use tools → Take action → Verify → Repeat if necessary**
+
+This is what allows Claude Code to work toward a goal rather than simply producing a single response.
+
+### Context
+
+Claude has a **context window** that determines how much of your conversation, file contents, command outputs, and other information it can store and reference.
+
+Once the context window gets close to its limit, Claude Code can **compact the conversation**. It determines what information can be removed or summarized so that the context is brought back down to a usable size while preserving important information.
+
+This allows longer agentic tasks to continue without requiring the entire conversation and every piece of previously gathered information to remain in the active context.
+
+### Tools
+
+**Tools are the backbone of how agents work.**
+
+Most basic AI assistants follow:
+
+**Text input → Text output**
+
+Agents add another layer:
+
+**Text → Reasoning → Tool call → Result → Reasoning → Next action**
+
+Tools allow Claude Code to interact with its environment instead of only talking about what should be done.
+
+Examples include:
+
+- Reading files
+- Searching the codebase
+- Editing files
+- Running shell commands
+- Executing code
+- Running tests
+- Searching the web
+- Accessing other developer tools
+
+Claude Code uses its understanding of the task and available context to determine **when a tool is useful and which tool to call**.
+
+### Permissions
+
+Claude Code has configurable permission modes that determine how much control it has over actions.
+
+#### Default mode
+
+Claude asks for explicit permission before:
+
+- Editing files
+- Running shell commands
+
+This provides the most direct human oversight.
+
+#### Auto-accept edits
+
+Claude can edit files without asking for approval each time, but still asks before running commands.
+
+This is useful when you trust Claude to make file changes but still want control over command execution.
+
+#### Plan mode
+
+Plan mode uses **read-only tools** to investigate the project and create a plan before actually making changes.
+
+This is useful for complex tasks where you want Claude to understand the codebase and propose an approach before execution begins.
+
+#### Permission safety
+
+Skipping permissions should be done carefully.
+
+Giving Claude unrestricted ability to run commands means a mistake could have consequences **before you have an opportunity to catch it**.
+
+A good principle is:
+
+> **The more consequential the action, the more oversight you should maintain.**
+
+### Why Claude Code differs from a normal chat
+
+Claude Code combines several concepts directly inside the development environment:
+
+- **Agentic loop** — continuously works toward a goal
+- **Context management** — gathers and manages the information needed for the task
+- **Tools** — interacts with files, commands, code, and external resources
+- **Permissions** — lets you control what actions Claude is allowed to take
+- **Verification** — checks whether its actions actually produced the desired result
+
+Because Claude Code can **read your codebase, take actions, observe the results, and adapt**, it is fundamentally different from a standard chat interface.
+
+### Key Mental Model
+
+Don't think of Claude Code as:
+
+> **"A chatbot that writes code."**
+
+Think of it as:
+
+> **"An agent operating inside my development environment toward a defined goal."**
+
+The important shift is from asking:
+
+> "What code should I write?"
+
+to:
+
+> "What outcome do I want Claude Code to accomplish, and what context and permissions does it need to get there?"
+
+### Recap
+
+**Claude Code = Agentic Loop + Context + Tools + Permissions + Verification**
+
+Its workflow can be summarized as:
+
+**Prompt → Context → Tools → Action → Verification → Repeat**
+
+The agent keeps working until it determines that the task is complete, while you can provide additional context, interrupt it, or adjust its direction throughout the process.
+
+---
+
+### Video
+
+[https://www.youtube.com/watch?v=6bs5b4FltCU](https://www.youtube.com/watch?v=6bs5b4FltCU)
