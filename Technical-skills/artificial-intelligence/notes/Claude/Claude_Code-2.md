@@ -287,3 +287,371 @@ Use the Agent SDK when Claude needs to become part of your own application.
 [Automate Claude Code - Youtube](https://www.youtube.com/watch?v=b9TCW-pdzDA)
 
 ---
+
+## Lesson 2 : Github Actions and Code Review
+
+---
+
+### Why Pull Requests Are Useful
+
+Pull requests are a good place to automate repetitive work because they are where:
+
+- Code review happens
+- Changes are introduced
+- Changes are merged
+- A lot of development busywork occurs
+
+There are two main ways to use Claude with pull requests:
+
+1. **Code Review** — managed by Anthropic
+2. **GitHub Action** — custom automation that you configure
+
+---
+
+### 1. Code Review
+
+#### What It Is
+
+**Code Review** is an Anthropic-hosted service that reviews GitHub pull requests through the Claude GitHub app.
+
+You do not need to build or host anything.
+
+Claude:
+
+- Reviews the pull request
+- Analyzes the diff against the full codebase
+- Finds potential issues
+- Posts inline comments on relevant lines
+- Ranks findings by severity
+- Provides a summary of findings
+
+#### Setup
+
+An organization admin enables Code Review through the Claude Code admin settings.
+
+General process:
+
+1. Open Claude Code admin settings.
+2. Find **Code Review**.
+3. Select **Configure**.
+4. Install the Claude GitHub app.
+5. Select the repositories to monitor.
+6. Choose when reviews should run.
+
+#### Review Triggers
+
+Code Review can run:
+
+- Once when a PR opens
+- On every push to the PR
+- When someone comments `@claude review`
+
+#### What Claude Reviews
+
+Claude analyzes the changes against the **full codebase**, rather than looking only at the changed lines in isolation.
+
+Findings are posted as inline comments on the relevant lines.
+
+The findings are:
+
+- Ranked
+- Deduplicated
+- Tagged by severity
+- Accompanied by a summary table
+
+#### What Code Review Does NOT Do
+
+Code Review:
+
+- Does **not** approve PRs
+- Does **not** block PRs
+- Does **not** automatically fix findings
+
+A human still makes the final decision.
+
+#### Local Fixes
+
+The `/code-review` command can review a diff locally.
+
+Use:
+
+```bash
+/code-review --fix
+```
+
+to apply the findings to the working tree.
+
+Typical workflow:
+
+```text
+PR
+ ↓
+Claude Code Review
+ ↓
+Findings posted to PR
+ ↓
+Pull changes locally
+ ↓
+/code-review --fix
+ ↓
+Review changes
+```
+
+---
+
+### 2. GitHub Action
+
+#### What It Is
+
+The GitHub Action is the customizable option.
+
+Use it when Claude needs to **do something**, rather than simply review a PR.
+
+Examples:
+
+- Implement changes from a PR comment
+- Respond to `@claude`
+- Generate reports
+- Run scheduled tasks
+- Automate other CI workflows
+- React to GitHub events
+
+The action runs inside GitHub Actions.
+
+#### Setup
+
+Inside Claude Code, run:
+
+```bash
+/install-github-app
+```
+
+You need repository admin permissions.
+
+The setup walks through:
+
+- Installing the GitHub app
+- Configuring the repository
+- Setting the Anthropic API key secret
+
+The action is:
+
+```yaml
+anthropics/claude-code-action@v1
+```
+
+---
+
+### GitHub Action Inputs
+
+Important inputs include:
+
+##### `anthropic_api_key`
+
+The Anthropic API key.
+
+Optional depending on the configuration.
+
+##### `github_token`
+
+GitHub authentication token.
+
+Defaults to:
+
+```yaml
+secrets.GITHUB_TOKEN
+```
+
+##### `trigger_phrase`
+
+The phrase that causes the action to run.
+
+Default:
+
+```text
+@claude
+```
+
+##### `use_bedrock`
+
+Use Amazon Bedrock instead of the Anthropic API.
+
+##### `use_vertex`
+
+Use Google Vertex instead of the Anthropic API.
+
+##### `prompt`
+
+The instructions Claude should follow.
+
+##### `claude_args`
+
+CLI arguments passed directly to Claude Code.
+
+---
+
+### GitHub Action: `@claude` Workflow
+
+Create:
+
+```text
+.github/workflows/claude.yaml
+```
+
+Example:
+
+```yaml
+- uses: anthropics/claude-code-action@v1
+  with:
+    anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+    github_token: ${{ secrets.GITHUB_TOKEN }}
+    trigger_phrase: "@claude"
+    prompt: "Your instructions here"
+    claude_args: "--max-turns 5 --model claude-sonnet-5"
+```
+
+Now a user can comment:
+
+```text
+@claude implement the spec in the linked Linear issue
+```
+
+Claude can then:
+
+- Pick up the request
+- Make changes
+- Push commits
+- Post comments explaining what it did
+
+---
+
+### Scheduled GitHub Action
+
+The same action can run on a schedule.
+
+For example:
+
+```text
+Cron trigger
+     ↓
+GitHub Action
+     ↓
+Claude
+     ↓
+Generate report
+     ↓
+Post results
+```
+
+You can also add:
+
+```yaml
+workflow_dispatch
+```
+
+to allow manually starting the workflow from GitHub Actions.
+
+Runs can be monitored through the **Actions** tab.
+
+---
+
+### `claude_args`
+
+`claude_args` controls how Claude Code runs.
+
+#### `--max-turns`
+
+Limits the number of agent turns.
+
+Example:
+
+```bash
+--max-turns 5
+```
+
+This prevents an agent from running indefinitely.
+
+#### Permission Mode
+
+For unattended jobs, Claude cannot stop and wait for a human approval.
+
+Use an appropriate non-interactive permission mode.
+
+#### Allowed Tools
+
+Give the workflow only the tools it actually needs.
+
+For example:
+
+##### Report generation
+
+Use read-only tools.
+
+##### Code modification
+
+Allow the tools necessary to edit and commit code.
+
+Principle:
+
+> Give an automated job exactly what it needs and nothing more.
+
+---
+
+### Code Review vs GitHub Action
+
+| Feature | Code Review | GitHub Action |
+|---|---|---|
+| Managed by Anthropic | Yes | No |
+| Requires custom workflow | No | Yes |
+| Main purpose | PR review | Custom automation |
+| Posts review findings | Yes | Can |
+| Automatically modifies code | No | Yes |
+| Responds to `@claude` | Review trigger | Yes |
+| Scheduled jobs | No | Yes |
+| Custom prompts | Limited | Yes |
+| Custom CI workflows | No | Yes |
+| Infrastructure | Anthropic | GitHub Actions |
+
+---
+
+### Which One To Use
+
+#### Use Code Review when:
+
+- You want PR reviews
+- You want inline findings
+- You don't want to maintain workflows
+- You want Claude to identify problems but leave the final decision to a human
+
+#### Use GitHub Actions when:
+
+- Claude needs to actually modify code
+- You need custom automation
+- You want `@claude` commands
+- You need scheduled jobs
+- You want Claude integrated into CI
+- You need control over tools and CLI options
+
+#### Simple Rule
+
+```text
+PR review
+    ↓
+Code Review
+
+Anything beyond review
+    ↓
+GitHub Action
+```
+
+Start with **Code Review** for simple PR review.
+
+Move to the **GitHub Action** when you need Claude to actually perform work in CI.
+
+---
+
+### Video
+
+[Claude Code on Pull Requests - Youtube](https://www.youtube.com/watch?v=gIVt_iqmACw)
+
+---
