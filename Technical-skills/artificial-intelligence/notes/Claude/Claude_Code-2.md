@@ -655,3 +655,179 @@ Move to the **GitHub Action** when you need Claude to actually perform work in C
 [Claude Code on Pull Requests - Youtube](https://www.youtube.com/watch?v=gIVt_iqmACw)
 
 ---
+
+# Verify and Share
+
+---
+
+## Lesson 1 : Trust it - Verifying Unsupervised Runs
+
+---
+
+### Core Principle
+
+> The less you watched the run, the more you verify afterward.
+
+Verification should scale with how unsupervised the run was:
+
+- Short, supervised run → quick review
+- Long, hands-off run → thorough verification
+- CI / unattended run → full verification process
+
+---
+
+### Keep Unattended Runs in Auto Mode
+
+- Use **Auto mode** for unattended work.
+- Avoid **Bypass Permissions** unless running inside an isolated container or VM.
+- Auto mode uses a classifier to review actions for potentially dangerous behavior.
+
+#### Important
+
+The classifier checks **dangerous intent**, not whether the code is correct.
+
+Therefore:
+
+> Auto mode is a safety layer, not a correctness check.
+
+You still need proper verification.
+
+---
+
+### Start With the Diff, Not Claude's Summary
+
+Do not trust the completion summary as proof that the work is correct.
+
+#### Verification order
+
+1. Run `/code-review`
+2. Review the findings
+3. Run `git diff`
+4. Read the actual changes
+5. Check that only expected files were modified
+6. Compare the changes against the original task/plan
+
+#### Why?
+
+A summary can say:
+
+> "Implemented the requested changes."
+
+while the actual diff may contain:
+
+- Unexpected files
+- Unnecessary changes
+- Incorrect logic
+- Accidental deletions
+- Changes outside the original scope
+
+The diff is the source of truth.
+
+---
+
+### Turn Tests Into a Gate
+
+Do not rely on Claude saying:
+
+> "All tests passed."
+
+Make verification automatic.
+
+#### Useful hooks
+
+##### Stop Hook
+
+- Runs tests when Claude attempts to finish.
+- Prevents the turn from ending if tests fail.
+- Can feed the failure back to Claude so it can fix the problem.
+
+##### PostToolUse Hook
+
+Can automatically run:
+
+- Linting
+- Type checking
+- Formatting
+- Other checks after edits
+
+#### Important Exit Code
+
+Use:
+
+```bash
+exit 2
+```
+
+to block the action/turn and feed the failure back to Claude.
+
+This makes the check happen automatically instead of relying on you to remember to ask.
+
+---
+
+### Get a Cold Second Opinion
+
+For important or unattended work:
+
+1. Start a fresh Claude session or sub-agent.
+2. Give it the changed code.
+3. Ask it to review the implementation.
+4. Do not give it the original session's reasoning/history if possible.
+
+#### Why?
+
+A fresh reviewer:
+
+- Has no attachment to the original approach.
+- Has not seen the previous reasoning.
+- Can identify problems the original agent overlooked.
+- Provides an independent perspective.
+
+> The original agent may rationalize its own decisions. A fresh reviewer does not have that context.
+
+---
+
+### Verify Headless Runs
+
+For headless Claude Code runs:
+
+- Check the JSON output.
+- Check the process exit code.
+- Do not rely only on Claude's textual response.
+- Confirm that the expected checks actually ran.
+
+---
+
+### Verification Checklist
+
+- [ ] Keep unattended runs in **Auto mode**
+- [ ] Do not use **Bypass Permissions** outside isolated environments
+- [ ] Run `/code-review`
+- [ ] Read `git diff` yourself
+- [ ] Check for unexpected file changes
+- [ ] Compare changes against the original task/plan
+- [ ] Run tests
+- [ ] Use a **Stop hook** to enforce tests
+- [ ] Use **PostToolUse hooks** for linting/type checking where useful
+- [ ] Use `exit 2` when a hook must block progress
+- [ ] Check JSON output and exit codes for headless runs
+- [ ] Get a fresh second opinion for important changes
+
+---
+
+### Bottom Line
+
+> "Claude did it while I wasn't looking" should never mean "I trust that it worked."
+
+Use:
+
+**Auto mode → Diff review → Automated tests → Hooks → Fresh second opinion**
+
+The less you supervised the run, the stronger the verification should be.
+
+---
+
+### Video
+
+[How to Trust Claude Code Run - Youtube](https://www.youtube.com/watch?v=lalGZSNhm8E)
+
+---
