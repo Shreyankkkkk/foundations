@@ -831,3 +831,363 @@ The less you supervised the run, the stronger the verification should be.
 [How to Trust Claude Code Run - Youtube](https://www.youtube.com/watch?v=lalGZSNhm8E)
 
 ---
+
+## Lesson 2 : Plugins
+
+---
+
+### Why Plugins Exist
+
+A good `.claude` setup becomes more valuable when an entire team can use it.
+
+Without plugins, teams may have to:
+
+- Copy `.claude` directories between machines
+- Manually share skills
+- Manually share subagents
+- Manually share hooks
+- Keep everything synchronized themselves
+
+**Plugins package the setup into one installable unit.**
+
+---
+
+### What a Plugin Is
+
+A plugin can bundle:
+
+- Skills
+- Subagents
+- Hooks
+- MCP server configurations
+- Language Server Protocol servers
+- Background monitors
+- Themes
+- Certain `settings.json` configuration
+
+The goal is:
+
+> One version → one install → shared setup
+
+#### Installing a Plugin
+
+```text
+/plugin install org-name@plugin-name
+```
+
+After installation, Claude Code may ask you to run:
+
+```text
+/reload-plugins
+```
+
+to apply the changes.
+
+---
+
+### Marketplaces
+
+A marketplace is a shared source from which plugins can be discovered and installed.
+
+#### Add a Marketplace
+
+```text
+/plugin marketplace add your-org/claude-plugins
+```
+
+#### Benefits
+
+A team marketplace provides:
+
+- Centralized plugin discovery
+- Version tracking
+- Easier updates
+- One shared source for the team
+
+Plugins can then be browsed through the **Discover** tab.
+
+---
+
+### Security: Read Before Installing
+
+A plugin runs code on your machine using your privileges.
+
+This means a plugin can contain things such as:
+
+- `PreToolUse` hooks
+- `Stop` hooks
+- MCP servers
+- Subagents
+- Skills
+- Other executable behavior
+
+#### Important
+
+Installing a plugin means accepting **all of its components**, not just the skill or feature you wanted.
+
+For example, a plugin could contain a hook that runs whenever a particular tool is used.
+
+Therefore:
+
+> Never blindly install a plugin just because its description looks useful.
+
+#### Before Installing
+
+Check:
+
+- What hooks it contains
+- What agents/subagents it contains
+- What MCP servers it uses
+- What code it executes
+- What context cost it has
+- What permissions it requires
+
+Claude Code shows information about what a plugin will install and its estimated context cost.
+
+#### Trust
+
+Anthropic does not necessarily control the contents of third-party plugins.
+
+Automated review ≠ guaranteed safety.
+
+Only install plugins and marketplaces from sources you trust.
+
+---
+
+### Where Plugins Come From
+
+There are different sources for plugins.
+
+#### Community Marketplace
+
+- Uses an in-app submission process
+- Goes through automated review
+
+#### Official Marketplace
+
+- Curated separately
+
+#### Important
+
+> Reviewed does not mean automatically trustworthy.
+
+Always inspect the plugin yourself.
+
+---
+
+### Plugin Components Run Alongside Your Own
+
+Plugins generally do not replace your existing configuration.
+
+Their components run alongside yours.
+
+### Hooks
+
+Hooks **stack**.
+
+For example:
+
+```text
+Your PreToolUse hook
+        +
+Plugin PreToolUse hook
+        ↓
+Both execute
+```
+
+A plugin hook does not automatically replace your hook.
+
+This is another reason to inspect plugins before installing them.
+
+---
+
+### Namespacing
+
+Plugin components are namespaced so they do not normally conflict with your own components.
+
+Skills, agents, and commands use the plugin's namespace.
+
+Example:
+
+```text
+company-name:skill-name
+```
+
+This helps prevent naming conflicts.
+
+---
+
+### Plugin `settings.json`
+
+A plugin can include a `settings.json`, but only certain settings are honored.
+
+The relevant keys are:
+
+- Agent status line
+- Subagent status line
+
+#### Important: Agent Setting
+
+A plugin can promote one of its subagents to the main thread.
+
+This can change:
+
+- The system prompt
+- Available tools
+- Model
+- Default behavior
+
+Therefore:
+
+> Enabling a plugin can change how Claude Code behaves by default.
+
+---
+
+### Managing Plugins
+
+After installation, you can:
+
+- View installed plugins
+- See what they added
+- Manage plugins
+- Uninstall plugins
+
+---
+
+### Creating Your Own Plugin
+
+Once your `.claude` setup works well, package it instead of manually copying it between machines.
+
+A plugin uses the same basic `.claude` structure you're already familiar with.
+
+#### Typical Structure
+
+```text
+plugin/
+├── agents/
+│   ├── reviewer.md
+│   └── researcher.md
+│
+├── skills/
+│   ├── verification/
+│   │   └── skill.md
+│   └── testing/
+│       └── skill.md
+│
+├── hooks/
+│   └── hooks.json
+│
+├── .mcp.json
+│
+└── .claude-plugin/
+    └── plugin.json
+```
+
+#### Components
+
+- One folder per skill
+- One Markdown file per subagent under `agents`
+- `hooks/hooks.json` at the plugin root
+- `.mcp.json` at the plugin root
+
+Claude Code discovers components based on these conventions.
+
+---
+
+### Plugin Manifest
+
+An optional manifest can be placed at:
+
+```text
+.claude-plugin/plugin.json
+```
+
+Example:
+
+```json
+{
+  "name": "svg-splitter-review",
+  "version": "0.1.0",
+  "description": "Reviews the SVG Splitter repo",
+  "author": {
+    "name": "Lewis Menelaws"
+  }
+}
+```
+
+### Manifest Fields
+
+#### `name`
+
+The only required field.
+
+It also provides the namespace for plugin components.
+
+Example:
+
+```text
+company-name:skill-name
+```
+
+#### `version`
+
+Use versioning so updates can be tracked across the team.
+
+#### `description`
+
+Describes what the plugin does.
+
+#### `author`
+
+Identifies the creator.
+
+---
+
+### Plugin Rules
+
+#### When Using Plugins
+
+- [ ] Read the plugin before installing it
+- [ ] Inspect its hooks
+- [ ] Inspect its agents/subagents
+- [ ] Inspect its MCP servers
+- [ ] Check what code it executes
+- [ ] Check its context cost
+- [ ] Only install trusted plugins
+- [ ] Remember that plugin hooks run alongside your own hooks
+
+#### When Creating Plugins
+
+- [ ] Package a working `.claude` setup
+- [ ] Keep skills in `skills/`
+- [ ] Keep subagents in `agents/`
+- [ ] Keep hooks in `hooks/hooks.json`
+- [ ] Keep MCP configuration in `.mcp.json`
+- [ ] Add `.claude-plugin/plugin.json`
+- [ ] Give the plugin a unique name
+- [ ] Version the plugin
+- [ ] Share it through a trusted marketplace
+
+---
+
+### Bottom Line
+
+**Using plugins:**
+
+> Read before you install.
+
+**Creating plugins:**
+
+> Package your `.claude` setup once it works.
+
+The goal is:
+
+**One installable unit → consistent setup → easier team sharing**
+
+---
+
+### Video
+
+[Claude Code Plugins - Youtube](https://www.youtube.com/watch?v=k4kZwJ0FtX0)
+
+---
