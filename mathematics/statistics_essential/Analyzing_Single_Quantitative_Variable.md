@@ -36,11 +36,11 @@ The population has a true **population mean** and **population variance**, but t
 
 Instead, we use statistics calculated from a sample to **estimate** population parameters.
 
-| Population | Sample |
-| --- | --- |
-| Population mean: \(\mu\) | Sample mean: \(\bar{x}\) |
+| Population                        | Sample                   |
+| --------------------------------- | ------------------------ |
+| Population mean: \(\mu\)          | Sample mean: \(\bar{x}\) |
 | Population variance: \(\sigma^2\) | Sample variance: \(s^2\) |
-| Parameter | Statistic |
+| Parameter                         | Statistic                |
 
 ---
 
@@ -220,12 +220,12 @@ where:
 
 ### Quick Distinction
 
-| | Population Variance | Sample Variance |
-| --- | --- | --- |
-| Mean used | \(\mu\) | \(\bar{x}\) |
-| Denominator | \(N\) | \(n-1\) |
-| Symbol | \(\sigma^2\) | \(s^2\) |
-| Purpose | Describe the entire population | Estimate population variance from a sample |
+|             | Population Variance            | Sample Variance                            |
+| ----------- | ------------------------------ | ------------------------------------------ |
+| Mean used   | \(\mu\)                        | \(\bar{x}\)                                |
+| Denominator | \(N\)                          | \(n-1\)                                    |
+| Symbol      | \(\sigma^2\)                   | \(s^2\)                                    |
+| Purpose     | Describe the entire population | Estimate population variance from a sample |
 
 #### Key Takeaway
 
@@ -257,75 +257,75 @@ $$
 
 The **sample standard deviation** is defined as the square root of the unbiased sample variance:
 
-\[
+$$
 \boxed{s=\sqrt{s^2}}
-\]
+$$
 
 Since
 
-\[
+$$
 s^2=\frac{\sum_{i=1}^{n}(x_i-\bar{x})^2}{n-1},
-\]
+$$
 
 we get
 
-\[
+$$
 \boxed{s=\sqrt{\frac{\sum_{i=1}^{n}(x_i-\bar{x})^2}{n-1}}}
-\]
+$$
 
 #### Example
 
 For the sample
 
-\[
+$$
 4,\ 3,\ 5,\ 7,\ 2,\ 9,\ 11,\ 7
-\]
+$$
 
 the sample mean is
 
-\[
+$$
 \bar{x}=6
-\]
+$$
 
 The sum of squared deviations is
 
-\[
+$$
 4+9+1+1+16+9+25+1=66
-\]
+$$
 
 Therefore the unbiased sample variance is
 
-\[
+$$
 s^2=\frac{66}{8-1}=\frac{66}{7}\approx9.43
-\]
+$$
 
 and the sample standard deviation is
 
-\[
+$$
 s=\sqrt{\frac{66}{7}}\approx3.07
-\]
+$$
 
 ### Bias of sample standard deviation
 
 Although \(s^2\) is an **unbiased estimator** of the population variance \(\sigma^2\),
 
-\[
+$$
 E[s^2]=\sigma^2,
-\]
+$$
 
 the sample standard deviation
 
-\[
+$$
 s=\sqrt{s^2}
-\]
+$$
 
 is **not generally an unbiased estimator** of the population standard deviation \(\sigma\).
 
 The reason is that the square-root function is **nonlinear**:
 
-\[
+$$
 E[\sqrt{s^2}] \neq \sqrt{E[s^2]}
-\]
+$$
 
 in general.
 
@@ -338,19 +338,19 @@ An exactly unbiased estimator for \(\sigma\) would require a correction that dep
 
 #### Key distinction
 
-\[
+$$
 \boxed{\text{Sample variance }s^2\text{ is unbiased for }\sigma^2}
-\]
+$$
 
-\[
+$$
 \boxed{\text{Sample standard deviation }s\text{ is generally biased for }\sigma}
-\]
+$$
 
 The standard definition of \(s\) is still widely used because it is simple and useful, and it is based directly on the unbiased sample variance.
 
 ---
 
-### Video 
+### Video
 
 [Sample standard deviation and bias](https://www.youtube.com/watch?v=DNAnQBhGpRw)
 
@@ -362,10 +362,10 @@ The standard definition of \(s\) is still widely used because it is simple and u
 
 The appropriate measures depend on the shape of the data and the presence of outliers.
 
-| Data | Center | Spread |
-|---|---|---|
-| Roughly symmetric, no significant outliers | **Mean** | **Standard deviation** |
-| Skewed or has significant outliers | **Median** | **IQR** |
+| Data                                       | Center     | Spread                 |
+| ------------------------------------------ | ---------- | ---------------------- |
+| Roughly symmetric, no significant outliers | **Mean**   | **Standard deviation** |
+| Skewed or has significant outliers         | **Median** | **IQR**                |
 
 #### Why?
 
@@ -386,53 +386,53 @@ For example, if one salary is changed from \$250,000 to \$250 million:
 
 For the salaries
 
-\[
+$$
 35,\ 50,\ 50,\ 50,\ 56,\ 60,\ 60,\ 75,\ 250
-\]
+$$
 
 (in thousands):
 
-\[
+$$
 \text{Mean}\approx76.2
-\]
+$$
 
-\[
+$$
 \text{Median}=56
-\]
+$$
 
 The \$250k salary is an extreme outlier, pulling the mean far above most of the data. The median is therefore a better measure of the typical salary.
 
 The quartiles are:
 
-\[
+$$
 Q_1=50,\qquad Q_3=67.5
-\]
+$$
 
 so
 
-\[
+$$
 IQR=Q_3-Q_1=67.5-50=17.5
-\]
+$$
 
 The IQR remains unaffected by how extremely large the \$250k salary becomes.
 
 ### Key takeaway
 
-\[
+$$
 \boxed{\text{Symmetric data without major outliers}
 \rightarrow \text{Mean + SD}}
-\]
+$$
 
-\[
+$$
 \boxed{\text{Skewed data or significant outliers}
 \rightarrow \text{Median + IQR}}
-\]
+$$
 
 This is why **median salary** and **median home price** are commonly reported: these quantities can be strongly skewed by a small number of unusually large values.
 
 ---
 
-### Video 
+### Video
 
 [Mean and standard deviation versus median and IQR](https://www.youtube.com/watch?v=qNKOi08NxHs)
 
