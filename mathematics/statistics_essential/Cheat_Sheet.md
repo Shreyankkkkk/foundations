@@ -186,11 +186,11 @@ within \(3\) SDs.
 
 Tail percentages:
 
-| Distance from mean | Within | Each tail |
-|---|---:|---:|
-| \(1\sigma\) | \(68\%\) | \(16\%\) |
-| \(2\sigma\) | \(95\%\) | \(2.5\%\) |
-| \(3\sigma\) | \(99.7\%\) | \(0.15\%\) |
+| Distance from mean |     Within |  Each tail |
+| ------------------ | ---------: | ---------: |
+| \(1\sigma\)        |   \(68\%\) |   \(16\%\) |
+| \(2\sigma\)        |   \(95\%\) |  \(2.5\%\) |
+| \(3\sigma\)        | \(99.7\%\) | \(0.15\%\) |
 
 **Memory:**
 
@@ -319,13 +319,13 @@ $$
 
 ## Quick Normal Distribution Decision Guide
 
-| Question asks for... | Method |
-|---|---|
-| Below \(x\) | \(z\) → z-table |
-| Above \(x\) | \(z\) → z-table → \(1-\text{area}\) |
-| Between \(a\) and \(b\) | Two z-scores → subtract areas |
-| Top \(p\%\) | \(1-p\) → find \(z\) → find \(x\) |
-| Bottom \(p\%\) | \(p\) → find \(z\) → find \(x\) |
+| Question asks for...    | Method                              |
+| ----------------------- | ----------------------------------- |
+| Below \(x\)             | \(z\) → z-table                     |
+| Above \(x\)             | \(z\) → z-table → \(1-\text{area}\) |
+| Between \(a\) and \(b\) | Two z-scores → subtract areas       |
+| Top \(p\%\)             | \(1-p\) → find \(z\) → find \(x\)   |
+| Bottom \(p\%\)          | \(p\) → find \(z\) → find \(x\)     |
 
 ### Core Formulas
 
@@ -343,4 +343,442 @@ $$
 
 $$
 \boxed{\text{Between}=\text{Below upper}-\text{Below lower}}
+$$
+
+## Bivariate Data & Scatterplots
+
+### Describing a Scatterplot
+
+Always describe:
+
+$$
+\boxed{\text{Direction + Strength + Form + Outliers}}
+$$
+
+- **Positive** → \(x\uparrow,\ y\uparrow\)
+- **Negative** → \(x\uparrow,\ y\downarrow\)
+- **Strong** → points closely follow the pattern
+- **Weak** → points are more scattered
+- **Linear** → roughly follows a straight line
+- **Non-linear** → follows a curve/non-straight pattern
+- **Outlier** → point unusually far from the general pattern
+
+---
+
+## Line of Best Fit & Regression
+
+### Line of Best Fit
+
+A line of best fit represents the **overall linear trend** of a scatterplot.
+
+$$
+\boxed{
+\text{Good line of best fit}
+\rightarrow
+\text{linear trend}
+}
+$$
+
+Do **not** ignore data points just to make the line fit better.
+
+---
+
+### Regression Equation
+
+$$
+\boxed{\hat y=mx+b}
+$$
+
+- \(\hat y\) → predicted \(y\)
+- \(m\) → slope
+- \(b\) → \(y\)-intercept
+- \(x\) → independent/explanatory variable
+- \(y\) → dependent variable
+
+---
+
+### Slope Interpretation
+
+$$
+\boxed{
+m=
+\frac{\text{change in predicted }y}
+{\text{change in }x}
+}
+$$
+
+Interpret:
+
+> For every \(1\)-unit increase in \(x\), predicted \(y\) changes by \(m\) units.
+
+- \(m>0\) → predicted \(y\) increases
+- \(m<0\) → predicted \(y\) decreases
+
+---
+
+### Y-Intercept
+
+$$
+\boxed{x=0\rightarrow\hat y=b}
+$$
+
+Interpret:
+
+> When \(x=0\), the model predicts \(y=b\).
+
+Check whether \(x=0\) is realistic and within the data's range.
+
+---
+
+## Interpolation vs Extrapolation
+
+- **Interpolation** → estimate **within** the observed data range.
+- **Extrapolation** → estimate **outside** the observed data range.
+
+$$
+\boxed{
+\text{Within range}\rightarrow\text{Interpolation}
+}
+$$
+
+$$
+\boxed{
+\text{Outside range}\rightarrow\text{Extrapolation}
+}
+$$
+
+Extrapolation assumes the observed trend continues beyond the available data.
+
+---
+
+## Correlation
+
+### Correlation Coefficient
+
+$$
+\boxed{-1\le r\le1}
+$$
+
+\(r\) measures the **direction and strength of a linear relationship**.
+
+- \(r>0\) → positive linear relationship
+- \(r<0\) → negative linear relationship
+- \(r\approx0\) → little/no **linear** relationship
+- \(|r|\) close to \(1\) → strong linear relationship
+- \(|r|\) close to \(0\) → weak linear relationship
+
+$$
+\boxed{\text{Sign of }r\rightarrow\text{direction}}
+$$
+
+$$
+\boxed{|r|\rightarrow\text{strength}}
+$$
+
+Examples:
+
+$$
+r=0.90\rightarrow\text{strong positive}
+$$
+
+$$
+r=-0.80\rightarrow\text{strong negative}
+$$
+
+$$
+r\approx0\rightarrow\text{little/no linear correlation}
+$$
+
+**Important:** \(r\) measures **linear** association. A strong curved relationship can still have \(r\approx0\).
+
+---
+
+## Correlation ≠ Causation
+
+$$
+\boxed{
+\text{Correlation}\neq\text{Causation}
+}
+$$
+
+Correlation only shows that variables are **associated**.
+
+It does not prove:
+
+- \(A\) causes \(B\)
+- \(B\) causes \(A\)
+- a third variable does not cause both
+
+Possible explanations:
+
+$$
+A\rightarrow B
+$$
+
+$$
+B\rightarrow A
+$$
+
+$$
+C\rightarrow A,\quad C\rightarrow B
+$$
+
+**Observational studies** can show association but do not automatically establish causation.
+
+---
+
+# Residuals
+
+### Predicted vs Actual
+
+$$
+\boxed{y=\text{actual}}
+$$
+
+$$
+\boxed{\hat y=\text{predicted}}
+$$
+
+### Residual
+
+$$
+\boxed{
+\text{Residual}=y-\hat y
+}
+$$
+
+**Actual − Predicted**
+
+- Positive residual → actual point **above** regression line
+- Negative residual → actual point **below** regression line
+- Zero residual → point **on** regression line
+
+$$
+\boxed{
+y>\hat y\rightarrow\text{positive residual}
+}
+$$
+
+$$
+\boxed{
+y<\hat y\rightarrow\text{negative residual}
+}
+$$
+
+Magnitude tells how far the prediction was off.
+
+---
+
+## Least-Squares Regression
+
+The least-squares regression line minimizes the **sum of squared residuals**:
+
+$$
+\boxed{
+\sum(y-\hat y)^2
+}
+$$
+
+Squaring prevents positive and negative residuals from canceling.
+
+$$
+\boxed{
+\text{Least squares}
+\rightarrow
+\min\sum(y-\hat y)^2
+}
+$$
+
+---
+
+## Residual Plots
+
+A residual plot uses:
+
+$$
+\boxed{
+(x,\text{residual})
+}
+$$
+
+- Horizontal axis → \(x\)
+- Vertical axis → residual
+- Horizontal axis → residual \(=0\)
+
+### Good Residual Plot
+
+$$
+\boxed{
+\text{Random scatter around }0
+\rightarrow
+\text{linear model is appropriate}
+}
+$$
+
+### Bad Residual Plot
+
+$$
+\boxed{
+\text{Clear pattern/curve}
+\rightarrow
+\text{linear model may not be appropriate}
+}
+$$
+
+**Memory:**
+
+> Random residuals = good  
+> Patterned residuals = problem
+
+Large \(|\text{residual}|\) → actual value is far from prediction.
+
+---
+
+# Covariance
+
+### Deviation from the Mean
+
+For each observation:
+
+$$
+\boxed{x_i-\bar x}
+$$
+
+$$
+\boxed{y_i-\bar y}
+$$
+
+**Do not confuse with residuals:**
+
+$$
+\boxed{y_i-\hat y_i=\text{residual}}
+$$
+
+$$
+\boxed{y_i-\bar y=\text{deviation from mean}}
+$$
+
+---
+
+### Joint Deviation
+
+$$
+\boxed{
+(x_i-\bar x)(y_i-\bar y)
+}
+$$
+
+Sign logic:
+
+- \((+)(+)=+\)
+- \((-)(-)=+\)
+- \((+)(-)=-\)
+- \((-)(+)=-\)
+
+Therefore:
+
+$$
+\boxed{
+\text{Positive product}\rightarrow\text{same direction}
+}
+$$
+
+$$
+\boxed{
+\text{Negative product}\rightarrow\text{opposite directions}
+}
+$$
+
+---
+
+### Sample Covariance
+
+$$
+\boxed{
+s_{XY}
+=
+\frac{1}{n-1}
+\sum_{i=1}^{n}
+(x_i-\bar x)(y_i-\bar y)
+}
+$$
+
+- Positive covariance → variables tend to move together
+- Negative covariance → variables tend to move oppositely
+- Near \(0\) → little linear joint variation
+
+Covariance depends on the units of the variables, so its magnitude is difficult to compare directly.
+
+---
+
+# Correlation from Covariance
+
+### Sample Correlation
+
+$$
+\boxed{
+r=
+\frac{s_{XY}}{s_Xs_Y}
+}
+$$
+
+Conceptually:
+
+$$
+\boxed{
+\text{Correlation}
+=
+\frac{\text{Covariance}}
+{\text{SD of }X\times\text{SD of }Y}
+}
+$$
+
+Correlation is **unitless** and standardized:
+
+$$
+\boxed{-1\le r\le1}
+$$
+
+### Big Picture
+
+$$
+\boxed{
+\text{Deviation from mean}
+\rightarrow
+\text{Joint deviation}
+\rightarrow
+\text{Covariance}
+\rightarrow
+\text{Correlation}
+}
+$$
+
+---
+
+## SD vs Covariance vs Correlation
+
+| Concept                | What it tells you                                                  |
+| ---------------------- | ------------------------------------------------------------------ |
+| **Standard deviation** | Spread of **one** variable                                         |
+| **Covariance**         | How **two** variables vary together                                |
+| **Correlation**        | Standardized **strength + direction** of their linear relationship |
+
+Key distinction:
+
+$$
+\boxed{
+\text{SD}\rightarrow\text{one variable}
+}
+$$
+
+$$
+\boxed{
+\text{Covariance}\rightarrow\text{two variables moving together}
+}
+$$
+
+$$
+\boxed{
+r\rightarrow\text{linear strength + direction}
+}
 $$
