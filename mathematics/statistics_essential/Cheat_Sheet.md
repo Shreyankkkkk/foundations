@@ -782,3 +782,401 @@ $$
 r\rightarrow\text{linear strength + direction}
 }
 $$
+
+# Study Design & Sampling
+
+## Bias in Surveys
+
+| Bias | What happens? | Memory |
+|---|---|---|
+| **Voluntary response** | People choose themselves to participate | **Choose themselves** |
+| **Convenience** | People chosen because they are easy to reach | **Easy to reach** |
+| **Nonresponse** | Selected people do not respond | **Selected → don't answer** |
+| **Response bias** | People give inaccurate/influenced answers | **Problem with answers** |
+| **Undercoverage** | Part of the population cannot be selected | **Who's missing?** |
+
+### Quick Identification
+
+$$
+\boxed{\text{People choose themselves}\rightarrow\text{Voluntary response}}
+$$
+
+$$
+\boxed{\text{Easy to reach}\rightarrow\text{Convenience}}
+$$
+
+$$
+\boxed{\text{Selected but don't answer}\rightarrow\text{Nonresponse}}
+$$
+
+$$
+\boxed{\text{Inaccurate/influenced answers}\rightarrow\text{Response bias}}
+$$
+
+$$
+\boxed{\text{Part of population cannot be selected}\rightarrow\text{Undercoverage}}
+$$
+
+**Key distinction:**
+
+$$
+\boxed{\text{Who gets selected?}\rightarrow\text{Sampling problem}}
+$$
+
+$$
+\boxed{\text{Who responds?}\rightarrow\text{Nonresponse}}
+$$
+
+$$
+\boxed{\text{What answers are given?}\rightarrow\text{Response bias}}
+$$
+
+---
+
+## Sampling Methods
+
+### Simple Random Sample (SRS)
+
+Randomly select individuals from the entire population.
+
+$$
+\boxed{\text{Number everyone}\rightarrow\text{randomize}\rightarrow\text{select}}
+$$
+
+Every population member has an equal chance of selection.
+
+**Without replacement:** an individual cannot be selected twice.
+
+---
+
+### Stratified Sample
+
+Divide population into **strata** based on an important characteristic, then randomly sample **from every group**.
+
+$$
+\boxed{\text{Groups}\rightarrow\text{sample from EACH group}}
+$$
+
+**Memory:** **Stratified = some from every group**
+
+---
+
+### Cluster Sample
+
+Divide population into **clusters**, randomly select clusters, then survey **everyone in selected clusters**.
+
+$$
+\boxed{\text{Randomly select groups}\rightarrow\text{survey everyone}}
+$$
+
+**Memory:** **Cluster = whole groups**
+
+---
+
+### Systematic Random Sample
+
+Choose a **random starting point**, then select every \(k\)th individual.
+
+$$
+\boxed{\text{Random start}+\text{fixed interval}}
+$$
+
+Example:
+
+\[
+37,\ 137,\ 237,\ 337,\ldots
+\]
+
+Watch for population patterns that match the sampling interval.
+
+---
+
+### Sampling Method Comparison
+
+| Method | Main idea |
+|---|---|
+| **Simple random** | Random individuals |
+| **Stratified** | Some from **every** group |
+| **Cluster** | **Whole** randomly selected groups |
+| **Systematic** | Random start + every \(k\)th |
+| **Voluntary** | People choose themselves |
+| **Convenience** | Easiest people to reach |
+
+---
+
+# Experimental Design
+
+## Variables
+
+**Explanatory variable:**
+
+$$
+\boxed{\text{Variable that may explain/cause a change}}
+$$
+
+**Response variable:**
+
+$$
+\boxed{\text{Outcome being measured}}
+$$
+
+**Memory:** Explanatory → Response
+
+---
+
+## Random Sampling vs Random Assignment
+
+### Random Sampling
+
+$$
+\boxed{\text{WHO gets studied?}}
+$$
+
+Helps with:
+
+$$
+\boxed{\text{Generalizability}}
+$$
+
+### Random Assignment
+
+$$
+\boxed{\text{WHO gets WHICH treatment?}}
+$$
+
+Helps with:
+
+$$
+\boxed{\text{Causation}}
+$$
+
+### Highest-Yield Rule
+
+$$
+\boxed{\text{Random sampling}\rightarrow\text{generalize}}
+$$
+
+$$
+\boxed{\text{Random assignment}\rightarrow\text{causation}}
+$$
+
+---
+
+## Treatment & Control
+
+**Treatment group:** receives the treatment being tested.
+
+**Control group:** comparison group that does not receive the active treatment.
+
+---
+
+## Placebo
+
+A treatment with no active ingredient that resembles the real treatment.
+
+$$
+\boxed{\text{Placebo}\rightarrow\text{controls for placebo effect}}
+$$
+
+---
+
+## Blinding
+
+**Blind:**
+
+$$
+\boxed{\text{Participants don't know their treatment}}
+$$
+
+**Double-blind:**
+
+$$
+\boxed{\text{Participants + experiment administrators don't know}}
+$$
+
+Reduces psychological/researcher bias.
+
+---
+
+## Block Design
+
+Group participants according to an important characteristic, then randomly assign **within each block**.
+
+$$
+\boxed{\text{Block by characteristic}\rightarrow\text{randomize within blocks}}
+$$
+
+**Memory:** **Block = group similar people, then randomize**
+
+---
+
+## Matched Pairs Design
+
+Each participant receives **both conditions**; each person acts as their own comparison.
+
+$$
+\boxed{\text{Same person}\rightarrow\text{both conditions}}
+$$
+
+Reduces effects of individual differences.
+
+**Memory:** **Matched pairs = same person, both treatments**
+
+---
+
+## Replication
+
+Repeat an experiment with different participants/settings.
+
+$$
+\boxed{\text{Replication}\rightarrow\text{greater confidence in results}}
+$$
+
+---
+
+# Correlation & Causation
+
+$$
+\boxed{\text{Correlation}\neq\text{Causation}}
+$$
+
+Correlation shows **association**, not necessarily cause.
+
+Possible explanations:
+
+$$
+A\rightarrow B
+$$
+
+$$
+B\rightarrow A
+$$
+
+$$
+C\rightarrow A,\qquad C\rightarrow B
+$$
+
+where \(C\) may be a **confounding/lurking variable**.
+
+**Observational study:**
+
+$$
+\boxed{\text{Association}\quad\text{(not automatically causation)}}
+$$
+
+**Randomized experiment:**
+
+$$
+\boxed{\text{Random assignment}\rightarrow\text{stronger causal evidence}}
+$$
+
+---
+
+# Confounding Variables
+
+A **confounding variable** is an outside variable related to both the explanatory and response variables, making the causal effect difficult to isolate.
+
+$$
+\boxed{
+C\rightarrow A,\qquad C\rightarrow B
+}
+$$
+
+Self-selection can create confounding:
+
+$$
+\boxed{\text{Self-selection}\rightarrow\text{possible confounding}}
+$$
+
+Without random assignment:
+
+$$
+\boxed{\text{Association}\not\Rightarrow\text{Causation}}
+$$
+
+---
+
+# Statistical Significance
+
+Statistical significance asks whether an observed result is unlikely to have occurred by chance alone.
+
+$$
+\boxed{\text{Rare by chance}\rightarrow\text{statistically significant}}
+$$
+
+### Simulation
+
+$$
+\boxed{
+p\approx
+\frac{\#\text{ simulations at least as extreme}}
+{\#\text{ total simulations}}
+}
+$$
+
+### Common Significance Level
+
+$$
+\boxed{p<0.05\rightarrow\text{statistically significant}}
+$$
+
+$$
+\boxed{p\geq0.05\rightarrow\text{not statistically significant}}
+$$
+
+**Statistical significance does NOT necessarily mean:**
+
+- effect is large
+- effect is practically important
+- result is guaranteed true
+
+It means the observed result would be **unusual if there were no real effect**.
+
+---
+
+# Study Design Quick Decision Guide
+
+| Question | Answer |
+|---|---|
+| People choose themselves? | **Voluntary response** |
+| People chosen because easy to reach? | **Convenience** |
+| Selected people don't respond? | **Nonresponse** |
+| Answers inaccurate/influenced? | **Response bias** |
+| Part of population can't be selected? | **Undercoverage** |
+| Random individuals? | **Simple random** |
+| Sample from every group? | **Stratified** |
+| Random groups → everyone in them? | **Cluster** |
+| Random start → every \(k\)th? | **Systematic** |
+| Group by characteristic → randomize? | **Block** |
+| Same person gets both conditions? | **Matched pairs** |
+| Participants don't know treatment? | **Blind** |
+| Participants + administrators don't know? | **Double-blind** |
+| Random sampling? | **Generalizability** |
+| Random assignment? | **Causation** |
+| \(p<0.05\)? | **Statistically significant** |
+
+### Master Memory
+
+$$
+\boxed{\text{Sampling}=\text{WHO is studied?}}
+$$
+
+$$
+\boxed{\text{Assignment}=\text{WHO gets WHICH treatment?}}
+$$
+
+$$
+\boxed{\text{Sampling}\rightarrow\text{Generalizability}}
+$$
+
+$$
+\boxed{\text{Random assignment}\rightarrow\text{Causation}}
+$$
+
+$$
+\boxed{\text{Correlation}\neq\text{Causation}}
+$$
+
+$$
+\boxed{\text{Rare by chance}\rightarrow\text{Significant}}
+$$
