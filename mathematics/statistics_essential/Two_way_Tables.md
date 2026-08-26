@@ -191,13 +191,7 @@ A **relative frequency** tells us how common something is compared with the tota
 
 The general formula is:
 
-$$
-\boxed{
-\text{Relative frequency}
-=
-\frac{\text{frequency}}{\text{relevant total}}
-}
-$$
+$$\boxed{\text{Relative frequency}=\dfrac{\text{frequency}}{\text{relevant total}}}$$
 
 It can be written as a **decimal, fraction, or percentage**.
 
@@ -267,9 +261,7 @@ $$
 
 or:
 
-$$
-\boxed{100\%}
-$$
+$$\boxed{100\text{\%}}$$
 
 ---
 
@@ -311,13 +303,7 @@ did not.
 
 For a column relative frequency:
 
-$$
-\boxed{
-\text{Column relative frequency}
-=
-\frac{\text{cell value}}{\text{column total}}
-}
-$$
+$$\boxed{\text{Column relative frequency}=\dfrac{\text{cell value}}{\text{column total}}}$$
 
 Remember:
 
@@ -373,13 +359,7 @@ The marginal distribution can be expressed as:
 
 To convert a count into a percentage:
 
-$$
-\boxed{
-\text{Percentage}
-=
-\frac{\text{count}}{\text{total}}\times100
-}
-$$
+$$\boxed{\text{Percentage}=\dfrac{\text{count}}{\text{total}}\times100}$$
 
 For example, if 40 out of 200 students scored between 80–100%:
 
@@ -389,9 +369,7 @@ $$
 
 So:
 
-$$
-\boxed{20\%}
-$$
+$$\boxed{20\text{\%}}$$
 
 of students scored between 80–100%.
 
@@ -427,9 +405,7 @@ $$
 
 So approximately:
 
-$$
-\boxed{18.6\%}
-$$
+$$\boxed{18.6\text{\%}}$$
 
 of the students who studied 41–60 minutes scored between 80–100%.
 
@@ -462,9 +438,7 @@ $$
 
 For conditional distributions, the percentages within the chosen condition should add to approximately:
 
-$$
-\boxed{100\%}
-$$
+$$\boxed{100\text{\%}}$$
 
 ---
 
@@ -500,9 +474,7 @@ When using **column relative frequencies**, each column represents the distribut
 
 The percentages in each column add to:
 
-$$
-\boxed{100\%}
-$$
+$$\boxed{100\text{\%}}$$
 
 because each column describes the entire distribution for that group.
 
@@ -514,15 +486,11 @@ To determine whether men were more likely than women to vote for Romney, compare
 
 Men:
 
-$$
-\boxed{52\%}
-$$
+$$\boxed{52\text{\%}}$$
 
 Women:
 
-$$
-\boxed{43\%}
-$$
+$$\boxed{43\text{\%}}$$
 
 Since:
 
