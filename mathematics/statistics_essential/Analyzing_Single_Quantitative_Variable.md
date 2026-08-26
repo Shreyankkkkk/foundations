@@ -518,11 +518,11 @@ If \(N\) is the total number of observations:
 
 #### Using values below \(x\)
 
-$$\boxed{\text{Percentile rank}=\frac{\#(\text{values below }x)}{N}\times100}$$
+$$\boxed{\text{Percentile rank}=\dfrac{\text{values below }x}{N}\times100}$$
 
 #### Using values at or below \(x\)
 
-$$\boxed{\text{Percentile rank}=\frac{\#(\text{values below }x)}{N}\times100}$$
+$$\boxed{\text{Percentile rank}=\dfrac{\text{values below }x}{N}\times100}$$
 
 Always pay attention to whether the question says **below** or **at or below**.
 
@@ -1025,7 +1025,7 @@ Although the raw scores cannot meaningfully be compared directly, their Z-scores
 Since:
 
 $$
-2.10>1.86
+2.10\gt 1.86
 $$
 
 Juwan performed **slightly better relative to the other test takers on the LSAT**.
@@ -1317,7 +1317,7 @@ $$
 The standard normal table gives:
 
 $$
-P(Z<0.57)=0.7157
+P(Z\lt 0.57)=0.7157
 $$
 
 Therefore:
@@ -1370,7 +1370,7 @@ $$
 Then:
 
 $$
-\boxed{P(X>x)=1-P(Z<z)}
+\boxed{P(X\gt x)=1-P(Z\lt z)}
 $$
 
 This works because the **total area under the normal curve is 1**.
@@ -1416,7 +1416,7 @@ $$
 The z-table gives the proportion **below** this value:
 
 $$
-P(Z<2.50)=0.9938
+P(Z\lt 2.50)=0.9938
 $$
 
 But the question asks for the proportion **above** Ludwig's score.
@@ -1424,11 +1424,11 @@ But the question asks for the proportion **above** Ludwig's score.
 Therefore:
 
 $$
-P(Z>2.50)=1-0.9938
+P(Z\gt 2.50)=1-0.9938
 $$
 
 $$
-\boxed{P(Z>2.50)=0.0062}
+\boxed{P(Z\gt 2.50)=0.0062}
 $$
 
 So:
@@ -1490,7 +1490,7 @@ To find the proportion of a normal distribution that is **between two values**:
 
 $$
 \boxed{
-P(a<X<b)=P(X<b)-P(X<a)
+P(a\lt X\lt b)=P(X\lt b)-P(X\lt a)
 }
 $$
 
@@ -1498,7 +1498,7 @@ Using z-scores:
 
 $$
 \boxed{
-P(a<X<b)=P(Z<z_b)-P(Z<z_a)
+P(a\lt X\lt b)=P(Z\lt z_b)-P(Z\lt z_a)
 }
 $$
 
@@ -1533,7 +1533,7 @@ $$
 From the z-table:
 
 $$
-P(Z<0.30)=0.6179
+P(Z\lt 0.30)=0.6179
 $$
 
 #### Lower value: \$624
@@ -1549,7 +1549,7 @@ $$
 From the z-table:
 
 $$
-P(Z<-2.10)=0.0179
+P(Z\lt -2.10)=0.0179
 $$
 
 #### Find the area between
@@ -1576,15 +1576,7 @@ of laptop prices are between \$624 and \$768.
 
 > **For the proportion between two values, find the area below each value and subtract the smaller area from the larger area.**
 
-$$
-\boxed{
-\text{Between}
-=
-\text{Below upper value}
--
-\text{Below lower value}
-}
-$$
+$$\boxed{\text{Between}=\text{Below upper value}-\text{Below lower value}}$$
 
 ### Video
 
@@ -1631,7 +1623,7 @@ $$
 From the z-table:
 
 $$
-P(Z<0.53)=0.7019
+P(Z\lt 0.53)=0.7019
 $$
 
 while \(z=0.52\) is below the 70% threshold.
@@ -1726,7 +1718,7 @@ We need the maximum wait time that is still in the bottom 10%.
 The bottom 10% means:
 
 $$
-P(Z<z)=0.10
+P(Z\lt z)=0.10
 $$
 
 From the z-table, the appropriate cutoff is approximately:
@@ -1776,7 +1768,7 @@ $$
 For the bottom \(p\%\):
 
 $$
-\boxed{P(Z<z)=p}
+\boxed{P(Z\lt z)=p}
 $$
 
 The z-score will generally be **negative** for percentiles below 50%.
