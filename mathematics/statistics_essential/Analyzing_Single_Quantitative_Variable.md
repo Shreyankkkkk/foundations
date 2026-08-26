@@ -1323,13 +1323,13 @@ $$
 Therefore:
 
 $$
-\boxed{0.7157\%}
+\boxed{0.7157\text{\%}}
 $$
 
 or:
 
 $$
-\boxed{71.57\%}
+\boxed{71.57\text{\%}}
 $$
 
 So approximately **71.57% of students have a height below Darnell's**.
@@ -1440,7 +1440,7 @@ $$
 or:
 
 $$
-\boxed{0.62\%}
+\boxed{0.62\text{\%}}
 $$
 
 of exam scores are higher than Ludwig's.
@@ -1449,13 +1449,7 @@ of exam scores are higher than Ludwig's.
 
 > **For a proportion above a value, calculate the z-score, use the z-table for the area below, then subtract from 1.**
 
-$$
-\boxed{
-\text{Above}
-=
-1-\text{Below}
-}
-$$
+$$\boxed{\text{Above}=1-\text{Below}}$$
 
 Remember:
 
@@ -1567,7 +1561,7 @@ $$
 or:
 
 $$
-\boxed{60\%}
+\boxed{60\text{\%}}
 $$
 
 of laptop prices are between \$624 and \$768.
