@@ -518,23 +518,11 @@ If \(N\) is the total number of observations:
 
 #### Using values below \(x\)
 
-$$
-\boxed{
-\text{Percentile rank}
-=
-\frac{\#(\text{values below }x)}{N}\times100
-}
-$$
+$$\boxed{\text{Percentile rank}=\frac{\#(\text{values below }x)}{N}\times100}$$
 
 #### Using values at or below \(x\)
 
-$$
-\boxed{
-\text{Percentile rank}
-=
-\frac{\#(\text{values at or below }x)}{N}\times100
-}
-$$
+$$\boxed{\text{Percentile rank}=\frac{\#(\text{values below }x)}{N}\times100}$$
 
 Always pay attention to whether the question says **below** or **at or below**.
 
@@ -579,23 +567,11 @@ When solving a problem, **follow the definition being used by the question**.
 
 For \(x\):
 
-$$
-\boxed{
-\text{Percentile rank}
-=
-\frac{\text{number of observations below }x}{N}\times100
-}
-$$
+$$\boxed{\text{Percentile rank}=\frac{\text{number of observations below }x}{N}\times100}$$
 
 or, depending on the convention,
 
-$$
-\boxed{
-\text{Percentile rank}
-=
-\frac{\text{number of observations at or below }x}{N}\times100
-}
-$$
+$$\boxed{\text{Percentile rank}=\frac{\text{number of observations at or below }x}{N}\times100}$$
 
 **Always check whether the target value itself should be included.**
 
@@ -855,14 +831,7 @@ $$
 
 Think of the formula as:
 
-$$
-\boxed{
-\text{Z-score}
-=
-\frac{\text{observed value}-\text{mean}}
-{\text{standard deviation}}
-}
-$$
+$$\boxed{\text{Z-score}=\frac{\text{observed value}-\text{mean}}{\text{standard deviation}}}$$
 
 A useful mental model is:
 
@@ -1354,7 +1323,7 @@ $$
 Therefore:
 
 $$
-\boxed{0.7157}
+\boxed{0.7157\%}
 $$
 
 or:
