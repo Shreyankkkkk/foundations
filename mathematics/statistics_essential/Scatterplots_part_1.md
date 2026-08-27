@@ -365,7 +365,7 @@ This is an example of **extrapolation** because we are estimating a value outsid
 From the graph:
 
 $$
-\boxed{\text{Estimated smoking rate in 1945}\approx51\%-52\%}
+\boxed{\text{Estimated smoking rate in 1945}\approx51\text{\%}-52\text{\%}}
 $$
 
 ---
@@ -413,7 +413,7 @@ $$
 and extending the negative linear trend gives:
 
 $$
-\boxed{\text{1945 smoking rate}\approx51\%-52\%}
+\boxed{\text{1945 smoking rate}\approx51\text{\%}-52\text{\%}}
 $$
 
 Remember:
@@ -662,14 +662,7 @@ Remember:
 - **Dependent variable** → \(y\), usually on the vertical axis
 - Interpret the slope using **units**.
 
-$$
-\boxed{
-\text{Slope}
-=
-\frac{\text{change in predicted }y}
-{\text{change in }x}
-}
-$$
+$$\boxed{\text{Slope}=\dfrac{\text{change in predicted }y}{\text{change in }x}}$$
 
 ---
 
@@ -741,7 +734,7 @@ $$
 In this example:
 
 $$
-\boxed{0\text{ million dollars}\rightarrow39\%\text{ predicted winning percentage}}
+\boxed{0\text{ million dollars}\rightarrow39\text{\%}\text{ predicted winning percentage}}
 $$
 
 #### Slope
@@ -796,7 +789,7 @@ In this example, a coach earning exactly \$0 may not be realistic.
 Therefore, although the mathematical interpretation is:
 
 $$
-\boxed{0\text{ salary}\rightarrow39\%\text{ predicted winning percentage}}
+\boxed{0\text{ salary}\rightarrow39\text{\%}\text{ predicted winning percentage}}
 $$
 
 we should be cautious about treating that prediction as a realistic real-world conclusion.
@@ -879,11 +872,7 @@ $$
 
 means:
 
-$$
-\boxed{
-\text{At a salary of \$0 million, the model predicts approximately a 39\% winning percentage.}
-}
-$$
+$$\boxed{\text{At a salary of \$0 million, the model predicts approximately a 39}\text{\%}\text{ winning percentage.}}$$
 
 Remember:
 
