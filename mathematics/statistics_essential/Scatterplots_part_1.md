@@ -872,7 +872,7 @@ $$
 
 means:
 
-$$\boxed{\text{At a salary of \$0 million, the model predicts approximately a 39}\text{\%}\text{ winning percentage.}}$$
+$$\boxed{\text{At a salary of 0 million dollars, the model predicts approximately a 39}\text{\%}\text{ winning percentage.}}$$
 
 Remember:
 
