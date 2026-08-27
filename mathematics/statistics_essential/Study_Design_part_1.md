@@ -17,13 +17,7 @@ These are my personal study notes based on the Khan Academy Statistics course.
 
 A **population** is the **entire group of individuals** that a study is interested in.
 
-$$
-\boxed{
-\text{Population}
-=
-\text{entire group being studied}
-}
-$$
+$$\boxed{\text{Population}=\text{entire group being studied}}$$
 
 The population is the group that researchers ultimately want to learn about.
 
@@ -33,13 +27,7 @@ The population is the group that researchers ultimately want to learn about.
 
 A **sample** is a **subset of the population** that is actually observed, surveyed, or measured.
 
-$$
-\boxed{
-\text{Sample}
-=
-\text{part of the population actually studied}
-}
-$$
+$$\boxed{\text{Sample}=\text{part of the population actually studied}}$$
 
 The sample is used to gather information about the larger population.
 
@@ -53,31 +41,16 @@ They randomly survey **100 seniors**.
 
 Therefore:
 
-$$
-\boxed{
-\text{Population}
-=
-\text{all seniors at Riverview High School}
-}
-$$
+$$\boxed{\text{Population}=\text{all seniors at Riverview High School}}$$
 
 and:
 
-$$
-\boxed{
-\text{Sample}
-=
-\text{the 100 seniors who were surveyed}
-}
-$$
+$$\boxed{\text{Sample}=\text{the 100 seniors who were surveyed}}$$
 
 The 100 seniors are only a subset of all the seniors at the school.
 
 $$
-\boxed{
-\text{Sample}\subseteq\text{Population}
-}
-$$
+\boxed{\text{Sample}\subseteq\text{Population}}$$
 
 ---
 
@@ -91,20 +64,10 @@ $$
 A useful way to remember the difference:
 
 $$
-\boxed{
-\text{Population}
-=
-\text{WHO we want information about}
-}
-$$
+\boxed{\text{Population}=\text{WHO we want information about}}$$
 
 $$
-\boxed{
-\text{Sample}
-=
-\text{WHO we actually collect information from}
-}
-$$
+\boxed{\text{Sample}=\text{WHO we actually collect information from}}$$
 
 ---
 
@@ -124,16 +87,7 @@ Instead, researchers can select a sample and use its results to learn about the 
 The basic process is:
 
 $$
-\boxed{
-\text{Population}
-\rightarrow
-\text{Sample}
-\rightarrow
-\text{Collect data}
-\rightarrow
-\text{Learn about population}
-}
-$$
+\boxed{\text{Population}\rightarrow\text{Sample}\rightarrow\text{Collect data}\rightarrow\text{Learn about population}}$$
 
 ---
 
@@ -144,12 +98,7 @@ A **random sample** is a sample selected randomly from the population.
 In the Riverview example, the administrators randomly select 100 seniors.
 
 $$
-\boxed{
-\text{Random sample}
-=
-\text{sample selected randomly from the population}
-}
-$$
+\boxed{\text{Random sample}=\text{sample selected randomly from the population}}$$
 
 Random sampling helps reduce the risk that the sample is systematically different from the population.
 
@@ -165,13 +114,7 @@ For the Riverview example, the researchers want to know how **all seniors at Riv
 
 Therefore:
 
-$$
-\boxed{
-\text{Population}
-=
-\text{all seniors at Riverview High}
-}
-$$
+$$\boxed{\text{Population}=\text{all seniors at Riverview High}}$$
 
 It is **not**:
 
@@ -193,13 +136,7 @@ In the Riverview example, the administrators surveyed 100 seniors.
 
 Therefore:
 
-$$
-\boxed{
-\text{Sample}
-=
-\text{the 100 seniors surveyed}
-}
-$$
+$$\boxed{\text{Sample}=\text{the 100 seniors surveyed}}$$
 
 It is not all seniors at the school because only 100 of them were actually surveyed.
 
@@ -213,23 +150,11 @@ Suppose the study is about seniors at one particular school.
 
 Incorrect:
 
-$$
-\boxed{
-\text{Population}
-=
-\text{all high school seniors in the world}
-}
-$$
+$$\boxed{\text{Population}=\text{all high school seniors in the world}}$$
 
 Correct:
 
-$$
-\boxed{
-\text{Population}
-=
-\text{all seniors at the school}
-}
-$$
+$$\boxed{\text{Population}=\text{all seniors at the school}}$$
 
 The population depends on the **specific group the researchers want to learn about**.
 
@@ -241,23 +166,11 @@ If 100 seniors were surveyed, the sample is not all seniors.
 
 Incorrect:
 
-$$
-\boxed{
-\text{Sample}
-=
-\text{all seniors at Riverview}
-}
-$$
+$$\boxed{\text{Sample}=\text{all seniors at Riverview}}$$
 
 Correct:
 
-$$
-\boxed{
-\text{Sample}
-=
-\text{100 seniors who were surveyed}
-}
-$$
+$$\boxed{\text{Sample}=\text{100 seniors who were surveyed}}$$
 
 ---
 
@@ -269,21 +182,9 @@ The university randomly surveys 500 students.
 
 Then:
 
-$$
-\boxed{
-\text{Population}
-=
-\text{all students at the university}
-}
-$$
+$$\boxed{\text{Population}=\text{all students at the university}}$$
 
-$$
-\boxed{
-\text{Sample}
-=
-\text{the 500 students surveyed}
-}
-$$
+$$\boxed{\text{Sample}=\text{the 500 students surveyed}}$$
 
 The 500 students provide information that can be used to learn about the larger population.
 
@@ -295,33 +196,17 @@ When a question asks you to identify the population and sample:
 
 **Step 1:** Ask who the researchers want to learn about.
 
-$$
-\boxed{\text{Population}}
-$$
+$$\boxed{\text{Population}}$$
 
 **Step 2:** Ask who was actually surveyed, observed, or measured.
 
-$$
-\boxed{\text{Sample}}
-$$
+$$\boxed{\text{Sample}}$$
 
 Remember:
 
-$$
-\boxed{
-\text{Population}
-\rightarrow
-\text{larger group}
-}
-$$
+$$\boxed{\text{Population}\rightarrow\text{larger group}}$$
 
-$$
-\boxed{
-\text{Sample}
-\rightarrow
-\text{smaller group actually studied}
-}
-$$
+$$\boxed{\text{Sample}\rightarrow\text{smaller group actually studied}}$$
 
 ---
 
@@ -329,23 +214,11 @@ $$
 
 > **Population = the entire group we want to learn about.**
 
-$$
-\boxed{
-\text{Population}
-=
-\text{entire group of interest}
-}
-$$
+$$\boxed{\text{Population}=\text{entire group of interest}}$$
 
 > **Sample = the part of the population that we actually study.**
 
-$$
-\boxed{
-\text{Sample}
-=
-\text{subset actually studied}
-}
-$$
+$$\boxed{\text{Sample}=\text{subset actually studied}}$$
 
 The most important relationship is:
 
@@ -357,21 +230,9 @@ $$
 
 For the Riverview example:
 
-$$
-\boxed{
-\text{Population}
-=
-\text{all seniors at Riverview High}
-}
-$$
+$$\boxed{\text{Population}=\text{all seniors at Riverview High}}$$
 
-$$
-\boxed{
-\text{Sample}
-=
-\text{100 seniors surveyed}
-}
-$$
+$$\boxed{\text{Sample}=\text{100 seniors surveyed}}$$
 
 ### Memory Trick
 
@@ -508,13 +369,7 @@ The **sampling population** is the group from which the sample was actually sele
 
 In this example:
 
-$$
-\boxed{
-\text{Sampling population}
-=
-\text{first-year students living in the 12 residence halls}
-}
-$$
+$$\boxed{\text{Sampling population}=\text{first-year students living in the 12 residence halls}}$$
 
 The sample is randomly selected from this group.
 
@@ -534,23 +389,11 @@ The survey only samples from group 2.
 
 Therefore:
 
-$$
-\boxed{
-\text{Population}
-=
-\text{first-year students living in the 12 residence halls}
-}
-$$
+$$\boxed{\text{Population}=\text{first-year students living in the 12 residence halls}}$$
 
 and:
 
-$$
-\boxed{
-\text{Sample}
-=
-\text{large random sample of those students}
-}
-$$
+$$\boxed{\text{Sample}=\text{large random sample of those students}}$$
 
 ---
 
@@ -699,21 +542,9 @@ This connects directly to Lesson 1.
 
 In Lesson 1:
 
-$$
-\boxed{
-\text{Population}
-=
-\text{all seniors at Riverview High}
-}
-$$
+$$\boxed{\text{Population}=\text{all seniors at Riverview High}}$$
 
-$$
-\boxed{
-\text{Sample}
-=
-\text{100 seniors surveyed}
-}
-$$
+$$\boxed{\text{Sample}=\text{100 seniors surveyed}}$$
 
 Because the 100 seniors were randomly sampled from the seniors at the school, the survey results can potentially be generalized to:
 
@@ -814,13 +645,7 @@ That group is the population you can generalize to.
 
 For the university example:
 
-$$
-\boxed{
-\text{Who could have been picked?}
-=
-\text{first-year students living in the 12 residence halls}
-}
-$$
+$$\boxed{\text{Who could have been picked?}=\text{first-year students living in the 12 residence halls}}$$
 
 Therefore:
 
@@ -963,37 +788,13 @@ $$
 
 #### Key Takeaway
 
-$$
-\boxed{
-\text{Experiment}
-=
-\text{assign treatment}
-}
-$$
+$$\boxed{\text{Experiment}=\text{assign treatment}}$$
 
-$$
-\boxed{
-\text{Retrospective}
-=
-\text{look backward}
-}
-$$
+$$\boxed{\text{Retrospective}=\text{look backward}}$$
 
-$$
-\boxed{
-\text{Prospective}
-=
-\text{look forward}
-}
-$$
+$$\boxed{\text{Prospective}=\text{look forward}}$$
 
-$$
-\boxed{
-\text{Sample survey}
-=
-\text{ask/observe now}
-}
-$$
+$$\boxed{\text{Sample survey}=\text{ask/observe now}}$$
 
 #### Memory Trick
 
@@ -1016,13 +817,7 @@ An **observational study** collects data by observing existing conditions withou
 
 The goal is often to identify a **relationship or correlation between variables**.
 
-$$
-\boxed{
-\text{Observational study}
-=
-\text{observe variables without assigning treatment}
-}
-$$
+$$\boxed{\text{Observational study}=\text{observe variables without assigning treatment}}$$
 
 ---
 
@@ -1335,21 +1130,9 @@ Because the researchers actively assign the treatment, an experiment can establi
 
 The key difference is:
 
-$$
-\boxed{
-\text{Experiment}
-=
-\text{researchers assign treatment}
-}
-$$
+$$\boxed{\text{Experiment}=\text{researchers assign treatment}}$$
 
-$$
-\boxed{
-\text{Observational study}
-=
-\text{researchers observe without assigning treatment}
-}
-$$
+$$\boxed{\text{Observational study}=\text{researchers observe without assigning treatment}}$$
 
 ---
 
