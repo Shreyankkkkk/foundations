@@ -197,11 +197,7 @@ $$
 
 First calculate the predicted value:
 
-$$
-\hat{y}
-=
--140+\frac{14}{3}(60)
-$$
+$$\hat{y}=-140+\frac{14}{3}(60)$$
 
 Since:
 
@@ -404,15 +400,7 @@ Remember:
 
 The core idea:
 
-$$
-\boxed{
-\text{Actual }y
--
-\text{Predicted }\hat{y}
-=
-\text{Residual}
-}
-$$
+$$\boxed{\text{Actual }y-\text{Predicted }\hat{y}=\text{Residual}}$$
 
 and:
 
@@ -521,13 +509,7 @@ $$
 
 Substitute \(x=155\):
 
-$$
-\hat{y}
-=
-\frac{1}{3}
-+
-\frac{1}{3}(155)
-$$
+$$\hat{y}=\frac{1}{3}+\frac{1}{3}(155)$$
 
 $$
 =
@@ -701,23 +683,11 @@ $$
 
 For the bicycle example:
 
-$$
-\hat{y}
-=
-\frac13+\frac13(155)
-=
-52
-$$
+$$\hat{y}=\frac13+\frac13(155)=52$$
 
 Then:
 
-$$
-\text{Residual}
-=
-51-52
-=
-\boxed{-1}
-$$
+$$\text{Residual}=51-52=\boxed{-1}$$
 
 Therefore:
 
@@ -1793,7 +1763,7 @@ For a population, covariance is:
 
 $$
 \boxed{
-\operatorname{Cov}(X,Y)
+\text{Cov}(X,Y)
 =
 \frac{1}{N}
 \sum_{i=1}^{N}
@@ -1847,23 +1817,11 @@ Instead, we combine all of the products and take their average.
 
 Conceptually:
 
-$$
-\boxed{
-\text{Covariance}
-=
-\text{average joint deviation}
-}
-$$
+$$\boxed{\text{Covariance}=\text{average joint deviation}}$$
 
 More precisely:
 
-$$
-\boxed{
-\text{Covariance}
-=
-\text{average of the products of deviations from the means}
-}
-$$
+$$\boxed{\text{Covariance}=\text{average of the products of deviations from the means}}$$
 
 This gives us an overall measure of how \(X\) and \(Y\) tend to move together.
 
@@ -1876,7 +1834,7 @@ This gives us an overall measure of how \(X\) and \(Y\) tend to move together.
 If:
 
 $$
-\operatorname{Cov}(X,Y)>0
+\text{Cov}(X,Y)>0
 $$
 
 then \(X\) and \(Y\) tend to move in the **same direction**.
@@ -1890,7 +1848,7 @@ This is associated with a **positive linear relationship**.
 
 $$
 \boxed{
-\operatorname{Cov}(X,Y)>0
+\text{Cov}(X,Y)>0
 \rightarrow
 \text{positive association}
 }
@@ -1903,7 +1861,7 @@ $$
 If:
 
 $$
-\operatorname{Cov}(X,Y)<0
+\text{Cov}(X,Y)<0
 $$
 
 then \(X\) and \(Y\) tend to move in **opposite directions**.
@@ -1917,7 +1875,7 @@ This is associated with a **negative linear relationship**.
 
 $$
 \boxed{
-\operatorname{Cov}(X,Y)<0
+\text{Cov}(X,Y)<0
 \rightarrow
 \text{negative association}
 }
@@ -1930,7 +1888,7 @@ $$
 If:
 
 $$
-\operatorname{Cov}(X,Y)\approx0
+\text{Cov}(X,Y)\approx0
 $$
 
 then there is little overall tendency for the two variables to move together **linearly**.
@@ -2032,7 +1990,7 @@ $$
 If the points do not show a consistent linear direction:
 
 $$
-\boxed{\operatorname{Cov}(X,Y)\approx0}
+\boxed{\text{Cov}(X,Y)\approx0}
 $$
 
 may occur.
@@ -2143,38 +2101,15 @@ Correlation takes covariance and standardizes it using the standard deviations o
 
 The population correlation coefficient is:
 
-$$
-\boxed{
-\rho
-=
-\frac{\operatorname{Cov}(X,Y)}
-{\sigma_X\sigma_Y}
-}
-$$
+$$\boxed{\rho=\dfrac{\text{Cov}(X,Y)}{\sigma_X\sigma_Y}}$$
 
 The sample correlation coefficient is commonly written as:
 
-$$
-\boxed{
-r
-=
-\frac{s_{XY}}
-{s_Xs_Y}
-}
-$$
+$$\boxed{r=\dfrac{s_{XY}}{s_Xs_Y}}$$
 
 Therefore, conceptually:
 
-$$
-\boxed{
-\text{Correlation}
-=
-\frac{\text{Covariance}}
-{\text{Standard deviation of }X
-\times
-\text{Standard deviation of }Y}
-}
-$$
+$$\boxed{\text{Correlation}=\dfrac{\text{Covariance}}{\text{Standard deviation of }X\times\text{Standard deviation of }Y}}$$
 
 ---
 
@@ -2261,7 +2196,7 @@ Covariance and correlation contain similar directional information.
 If:
 
 $$
-\operatorname{Cov}(X,Y)>0
+\text{Cov}(X,Y)>0
 $$
 
 then:
@@ -2273,7 +2208,7 @@ $$
 If:
 
 $$
-\operatorname{Cov}(X,Y)<0
+\text{Cov}(X,Y)<0
 $$
 
 then:
@@ -2343,14 +2278,14 @@ $$
 Then average those products:
 
 $$
-\operatorname{Cov}(X,Y)
+\text{Cov}(X,Y)
 $$
 
 Finally, standardize covariance:
 
 $$
 r=
-\frac{\operatorname{Cov}(X,Y)}
+\frac{\text{Cov}(X,Y)}
 {\sigma_X\sigma_Y}
 $$
 
@@ -2495,14 +2430,14 @@ $$
 #### Step 4: Look at the overall average
 
 $$
-\operatorname{Cov}(X,Y)
+\text{Cov}(X,Y)
 $$
 
 #### Step 5: Standardize the covariance
 
 $$
 r=
-\frac{\operatorname{Cov}(X,Y)}
+\frac{\text{Cov}(X,Y)}
 {\sigma_X\sigma_Y}
 $$
 
@@ -2534,7 +2469,7 @@ $$
 
 $$
 \boxed{
-\operatorname{Cov}(X,Y)
+\text{Cov}(X,Y)
 =
 \frac{1}{N}
 \sum_{i=1}^{N}
@@ -2559,7 +2494,7 @@ $$
 $$
 \boxed{
 \rho=
-\frac{\operatorname{Cov}(X,Y)}
+\frac{\text{Cov}(X,Y)}
 {\sigma_X\sigma_Y}
 }
 $$
@@ -2664,7 +2599,7 @@ Averaging these products gives covariance:
 
 $$
 \boxed{
-\operatorname{Cov}(X,Y)
+\text{Cov}(X,Y)
 =
 \text{average joint variation}
 }
@@ -2675,36 +2610,18 @@ Then standardizing covariance gives correlation:
 $$
 \boxed{
 r=
-\frac{\operatorname{Cov}(X,Y)}
+\frac{\text{Cov}(X,Y)}
 {\sigma_X\sigma_Y}
 }
 $$
 
 So remember:
 
-$$
-\boxed{
-\text{Standard deviation}
-=
-\text{how much ONE variable varies}
-}
-$$
+$$\boxed{\text{Standard deviation}=\text{how much ONE variable varies}}$$
 
-$$
-\boxed{
-\text{Covariance}
-=
-\text{how TWO variables vary together}
-}
-$$
+$$\boxed{\text{Covariance}=\text{how TWO variables vary together}}$$
 
-$$
-\boxed{
-\text{Correlation}
-=
-\text{standardized strength and direction of their linear relationship}
-}
-$$
+$$\boxed{\text{Correlation}=\text{standardized strength and direction of their linear relationship}}$$
 
 #### One crucial distinction
 
