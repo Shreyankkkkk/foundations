@@ -85,11 +85,11 @@ _To do the same for unbiased, finding a formula is not as easy as subtracting on
 
 Percentage of observations below a value:
 
-$$\boxed{\text{Percentile Rank}=\dfrac{\#(\text{values below }x)}{N}\times100}$$
+$$\boxed{\text{Percentile Rank}=\dfrac{\text{values below }x}{N}\times100}$$
 
 If the problem uses **at or below**:
 
-$$\boxed{\text{Percentile Rank}=\dfrac{\#(\text{values at or below }x)}{N}\times100}$$
+$$\boxed{\text{Percentile Rank}=\dfrac{\text{values at or below }x}{N}\times100}$$
 
 Always check whether the target value is included.
 
@@ -129,19 +129,19 @@ The larger Z-score represents the higher relative position within its distributi
 For an approximately normal distribution:
 
 $$
-\boxed{68\%}
+\boxed{68\text{\%}}
 $$
 
 within \(1\) SD of the mean.
 
 $$
-\boxed{95\%}
+\boxed{95\text{\%}}
 $$
 
 within \(2\) SDs.
 
 $$
-\boxed{99.7\%}
+\boxed{99.7\text{\%}}
 $$
 
 within \(3\) SDs.
@@ -157,7 +157,7 @@ Tail percentages:
 **Memory:**
 
 $$
-\boxed{68\%-95\%-99.7\%}
+\boxed{68\text{\%}-95\text{\%}-99.7\text{\%}}
 $$
 
 ---
@@ -175,7 +175,7 @@ $$
 2. Look up \(z\) in the standard normal table.
 
 $$
-\boxed{P(X<x)=P(Z<z)}
+\boxed{P(X\lt x)=P(Z\lt z)}
 $$
 
 The z-table gives the cumulative area **to the left** of the Z-score.
@@ -186,7 +186,7 @@ The z-table gives the cumulative area **to the left** of the Z-score.
 
 $$
 \boxed{
-P(X>x)=1-P(Z<z)
+P(X\gt x)=1-P(Z\lt z)
 }
 $$
 
@@ -208,13 +208,13 @@ For lower value \(a\) and upper value \(b\):
 
 $$
 \boxed{
-P(a<X<b)=P(X<b)-P(X<a)
+P(a\lt X\lt b)=P(X\lt b)-P(X\lt a)
 }
 $$
 
 Using Z-scores:
 
-$$\boxed{P(a<X<b)=P(Z<z_b)-P(Z<z_a)}$$
+$$\boxed{P(a\lt X\lt b)=P(Z\lt z_b)-P(Z\lt z_a)}$$
 
 Steps:
 
@@ -245,7 +245,7 @@ Convert the top percentage into the area **below** the cutoff:
 
 $$
 \boxed{
-P(X<x)=1-p
+P(X\lt x)=1-p
 }
 $$
 
@@ -261,7 +261,7 @@ The desired cumulative area is directly:
 
 $$
 \boxed{
-P(X<x)=p
+P(X\lt x)=p
 }
 $$
 
@@ -501,13 +501,13 @@ $$\boxed{\text{Residual}=y-\hat y}$$
 
 $$
 \boxed{
-y>\hat y\rightarrow\text{positive residual}
+y\gt \hat y\rightarrow\text{positive residual}
 }
 $$
 
 $$
 \boxed{
-y<\hat y\rightarrow\text{negative residual}
+y\lt \hat y\rightarrow\text{negative residual}
 }
 $$
 
@@ -1032,18 +1032,12 @@ $$
 
 ### Simulation
 
-$$
-\boxed{
-p\approx
-\dfrac{\#\text{ simulations at least as extreme}}
-{\#\text{ total simulations}}
-}
-$$
+$$\boxed{p\approx\dfrac{\text{simulations at least as extreme}}{\text{total simulations}}}$$
 
 ### Common Significance Level
 
 $$
-\boxed{p<0.05\rightarrow\text{statistically significant}}
+\boxed{p\lt 0.05\rightarrow\text{statistically significant}}
 $$
 
 $$
