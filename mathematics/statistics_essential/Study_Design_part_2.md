@@ -35,13 +35,7 @@ A **voluntary response sample** occurs when people choose themselves to particip
 
 People who feel strongly about the topic may be more likely to respond.
 
-$$
-\boxed{
-\text{Voluntary response}
-=
-\text{people choose whether to participate}
-}
-$$
+$$\boxed{\text{Voluntary response}=\text{people choose whether to participate}}$$
 
 **Example:** A podcast host asks listeners to visit his website and vote on how much they like his show.
 
@@ -55,13 +49,7 @@ Fans are more likely to participate, so the results may **overestimate** how muc
 
 A **convenience sample** uses people who are easy for the researcher to reach.
 
-$$
-\boxed{
-\text{Convenience sample}
-=
-\text{choose people because they are easy to access}
-}
-$$
+$$\boxed{\text{Convenience sample}=\text{choose people because they are easy to access}}$$
 
 **Example:** The podcast host surveys the next 100 listeners who sent him fan emails.
 
@@ -77,13 +65,7 @@ These people are especially likely to like the host, so the sample may not repre
 
 If the people who do not respond differ meaningfully from those who do, the results can be biased.
 
-$$
-\boxed{
-\text{Nonresponse}
-=
-\text{selected people do not participate}
-}
-$$
+$$\boxed{\text{Nonresponse}=\text{selected people do not participate}}$$
 
 **Example:** 100 people are asked to complete a survey, but only 97 respond.
 
@@ -111,13 +93,7 @@ Examples:
 
 People may not answer these questions honestly.
 
-$$
-\boxed{
-\text{Response bias}
-=
-\text{answers are systematically inaccurate}
-}
-$$
+$$\boxed{\text{Response bias}=\text{answers are systematically inaccurate}}$$
 
 > **Memory:** The problem is with the **answer**, not who was selected.
 
@@ -127,13 +103,7 @@ $$
 
 **Undercoverage** occurs when an important part of the population is left out of the sampling process.
 
-$$
-\boxed{
-\text{Undercoverage}
-=
-\text{some population groups are not adequately represented}
-}
-$$
+$$\boxed{\text{Undercoverage}=\text{some population groups are not adequately represented}}$$
 
 For example, if a survey method cannot reach a particular group of people, that group may be underrepresented.
 
@@ -283,13 +253,7 @@ $$
 
 **Undercoverage** occurs when part of the population cannot be selected by the sampling method.
 
-$$
-\boxed{
-\text{Undercoverage}
-=
-\text{part of the population is left out of the sampling frame}
-}
-$$
+$$\boxed{\text{Undercoverage}=\text{part of the population is left out of the sampling frame}}$$
 
 This can cause bias if the excluded group has different opinions or characteristics from the people who can be sampled.
 
@@ -488,13 +452,7 @@ A **simple random sample (SRS)** is a sample where individuals are selected rand
 
 For example, from **80 students**, we want to randomly select **30** to estimate the population's average height.
 
-$$
-\boxed{
-\text{Population}=80
-\qquad
-\text{Sample}=30
-}
-$$
+$$\boxed{\text{Population}=80\qquad\text{Sample}=30}$$
 
 The goal is to make the selection genuinely random.
 
@@ -577,17 +535,9 @@ $$
 
 Use the same rules:
 
-$$
-\boxed{
-01\text{–}80=\text{use}
-}
-$$
+$$\boxed{01\text{–}80=\text{use}}$$
 
-$$
-\boxed{
-00,\ 81\text{–}99=\text{ignore}
-}
-$$
+$$\boxed{00,\ 81\text{–}99=\text{ignore}}$$
 
 Repeated valid numbers are also ignored.
 
@@ -797,13 +747,7 @@ If there is a pattern in how people are arranged, the fixed interval could repea
 
 ### Key Takeaway
 
-$$
-\boxed{
-\text{Systematic sampling}
-=
-\text{random starting point + fixed interval}
-}
-$$
+$$\boxed{\text{Systematic sampling}=\text{random starting point + fixed interval}}$$
 
 It is efficient, but always check whether the population has a pattern that could introduce bias.
 
@@ -979,23 +923,11 @@ One of the most important ideas in statistics is that **correlation does not imp
 
 **Correlation** means two variables tend to occur or change together.
 
-$$
-\boxed{
-\text{Correlation}
-=
-\text{A and B tend to occur together}
-}
-$$
+$$\boxed{\text{Correlation}=\text{A and B tend to occur together}}$$
 
 **Causality** means a change in one variable directly produces a change in another.
 
-$$
-\boxed{
-\text{Causality}
-=
-\text{A causes B}
-}
-$$
+$$\boxed{\text{Causality}=\text{A causes B}}$$
 
 A correlation between two variables does **not** tell us which variable causes the other—or whether a third variable causes both.
 
@@ -1477,13 +1409,7 @@ In an experiment, we might observe a difference between two groups. The importan
 
 If the answer is "very unlikely," we have evidence that the treatment may have had a real effect.
 
-$$
-\boxed{
-\text{Statistical significance}
-=
-\text{results are unlikely to be explained by chance alone}
-}
-$$
+$$\boxed{\text{Statistical significance}=\text{results are unlikely to be explained by chance alone}}$$
 
 **---**
 
@@ -1498,21 +1424,13 @@ After watching the cartoon, researchers measured how many grams of crackers each
 
 The children who watched food commercials ate, on average, **10 grams more** than the children who watched non-food commercials.
 
-$$
-\boxed{
-\text{Difference in means}=10\text{ grams}
-}
-$$
+$$\boxed{\text{Difference in means}=10\text{ grams}}$$
 
 At first, this looks like evidence that food advertisements caused children to eat more.
 
 But there is an important question:
 
-$$
-\boxed{
-\text{Could a 10-gram difference happen by chance?}
-}
-$$
+$$\boxed{\text{Could a 10-gram difference happen by chance?}}$$
 
 **---**
 
@@ -1694,7 +1612,7 @@ If the result would happen only rarely when the treatment has no effect, we have
 
 ### Video
 
-[Determining statistical significance]([https://www.youtube.com/watch?v=jLFeqQxGtOc](https://www.youtube.com/watch?v=jLFeqQxGtOc))
+[Determining statistical significance](<[https://www.youtube.com/watch?v=jLFeqQxGtOc](https://www.youtube.com/watch?v=jLFeqQxGtOc)>)
 
 ---
 
@@ -1905,23 +1823,23 @@ $$
 
 ### Key Takeaways
 
-*>* **\*\*Random sampling:\*\*** *helps determine who is studied and supports generalizing results.*
+_>_ **\*\*Random sampling:\*\*** _helps determine who is studied and supports generalizing results._
 
-*>* **\*\*Random assignment:\*\*** *helps establish causality.*
+_>_ **\*\*Random assignment:\*\*** _helps establish causality._
 
-*>* **\*\*Self-selection:\*\*** *can create confounding variables.*
+_>_ **\*\*Self-selection:\*\*** _can create confounding variables._
 
-*>* **\*\*Confounding variable:\*\*** *an outside variable that can explain the observed relationship.*
+_>_ **\*\*Confounding variable:\*\*** _an outside variable that can explain the observed relationship._
 
-*>* *Without random assignment, an association does not automatically establish causation.*
+_>_ _Without random assignment, an association does not automatically establish causation._
 
 ### Memory Trick
 
-*>* **\*\*Sampling = who?\*\***
+_>_ **\*\*Sampling = who?\*\***
 
-*>* **\*\*Assignment = treatment?\*\***
+_>_ **\*\*Assignment = treatment?\*\***
 
-*>* **\*\*Self-select = beware confounding.\*\***
+_>_ **\*\*Self-select = beware confounding.\*\***
 
 The main idea:
 
@@ -1937,7 +1855,6 @@ $$
 
 ### Video
 
-[Thinking about causal relationships and confounding variables]([https://www.youtube.com/watch?v=yWva9DtV0Rk](https://www.youtube.com/watch?v=yWva9DtV0Rk))
+[Thinking about causal relationships and confounding variables](<[https://www.youtube.com/watch?v=yWva9DtV0Rk](https://www.youtube.com/watch?v=yWva9DtV0Rk)>)
 
 ---
-
