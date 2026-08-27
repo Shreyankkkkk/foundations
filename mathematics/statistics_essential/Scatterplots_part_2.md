@@ -511,15 +511,9 @@ Substitute \(x=155\):
 
 $$\hat{y}=\frac{1}{3}+\frac{1}{3}(155)$$
 
-$$
-=
-\frac{1}{3}+\frac{155}{3}
-$$
+$$=\frac{1}{3}+\frac{155}{3}$$
 
-$$
-=
-\frac{156}{3}
-$$
+$$=\frac{156}{3}$$
 
 $$
 \boxed{\hat{y}=52}
@@ -1761,15 +1755,7 @@ The key idea is:
 
 For a population, covariance is:
 
-$$
-\boxed{
-\text{Cov}(X,Y)
-=
-\frac{1}{N}
-\sum_{i=1}^{N}
-(x_i-\mu_X)(y_i-\mu_Y)
-}
-$$
+$$\boxed{\text{Cov}(X,Y)=\dfrac{1}{N}\sum_{i=1}^{N}(x_i-\mu_X)(y_i-\mu_Y)}$$
 
 where:
 
@@ -1779,15 +1765,7 @@ where:
 
 For a sample, covariance is:
 
-$$
-\boxed{
-s_{XY}
-=
-\frac{1}{n-1}
-\sum_{i=1}^{n}
-(x_i-\bar{x})(y_i-\bar{y})
-}
-$$
+$$\boxed{s_{XY}=\dfrac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y})}$$
 
 where:
 
@@ -2030,16 +2008,7 @@ Standard deviation measures how much a **single variable** tends to vary around 
 
 For a population:
 
-$$
-\boxed{
-\sigma_X
-=
-\sqrt{
-\frac{1}{N}
-\sum_{i=1}^{N}(x_i-\mu_X)^2
-}
-}
-$$
+$$\boxed{\sigma_X=\sqrt{\dfrac{1}{N}\sum_{i=1}^{N}(x_i-\mu_X)^2}}$$
 
 Similarly:
 
@@ -2467,27 +2436,11 @@ $$
 
 #### Population covariance
 
-$$
-\boxed{
-\text{Cov}(X,Y)
-=
-\frac{1}{N}
-\sum_{i=1}^{N}
-(x_i-\mu_X)(y_i-\mu_Y)
-}
-$$
+$$\boxed{\text{Cov}(X,Y)=\dfrac{1}{N}\sum_{i=1}^{N}(x_i-\mu_X)(y_i-\mu_Y)}$$
 
 #### Sample covariance
 
-$$
-\boxed{
-s_{XY}
-=
-\frac{1}{n-1}
-\sum_{i=1}^{n}
-(x_i-\bar{x})(y_i-\bar{y})
-}
-$$
+$$\boxed{s_{XY}=\dfrac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y})}$$
 
 #### Population correlation
 
@@ -2597,13 +2550,7 @@ tells us whether the two variables are moving in the same or opposite directions
 
 Averaging these products gives covariance:
 
-$$
-\boxed{
-\text{Cov}(X,Y)
-=
-\text{average joint variation}
-}
-$$
+$$\boxed{\text{Cov}(X,Y)=\text{average joint variation}}$$
 
 Then standardizing covariance gives correlation:
 
