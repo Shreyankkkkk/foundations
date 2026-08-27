@@ -4,15 +4,11 @@
 
 ### Mean
 
-$$
-\bar{x} = \frac{\sum_{i=1}^{n}x_i}{n}
-$$
+$$\bar{x} = \dfrac{\sum_{i=1}^{n}x_i}{n}$$
 
 ### Interquartile Range
 
-$$
-IQR = Q_3 - Q_1
-$$
+$$IQR = Q_3 - Q_1$$
 
 ### Outlier Rule
 
@@ -34,37 +30,27 @@ $$
 
 ### Population Variance
 
-$$
-\sigma^2 = \frac{\sum_{i=1}^{N}(x_i-\mu)^2}{N}
-$$
+$$\sigma^2 = \dfrac{\sum_{i=1}^{N}(x_i-\mu)^2}{N}$$
 
 ### Sample Variance
 
 #### Biased
 
-$$
-s^2 = \frac{\sum_{i=1}^{n}(x_i-\bar{x})^2}{n}
-$$
+$$s^2 = \dfrac{\sum_{i=1}^{n}(x_i-\bar{x})^2}{n}$$
 
 #### Unbiased
 
-$$
-s^2 = \frac{\sum_{i=1}^{n}(x_i-\bar{x})^2}{n-1}
-$$
+$$s^2 = \dfrac{\sum_{i=1}^{n}(x_i-\bar{x})^2}{n-1}$$
 
 ### Population Standard Deviation
 
-$$
-\sigma = \sqrt{\frac{\sum_{i=1}^{N}(x_i-\mu)^2}{N}}
-$$
+$$\sigma = \sqrt{\dfrac{\sum_{i=1}^{N}(x_i-\mu)^2}{N}}$$
 
 ### Sample Standard Deviation
 
 #### Biased
 
-$$
-s = \sqrt{\frac{\sum_{i=1}^{n}(x_i-\bar{x})^2}{n-1}}
-$$
+$$s = \sqrt{\dfrac{\sum_{i=1}^{n}(x_i-\bar{x})^2}{n-1}}$$
 
 _To do the same for unbiased, finding a formula is not as easy as subtracting one from the denominator; therefore even the unbiased sample variance cannot give an unbiased sample standard deviation._
 
@@ -99,23 +85,11 @@ _To do the same for unbiased, finding a formula is not as easy as subtracting on
 
 Percentage of observations below a value:
 
-$$
-\boxed{
-\text{Percentile Rank}
-=
-\frac{\#(\text{values below }x)}{N}\times100
-}
-$$
+$$\boxed{\text{Percentile Rank}=\dfrac{\#(\text{values below }x)}{N}\times100}$$
 
 If the problem uses **at or below**:
 
-$$
-\boxed{
-\text{Percentile Rank}
-=
-\frac{\#(\text{values at or below }x)}{N}\times100
-}
-$$
+$$\boxed{\text{Percentile Rank}=\dfrac{\#(\text{values at or below }x)}{N}\times100}$$
 
 Always check whether the target value is included.
 
@@ -125,11 +99,7 @@ Always check whether the target value is included.
 
 A Z-score tells how many standard deviations a value is above or below the mean.
 
-$$
-\boxed{
-z=\frac{x-\mu}{\sigma}
-}
-$$
+$$\boxed{z=\dfrac{x-\mu}{\sigma}}$$
 
 - \(z>0\) → above the mean
 - \(z=0\) → at the mean
@@ -144,17 +114,9 @@ Z-scores are **unitless**.
 
 When comparing values from different distributions, compare their Z-scores rather than their raw scores.
 
-$$
-\boxed{
-z_1=\frac{x_1-\mu_1}{\sigma_1}
-}
-$$
+$$\boxed{z_1=\dfrac{x_1-\mu_1}{\sigma_1}}$$
 
-$$
-\boxed{
-z_2=\frac{x_2-\mu_2}{\sigma_2}
-}
-$$
+$$\boxed{z_2=\dfrac{x_2-\mu_2}{\sigma_2}}$$
 
 The larger Z-score represents the higher relative position within its distribution.
 
@@ -207,7 +169,7 @@ $$
 1. Calculate the Z-score:
 
 $$
-z=\frac{x-\mu}{\sigma}
+z=\dfrac{x-\mu}{\sigma}
 $$
 
 2. Look up \(z\) in the standard normal table.
@@ -252,13 +214,7 @@ $$
 
 Using Z-scores:
 
-$$
-\boxed{
-P(a<X<b)
-=
-P(Z<z_b)-P(Z<z_a)
-}
-$$
+$$\boxed{P(a<X<b)=P(Z<z_b)-P(Z<z_a)}$$
 
 Steps:
 
@@ -330,7 +286,7 @@ $$
 ### Core Formulas
 
 $$
-\boxed{z=\frac{x-\mu}{\sigma}}
+\boxed{z=\dfrac{x-\mu}{\sigma}}
 $$
 
 $$
@@ -399,13 +355,7 @@ $$
 
 ### Slope Interpretation
 
-$$
-\boxed{
-m=
-\frac{\text{change in predicted }y}
-{\text{change in }x}
-}
-$$
+$$\boxed{m=\dfrac{\text{change in predicted }y}{\text{change in }x}}$$
 
 Interpret:
 
@@ -541,11 +491,7 @@ $$
 
 ### Residual
 
-$$
-\boxed{
-\text{Residual}=y-\hat y
-}
-$$
+$$\boxed{\text{Residual}=y-\hat y}$$
 
 **Actual − Predicted**
 
@@ -693,15 +639,7 @@ $$
 
 ### Sample Covariance
 
-$$
-\boxed{
-s_{XY}
-=
-\frac{1}{n-1}
-\sum_{i=1}^{n}
-(x_i-\bar x)(y_i-\bar y)
-}
-$$
+$$\boxed{s_{XY}=\dfrac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar x)(y_i-\bar y)}$$
 
 - Positive covariance → variables tend to move together
 - Negative covariance → variables tend to move oppositely
@@ -715,23 +653,11 @@ Covariance depends on the units of the variables, so its magnitude is difficult 
 
 ### Sample Correlation
 
-$$
-\boxed{
-r=
-\frac{s_{XY}}{s_Xs_Y}
-}
-$$
+$$\boxed{r=\dfrac{s_{XY}}{s_Xs_Y}}$$
 
 Conceptually:
 
-$$
-\boxed{
-\text{Correlation}
-=
-\frac{\text{Covariance}}
-{\text{SD of }X\times\text{SD of }Y}
-}
-$$
+$$\boxed{\text{Correlation}=\dfrac{\text{Covariance}}{\text{SD of }X\times\text{SD of }Y}}$$
 
 Correlation is **unitless** and standardized:
 
@@ -1109,7 +1035,7 @@ $$
 $$
 \boxed{
 p\approx
-\frac{\#\text{ simulations at least as extreme}}
+\dfrac{\#\text{ simulations at least as extreme}}
 {\#\text{ total simulations}}
 }
 $$
