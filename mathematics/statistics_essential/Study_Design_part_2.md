@@ -562,13 +562,7 @@ Therefore, use an actual random process such as:
 - a random number generator
 - a random digit table
 
-$$
-\boxed{
-\text{Actual random process}
->
-\text{human judgment of randomness}
-}
-$$
+$$\boxed{\text{Actual random process}>\text{human judgment of randomness}}$$
 
 ---
 
@@ -1444,11 +1438,7 @@ The important idea is that the original treatment labels are removed.
 
 They then calculated:
 
-$$
-\text{Mean of Group 1}
--
-\text{Mean of Group 2}
-$$
+$$\text{Mean of Group 1}-\text{Mean of Group 2}$$
 
 for each simulation.
 
