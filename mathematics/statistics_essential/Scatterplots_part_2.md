@@ -1759,9 +1759,9 @@ $$\boxed{\text{Cov}(X,Y)=\dfrac{1}{N}\sum_{i=1}^{N}(x_i-\mu_X)(y_i-\mu_Y)}$$
 
 where:
 
-- \(N\) → population size
-- \(\mu_X\) → population mean of \(X\)
-- \(\mu_Y\) → population mean of \(Y\)
+- $N$ → population size
+- $\mu_X$ → population mean of \(X\)
+- $\mu_Y$ → population mean of \(Y\)
 
 For a sample, covariance is:
 
@@ -1769,9 +1769,9 @@ $$\boxed{s_{XY}=\dfrac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y})}$$
 
 where:
 
-- \(n\) → sample size
-- \(\bar{x}\) → sample mean of \(X\)
-- \(\bar{y}\) → sample mean of \(Y\)
+- $n$ → sample size
+- $\bar{x}$ → sample mean of \(X\)
+- $\bar{y}$ → sample mean of \(Y\)
 
 The \(n-1\) denominator is used for the usual **sample covariance**.
 
@@ -2012,29 +2012,11 @@ $$\boxed{\sigma_X=\sqrt{\dfrac{1}{N}\sum_{i=1}^{N}(x_i-\mu_X)^2}}$$
 
 Similarly:
 
-$$
-\boxed{
-\sigma_Y
-=
-\sqrt{
-\frac{1}{N}
-\sum_{i=1}^{N}(y_i-\mu_Y)^2
-}
-}
-$$
+$$\boxed{\sigma_Y=\sqrt{\dfrac{1}{N}\sum_{i=1}^{N}(y_i-\mu_Y)^2}}$$
 
 For a sample:
 
-$$
-\boxed{
-s_X
-=
-\sqrt{
-\frac{1}{n-1}
-\sum_{i=1}^{n}(x_i-\bar{x})^2
-}
-}
-$$
+$$\boxed{s_X=\sqrt{\dfrac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2}}$$
 
 and similarly for \(Y\).
 
