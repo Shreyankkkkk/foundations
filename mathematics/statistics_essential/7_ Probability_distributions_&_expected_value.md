@@ -47,15 +47,15 @@ Now group these outcomes by the number of heads.
 
 | \(X\) | Number of heads | Probability |
 |---:|---:|---:|
-| 0 | 0 heads | \(\frac18\) |
-| 1 | 1 head | \(\frac38\) |
-| 2 | 2 heads | \(\frac38\) |
-| 3 | 3 heads | \(\frac18\) |
+| 0 | 0 heads | \(\dfrac18\) |
+| 1 | 1 head | \(\dfrac38\) |
+| 2 | 2 heads | \(\dfrac38\) |
+| 3 | 3 heads | \(\dfrac18\) |
 
 The probabilities add to 1:
 
 $$
-\frac18+\frac38+\frac38+\frac18=1
+\dfrac18+\dfrac38+\dfrac38+\dfrac18=1
 $$
 
 ---
@@ -67,15 +67,15 @@ A **probability distribution** shows the probabilities associated with the possi
 For \(X\):
 
 $$
-\boxed{P(X=0)=\frac18,\quadP(X=1)=\frac38,\quadP(X=2)=\frac38,\quadP(X=3)=\frac18}
+\boxed{P(X=0)=\dfrac18,\quadP(X=1)=\dfrac38,\quadP(X=2)=\dfrac38,\quadP(X=3)=\dfrac18}
 $$
 
 We can visualize the distribution with a bar graph:
 
-- \(X=0\) → height \(\frac18\)
-- \(X=1\) → height \(\frac38\)
-- \(X=2\) → height \(\frac38\)
-- \(X=3\) → height \(\frac18\)
+- \(X=0\) → height \(\dfrac18\)
+- \(X=1\) → height \(\dfrac38\)
+- \(X=2\) → height \(\dfrac38\)
+- \(X=3\) → height \(\dfrac18\)
 
 ---
 
@@ -190,21 +190,21 @@ $$
 Since every creature is equally likely to be selected:
 
 $$
-P(\text{chicken})=\frac{97}{221}
+P(\text{chicken})=\dfrac{97}{221}
 $$
 
 $$
-P(\text{cow})=\frac{47}{221}
+P(\text{cow})=\dfrac{47}{221}
 $$
 
 $$
-P(\text{human})=\frac{77}{221}
+P(\text{human})=\dfrac{77}{221}
 $$
 
 Check:
 
 $$
-\frac{97}{221}+\frac{47}{221}+\frac{77}{221}=\frac{221}{221}=1
+\dfrac{97}{221}+\dfrac{47}{221}+\dfrac{77}{221}=\dfrac{221}{221}=1
 $$
 
 Therefore, this **is a valid probability distribution**.
@@ -228,7 +228,7 @@ $$
 > If outcomes are equally likely, probability can be found by:
 
 $$
-\boxed{P(\text{type})=\frac{\text{number of that type}}{\text{total number}}}
+\boxed{P(\text{type})=\dfrac{\text{number of that type}}{\text{total number}}}
 $$
 
 ### Memory Trick
@@ -423,7 +423,7 @@ $$
 Therefore:
 
 $$
-P(D=0)=\frac39=\boxed{\frac13}
+P(D=0)=\dfrac39=\boxed{\dfrac13}
 $$
 
 **Difference \(1\):**
@@ -437,7 +437,7 @@ $$
 Therefore:
 
 $$
-P(D=1)=\boxed{\frac49}
+P(D=1)=\boxed{\dfrac49}
 $$
 
 **Difference \(2\):**
@@ -451,21 +451,21 @@ $$
 Therefore:
 
 $$
-P(D=2)=\boxed{\frac29}
+P(D=2)=\boxed{\dfrac29}
 $$
 
 So the theoretical probability distribution is:
 
 | \(D\) | \(P(D)\) |
 |---:|---:|
-| 0 | \(\frac13\) |
-| 1 | \(\frac49\) |
-| 2 | \(\frac29\) |
+| 0 | \(\dfrac13\) |
+| 1 | \(\dfrac49\) |
+| 2 | \(\dfrac29\) |
 
 Check:
 
 $$
-\frac13+\frac49+\frac29=\frac39+\frac49+\frac29=\frac99=1
+\dfrac13+\dfrac49+\dfrac29=\dfrac39+\dfrac49+\dfrac29=\dfrac99=1
 $$
 
 ---
@@ -477,7 +477,7 @@ $$
 > Group outcomes according to the value of the random variable.
 
 $$
-\boxed{P(D=d)=\frac{\text{number of outcomes producing }d}{\text{total equally likely outcomes}}}
+\boxed{P(D=d)=\dfrac{\text{number of outcomes producing }d}{\text{total equally likely outcomes}}}
 $$
 
 > The probabilities must add to 1.
@@ -501,13 +501,13 @@ Kai visits a restaurant **twice**.
 Each visit has:
 
 $$
-P(\text{free dessert})=\frac15
+P(\text{free dessert})=\dfrac15
 $$
 
 Therefore:
 
 $$
-P(\text{no dessert})=\frac45
+P(\text{no dessert})=\dfrac45
 $$
 
 Let \(X\) = number of free desserts Kai gets in the two visits.
@@ -539,7 +539,7 @@ $$
 Kai gets no dessert on either visit:
 
 $$
-P(X=0)=\frac45\times\frac45=\boxed{\frac{16}{25}}
+P(X=0)=\dfrac45\times\dfrac45=\boxed{\dfrac{16}{25}}
 $$
 
 #### \(X=1\)
@@ -552,11 +552,11 @@ There are **two ways** to get exactly one dessert:
 Therefore:
 
 $$
-P(X=1)=\frac45\frac15+\frac15\frac45
+P(X=1)=\dfrac45\dfrac15+\dfrac15\dfrac45
 $$
 
 $$
-=\frac4{25}+\frac4{25}=\boxed{\frac8{25}}
+=\dfrac4{25}+\dfrac4{25}=\boxed{\dfrac8{25}}
 $$
 
 #### \(X=2\)
@@ -564,7 +564,7 @@ $$
 Kai gets a dessert on both visits:
 
 $$
-P(X=2)=\frac15\times\frac15=\boxed{\frac1{25}}
+P(X=2)=\dfrac15\times\dfrac15=\boxed{\dfrac1{25}}
 $$
 
 ---
@@ -573,14 +573,14 @@ $$
 
 | \(X\) | \(P(X)\) |
 |---:|---:|
-| 0 | \(\frac{16}{25}\) |
-| 1 | \(\frac{8}{25}\) |
-| 2 | \(\frac{1}{25}\) |
+| 0 | \(\dfrac{16}{25}\) |
+| 1 | \(\dfrac{8}{25}\) |
+| 2 | \(\dfrac{1}{25}\) |
 
 Check:
 
 $$
-\frac{16}{25}+\frac8{25}+\frac1{25}=\frac{25}{25}=1
+\dfrac{16}{25}+\dfrac8{25}+\dfrac1{25}=\dfrac{25}{25}=1
 $$
 
 So this is a valid probability distribution.
@@ -622,7 +622,7 @@ An **empirical probability distribution** is based on **observed data** rather t
 When the true probability is unknown, we can use past observations to estimate it:
 
 $$
-\boxed{P(X=x)\approx\frac{\text{number of observations with }X=x}{\text{total observations}}}
+\boxed{P(X=x)\approx\dfrac{\text{number of observations with }X=x}{\text{total observations}}}
 $$
 
 ---
@@ -635,13 +635,13 @@ Let \(X\) = number of appetizers in a randomly selected order.
 
 | Appetizers \(X\) | Orders | Approx. \(P(X)\) |
 |---:|---:|---:|
-| 0 | 40 | \(\frac{40}{500}=\frac{2}{25}\) |
-| 1 | 90 | \(\frac{90}{500}=\frac{9}{50}\) |
-| 2 | 160 | \(\frac{160}{500}=\frac{8}{25}\) |
-| 3 | 120 | \(\frac{120}{500}=\frac{6}{25}\) |
-| 4 | 50 | \(\frac{50}{500}=\frac{1}{10}\) |
-| 5 | 30 | \(\frac{30}{500}=\frac{3}{50}\) |
-| 6 | 10 | \(\frac{10}{500}=\frac{1}{50}\) |
+| 0 | 40 | \(\dfrac{40}{500}=\dfrac{2}{25}\) |
+| 1 | 90 | \(\dfrac{90}{500}=\dfrac{9}{50}\) |
+| 2 | 160 | \(\dfrac{160}{500}=\dfrac{8}{25}\) |
+| 3 | 120 | \(\dfrac{120}{500}=\dfrac{6}{25}\) |
+| 4 | 50 | \(\dfrac{50}{500}=\dfrac{1}{10}\) |
+| 5 | 30 | \(\dfrac{30}{500}=\dfrac{3}{50}\) |
+| 6 | 10 | \(\dfrac{10}{500}=\dfrac{1}{50}\) |
 
 These probabilities approximate the probability of each possible value of \(X\).
 
@@ -666,7 +666,7 @@ This is different from a **theoretical probability distribution**, which comes f
 > **Empirical probability** uses observed data.
 
 $$
-\boxed{P(X=x)\approx\frac{\text{frequency of }x}{\text{total observations}}}
+\boxed{P(X=x)\approx\dfrac{\text{frequency of }x}{\text{total observations}}}
 $$
 
 > The resulting distribution is an **approximation** of the underlying probabilities.
@@ -722,7 +722,7 @@ $$
 Therefore:
 
 $$
-P(\text{Roberto})=\frac6{36}=\boxed{\frac16}
+P(\text{Roberto})=\dfrac6{36}=\boxed{\dfrac16}
 $$
 
 #### Jocelyn: Sum of 10 or 11
@@ -741,7 +741,7 @@ $$
 Therefore:
 
 $$
-P(\text{Jocelyn})=\frac5{36}
+P(\text{Jocelyn})=\dfrac5{36}
 $$
 
 ---
@@ -751,19 +751,19 @@ $$
 Compare:
 
 $$
-\frac16=\frac6{36}
+\dfrac16=\dfrac6{36}
 $$
 
 with:
 
 $$
-\frac5{36}
+\dfrac5{36}
 $$
 
 Since:
 
 $$
-\frac6{36}>\frac5{36}
+\dfrac6{36}>\dfrac5{36}
 $$
 
 Roberto has a higher probability of being chosen on each roll.
@@ -1016,8 +1016,8 @@ possible four-digit selections.
 A $1 straight bet:
 
 - Winning payout = **$4,500**
-- Probability of winning = \(\frac{1}{10,000}\)
-- Probability of losing = \(\frac{9,999}{10,000}\)
+- Probability of winning = \(\dfrac{1}{10,000}\)
+- Probability of losing = \(\dfrac{9,999}{10,000}\)
 
 ---
 
@@ -1046,15 +1046,15 @@ $$
 Use the weighted average:
 
 $$
-E(X)=4499\left(\frac1{10000}\right)+(-1)\left(\frac{9999}{10000}\right)
+E(X)=4499\left(\dfrac1{10000}\right)+(-1)\left(\dfrac{9999}{10000}\right)
 $$
 
 $$
-=\frac{4499-9999}{10000}
+=\dfrac{4499-9999}{10000}
 $$
 
 $$
-=\frac{-5500}{10000}
+=\dfrac{-5500}{10000}
 $$
 
 $$
@@ -1082,7 +1082,7 @@ $$
 Per ticket:
 
 $$
-\frac{-5500}{10000}=\boxed{-\$0.55}
+\dfrac{-5500}{10000}=\boxed{-\$0.55}
 $$
 
 ---

@@ -435,6 +435,73 @@ Simulation is also the practical method used in **§9 (Statistical Significance)
 
 ---
 
+## 13. Random Variables & Probability Distributions
+
+### Random Variable
+
+A **random variable** assigns a numerical value to the outcome of a random experiment. It's **discrete** if it takes only countable/separate values (e.g. $0,1,2,3$) — never values like $0.5$ or $\pi$.
+
+### Validity of a Discrete Probability Distribution
+
+$$P(X)\geq 0 \text{ for every value of } X \qquad\qquad \sum P(X) = 1$$
+
+Both conditions are required — a set of "reasonable-looking" probabilities that sum to $0.8$ or $1.2$ is **not** a valid distribution.
+
+### Constructing a Distribution from a Sample Space
+
+List the equally likely outcomes → group them by the value of the random variable → divide each group's count by the total:
+
+$$P(X=x)=\dfrac{\text{outcomes producing }x}{\text{total equally likely outcomes}}$$
+
+When a value of $X$ can arise from independent trials in multiple distinct ways (e.g. "exactly one success in two independent tries" = success-then-fail **or** fail-then-success):
+
+$$\text{Multiply probabilities within a scenario, add probabilities across different scenarios}$$
+
+### Missing Probability & Cumulative Events
+
+$$P(X=x_{\text{missing}}) = 1 - \sum(\text{known probabilities})$$
+
+$$P(X\geq k) = \sum_{x\geq k}P(X=x) = 1-P(X<k)$$
+
+The complement form is usually faster than summing directly.
+
+### Empirical vs Theoretical Distributions
+
+- **Theoretical** — derived from a model or counting argument.
+- **Empirical** — estimated from observed data:
+
+$$P(X=x)\approx\dfrac{\text{observations with }X=x}{\text{total observations}}$$
+
+More observed data → more reliable estimate (same Law of Large Numbers idea from §12, applied to a whole distribution rather than a single probability).
+
+### Fair Decisions
+
+A probability-based procedure is **fair** only if every outcome/person has an **equal** probability of being selected. Count the favorable outcomes for each party directly and compare — a procedure can look random while still being unfair if the counts aren't equal.
+
+---
+
+## 14. Expected Value
+
+### Definition
+
+$$\mu = E(X) = \sum x\,P(X=x)$$
+
+The probability-weighted average of all possible outcomes — **not** the most likely single outcome, and it can land on a non-integer value even when every individual outcome of $X$ is an integer.
+
+### Interpretation
+
+$E(X)$ describes the **long-run average over many repetitions**, not a guaranteed or even attainable result on any single trial.
+
+### Expected Payoff / Net Gain
+
+Always separate return from net gain:
+
+$$\text{Net gain} = \text{Return (payout)} - \text{Cost} \qquad\qquad E(\text{net gain}) = \sum(\text{net gain})\times P(\text{outcome})$$
+
+A large possible loss can still coexist with a **positive** expected value if that loss is sufficiently unlikely (insurance/protection-plan case) — and a small-looking negative expected value per unit scales linearly with volume (e.g. $-\$0.55$ per lottery ticket $\to -\$5{,}500$ over 10,000 tickets).
+
+---
+
 ## Master Formula Reference
 
 $$z=\dfrac{x-\mu}{\sigma} \qquad x=\mu+z\sigma$$
@@ -454,6 +521,8 @@ $$r=\dfrac{s_{XY}}{s_Xs_Y} \qquad \text{Residual}=y-\hat y \qquad \text{Least sq
 $$\text{Random sampling}\to\text{Generalizability} \qquad \text{Random assignment}\to\text{Causation}$$
 
 $$p<0.05 \to \text{statistically significant} \qquad \text{Law of Large Numbers}\to\text{experimental}\to\text{theoretical}$$
+
+$$E(X)=\sum xP(X=x) \qquad \text{Net gain}=\text{Return}-\text{Cost}$$
 
 ---
 
