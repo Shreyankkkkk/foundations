@@ -17,7 +17,7 @@ These are my personal study notes based on the Khan Academy Statistics course.
 
 - Distinguish between a **population** and a **sample**
 - Understand the difference between **population variance** and **sample variance**
-- Understand why sample variance uses **\(n-1\)** instead of \(n\)
+- Understand why sample variance uses **$n-1$** instead of $n$
 
 ---
 
@@ -38,8 +38,8 @@ Instead, we use statistics calculated from a sample to **estimate** population p
 
 | Population                        | Sample                   |
 | --------------------------------- | ------------------------ |
-| Population mean: \(\mu\)          | Sample mean: \(\bar{x}\) |
-| Population variance: \(\sigma^2\) | Sample variance: \(s^2\) |
+| Population mean: $\mu$          | Sample mean: $\bar{x}$ |
+| Population variance: $\sigma^2$ | Sample variance: $s^2$ |
 | Parameter                         | Statistic                |
 
 ---
@@ -82,13 +82,13 @@ The process is:
 1. Find the difference between each value and the population mean.
 2. Square each difference.
 3. Add the squared differences.
-4. Divide by the number of observations \(N\).
+4. Divide by the number of observations $N$.
 
 ---
 
 ### Why Can't We Directly Use Population Variance?
 
-When working with a sample, we usually **do not know the population mean \(\mu\)**.
+When working with a sample, we usually **do not know the population mean $\mu$**.
 
 Instead, we calculate the sample mean:
 
@@ -120,7 +120,7 @@ $$
 
 ---
 
-### Dividing by \(n\)
+### Dividing by $n$
 
 If we divide by the sample size:
 
@@ -134,7 +134,7 @@ This is a possible calculation of variance, but it **systematically tends to und
 
 ### Sample Variance
 
-The standard definition of **sample variance** uses \(n-1\) in the denominator:
+The standard definition of **sample variance** uses $n-1$ in the denominator:
 
 $$
 \boxed{
@@ -157,15 +157,15 @@ $$
 \boxed{s^2=1.3}
 $$
 
-Using \(n-1\) gives a better estimate of the population variance.
+Using $n-1$ gives a better estimate of the population variance.
 
 ---
 
-### Why \(n-1\)?
+### Why $n-1$?
 
-Using the sample mean \(\bar{x}\) makes the data appear slightly less spread out than it truly is in the population.
+Using the sample mean $\bar{x}$ makes the data appear slightly less spread out than it truly is in the population.
 
-Therefore, dividing by \(n\) tends to **underestimate** the population variance.
+Therefore, dividing by $n$ tends to **underestimate** the population variance.
 
 Using:
 
@@ -177,7 +177,7 @@ corrects for this systematic underestimation.
 
 This is called **Bessel's correction**.
 
-> \(n-1\) is not used because \(n\) is mathematically wrong.  
+> $n-1$ is not used because $n$ is mathematically wrong.  
 > It is used because we are estimating an unknown population variance from a sample.
 
 ---
@@ -195,10 +195,10 @@ $$
 
 where:
 
-- \(x_i\) = individual sample observation
-- \(\bar{x}\) = sample mean
-- \(n\) = sample size
-- \(s^2\) = sample variance
+- $x_i$ = individual sample observation
+- $\bar{x}$ = sample mean
+- $n$ = sample size
+- $s^2$ = sample variance
 
 For population variance:
 
@@ -211,10 +211,10 @@ $$
 
 where:
 
-- \(x_i\) = individual population observation
-- \(\mu\) = population mean
-- \(N\) = population size
-- \(\sigma^2\) = population variance
+- $x_i$ = individual population observation
+- $\mu$ = population mean
+- $N$ = population size
+- $\sigma^2$ = population variance
 
 ---
 
@@ -222,14 +222,14 @@ where:
 
 |             | Population Variance            | Sample Variance                            |
 | ----------- | ------------------------------ | ------------------------------------------ |
-| Mean used   | \(\mu\)                        | \(\bar{x}\)                                |
-| Denominator | \(N\)                          | \(n-1\)                                    |
-| Symbol      | \(\sigma^2\)                   | \(s^2\)                                    |
+| Mean used   | $\mu$                        | $\bar{x}$                                |
+| Denominator | $N$                          | $n-1$                                    |
+| Symbol      | $\sigma^2$                   | $s^2$                                    |
 | Purpose     | Describe the entire population | Estimate population variance from a sample |
 
 #### Key Takeaway
 
-> **Population variance divides by \(N\). Sample variance divides by \(n-1\) because the sample variance is being used to estimate the population variance.**
+> **Population variance divides by $N$. Sample variance divides by $n-1$ because the sample variance is being used to estimate the population variance.**
 
 For the sample:
 
@@ -307,7 +307,7 @@ $$
 
 ### Bias of sample standard deviation
 
-Although \(s^2\) is an **unbiased estimator** of the population variance \(\sigma^2\),
+Although $s^2$ is an **unbiased estimator** of the population variance $\sigma^2$,
 
 $$
 E[s^2]=\sigma^2,
@@ -319,7 +319,7 @@ $$
 s=\sqrt{s^2}
 $$
 
-is **not generally an unbiased estimator** of the population standard deviation \(\sigma\).
+is **not generally an unbiased estimator** of the population standard deviation $\sigma$.
 
 The reason is that the square-root function is **nonlinear**:
 
@@ -331,10 +331,10 @@ in general.
 
 So:
 
-- \(s^2\) → unbiased estimator of \(\sigma^2\)
-- \(s\) → biased estimator of \(\sigma\), despite being the standard estimator normally used
+- $s^2$ → unbiased estimator of $\sigma^2$
+- $s$ → biased estimator of $\sigma$, despite being the standard estimator normally used
 
-An exactly unbiased estimator for \(\sigma\) would require a correction that depends on the **underlying population distribution**, so there is no single simple \(n-1\)-style correction that works universally.
+An exactly unbiased estimator for $\sigma$ would require a correction that depends on the **underlying population distribution**, so there is no single simple $n-1$-style correction that works universally.
 
 #### Key distinction
 
@@ -346,7 +346,7 @@ $$
 \boxed{\text{Sample standard deviation }s\text{ is generally biased for }\sigma}
 $$
 
-The standard definition of \(s\) is still widely used because it is simple and useful, and it is based directly on the unbiased sample variance.
+The standard definition of $s$ is still widely used because it is simple and useful, and it is based directly on the unbiased sample variance.
 
 ---
 
@@ -446,12 +446,12 @@ This is why **median salary** and **median home price** are commonly reported: t
 
 A **percentile** describes the percentage of data values that fall below or at/below a particular value.
 
-For a given data point \(x\), there are two common ways to calculate its percentile rank:
+For a given data point $x$, there are two common ways to calculate its percentile rank:
 
-1. **Percentage of data below \(x\)**
-2. **Percentage of data at or below \(x\)**
+1. **Percentage of data below $x$**
+2. **Percentage of data at or below $x$**
 
-The choice matters when the value \(x\) actually appears in the dataset.
+The choice matters when the value $x$ actually appears in the dataset.
 
 ---
 
@@ -514,13 +514,13 @@ The important idea is that **different percentile-rank conventions can give slig
 
 ### General Calculation
 
-If \(N\) is the total number of observations:
+If $N$ is the total number of observations:
 
-#### Using values below \(x\)
+#### Using values below $x$
 
 $$\boxed{\text{Percentile rank}=\dfrac{\text{values below }x}{N}\times100}$$
 
-#### Using values at or below \(x\)
+#### Using values at or below $x$
 
 $$\boxed{\text{Percentile rank}=\dfrac{\text{values below }x}{N}\times100}$$
 
@@ -538,7 +538,7 @@ $$
 \boxed{x\text{ at the 50th percentile}}
 $$
 
-means approximately **50% of the data is below \(x\)**.
+means approximately **50% of the data is below $x$**.
 
 A higher percentile means the value is relatively higher compared with the rest of the dataset.
 
@@ -565,7 +565,7 @@ When solving a problem, **follow the definition being used by the question**.
 
 > **Percentile rank tells us what percentage of the data lies below or at/below a particular value.**
 
-For \(x\):
+For $x$:
 
 $$\boxed{\text{Percentile rank}=\frac{\text{number of observations below }x}{N}\times100}$$
 
@@ -601,10 +601,10 @@ $$
 
 where:
 
-- \(x\) = data point
-- \(\mu\) = population mean
-- \(\sigma\) = population standard deviation
-- \(z\) = Z-score
+- $x$ = data point
+- $\mu$ = population mean
+- $\sigma$ = population standard deviation
+- $z$ = Z-score
 
 ---
 
@@ -612,9 +612,9 @@ where:
 
 The sign tells us which side of the mean the observation is on:
 
-- \(z>0\) → data point is **above the mean**
-- \(z=0\) → data point is **exactly at the mean**
-- \(z<0\) → data point is **below the mean**
+- $z>0$ → data point is **above the mean**
+- $z=0$ → data point is **exactly at the mean**
+- $z<0$ → data point is **below the mean**
 
 The magnitude tells us how far away the data point is in standard deviation units.
 
@@ -779,7 +779,7 @@ The resulting Z-score tells us the observation's position relative to the mean i
 
 This is useful because the raw value alone does not necessarily tell us whether an observation is unusual.
 
-For example, a value of \(100\) could be extremely large in one dataset but completely ordinary in another. The Z-score accounts for the dataset's mean and variability.
+For example, a value of $100$ could be extremely large in one dataset but completely ordinary in another. The Z-score accounts for the dataset's mean and variability.
 
 ---
 
@@ -807,13 +807,13 @@ For example:
 
 |  Z-score | Interpretation            |
 | -------: | ------------------------- |
-|    \(0\) | Exactly at the mean       |
-|  \(0.5\) | \(0.5\) SD above the mean |
-|   \(-1\) | \(1\) SD below the mean   |
-|    \(2\) | \(2\) SD above the mean   |
-| \(-2.5\) | \(2.5\) SD below the mean |
+|    $0$ | Exactly at the mean       |
+|  $0.5$ | $0.5$ SD above the mean |
+|   $-1$ | $1$ SD below the mean   |
+|    $2$ | $2$ SD above the mean   |
+| $-2.5$ | $2.5$ SD below the mean |
 
-The larger the absolute value \(|z|\), the farther the observation is from the mean.
+The larger the absolute value $|z|$, the farther the observation is from the mean.
 
 Later, this becomes particularly important when studying **normal distributions, percentiles, probability, and statistical inference**.
 
@@ -841,7 +841,7 @@ A useful mental model is:
 
 ### Z-score and Units
 
-Suppose \(x\) and \(\mu\) are measured in centimeters.
+Suppose $x$ and $\mu$ are measured in centimeters.
 
 Then:
 
@@ -851,7 +851,7 @@ $$
 
 is also measured in centimeters.
 
-The standard deviation \(\sigma\) is measured in centimeters as well, so:
+The standard deviation $\sigma$ is measured in centimeters as well, so:
 
 $$
 \frac{x-\mu}{\sigma}
@@ -877,10 +877,10 @@ $$
 
 Remember:
 
-- Positive \(z\) → above the mean
-- Negative \(z\) → below the mean
-- \(z=0\) → exactly at the mean
-- Larger \(|z|\) → farther from the mean
+- Positive $z$ → above the mean
+- Negative $z$ → below the mean
+- $z=0$ → exactly at the mean
+- Larger $|z|$ → farther from the mean
 - Z-scores are **standardized and unitless**
 
 The central idea is simple:
@@ -917,7 +917,7 @@ Two exams, measurements, or datasets may have:
 - Different standard deviations
 - Different scales
 
-A score of \(80\) on one exam does not necessarily represent the same performance as a score of \(80\) on another exam.
+A score of $80$ on one exam does not necessarily represent the same performance as a score of $80$ on another exam.
 
 Instead, we can compare the **Z-scores** of the observations.
 
@@ -1017,8 +1017,8 @@ We now have:
 
 | Exam | Juwan's score |  Z-score |
 | ---- | ------------: | -------: |
-| LSAT |       \(172\) | \(2.10\) |
-| MCAT |        \(37\) | \(1.86\) |
+| LSAT |       $172$ | $2.10$ |
+| MCAT |        $37$ | $1.86$ |
 
 Although the raw scores cannot meaningfully be compared directly, their Z-scores can.
 
@@ -1271,10 +1271,10 @@ $$
 
 Where:
 
-- \(x\) = the given value
-- \(\mu\) = mean
-- \(\sigma\) = standard deviation
-- \(z\) = number of standard deviations the value is from the mean
+- $x$ = the given value
+- $\mu$ = mean
+- $\sigma$ = standard deviation
+- $z$ = number of standard deviations the value is from the mean
 
 ### Example
 
@@ -1340,9 +1340,9 @@ So approximately **71.57% of students have a height below Darnell's**.
 
 ### Important
 
-- Positive \(z\) → value is **above** the mean.
-- Negative \(z\) → value is **below** the mean.
-- \(z=0\) → value is exactly at the mean.
+- Positive $z$ → value is **above** the mean.
+- Negative $z$ → value is **below** the mean.
+- $z=0$ → value is exactly at the mean.
 - For this type of z-table, the value gives the **area/proportion to the left (below)** the z-score.
 
 ### Video
@@ -1359,7 +1359,7 @@ To find the proportion of a normal distribution that is **above a given value**:
 
 1. Calculate the **z-score**.
 2. Use the standard normal (z) table to find the proportion **below** that z-score.
-3. Subtract that value from \(1\).
+3. Subtract that value from $1$.
 
 ### Formula
 
@@ -1453,8 +1453,8 @@ $$\boxed{\text{Above}=1-\text{Below}}$$
 
 Remember:
 
-- Positive \(z\) → above the mean
-- Negative \(z\) → below the mean
+- Positive $z$ → above the mean
+- Negative $z$ → below the mean
 - Standard z-tables give the **proportion below**
 - For the proportion above:
 
@@ -1620,7 +1620,7 @@ $$
 P(Z\lt 0.53)=0.7019
 $$
 
-while \(z=0.52\) is below the 70% threshold.
+while $z=0.52$ is below the 70% threshold.
 
 Therefore:
 
@@ -1630,7 +1630,7 @@ $$
 
 ### Convert the Z-score to the Actual Value
 
-A z-score of \(0.53\) means the cutoff is \(0.53\) standard deviations above the mean.
+A z-score of $0.53$ means the cutoff is $0.53$ standard deviations above the mean.
 
 Use:
 
@@ -1666,7 +1666,7 @@ $$
 \boxed{x=\mu+z\sigma}
 $$
 
-For a **top \(p\%\)** cutoff:
+For a **top $p\%$** cutoff:
 
 $$
 \boxed{\text{Area below cutoff}=1-p}
@@ -1759,7 +1759,7 @@ $$
 \boxed{x=\mu+z\sigma}
 $$
 
-For the bottom \(p\%\):
+For the bottom $p\%$:
 
 $$
 \boxed{P(Z\lt z)=p}
