@@ -599,3 +599,67 @@ Strategy
 The sensor buffers exist mainly to reduce noise and provide a more stable reading instead of trusting one instantaneous measurement.
 
 ---
+
+# Motors.h Update
+
+Add the following function declaration to `Motors.h`:
+
+```cpp
+void drive(int leftSpeed, int rightSpeed);
+```
+
+## Purpose
+
+`drive()` allows the program to control the **left and right motor speeds independently**.
+
+- `leftSpeed` → PWM speed for the left motor.
+- `rightSpeed` → PWM speed for the right motor.
+
+This is useful for both strategies:
+
+- **Strategy 2** can use it for searching and hard turns.
+- **Strategy 1** can directly calculate its left and right speeds for P-controller steering.
+
+`drive()` provides a cleaner way to control both motors without having to combine separate movement functions.
+
+No other changes are needed in `Motors.h`.
+
+---
+
+# Motors.cpp Update
+
+Add the following function to `Motors.cpp`:
+
+```cpp
+void drive(int leftSpeed, int rightSpeed) {
+    leftSpeed  = constrain(leftSpeed, 0, 255);
+    rightSpeed = constrain(rightSpeed, 0, 255);
+
+    analogWrite(LEFT_R_PWM, leftSpeed);
+    analogWrite(LEFT_L_PWM, 0);
+
+    analogWrite(RIGHT_R_PWM, rightSpeed);
+    analogWrite(RIGHT_L_PWM, 0);
+}
+```
+
+## Purpose
+
+`drive()` provides **independent forward speed control** for the left and right motors.
+
+- `leftSpeed` controls the left motor.
+- `rightSpeed` controls the right motor.
+- Both speeds are limited to the PWM range `0–255`.
+- Both sides are configured for forward motion only.
+
+For example:
+
+```cpp
+drive(200, 100);
+```
+
+makes the left motor faster than the right motor, causing the robot to curve right.
+
+Because both parameters are limited to `0–255`, negative values cannot be used for reverse motion.
+
+No other changes are required for this addition.

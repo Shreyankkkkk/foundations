@@ -1924,3 +1924,35 @@ while the robot needs a more stable estimate:
 So the code deliberately trades a tiny amount of responsiveness for reduced noise.
 
 That is the engineering reason this entire buffer/average system exists.
+
+void drive(int leftSpeed, int rightSpeed);
+
+So your Motors.h is valid as written.
+
+Why: drive() is useful for both strategies because they need independent left/right PWM control.
+
+Strategy 2: search and hard turns can use drive(left, right).
+Strategy 1: P-controller directly calculates leftSpeed and rightSpeed, so drive() is cleaner than combining turnLeft()/turnRight().
+
+No other changes needed in Motors.h.
+
+Yes. If you want independent forward-biased speed per side (0–255), add this to Motors.cpp:
+
+void drive(int leftSpeed, int rightSpeed) {
+  leftSpeed  = constrain(leftSpeed, 0, 255);
+  rightSpeed = constrain(rightSpeed, 0, 255);
+
+  analogWrite(LEFT_R_PWM, leftSpeed);
+  analogWrite(LEFT_L_PWM, 0);
+
+  analogWrite(RIGHT_R_PWM, rightSpeed);
+  analogWrite(RIGHT_L_PWM, 0);
+}
+
+And your Motors.h declaration remains:
+
+void drive(int leftSpeed, int rightSpeed);
+
+No other changes are required for this addition.
+
+One important consequence: drive() only allows forward motion on each side. So drive(200, 100) makes the robot curve right, but drive(-100, 200) is impossible.
