@@ -1,0 +1,1926 @@
+Motors.h is much simpler than Hardware.h. Its job is essentially to tell the rest of the program:
+
+"Here are the motor-related commands you are allowed to use."
+
+It does not contain the instructions for how those commands physically operate the motors. That is in Motors.cpp.
+
+1. The first three lines again
+#ifndef MOTORS_H
+#define MOTORS_H
+
+Same include-guard idea as before.
+
+Eventually:
+
+#endif
+
+closes it.
+
+You don't need to worry about this part much right now.
+
+2. The important part: function declarations
+
+You have:
+
+void initMotors();
+
+void stopMotors();
+
+void forward(int speed);
+
+void backward(int speed);
+
+void turnLeft(int speed);
+
+void turnRight(int speed);
+
+These are function declarations.
+
+You already know roughly what a function is from Python:
+
+def forward(speed):
+    ...
+
+The C++ version is conceptually:
+
+void forward(int speed)
+{
+    ...
+}
+
+But Motors.h doesn't contain the { ... } part.
+
+It only says:
+
+"A function called forward exists, and you can give it an integer called speed."
+
+3. Why do we need Motors.h at all?
+
+This is the most important "WHY".
+
+Imagine Strategy2.cpp wants the robot to attack.
+
+It shouldn't have to know:
+
+Which BTS7960 pins?
+Which PWM pin?
+Which enable pin?
+HIGH or LOW?
+How do I generate PWM?
+What happens if speed = 150?
+Which pin controls forward vs backward?
+
+Instead, Strategy 2 can simply say:
+
+forward(255);
+
+That's it.
+
+The architecture becomes:
+
+Strategy2.cpp
+      │
+      │ forward(255)
+      ↓
+ Motors.h
+ "forward() exists"
+      │
+      ↓
+ Motors.cpp
+ "Here's HOW forward() actually works"
+      │
+      ↓
+ BTS7960
+      │
+      ↓
+ physical motors
+
+That's why the comment calls Motors.h a "menu".
+
+The strategy chooses something from the menu:
+
+forward()
+backward()
+turnLeft()
+turnRight()
+stopMotors()
+
+It doesn't need to know what's happening in the kitchen.
+
+4. Why void?
+
+Take:
+
+void stopMotors();
+
+void describes what the function gives back after running.
+
+For example, a mathematical function might return something:
+
+def square(x):
+    return x * x
+
+If:
+
+result = square(5)
+
+you get:
+
+25
+
+But stopMotors() doesn't need to give anything back.
+
+It simply performs an action:
+
+stop the motors
+
+So:
+
+void stopMotors();
+
+means approximately:
+
+"This function doesn't return a value."
+
+Same for:
+
+void forward(int speed);
+
+The function receives a speed, performs the motor operation, and doesn't return anything.
+
+5. Why int speed?
+
+Look at:
+
+void forward(int speed);
+
+There are two separate things here:
+
+int
+ ↓
+what type of data?
+
+speed
+ ↓
+what do we call that data?
+
+So the function requires an integer called speed.
+
+You could eventually do:
+
+forward(100);
+
+or:
+
+forward(255);
+
+The comment says the intended range is:
+
+0 → 255
+
+because that's the PWM range used by analogWrite() in this project.
+
+So:
+
+forward(200);
+
+means:
+
+Call the forward function and give it the number 200 as its speed parameter.
+
+6. Why not just make separate functions?
+
+You might wonder why we don't have:
+
+forwardSlow();
+forwardMedium();
+forwardFast();
+forwardFull();
+
+Because speed allows one function to handle every speed.
+
+forward(50);
+forward(100);
+forward(180);
+forward(255);
+
+Same function, different input.
+
+This is exactly the same general concept as Python:
+
+def forward(speed):
+    ...
+7. What does the semicolon mean?
+
+This:
+
+void forward(int speed);
+
+ends with:
+
+;
+
+because this is a declaration, not the actual function body.
+
+You're basically telling C++:
+
+"There is a function with this specification."
+
+Later, Motors.cpp will contain something like:
+
+void forward(int speed)
+{
+    // actual motor commands
+}
+
+Notice the difference:
+
+Motors.h
+void forward(int speed);
+Motors.cpp
+void forward(int speed)
+{
+    // actual instructions
+}
+
+The first says what exists.
+
+The second says how it works.
+
+8. What each function means
+
+You can interpret the six functions as the robot's basic motor vocabulary:
+
+Function	Meaning
+initMotors()	Prepare/configure the motor hardware
+stopMotors()	Stop both motors
+forward(speed)	Drive forward
+backward(speed)	Drive backward
+turnLeft(speed)	Turn left
+turnRight(speed)	Turn right
+
+So later, Strategy 2 can be written in terms of robot actions, rather than electronics.
+
+For example, your strategy says:
+
+"During search, drive the two motors at different speeds to create an arc."
+
+The strategy code might therefore eventually use motor functions to accomplish that, without directly manipulating BTS7960 pins.
+
+One important distinction
+
+Don't confuse:
+
+forward(200);
+
+with:
+
+void forward(int speed);
+
+The first calls the function.
+
+The second declares the function.
+
+Think Python:
+
+def forward(speed):
+    ...
+
+= defining the function.
+
+forward(200)
+
+= calling the function.
+
+C++ separates the declaration and implementation across .h and .cpp in this architecture.
+
+So your current mental model
+Hardware.h
+    ↓
+"What physical pins/numbers/configuration do we have?"
+
+Motors.h
+    ↓
+"What motor commands are available?"
+
+Motors.cpp
+    ↓
+"How do those commands actually manipulate the pins?"
+
+Strategy2.cpp
+    ↓
+"When should I tell the robot to go forward/turn/stop?"
+
+Good. This is the first file where the C++ syntax and the actual robot electronics meet, so I'll focus on both.
+
+The big picture is:
+
+Motors.cpp
+    ↓
+takes a simple command like forward(200)
+    ↓
+converts it into electrical commands
+    ↓
+BTS7960
+    ↓
+motor
+
+Motors.h told us what functions exist. Motors.cpp tells us how they actually work.
+
+1. #include
+#include <Arduino.h>
+#include "Hardware.h"
+#include "Motors.h"
+
+#include basically means:
+
+"Before compiling this file, make the contents/definitions from this other file available here."
+
+Arduino.h
+#include <Arduino.h>
+
+This gives us Arduino functions and definitions such as:
+
+pinMode()
+digitalWrite()
+analogWrite()
+HIGH
+LOW
+OUTPUT
+constrain()
+
+Without it, this file wouldn't know what many of those things mean.
+
+Hardware.h
+#include "Hardware.h"
+
+This gives us the pin names we created earlier:
+
+LEFT_L_EN
+LEFT_R_PWM
+RIGHT_R_PWM
+...
+
+Otherwise C++ would have no idea what LEFT_R_PWM means.
+
+Motors.h
+#include "Motors.h"
+
+This makes the declarations from Motors.h available.
+
+So the relationship is:
+
+Motors.cpp
+   │
+   ├── Arduino.h  → Arduino functions
+   ├── Hardware.h → pin numbers
+   └── Motors.h   → motor function declarations
+2. initMotors()
+void initMotors() {
+
+This means:
+
+Create a function called initMotors that takes nothing and returns nothing.
+
+Compare:
+
+void initMotors()
+
+with:
+
+void forward(int speed)
+
+The first has:
+
+()
+
+meaning no input.
+
+The second has:
+
+(int speed)
+
+meaning one integer input.
+
+3. pinMode()
+
+Inside:
+
+pinMode(LEFT_L_EN, OUTPUT);
+
+This is an Arduino function.
+
+It tells the Arduino:
+
+"I intend to use this pin as an OUTPUT."
+
+Think of an Arduino pin as something that can either:
+
+INPUT
+  ↓
+read something from the outside world
+
+OUTPUT
+  ↓
+send a signal to the outside world
+
+Your motor driver pins need to be outputs because the Arduino needs to control the BTS7960.
+
+So:
+
+pinMode(LEFT_L_EN, OUTPUT);
+
+means:
+
+Arduino pin 2
+     ↓
+configured as OUTPUT
+     ↓
+can send a signal to BTS7960
+
+You have this for all eight motor-control pins.
+
+4. digitalWrite()
+
+Then:
+
+digitalWrite(LEFT_L_EN, HIGH);
+
+This says:
+
+Put the specified digital pin into the HIGH state.
+
+So:
+
+digitalWrite(LEFT_L_EN, HIGH);
+
+is essentially:
+
+pin 2
+ ↓
+HIGH
+
+The code does this for all four enable pins:
+
+digitalWrite(LEFT_L_EN, HIGH);
+digitalWrite(LEFT_R_EN, HIGH);
+digitalWrite(RIGHT_L_EN, HIGH);
+digitalWrite(RIGHT_R_EN, HIGH);
+
+The purpose is to enable/arm the motor drivers.
+
+Then:
+
+stopMotors();
+
+makes sure the motors aren't moving when initialization finishes.
+
+So the entire function is basically:
+
+initMotors()
+
+1. Tell Arduino all motor pins are outputs
+2. Enable both motor drivers
+3. Set motor PWM to zero
+
+That's why we need the function: the robot needs to configure its motor hardware once before trying to drive it.
+
+5. Why stopMotors() is a function
+void stopMotors() {
+    analogWrite(..., 0);
+    ...
+}
+
+This function exists because stopping the motors is a reusable robot action.
+
+You'll probably need to stop the motors in many places:
+
+startup
+edge detected
+target lost
+attack finished
+emergency stop
+etc.
+
+Instead of repeatedly writing four lines everywhere:
+
+analogWrite(..., 0);
+analogWrite(..., 0);
+analogWrite(..., 0);
+analogWrite(..., 0);
+
+you can simply say:
+
+stopMotors();
+
+That's one of the fundamental reasons we create functions:
+
+Give a group of instructions a meaningful name so we can reuse that behaviour.
+
+6. analogWrite()
+
+This is extremely important for your robot.
+
+analogWrite(LEFT_R_PWM, 0);
+
+analogWrite() controls the PWM output.
+
+You can think of PWM approximately like this:
+
+0   → motor off
+128 → roughly 50% duty cycle
+255 → 100% duty cycle
+
+It's not literally changing the voltage smoothly. The Arduino rapidly switches the output on/off, and the duty cycle controls the effective power delivered.
+
+For your purposes:
+
+analogWrite(PIN, speed);
+
+means approximately:
+
+"Drive this motor-control input with this PWM level."
+
+7. forward(int speed)
+
+Now we get to the actual important bit.
+
+void forward(int speed) {
+
+Someone can call:
+
+forward(200);
+
+Then inside the function:
+
+speed
+
+contains:
+
+200
+constrain()
+
+First:
+
+speed = constrain(speed, 0, 255);
+
+This means:
+
+Force speed to stay between 0 and 255.
+
+For example:
+
+constrain(100, 0, 255) → 100
+constrain(255, 0, 255) → 255
+constrain(300, 0, 255) → 255
+constrain(-20, 0, 255) → 0
+
+Why do we do this?
+
+Because the function expects the valid PWM range to be:
+
+0–255
+
+So if some strategy accidentally calls:
+
+forward(500);
+
+we don't send an invalid value.
+
+8. How forward() actually works
+analogWrite(LEFT_R_PWM, speed);
+analogWrite(LEFT_L_PWM, 0);
+
+analogWrite(RIGHT_R_PWM, speed);
+analogWrite(RIGHT_L_PWM, 0);
+
+Remember your hardware:
+
+LEFT BTS7960
+    R_PWM
+    L_PWM
+
+RIGHT BTS7960
+    R_PWM
+    L_PWM
+
+The code says:
+
+LEFT:
+R_PWM = speed
+L_PWM = 0
+
+RIGHT:
+R_PWM = speed
+L_PWM = 0
+
+So we're telling both motor drivers to drive in the direction represented by their R_PWM input.
+
+Therefore:
+
+forward(200);
+
+becomes conceptually:
+
+Left motor  → R_PWM 200, L_PWM 0
+Right motor → R_PWM 200, L_PWM 0
+
+If the motors are wired/oriented correctly, both wheels move the robot forward.
+
+This is exactly why the comment at the top tells you to bench-test the motor direction.
+
+The software's definition of "forward" is ultimately dependent on how the motors are physically mounted and wired.
+
+9. backward()
+
+It's basically the opposite:
+
+analogWrite(LEFT_R_PWM, 0);
+analogWrite(LEFT_L_PWM, speed);
+
+analogWrite(RIGHT_R_PWM, 0);
+analogWrite(RIGHT_L_PWM, speed);
+
+So:
+
+Forward:
+R = speed
+L = 0
+
+Backward:
+R = 0
+L = speed
+
+This is how the BTS7960 gets commanded to drive the motor in the opposite direction.
+
+10. turnLeft()
+
+This is where differential drive becomes important.
+
+void turnLeft(int speed) {
+    speed = constrain(speed, 0, 255);
+
+    analogWrite(LEFT_R_PWM, 0);
+    analogWrite(LEFT_L_PWM, speed);
+
+    analogWrite(RIGHT_R_PWM, speed);
+    analogWrite(RIGHT_L_PWM, 0);
+}
+
+The left motor goes backward.
+
+The right motor goes forward.
+
+Imagine looking from above:
+
+             FRONT
+               ↑
+
+        LEFT       RIGHT
+         ↺           ↻
+      backward     forward
+
+Because the two sides are moving in opposite directions, the robot rotates in place.
+
+That's why the comment says:
+
+"left side reverses, right side goes forward."
+
+11. turnRight()
+
+Exactly the opposite:
+
+LEFT  → forward
+RIGHT → backward
+
+Therefore:
+
+turnLeft:
+LEFT  backward
+RIGHT forward
+
+turnRight:
+LEFT  forward
+RIGHT backward
+
+This is called differential drive.
+
+Your robot doesn't need a steering wheel. It changes direction by changing the relative movement of the left and right wheels.
+
+12. Why do we have these functions?
+
+This is probably the most important thing to understand from this file.
+
+The strategy should think in terms of:
+
+forward(255);
+turnLeft(150);
+stopMotors();
+backward(100);
+
+It should not think:
+
+analogWrite(5, 255);
+analogWrite(3, 0);
+analogWrite(9, 255);
+analogWrite(6, 0);
+
+Because the latter is electronics-level implementation.
+
+So we're creating an abstraction:
+
+HIGHER LEVEL
+────────────────────────
+Strategy:
+"GO FORWARD"
+
+        ↓
+
+Motors.cpp:
+"To go forward, set these
+four PWM outputs like this"
+
+        ↓
+
+LOWER LEVEL
+────────────────────────
+BTS7960:
+electrical signals
+
+        ↓
+
+Motor:
+physical movement
+
+This is why your Motors.h comment says strategy code shouldn't need to know about LEFT_R_PWM or analogWrite().
+
+One thing I want you to notice
+
+There is a subtle difference between these:
+
+void forward(int speed)
+
+and:
+
+int speed
+
+speed is not a global variable here.
+
+It is a parameter.
+
+When you do:
+
+forward(200);
+
+C++ effectively gives the function:
+
+speed = 200
+
+Then the function uses that number.
+
+So:
+
+forward(200);
+
+→ speed becomes 200
+
+→ constrain() checks it
+
+→ analogWrite() receives 200
+
+→ motor moves.
+
+That's the complete chain.
+
+Your current project architecture
+
+You now have enough understanding to see this:
+
+                 Hardware.h
+                     │
+              pin numbers/config
+                     │
+                     ▼
+Strategy ───────> Motors.h
+                    │
+              "forward exists"
+              "turnLeft exists"
+              "stop exists"
+                    │
+                    ▼
+                Motors.cpp
+                    │
+             actual implementation
+                    │
+                    ▼
+                 BTS7960
+                    │
+                    ▼
+                  Motors
+
+And this separation is why the files exist. It's not just bureaucracy or C++ syntax.
+
+This is the first file where the architecture becomes more interesting. Sensors.h is still a "menu", but now the menu contains not just functions, but also data structures that tell the rest of the program what sensor information looks like.
+
+The main idea:
+
+Sensors.cpp
+    ↓
+reads actual electrical signals
+    ↓
+converts them into useful information
+    ↓
+Sensors.h defines what that information looks like
+    ↓
+Strategy code uses it
+
+Let's go through it.
+
+1. Include guard
+#ifndef SENSORS_H
+#define SENSORS_H
+
+...
+
+#endif
+
+Same as Motors.h.
+
+You can currently treat this as standard .h-file boilerplate.
+
+2. Why does Sensors.h include Hardware.h?
+#include "Hardware.h"
+
+Because Sensors.h uses things defined in Hardware.h.
+
+Specifically, this file needs access to things like:
+
+DIST_THRESHOLD
+EDGE_WHITE_STATE
+SENSOR_SAMPLES
+
+Those values live in Hardware.h.
+
+So:
+
+Hardware.h
+    ↓
+contains sensor configuration
+
+Sensors.h
+    ↓
+uses that configuration
+3. struct — the important new concept
+
+This is probably the biggest new thing here:
+
+struct OpponentReadings {
+
+    int frontLeft;
+
+    int frontRight;
+
+    int left;
+
+    int right;
+};
+
+A struct is basically a custom data container.
+
+You know Python dictionaries/classes, so this is easiest to understand by comparison.
+
+Imagine Python:
+
+opponent = {
+    "frontLeft": 500,
+    "frontRight": 700,
+    "left": 200,
+    "right": 100
+}
+
+The C++ struct gives you a predefined shape for that data:
+
+OpponentReadings
+│
+├── frontLeft   → int
+├── frontRight  → int
+├── left        → int
+└── right       → int
+
+So somewhere later we can have:
+
+OpponentReadings readings;
+
+and then:
+
+readings.frontLeft
+readings.frontRight
+readings.left
+readings.right
+
+Each one contains an integer.
+
+4. Why do we need a struct?
+
+This is the WHY you specifically asked me to focus on.
+
+Without a struct, imagine readOpponentSensors() returned four separate things.
+
+You'd have to somehow manage:
+
+frontLeft
+frontRight
+left
+right
+
+individually.
+
+A struct lets us package them together as one object representing the state of all four opponent sensors.
+
+Conceptually:
+
+readOpponentSensors()
+        ↓
+   OpponentReadings
+        ↓
+ ┌─────────────────┐
+ │ frontLeft  = 500│
+ │ frontRight = 700│
+ │ left       = 200│
+ │ right      = 100│
+ └─────────────────┘
+
+That's much cleaner.
+
+And it makes sense conceptually:
+
+"Give me the current opponent sensor readings."
+
+rather than:
+
+"Give me sensor 1, then sensor 2, then sensor 3, then sensor 4."
+
+5. Why are these int?
+int frontLeft;
+
+Because the GP2Y0A21 sensors produce analog readings.
+
+The Arduino's ADC gives us an integer value.
+
+For example:
+
+frontLeft = 620
+frontRight = 740
+left = 210
+right = 180
+
+Those numbers are useful to Strategy 1 because Strategy 1 needs to calculate:
+
+right reading - left reading
+
+Your strategy specification explicitly requires the actual sensor readings, rather than simply detected/not-detected values, for its proportional steering calculation.
+
+6. The second struct
+struct EdgeReadings {
+
+    bool frontLeft;
+    bool frontRight;
+    bool backLeft;
+    bool backRight;
+};
+
+Same concept, but the data is different.
+
+An edge sensor doesn't need to tell us:
+
+"the surface is 73% white"
+
+For the robot's current logic, we only care:
+
+white detected?
+YES / NO
+
+That's what bool represents.
+
+A bool can contain only:
+
+true
+false
+
+So we might have:
+
+EdgeReadings
+│
+├── frontLeft  → true
+├── frontRight → false
+├── backLeft   → false
+└── backRight  → false
+
+Meaning:
+
+The front-left sensor currently detects the edge.
+
+7. Why not use int for edge sensors too?
+
+You technically could, but it would communicate the wrong idea.
+
+If you had:
+
+int frontLeft;
+
+then it could contain:
+
+0
+1
+42
+193
+700
+
+But the program doesn't care about those possibilities.
+
+It only cares:
+
+edge?
+YES / NO
+
+Therefore:
+
+bool frontLeft;
+
+more accurately represents the information.
+
+This is an important programming principle:
+
+Choose a data type that matches what the information actually means.
+
+8. initSensors()
+void initSensors();
+
+This is a function declaration, just like:
+
+void initMotors();
+
+Its job, according to the comment, is to configure the sensor pins.
+
+Conceptually:
+
+initSensors()
+    ↓
+configure opponent sensor pins as INPUT
+configure edge sensor pins as INPUT
+
+It gets called once during setup().
+
+9. readOpponentSensors()
+
+This is the most important function declaration here:
+
+OpponentReadings readOpponentSensors();
+
+Notice something different.
+
+Previously we had:
+
+void forward(int speed);
+
+The first word was:
+
+void
+
+because forward() doesn't return anything.
+
+Here we have:
+
+OpponentReadings
+
+instead.
+
+That means:
+
+This function returns an OpponentReadings object.
+
+So you can imagine:
+
+OpponentReadings readings = readOpponentSensors();
+
+The function goes away, reads the four sensors, and gives us back something like:
+
+readings
+│
+├── frontLeft = 520
+├── frontRight = 710
+├── left = 150
+└── right = 230
+
+This is a very important concept:
+
+Functions don't necessarily just "do things."
+
+They can also calculate/find something and return the result.
+
+Python equivalent:
+
+def readOpponentSensors():
+    return opponent_readings
+10. readEdgeSensors()
+EdgeReadings readEdgeSensors();
+
+Same concept.
+
+It returns:
+
+EdgeReadings
+
+which contains four booleans.
+
+So later:
+
+EdgeReadings edges = readEdgeSensors();
+
+might produce:
+
+edges
+│
+├── frontLeft  = false
+├── frontRight = false
+├── backLeft   = true
+└── backRight  = false
+
+The robot can then determine:
+
+"Back-left edge sensor has detected white."
+
+11. isOpponentDetected(int reading)
+bool isOpponentDetected(int reading);
+
+Look at both sides:
+
+bool
+ ↑
+what comes back?
+
+isOpponentDetected(int reading)
+                         ↑
+                     what goes in?
+
+It takes an integer and returns a boolean.
+
+So:
+
+isOpponentDetected(500)
+
+could return:
+
+true
+
+while:
+
+isOpponentDetected(200)
+
+could return:
+
+false
+
+Why have this function instead of simply writing:
+
+if (reading > DIST_THRESHOLD)
+
+everywhere?
+
+Because you want one place to define what "detected" means.
+
+The architecture is trying to prevent this:
+
+Strategy1.cpp:
+    reading > 400
+
+Strategy2.cpp:
+    reading > 450
+
+Robot.cpp:
+    reading > 400
+
+some_test.cpp:
+    reading > 350
+
+Now your robot has four different definitions of "detected."
+
+Instead:
+
+isOpponentDetected(reading)
+
+means:
+
+"Ask the sensor system whether this reading counts as detection."
+
+And the threshold remains centralized.
+
+12. anyEdgeDetected()
+bool anyEdgeDetected(EdgeReadings edges);
+
+This takes the entire edge-sensor struct:
+
+EdgeReadings
+     ↓
+[FL, FR, BL, BR]
+     ↓
+anyEdgeDetected()
+     ↓
+true / false
+
+For example:
+
+FL = false
+FR = false
+BL = true
+BR = false
+
+The function returns:
+
+true
+
+because at least one sensor sees white.
+
+This directly corresponds to your strategy requirement that the edge check be performed before drive commands and immediately trigger recovery if any corner detects white.
+
+13. One subtle but important thing
+
+Look at these two:
+
+OpponentReadings readOpponentSensors();
+
+and:
+
+EdgeReadings readEdgeSensors();
+
+The thing before the function name tells you the return type.
+
+Compare:
+
+void stopMotors();
+returns nothing
+
+versus:
+
+OpponentReadings readOpponentSensors();
+returns an OpponentReadings object
+
+versus:
+
+bool isOpponentDetected(int reading);
+returns true/false
+
+This is one of the most useful things to learn to recognize when reading C++:
+
+RETURN TYPE        FUNCTION NAME          INPUTS
+     ↓                   ↓                   ↓
+
+   bool          isOpponentDetected       (int reading)
+     │                    │                    │
+     │                    │                    └── takes an integer
+     │                    └───────────────────── function name
+     └────────────────────────────────────────── returns true/false
+14. So what does Sensors.h actually contain?
+
+It defines two things:
+
+A. What sensor data looks like
+struct OpponentReadings
+struct EdgeReadings
+B. What sensor operations are available
+initSensors()
+readOpponentSensors()
+readEdgeSensors()
+isOpponentDetected()
+anyEdgeDetected()
+
+It does not tell us how the sensors are physically read.
+
+That's Sensors.cpp.
+
+So the architecture is now:
+
+                 Hardware.h
+                     │
+              pin numbers/config
+                     │
+                     ▼
+                 Sensors.h
+              ┌───────────────┐
+              │ Data shapes   │
+              │ + functions   │
+              └───────┬───────┘
+                      │
+                      ▼
+                 Sensors.cpp
+              actual sensor logic
+                      │
+                      ▼
+                  Hardware
+
+Yes. This is the part where the concepts become more important than the syntax, because Sensors.cpp is taking noisy physical measurements and turning them into usable robot data.
+
+I'll go in execution order.
+
+1. The four buffers
+static int frontLeftBuffer[SENSOR_SAMPLES];
+static int frontRightBuffer[SENSOR_SAMPLES];
+static int leftBuffer[SENSOR_SAMPLES];
+static int rightBuffer[SENSOR_SAMPLES];
+
+static int bufferIndex = 0;
+First: what is an array?
+
+In Python:
+
+buffer = [0, 0, 0, 0]
+
+In C++:
+
+int buffer[4];
+
+means:
+
+Create space for 4 integers.
+
+Here:
+
+int frontLeftBuffer[SENSOR_SAMPLES];
+
+Since SENSOR_SAMPLES = 4, this becomes conceptually:
+
+frontLeftBuffer
+[0] [0] [0] [0]
+
+The purpose is to store the 4 most recent readings from that sensor.
+
+For example, after several loops:
+
+frontLeftBuffer
+[520] [530] [515] [525]
+
+Instead of trusting one instantaneous sensor reading, we can average these.
+
+Why four separate buffers?
+
+Because there are four independent opponent sensors.
+
+Front-left  → frontLeftBuffer
+Front-right → frontRightBuffer
+Left        → leftBuffer
+Right       → rightBuffer
+
+You don't want the front-left sensor's history mixed with the right sensor's history.
+
+2. What does static mean here?
+
+This is important because static has different meanings depending on where you use it.
+
+Here:
+
+static int frontLeftBuffer[...];
+
+is at file scope, so static means:
+
+This variable belongs only to Sensors.cpp. Other .cpp files cannot access it directly.
+
+That's exactly what the comment says.
+
+So Strategy1 cannot do:
+
+frontLeftBuffer[0]
+
+It doesn't know that variable exists.
+
+It can only do:
+
+OpponentReadings readings = readOpponentSensors();
+
+This is good architecture.
+
+The strategy knows:
+
+"Give me sensor readings."
+
+It does not need to know:
+
+"There are four arrays, each containing four historical ADC measurements."
+
+3. bufferIndex
+static int bufferIndex = 0;
+
+This tells us which position in the arrays should be overwritten next.
+
+Initially:
+
+index = 0
+
+[ ? ][ ? ][ ? ][ ? ]
+  ↑
+write here
+
+After writing:
+
+index = 1
+
+[520][ ? ][ ? ][ ? ]
+       ↑
+
+Then:
+
+index = 2
+
+[520][530][ ? ][ ? ]
+             ↑
+
+Eventually:
+
+[520][530][515][525]
+
+Then we go back to position 0 and overwrite the oldest value.
+
+That's why this is called a rolling buffer.
+
+4. averageBuffer()
+static int averageBuffer(int *buffer) {
+    long sum = 0;
+
+    for (int i = 0; i < SENSOR_SAMPLES; i++) {
+        sum += buffer[i];
+    }
+
+    return sum / SENSOR_SAMPLES;
+}
+
+This function exists because all four buffers need the exact same operation:
+
+Add the four readings and divide by four.
+
+Rather than writing the same code four times, we create one function.
+
+The weird part: int *buffer
+int *buffer
+
+The * here means pointer.
+
+For now, think of it as:
+
+"Give this function access to an array of integers."
+
+So when we later write:
+
+averageBuffer(frontLeftBuffer)
+
+we are effectively saying:
+
+"Average the front-left array."
+
+You don't need to fully understand pointers yet. You'll encounter them repeatedly in C++, and we'll build the concept properly when necessary.
+
+5. long sum = 0
+long sum = 0;
+
+Why long instead of int?
+
+Because we're adding numbers together.
+
+For four sensor values it doesn't matter much:
+
+500 + 520 + 510 + 530 = 2060
+
+But using long gives the sum more numerical capacity.
+
+The variable starts at zero because we're about to accumulate values into it.
+
+6. The for loop
+for (int i = 0; i < SENSOR_SAMPLES; i++) {
+    sum += buffer[i];
+}
+
+This is C++'s standard counting loop.
+
+Python equivalent:
+
+for i in range(4):
+    sum += buffer[i]
+
+Breakdown:
+
+int i = 0
+
+Create i and start at 0.
+
+i < SENSOR_SAMPLES
+
+Keep looping while i < 4.
+
+i++
+
+After every iteration, increase i by 1.
+
+So:
+
+i = 0
+i = 1
+i = 2
+i = 3
+stop
+
+Then:
+
+sum += buffer[i];
+
+is shorthand for:
+
+sum = sum + buffer[i];
+7. Returning the average
+return sum / SENSOR_SAMPLES;
+
+Suppose:
+
+buffer = [500, 520, 510, 530]
+
+Then:
+
+sum = 2060
+
+2060 / 4 = 515
+
+So:
+
+averageBuffer(buffer)
+
+returns:
+
+515
+
+The static before averageBuffer again means this helper function is only usable inside Sensors.cpp.
+
+8. initSensors()
+void initSensors() {
+
+This function prepares the sensors when the robot starts.
+
+It is called once from setup().
+
+pinMode
+pinMode(OPPONENT_FRONT_LEFT, INPUT);
+
+This tells the Arduino:
+
+"This pin is being used to receive information."
+
+For example:
+
+Sensor → Arduino
+
+rather than:
+
+Arduino → motor
+
+The opponent sensors and edge sensors are therefore configured as inputs.
+
+9. Why pre-fill the buffers?
+
+This is one of the more important design decisions.
+
+for (int i = 0; i < SENSOR_SAMPLES; i++) {
+    frontLeftBuffer[i]  = analogRead(OPPONENT_FRONT_LEFT);
+    ...
+}
+
+Suppose we didn't do this.
+
+At startup, the arrays could effectively contain:
+
+[0][0][0][0]
+
+Then the first real reading is 600:
+
+[600][0][0][0]
+
+Average:
+
+600 / 4 = 150
+
+That's obviously wrong.
+
+The sensor might actually be detecting the opponent strongly, but the smoothing system says:
+
+150
+
+because three slots haven't been populated yet.
+
+Instead, initialization reads the actual sensor four times:
+
+[600][598][603][601]
+
+Average:
+
+600
+
+So the first result is immediately meaningful.
+
+Why not just initialize them to 600?
+
+Because we don't know what the sensor is actually seeing.
+
+The code therefore says:
+
+"Whatever the sensor is currently seeing, use that as the initial history."
+
+10. readOpponentSensors()
+
+This is the main sensor-reading function.
+
+First:
+
+frontLeftBuffer[bufferIndex] = analogRead(OPPONENT_FRONT_LEFT);
+
+analogRead() asks the Arduino:
+
+"What value is currently coming from this analog sensor?"
+
+Conceptually:
+
+reading = sensor.read()
+
+The value is then placed into the current buffer position.
+
+All four sensors do this:
+
+                    bufferIndex
+                         ↓
+FL: [520][530][515][525]
+FR: [410][420][415][430]
+L : [100][110][105][115]
+R : [700][690][710][705]
+
+If bufferIndex == 2, the new readings replace position 2.
+
+11. The most important line for the rolling buffer
+bufferIndex = (bufferIndex + 1) % SENSOR_SAMPLES;
+
+This is how the index wraps around.
+
+Assuming 4 samples:
+
+Current index    New index
+     0               1
+     1               2
+     2               3
+     3               0
+
+Why?
+
+Because of %.
+
+For example:
+
+(0 + 1) % 4 = 1
+(1 + 1) % 4 = 2
+(2 + 1) % 4 = 3
+(3 + 1) % 4 = 0
+
+So it creates a loop:
+
+0 → 1 → 2 → 3 → 0 → 1 → ...
+
+This is exactly what we want.
+
+The buffer therefore doesn't grow indefinitely.
+
+It always contains the latest four readings.
+
+12. Creating the readings object
+OpponentReadings readings;
+
+This creates a OpponentReadings struct.
+
+Remember Sensors.h:
+
+struct OpponentReadings {
+    int frontLeft;
+    int frontRight;
+    int left;
+    int right;
+};
+
+So now we have:
+
+readings
+├── frontLeft
+├── frontRight
+├── left
+└── right
+
+Then:
+
+readings.frontLeft = averageBuffer(frontLeftBuffer);
+
+means:
+
+Average the front-left buffer and put that result into the frontLeft field.
+
+Same for the other three.
+
+13. Finally:
+return readings;
+
+The function gives the whole structure back.
+
+So Strategy code can eventually do something conceptually like:
+
+OpponentReadings sensors = readOpponentSensors();
+
+and now:
+
+sensors.frontLeft
+sensors.frontRight
+sensors.left
+sensors.right
+
+contain the smoothed readings.
+
+This is the entire pipeline:
+
+Physical sensor
+      ↓
+analogRead()
+      ↓
+raw reading
+      ↓
+rolling buffer
+      ↓
+average
+      ↓
+OpponentReadings struct
+      ↓
+Strategy
+
+That separation is the main reason Sensors.cpp exists.
+
+14. Edge sensors are different
+EdgeReadings readEdgeSensors() {
+    EdgeReadings edges;
+
+The opponent sensors give numbers.
+
+The edge sensors only need to answer:
+
+"Am I seeing white?"
+
+Therefore the result is four bools.
+
+This expression
+digitalRead(EDGE_FRONT_LEFT) == EDGE_WHITE_STATE
+
+has two parts.
+
+First:
+
+digitalRead(EDGE_FRONT_LEFT)
+
+gets the electrical state:
+
+HIGH
+
+or
+
+LOW
+
+Then:
+
+== EDGE_WHITE_STATE
+
+asks:
+
+"Is what I read equal to the state we defined as white?"
+
+== means comparison.
+
+It does NOT assign anything.
+
+Remember:
+
+=   assignment
+==  comparison
+
+So:
+
+edges.frontLeft = (...);
+
+means:
+
+Put the result of this comparison into frontLeft.
+
+For example:
+
+digitalRead() → HIGH
+EDGE_WHITE_STATE → HIGH
+
+HIGH == HIGH → true
+
+Therefore:
+
+edges.frontLeft = true
+15. anyEdgeDetected()
+bool anyEdgeDetected(EdgeReadings edges) {
+    return edges.frontLeft ||
+           edges.frontRight ||
+           edges.backLeft ||
+           edges.backRight;
+}
+
+|| means OR.
+
+So this asks:
+
+front-left white?
+OR
+front-right white?
+OR
+back-left white?
+OR
+back-right white?
+
+If even one is true:
+
+anyEdgeDetected(...) → true
+
+Otherwise:
+
+→ false
+
+This exists because the main robot loop needs a simple question:
+
+if (anyEdgeDetected(edges)) {
+    recover();
+}
+
+The strategy doesn't need to manually inspect all four sensors.
+
+The architecture you now have
+
+You should think of these files as layers:
+
+Hardware.h
+    ↓
+"Where are the sensors connected?"
+    ↓
+Sensors.cpp
+    ↓
+"How do I physically read and smooth them?"
+    ↓
+Sensors.h
+    ↓
+"Here is the clean interface other code can use."
+    ↓
+Strategy1 / Strategy2
+    ↓
+"What should the robot do with that information?"
+
+And specifically:
+
+Opponent sensor
+    ↓
+analogRead
+    ↓
+4-value rolling buffer
+    ↓
+average
+    ↓
+OpponentReadings
+    ↓
+Strategy
+
+
+Edge sensor
+    ↓
+digitalRead
+    ↓
+HIGH/LOW comparison
+    ↓
+boolean
+    ↓
+EdgeReadings
+    ↓
+edge recovery
+One thing to understand particularly well
+
+The core reason for the buffers is not "because C++ needs arrays."
+
+It's because your physical sensor readings can fluctuate:
+
+520
+535
+511
+529
+
+while the robot needs a more stable estimate:
+
+524
+
+So the code deliberately trades a tiny amount of responsiveness for reduced noise.
+
+That is the engineering reason this entire buffer/average system exists.
