@@ -47,6 +47,11 @@ struct EdgeReadings {
 // Set all 8 sensor pins to the correct pinMode. Call once from setup().
 void initSensors();
 
+// Prints every current sensor value over serial, one line, for bench
+// calibration and continuity testing. Call this from loop() temporarily
+// while you're testing on the bench — not meant to run during a match.
+void printSensorDebug(OpponentReadings readings, EdgeReadings edges);
+
 // Reads all 4 GP2Y0A21 pins, pushes each into its own rolling buffer, and
 // returns the averaged result for this loop.
 OpponentReadings readOpponentSensors(); // no void cause the function is supposed to return something
