@@ -43,11 +43,22 @@ const int OPPONENT_FRONT_RIGHT = A1;
 const int OPPONENT_LEFT        = A2;
 const int OPPONENT_RIGHT       = A3;
 
+// Do not use I2C3 on A4/A5 unless pin assignment is changed.
 // ===================== START BUTTON =====================
-// Not in the v3 wiring table — placeholder on a free pin, confirm or change.
 const int START_BUTTON = A4;
 
-// =========================-=== SENSOR TUNABLES =============================
+// ===================== ROUND SWITCH =====================
+const int ROUND_BUTTON = A5;
+
+// ===============================  TUNABLES ===============================
+
+// ===================== MOTOR POLARITY =====================
+// Set after the first physical motor bench test (forward(80), wheels off
+// the ground). false = this motor's wiring already matches "forward PWM
+// = physically forward." true = invert it here instead of rewiring or
+// editing Motors.cpp.
+const bool LEFT_MOTOR_INVERTED  = false;
+const bool RIGHT_MOTOR_INVERTED = false;
 
 // Raw analog value (0-1023) at which a GP2Y0A21 reading counts as "opponent
 // detected." Closer objects = higher voltage = higher ADC value on this
