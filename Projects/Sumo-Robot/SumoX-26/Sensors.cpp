@@ -32,6 +32,11 @@ static int averageBuffer(int *buffer) {
 }
 
 void initSensors() {
+
+  analogReadResolution(10);
+  
+  bufferIndex = 0;
+
   pinMode(OPPONENT_FRONT_LEFT, INPUT);
   pinMode(OPPONENT_FRONT_RIGHT, INPUT);
   pinMode(OPPONENT_LEFT, INPUT);
@@ -51,6 +56,20 @@ void initSensors() {
     leftBuffer[i]       = analogRead(OPPONENT_LEFT);
     rightBuffer[i]      = analogRead(OPPONENT_RIGHT);
   }
+}
+
+void printSensorDebug(OpponentReadings readings, EdgeReadings edges) {
+  Serial.print("OPP [FL FR L R]: ");
+  Serial.print(readings.frontLeft);  Serial.print(" ");
+  Serial.print(readings.frontRight); Serial.print(" ");
+  Serial.print(readings.left);       Serial.print(" ");
+  Serial.print(readings.right);
+
+  Serial.print(" | EDGE [FL FR BL BR]: ");
+  Serial.print(edges.frontLeft  ? "WHITE" : "black"); Serial.print(" ");
+  Serial.print(edges.frontRight ? "WHITE" : "black"); Serial.print(" ");
+  Serial.print(edges.backLeft   ? "WHITE" : "black"); Serial.print(" ");
+  Serial.println(edges.backRight ? "WHITE" : "black");
 }
 
 OpponentReadings readOpponentSensors() {
