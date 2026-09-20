@@ -5,18 +5,78 @@
 #include "Robot.h"
 #include "Strategy_Hybrid.h"
 
+// ---------------------------------------------------------------------------
+// BENCH MODE. Uncomment the next line, upload, open the serial monitor.
+// The robot does NOT move in this mode. Use it to:
+//   1. measure SENSOR_PEAK (Robot.h): slide a flat card toward each FRONT sensor
+//      from 20 cm to 1 cm and read the "peak" column,
+//   2. check DIST_THRESHOLD against real distances (calibrated readings),
+//   3. check the edge sensors (E: FL FR BL BR, 1 = sees white),
+//   4. tap / shake the chassis while watching "OFFblips": every count is a switch
+//      glitch. "longest" is the longest one in ms; it must stay well below
+//      SWITCH_GLITCH_MS (Robot.h),
+//   5. spot brown-outs: a second "BOOT" line appearing mid-test = the MCU reset.
+// Comment it out again for the competition build.
+// ---------------------------------------------------------------------------
+// #define SENSOR_DEBUG
+
+#ifdef SENSOR_DEBUG
+static void sensorDebug() {
+  static unsigned long lastPrint = 0;
+  static int peak[4] = {0, 0, 0, 0};
+  static bool wasOn = true;
+  static unsigned long offSince = 0, longestOff = 0, blips = 0;
+
+  const bool rawOn = (digitalRead(START_BUTTON) == LOW && digitalRead(ROUND_BUTTON) == LOW);
+  const unsigned long now = millis();
+  if (!rawOn && wasOn) { offSince = now; }
+  if (rawOn && !wasOn) {
+    blips++;
+    if (now - offSince > longestOff) longestOff = now - offSince;
+  }
+  wasOn = rawOn;
+
+  OpponentReadings r = readOpponentSensors();
+  const int v[4] = {r.frontLeft, r.frontRight, r.left, r.right};
+  for (int i = 0; i < 4; i++) if (v[i] > peak[i]) peak[i] = v[i];
+
+  if (now - lastPrint < 100) return;
+  lastPrint = now;
+
+  EdgeReadings e = readEdgeSensors();
+  Serial.print("FL "); Serial.print(v[0]);
+  Serial.print(" FR "); Serial.print(v[1]);
+  Serial.print(" L ");  Serial.print(v[2]);
+  Serial.print(" R ");  Serial.print(v[3]);
+  Serial.print(" | peak FL "); Serial.print(peak[0]);
+  Serial.print(" FR "); Serial.print(peak[1]);
+  Serial.print(" L ");  Serial.print(peak[2]);
+  Serial.print(" R ");  Serial.print(peak[3]);
+  Serial.print(" | E: ");
+  Serial.print(e.frontLeft); Serial.print(e.frontRight);
+  Serial.print(e.backLeft);  Serial.print(e.backRight);
+  Serial.print(" | sw ");   Serial.print(rawOn ? "ON" : "OFF");
+  Serial.print(" OFFblips "); Serial.print(blips);
+  Serial.print(" longest ");  Serial.println(longestOff);
+}
+#endif
+
 void setup() {
+#ifdef SENSOR_DEBUG
   Serial.begin(115200);
+  Serial.println("BOOT");
+#endif
   initRobot();
 }
 
-void loop() {
+#ifndef SENSOR_DEBUG
+static void robotLoop() {
   static bool trackingTarget = false;
   static int lastKnownCorrection = 0;
   static bool wasReady = false;
   static unsigned long lostTurnStart = 0;
 
-  // ---- Any switch OFF: stop and reset everything ----
+  // ---- Any switch OFF (for real, not a blip): stop and reset everything ----
   if (!switchesOn()) {
     stopMotors();
     trackingTarget = false;
@@ -84,4 +144,13 @@ void loop() {
   } else {
     updateSearchArc();
   }
+}
+#endif
+
+void loop() {
+#ifdef SENSOR_DEBUG
+  sensorDebug();
+#else
+  robotLoop();
+#endif
 }
