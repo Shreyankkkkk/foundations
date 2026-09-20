@@ -12,9 +12,31 @@
 
 unsigned long attackDeadline = 0;
 
-// One place that answers "are both switches ON right now?"
-bool switchesOn() {
+// ---------------------------------------------------------------------------
+// Switches
+// ---------------------------------------------------------------------------
+static unsigned long lastSwitchesOnMs = 0;
+
+// The raw, unfiltered pin state.
+static bool switchesRawOn() {
     return digitalRead(START_BUTTON) == LOW && digitalRead(ROUND_BUTTON) == LOW;
+}
+
+// "Are both switches ON right now?" with a glitch filter:
+//  * raw ON  -> motors enabled, returns true.
+//  * raw OFF -> motors gated off IMMEDIATELY (a real OFF stops the robot at once),
+//               but the answer stays true until the OFF has lasted SWITCH_GLITCH_MS.
+// Without this, one vibration blip on a rocker/lever connector would reset the
+// state machine and trigger a fresh 5.2 s frozen countdown in the middle of a match.
+bool switchesOn() {
+    const unsigned long now = millis();
+    if (switchesRawOn()) {
+        lastSwitchesOnMs = now;
+        setMotorsEnabled(true);
+        return true;
+    }
+    setMotorsEnabled(false);
+    return (now - lastSwitchesOnMs) < SWITCH_GLITCH_MS;
 }
 
 void abortAttack() {
@@ -30,6 +52,8 @@ void initRobot() {
 #ifdef LED_BUILTIN
     pinMode(LED_BUILTIN, OUTPUT);
 #endif
+    // Start "long ago" so the filter reports OFF until a real ON is seen.
+    lastSwitchesOnMs = millis() - SWITCH_GLITCH_MS;
 }
 
 // ---------------------------------------------------------------------------
@@ -101,7 +125,7 @@ static void driveAwayFromEdge(const EdgeReadings &e, int speed, bool straight) {
         else                   drive(speed, speed / 2);     // forward, tail swings left (away from right line)
     }
     else {
-        stopMotors();
+        stopMotors();   // unreachable by construction (callers only pass edges); kept as a safe default
     }
 }
 
@@ -124,7 +148,15 @@ static void repositionAway(bool goBack) {
 void edgeRecover(const EdgeReadings &edges) {
     abortAttack();
     drive(0, 0);
-    delay(EDGE_BRAKE_MS);
+
+    // Brake for EDGE_BRAKE_MS, polling the switches instead of a blocking delay().
+    unsigned long brakeStart = millis();
+    while (millis() - brakeStart < EDGE_BRAKE_MS) {
+        if (!switchesOn()) {
+            stopMotors();
+            return;
+        }
+    }
 
     const EdgeReadings initialEdges = edges;
     const bool initialFront = edges.frontLeft || edges.frontRight;
@@ -154,10 +186,14 @@ void edgeRecover(const EdgeReadings &edges) {
         unsigned long elapsed = now - startTime;
 
         // Took too long: fallback move, then give control back.
+        // The robot may have turned since the start, so decide the direction from
+        // what the sensors see NOW, not from the edges that started the recovery.
         if (elapsed > EDGE_RECOVER_MAX_MS) {
             stopMotors();
-            if (initialFront && !initialBack)      repositionAway(true);
-            else if (initialBack && !initialFront) repositionAway(false);
+            const bool nowFront = current.frontLeft || current.frontRight;
+            const bool nowBack  = current.backLeft  || current.backRight;
+            if (nowFront && !nowBack)      repositionAway(true);
+            else if (nowBack && !nowFront) repositionAway(false);
             return;
         }
 
@@ -280,15 +316,16 @@ void waitForStart() {
     static SearchDirection nextSearchDirection = SEARCH_LEFT;
 
     while (true) {
-        // 1) Wait here until both switches are ON and steady.
-        if (!switchesOn()) {
+        // 1) Wait here until both switches are ON and steady. RAW reads on purpose:
+        //    arming must not be helped along by the glitch filter.
+        if (!switchesRawOn()) {
             stopMotors();
             continue;
         }
         unsigned long steadySince = millis();
         bool steady = true;
         while (millis() - steadySince < START_DEBOUNCE_MS) {
-            if (!switchesOn()) {
+            if (!switchesRawOn()) {
                 steady = false;
                 break;
             }
@@ -296,6 +333,8 @@ void waitForStart() {
         if (!steady) continue;
 
         // 2) Countdown: no movement allowed until it finishes.
+        //    (Filtered check here: a blip must not restart a countdown that is
+        //    already running; a real OFF still cancels it.)
         randomSeed(micros());
         unsigned long countdownStart = millis();
         inhibitMotionUntil(countdownStart + START_COUNTDOWN_MS);
