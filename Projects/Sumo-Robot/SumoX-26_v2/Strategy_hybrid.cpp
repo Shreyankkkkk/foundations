@@ -2,6 +2,7 @@
 #include "Hardware.h"
 #include "Motors.h"
 #include "Sensors.h"
+#include "Robot.h"
 #include "Strategy_Hybrid.h"
 
 static SearchDirection currentDir = SEARCH_LEFT;
@@ -13,6 +14,8 @@ static int lastSeenDirection = 0;
 static int activeSideOverride = 0;
 static int pendingSideOverride = 0;
 static unsigned long pendingSideOverrideSince = 0;
+static unsigned long activeSideOverrideSince = 0;
+static unsigned long sideLockoutUntil = 0;   // deliberately NOT cleared by beginSearchArc()
 
 void beginSearchArc(SearchDirection initialDir) {
     currentDir = initialDir;
@@ -22,6 +25,7 @@ void beginSearchArc(SearchDirection initialDir) {
     activeSideOverride = 0;
     pendingSideOverride = 0;
     pendingSideOverrideSince = 0;
+    activeSideOverrideSince = 0;
 
     lastCorrection = 0;
     lastSeenDirection = 0;
@@ -53,7 +57,16 @@ bool anyOpponentDetected(const OpponentReadings &readings) {
 
 // A side sensor must request the same override for SIDE_TURN_CONFIRM_MS before
 // it takes effect. Releasing it is instant (less overshoot).
+// Watchdog: an override may stay active at most SIDE_TURN_MAX_MS. A real side
+// target is found by the front sensors long before that; a side sensor that is
+// still "seeing an opponent" after that is stuck (or looking at the robot's own
+// body / the arena), and would otherwise spin the robot in place for the whole
+// round. It is then ignored for SIDE_LOCKOUT_MS.
 static void updateSideOverride(int requested) {
+    const unsigned long now = millis();
+
+    if (now < sideLockoutUntil) requested = 0;
+
     if (requested == 0) {
         activeSideOverride = 0;
         pendingSideOverride = 0;
@@ -61,15 +74,20 @@ static void updateSideOverride(int requested) {
     }
     if (requested == activeSideOverride) {
         pendingSideOverride = 0;
+        if (now - activeSideOverrideSince >= SIDE_TURN_MAX_MS) {
+            activeSideOverride = 0;
+            sideLockoutUntil = now + SIDE_LOCKOUT_MS;
+        }
         return;
     }
     if (pendingSideOverride != requested) {
         pendingSideOverride = requested;
-        pendingSideOverrideSince = millis();
+        pendingSideOverrideSince = now;
         return;
     }
-    if (millis() - pendingSideOverrideSince >= SIDE_TURN_CONFIRM_MS) {
+    if (now - pendingSideOverrideSince >= SIDE_TURN_CONFIRM_MS) {
         activeSideOverride = requested;
+        activeSideOverrideSince = now;
         pendingSideOverride = 0;
     }
 }
