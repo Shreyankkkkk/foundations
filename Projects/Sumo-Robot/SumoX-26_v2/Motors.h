@@ -6,6 +6,7 @@
 void initMotors();
 void stopMotors();
 void inhibitMotionUntil(unsigned long deadline);
+void setMotorsEnabled(bool enabled);   // false = every drive() call outputs 0 (used by the switch filter)
 void drive(int leftSpeed, int rightSpeed);
 
 #endif

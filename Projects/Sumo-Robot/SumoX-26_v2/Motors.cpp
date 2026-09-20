@@ -8,6 +8,7 @@
 #include "Motors.h"
 
 static unsigned long motionInhibitUntil = 0;
+static bool motorsEnabled = true;
 
 void initMotors() {
   analogWriteResolution(8);   // drive() assumes 0-255. If the compiler rejects this line, delete it (8-bit is the default).
@@ -42,6 +43,16 @@ void inhibitMotionUntil(unsigned long deadline) {
   stopMotors();
 }
 
+// Master gate. While false, every drive() call outputs 0 no matter who calls it.
+// Robot.cpp's switchesOn() closes it the instant a switch reads OFF and reopens
+// it when both read ON again, so a real OFF stops the robot immediately even
+// though the state-machine reset is filtered (see SWITCH_GLITCH_MS).
+void setMotorsEnabled(bool enabled) {
+  if (enabled == motorsEnabled) return;
+  motorsEnabled = enabled;
+  if (!enabled) drive(0, 0);
+}
+
 void stopMotors() {
   drive(0, 0);
 }
@@ -60,11 +71,9 @@ static void setSide(int rPwmPin, int lPwmPin, int speed) {
 
 // -255 = full reverse, 0 = stop, +255 = full forward.
 void drive(int leftSpeed, int rightSpeed) {
-  if (leftSpeed != 0 || rightSpeed != 0) {
-    if (millis() < motionInhibitUntil) {
-      leftSpeed = 0;
-      rightSpeed = 0;
-    }
+  if (!motorsEnabled || millis() < motionInhibitUntil) {
+    leftSpeed = 0;
+    rightSpeed = 0;
   }
 
   leftSpeed  = constrain(leftSpeed, -255, 255);
