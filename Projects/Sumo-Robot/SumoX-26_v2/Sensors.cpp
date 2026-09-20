@@ -2,13 +2,12 @@
 // SumoX-26 — Sensors.cpp
 // ----------------------------------------------------------------------------
 // The actual sensor-reading detail lives here. Nothing outside this file
-// should ever call analogRead/digitalRead on a sensor pin directly.
+// should ever call analogRead/digitalRead on an OPPONENT/EDGE sensor pin
+// directly.
 //
-// The 4 static buffers below are how the rolling-average smoothing works:
-// each opponent sensor gets its own small array, we overwrite one slot per
-// loop, and average whatever's currently in the array. `static` here means
-// "only visible inside this file" — Strategy code never needs to touch
-// these buffers directly, only the functions below.
+// The 4 static buffers below implement the median smoothing: each opponent
+// sensor gets its own small array, one slot is overwritten every
+// SENSOR_SAMPLE_INTERVAL_MS, and the MEDIAN of the array is returned.
 // ============================================================================
 
 #include <Arduino.h>
@@ -45,10 +44,8 @@ static int medianBuffer(int *buffer) {
 }
 
 void initSensors() {
-
-  // The UNO Q ADC is configured explicitly at its 10-bit resolution.
   analogReadResolution(10);
-  
+
   bufferIndex = 0;
   lastOpponentSample = millis();
 
@@ -62,15 +59,7 @@ void initSensors() {
   pinMode(EDGE_BACK_LEFT, INPUT);
   pinMode(EDGE_BACK_RIGHT, INPUT);
 
-  // Pre-fill every buffer with a real reading, so the very first average
-  // returned isn't skewed toward zero before enough loops have run to
-  // naturally fill the buffer.
-  for (int i = 0; i < SENSOR_SAMPLES; i++) {
-    frontLeftBuffer[i]  = analogRead(OPPONENT_FRONT_LEFT);
-    frontRightBuffer[i] = analogRead(OPPONENT_FRONT_RIGHT);
-    leftBuffer[i]       = analogRead(OPPONENT_LEFT);
-    rightBuffer[i]      = analogRead(OPPONENT_RIGHT);
-  }
+  primeOpponentSensors();
 }
 
 void primeOpponentSensors() {
