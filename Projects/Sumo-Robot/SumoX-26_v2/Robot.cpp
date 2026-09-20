@@ -1,11 +1,6 @@
 // ============================================================================
 // SumoX-26 — Robot.cpp
-// ----------------------------------------------------------------------------
-// Shared sumo-specific behavior — attack, edge recovery, repositioning,
-// startup — that both Strategy1 and Strategy2 call into. Nothing in here
-// is strategy-specific (no P-controller math, no search-arc speeds); if
-// it's identical for both strategies, it lives here instead of being
-// duplicated in Strategy1.cpp and Strategy2.cpp.
+// Shared sumo behaviour: start, attack, edge recovery, maneuvers.
 // ============================================================================
 
 #include <Arduino.h>
@@ -13,13 +8,18 @@
 #include "Motors.h"
 #include "Sensors.h"
 #include "Robot.h"
-#if ACTIVE_STRATEGY == 1
-#include "Strategy_1.h"
-#elif ACTIVE_STRATEGY == 2
-#include "Strategy_2.h"
-#else
-#error "ACTIVE_STRATEGY must be 1 or 2"
-#endif
+#include "Strategy_Hybrid.h"
+
+unsigned long attackDeadline = 0;
+
+// One place that answers "are both switches ON right now?"
+bool switchesOn() {
+    return digitalRead(START_BUTTON) == LOW && digitalRead(ROUND_BUTTON) == LOW;
+}
+
+void abortAttack() {
+    attackDeadline = millis();
+}
 
 void initRobot() {
     initMotors();
@@ -27,237 +27,222 @@ void initRobot() {
 
     pinMode(START_BUTTON, INPUT_PULLUP);
     pinMode(ROUND_BUTTON, INPUT_PULLUP);
+#ifdef LED_BUILTIN
+    pinMode(LED_BUILTIN, OUTPUT);
+#endif
 }
 
-void waitForStart() {
-    stopMotors();
-    static SearchDirection nextSearchDirection = SEARCH_LEFT;
+// ---------------------------------------------------------------------------
+// Hammer attack (240 <-> 190 pulsing)
+// ---------------------------------------------------------------------------
+static unsigned long lastHammerToggle = 0;
+static unsigned long lastHammerCall = 0;
+static bool hammerHigh = true;
 
-    while (true) {
-        if (digitalRead(START_BUTTON) != LOW) {
-            stopMotors();
-            continue;
-        }
-
-        bool roundPressed = digitalRead(ROUND_BUTTON) == LOW;
-
-        if (roundPressed) {
-            unsigned long buttonDetectedAt = millis();
-            bool heldLow = true;
-
-            while (millis() - buttonDetectedAt < START_DEBOUNCE_MS) {
-                if (digitalRead(ROUND_BUTTON) != LOW)
-                {
-                    heldLow = false;
-                    break;
-                }
-            }
-
-            if (heldLow) {
-                unsigned long countdownStart = millis();
-                inhibitMotionUntil(countdownStart + START_COUNTDOWN_MS);
-
-                // The countdown starts at the first confirmed button
-                // detection. Sensors may be read during it, but no motor
-                // command can produce movement until the deadline.
-                // Keep the mandatory countdown sensor-aware without allowing
-                // movement. An edge is intentionally not recovered here:
-                // moving before five seconds is a rule violation.
-                unsigned long lastEdgeCheck = countdownStart;
-                bool stillArmed = true;
-                while (millis() - countdownStart < START_COUNTDOWN_MS)
-                {
-                    if (digitalRead(START_BUTTON) != LOW) {
-                        stillArmed = false;
-                        stopMotors();
-                        break;
-                    }
-
-                    unsigned long now = millis();
-                    if (now - lastEdgeCheck >= START_EDGE_CHECK_INTERVAL_MS) {
-                        lastEdgeCheck = now;
-                        readEdgeSensors();
-                    }
-                }
-
-                if (!stillArmed) {
-                    continue;
-                }
-
-                // Start of the round: perform a randomized start maneuver to
-                // avoid predictability and head-on wedge-locks.
-                executeRandomStart();
-
-                // This is the round boundary. Callers may immediately
-                // override the direction, but no search state can leak from
-                // the previous round.
-                beginSearchArc(nextSearchDirection);
-                nextSearchDirection = (nextSearchDirection == SEARCH_LEFT)
-                    ? SEARCH_RIGHT
-                    : SEARCH_LEFT;
-                return;
-            }
-        }
-    }
+void resetHammerState() {
+    lastHammerToggle = 0;
+    lastHammerCall = 0;
+    hammerHigh = true;
 }
 
-void attack(int correction) {
-    drive(constrain(ATTACK_SPEED + correction, 0, 255),
-          constrain(ATTACK_SPEED - correction, 0, 255));
-}
-
-void hammerAttack(int correction) {
-    static unsigned long lastHammerToggle = 0;
-    static bool hammerHigh = true;
-
+static void hammerSpeed(int correction) {
     unsigned long now = millis();
-    if (now - lastHammerToggle >= HAMMER_PERIOD_MS) {
+    if (now - lastHammerCall > 2 * HAMMER_PERIOD_MS) {
+        // A gap since the last call means a fresh push: start at FULL power.
+        hammerHigh = true;
+        lastHammerToggle = now;
+    } else if (now - lastHammerToggle >= HAMMER_PERIOD_MS) {
         hammerHigh = !hammerHigh;
         lastHammerToggle = now;
     }
+    lastHammerCall = now;
 
     int baseSpeed = hammerHigh ? ATTACK_SPEED : (ATTACK_SPEED - HAMMER_AMPLITUDE);
     drive(constrain(baseSpeed + correction, 0, 255),
           constrain(baseSpeed - correction, 0, 255));
 }
 
-static bool timeoutRepositionActive = false;
+void commitAttack(int correction, int frontReading) {
+    unsigned long window = (frontReading >= PUSH_READING) ? PUSH_COMMIT_MS : ATTACK_COMMIT_MS;
+    attackDeadline = millis() + window;
+    hammerSpeed(correction);
+}
 
-bool edgeRecover(const EdgeReadings &edges) {
-    drive(0, 0);
-    delay(EDGE_BRAKE_MS);
+void hammerDrive(int correction) {
+    hammerSpeed(correction);
+}
 
-    unsigned long startTime = millis();
-    unsigned long clearedAt = 0;
-    EdgeReadings initialEdges = edges;
-    bool initialFront = edges.frontLeft || edges.frontRight;
+// ---------------------------------------------------------------------------
+// Edge recovery
+// Convention: drive(left, right), positive = forward.
+// ---------------------------------------------------------------------------
 
-    while (true) {
-        EdgeReadings current = readEdgeSensors();
-        if (anyEdgeDetected(current)) {
-            clearedAt = 0;
-        }
+// Pick the motion that moves the corner(s) that saw white AWAY from the line.
+// 'straight' = plain straight retreat (used for the first EDGE_RETREAT_MS).
+static void driveAwayFromEdge(const EdgeReadings &e, int speed, bool straight) {
+    bool front = e.frontLeft  || e.frontRight;
+    bool back  = e.backLeft   || e.backRight;
+    bool left  = e.frontLeft  || e.backLeft;
+    bool right = e.frontRight || e.backRight;
 
-        unsigned long elapsed = millis() - startTime;
-
-        if (elapsed > EDGE_RECOVER_MAX_MS) {
-            stopMotors();
-            timeoutRepositionActive = true;
-            bool repositioned = reposition(!initialFront);
-            timeoutRepositionActive = false;
-            return !repositioned;
-        }
-
-        int speed = (elapsed > EDGE_ESCALATE_MS)
-                        ? EDGE_RECOVER_MAX_SPEED
-                        : EDGE_RECOVER_SPEED;
-
-        bool retreating = elapsed < EDGE_RETREAT_MS;
-        // Preserve the original trigger only for the mandatory retreat.
-        // After that phase, use live readings so a clear edge can be
-        // confirmed instead of pivoting on stale sensor state.
-        EdgeReadings activeEdges = retreating ? initialEdges : current;
-        bool front = activeEdges.frontLeft || activeEdges.frontRight;
-        bool back = activeEdges.backLeft || activeEdges.backRight;
-
-        // Complete a minimum retreat before pivoting. A clear sensor reading
-        // must not terminate recovery during either required movement phase.
-        if (retreating && front) {
-            drive(-speed, -speed);
-        }
-        else if (retreating && back) {
-            drive(speed, speed);
-        }
-        else if (front && back) {
-            drive(-speed, speed);
-        }
-        else if (front)
-        {
-            if (activeEdges.frontLeft && activeEdges.frontRight) {
-                // Both front sensors are ambiguous; use the established
-                // front-left-safe pivot as the deterministic fallback.
-                drive(-speed, speed / 2);
-            }
-            else if (activeEdges.frontLeft) {
-                drive(-speed, speed / 2);
-            }
-            else {
-                drive(-speed / 2, speed);
-            }
-        }
-        else if (back) {
-            if (activeEdges.backLeft && activeEdges.backRight) {
-                // Both back sensors are ambiguous; use the established
-                // back-left-safe pivot as the deterministic fallback.
-                drive(speed / 2, -speed);
-            }
-            else if (activeEdges.backLeft) {
-                drive(speed / 2, -speed);
-            }
-            else {
-                drive(speed, -speed / 2);
-            }
-        }
-        else {
-            stopMotors();
-
-            // Only begin clear confirmation after the minimum maneuver has
-            // completed, preventing retreat from cancelling the pivot phase.
-            if (!anyEdgeDetected(current) && clearedAt == 0) {
-                clearedAt = millis();
-            }
-            else if (millis() - clearedAt >= EDGE_CONFIRM_CLEAR_MS) {
-                stopMotors();
-                return false;
-            }
-        }
+    if (front && back) {
+        if (left && !right)      drive(speed, speed / 2);   // line along the left side: arc forward-right
+        else if (right && !left) drive(speed / 2, speed);   // line along the right side: arc forward-left
+        else                     drive(-speed, speed);      // trapped or lifted: spin
+    }
+    else if (front) {
+        if (straight || (e.frontLeft && e.frontRight)) drive(-speed, -speed);
+        else if (e.frontLeft)  drive(-speed / 2, -speed);   // reverse, nose swings right (away from left line)
+        else                   drive(-speed, -speed / 2);   // reverse, nose swings left (away from right line)
+    }
+    else if (back) {
+        if (straight || (e.backLeft && e.backRight)) drive(speed, speed);
+        else if (e.backLeft)   drive(speed / 2, speed);     // forward, tail swings right (away from left line)
+        else                   drive(speed, speed / 2);     // forward, tail swings left (away from right line)
+    }
+    else {
+        stopMotors();
     }
 }
 
-bool reposition(bool back) {
+// Fallback if recovery takes too long: drive straight away from the line for a moment.
+// Only stops early if the line appears on the side we are moving TOWARD.
+static void repositionAway(bool goBack) {
     unsigned long startTime = millis();
-    int speed = back ? -REPOSITION_SPEED : REPOSITION_SPEED;
+    int speed = goBack ? -REPOSITION_SPEED : REPOSITION_SPEED;
 
     while (millis() - startTime < REPOSITION_MS) {
-        EdgeReadings edges = readEdgeSensors();
-        if (anyEdgeDetected(edges)) {
-            if (!timeoutRepositionActive) {
-                edgeRecover(edges);
-                return false;
-            }
-
-            // The fallback is already running from a recovery timeout. Do not
-            // ignore a newly detected edge and continue driving off the ring.
-            stopMotors();
-            return false;
-        }
+        if (!switchesOn()) break;
+        EdgeReadings e = readEdgeSensors();
+        bool blocked = goBack ? (e.backLeft || e.backRight) : (e.frontLeft || e.frontRight);
+        if (blocked) break;
         drive(speed, speed);
     }
     stopMotors();
+}
+
+void edgeRecover(const EdgeReadings &edges) {
+    abortAttack();
+    drive(0, 0);
+    delay(EDGE_BRAKE_MS);
+
+    const EdgeReadings initialEdges = edges;
+    const bool initialFront = edges.frontLeft || edges.frontRight;
+    const bool initialBack  = edges.backLeft  || edges.backRight;
+    const bool faceOutward  = initialFront && !initialBack;   // nose was at the line -> turn around when clear
+
+    // Which way to turn around: away from the side that saw the line.
+    static bool alternateClockwise = true;
+    bool turnClockwise;
+    if (edges.frontLeft && !edges.frontRight)      turnClockwise = true;    // line on the left -> swing right
+    else if (edges.frontRight && !edges.frontLeft) turnClockwise = false;   // line on the right -> swing left
+    else { turnClockwise = alternateClockwise; alternateClockwise = !alternateClockwise; }
+
+    unsigned long startTime = millis();
+    unsigned long clearedAt = 0;
+    unsigned long turnStart = 0;
+    bool turning = false;
+
+    while (true) {
+        if (!switchesOn()) {
+            stopMotors();
+            return;
+        }
+
+        EdgeReadings current = readEdgeSensors();
+        unsigned long now = millis();
+        unsigned long elapsed = now - startTime;
+
+        // Took too long: fallback move, then give control back.
+        if (elapsed > EDGE_RECOVER_MAX_MS) {
+            stopMotors();
+            if (initialFront && !initialBack)      repositionAway(true);
+            else if (initialBack && !initialFront) repositionAway(false);
+            return;
+        }
+
+        // ---- Stage 2: turn away from the line ----
+        if (turning) {
+            if (anyEdgeDetected(current)) {
+                turning = false;          // touched a line while turning: go back to escaping
+                clearedAt = 0;
+            } else if (now - turnStart >= EDGE_TURN_MS) {
+                stopMotors();
+                return;
+            } else {
+                if (turnClockwise) drive(EDGE_TURN_SPEED, -EDGE_TURN_SPEED);
+                else               drive(-EDGE_TURN_SPEED, EDGE_TURN_SPEED);
+                continue;
+            }
+        }
+
+        // ---- Stage 1: get away from the line ----
+        int speed = (elapsed > EDGE_ESCALATE_MS) ? EDGE_RECOVER_MAX_SPEED : EDGE_RECOVER_SPEED;
+
+        if (elapsed < EDGE_RETREAT_MS) {
+            driveAwayFromEdge(initialEdges, speed, true);
+            clearedAt = 0;
+            continue;
+        }
+
+        if (anyEdgeDetected(current)) {
+            driveAwayFromEdge(current, speed, false);
+            clearedAt = 0;
+            continue;
+        }
+
+        // No line visible: stop and confirm it stays clear.
+        stopMotors();
+        if (clearedAt == 0) clearedAt = now;
+        if (now - clearedAt >= EDGE_CONFIRM_CLEAR_MS) {
+            if (faceOutward) {
+                turning = true;
+                turnStart = now;
+            } else {
+                return;
+            }
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Maneuvers (pivot in place, then drive forward or backward)
+// ---------------------------------------------------------------------------
+
+// Checked every loop inside a maneuver. Returns false if the maneuver must stop.
+// stopOnOpponent: true  = stop as soon as any opponent sensor fires (after losing a target)
+//                 false = ignore the opponent (opening move)
+static bool maneuverSafe(bool stopOnOpponent) {
+    if (!switchesOn()) {
+        stopMotors();
+        return false;
+    }
+    EdgeReadings edges = readEdgeSensors();
+    if (anyEdgeDetected(edges)) {
+        edgeRecover(edges);
+        return false;
+    }
+    if (stopOnOpponent && anyOpponentDetected(readOpponentSensors())) {
+        return false;
+    }
     return true;
 }
 
-bool executeManeuver(unsigned long pivotMs, unsigned long forwardMs) {
-    // Phase 1: Pivot
-    unsigned long pivotStart = millis();
-    while (millis() - pivotStart < pivotMs) {
-        EdgeReadings edges = readEdgeSensors();
-        if (anyEdgeDetected(edges)) {
-            edgeRecover(edges);
-            return false;
-        }
-        drive(-OFFSET_SPEED, OFFSET_SPEED);
+static bool executeManeuver(unsigned long pivotMs, unsigned long moveMs,
+                            bool pivotLeft, bool reverse, bool stopOnOpponent) {
+    const int moveSpeed = reverse ? -OFFSET_SPEED : OFFSET_SPEED;
+
+    unsigned long phaseStart = millis();
+    while (millis() - phaseStart < pivotMs) {
+        if (!maneuverSafe(stopOnOpponent)) return false;
+        if (pivotLeft) drive(-OFFSET_SPEED, OFFSET_SPEED);
+        else           drive(OFFSET_SPEED, -OFFSET_SPEED);
     }
 
-    // Phase 2: Forward
-    unsigned long forwardStart = millis();
-    while (millis() - forwardStart < forwardMs) {
-        EdgeReadings edges = readEdgeSensors();
-        if (anyEdgeDetected(edges)) {
-            edgeRecover(edges);
-            return false;
-        }
-        drive(OFFSET_SPEED, OFFSET_SPEED);
+    phaseStart = millis();
+    while (millis() - phaseStart < moveMs) {
+        if (!maneuverSafe(stopOnOpponent)) return false;
+        drive(moveSpeed, moveSpeed);
     }
 
     stopMotors();
@@ -265,10 +250,75 @@ bool executeManeuver(unsigned long pivotMs, unsigned long forwardMs) {
 }
 
 bool executeBalancedOffset() {
-    return executeManeuver(200, 300);
+    return executeManeuver(OFFSET_PIVOT_MS, OFFSET_FORWARD_MS, true, false, true);
 }
 
-bool executeRandomStart() {
-    int index = random(0, 4); // Picks from START_PALETTE (4 options)
-    return executeManeuver(START_PALETTE[index].pivotMs, START_PALETTE[index].forwardMs);
+static bool executeRandomStart() {
+    const long count = (long)(sizeof(START_PALETTE) / sizeof(START_PALETTE[0]));
+    const StartRoutine &s = START_PALETTE[random(0, count)];
+    const bool pivotLeft = (random(0, 2) == 0);   // write "true" here to always pivot left
+    return executeManeuver(s.pivotMs, s.moveMs, pivotLeft, s.reverse, false);
+}
+
+// ---------------------------------------------------------------------------
+// Start sequence. Main loop calls this ONCE each time the switches go ON.
+// ---------------------------------------------------------------------------
+
+// Sensor self-test light during the countdown: steady = all four edge sensors
+// see black, blinking = at least one sees white (check it before the round!).
+static void showSelfTest(bool sensorSeesWhite) {
+#ifdef LED_BUILTIN
+    bool on = sensorSeesWhite ? (((millis() / 100) % 2) == 0) : true;
+    digitalWrite(LED_BUILTIN, on ? HIGH : LOW);
+#else
+    (void)sensorSeesWhite;
+#endif
+}
+
+void waitForStart() {
+    stopMotors();
+    static SearchDirection nextSearchDirection = SEARCH_LEFT;
+
+    while (true) {
+        // 1) Wait here until both switches are ON and steady.
+        if (!switchesOn()) {
+            stopMotors();
+            continue;
+        }
+        unsigned long steadySince = millis();
+        bool steady = true;
+        while (millis() - steadySince < START_DEBOUNCE_MS) {
+            if (!switchesOn()) {
+                steady = false;
+                break;
+            }
+        }
+        if (!steady) continue;
+
+        // 2) Countdown: no movement allowed until it finishes.
+        randomSeed(micros());
+        unsigned long countdownStart = millis();
+        inhibitMotionUntil(countdownStart + START_COUNTDOWN_MS);
+
+        bool stillArmed = true;
+        while (millis() - countdownStart < START_COUNTDOWN_MS) {
+            if (!switchesOn()) {
+                stillArmed = false;
+                stopMotors();
+                break;
+            }
+            showSelfTest(anyEdgeDetected(readEdgeSensors()));
+        }
+        showSelfTest(false);
+        if (!stillArmed) continue;    // switch flicked off: wait for ON again, new countdown
+
+        // 3) Go: fresh sensor data, opening move, then search.
+        abortAttack();
+        executeRandomStart();
+        primeOpponentSensors();       // the opening move doesn't sample sensors: refresh them
+
+        beginSearchArc(nextSearchDirection);
+        nextSearchDirection = (nextSearchDirection == SEARCH_LEFT) ? SEARCH_RIGHT : SEARCH_LEFT;
+        return;
+    }
 }

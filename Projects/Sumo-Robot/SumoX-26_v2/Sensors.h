@@ -47,15 +47,13 @@ struct EdgeReadings {
 // Set all 8 sensor pins to the correct pinMode. Call once from setup().
 void initSensors();
 
-// Prints every current sensor value over serial, one line, for bench
-// calibration and continuity testing. Call this from loop() temporarily
-// while you're testing on the bench — not meant to run during a match.
-void printSensorDebug(OpponentReadings readings, EdgeReadings edges);
-
 // Samples the GP2Y0A21 sensors at their approximately 40 ms update interval,
 // stores a rolling history, and returns the median reading.
 OpponentReadings readOpponentSensors(); // no void cause the function is supposed to return something
 // returns 4 numbers between 0-1023, one per sensor. Higher = Closer object.
+
+// Refill the smoothing buffers with fresh readings (call after anything that blocked the loop).
+void primeOpponentSensors();
 
 // Reads all 4 TCRT5000 pins and returns which corners currently see white.
 EdgeReadings readEdgeSensors();

@@ -1,91 +1,96 @@
 #ifndef ROBOT_H
 #define ROBOT_H
 
-// Keep this interface independent of the sensor implementation. Source files
-// that define these functions include Sensors.h before Robot.h.
 struct OpponentReadings;
 struct EdgeReadings;
 
-enum TargetSide {
-    TARGET_NONE,
-    TARGET_LEFT,
-    TARGET_RIGHT,
-    TARGET_FRONT
-};
-
-// Search state declarations
 enum SearchDirection {
     SEARCH_LEFT,
     SEARCH_RIGHT
 };
 
-// ===================== TUNABLES =====================
-const unsigned long START_COUNTDOWN_MS = 5200; // at least five seconds
-const unsigned long START_DEBOUNCE_MS = 50;
-const unsigned long START_EDGE_CHECK_INTERVAL_MS = 5;
+// ===================== START =====================
+const unsigned long START_COUNTDOWN_MS = 5200;   // at least five seconds
+const unsigned long START_DEBOUNCE_MS  = 50;
 
-// ===================== SEARCH TUNABLES =====================
+// ===================== SEARCH =====================
 const int SEARCH_SLOW_SPEED = 120;
 const int SEARCH_FAST_SPEED = 180;
-
-// First arc from border needs to be shorter to turn inward from start position
 const unsigned long SEARCH_FIRST_ARC_MS = 600;
-// Standard arc time to maintain S-curve across ring
-const unsigned long SEARCH_ARC_FLIP_MS = 1100;
+const unsigned long SEARCH_ARC_FLIP_MS  = 1100;
 
-const int APPROACH_SPEED = 165;
-const int TURN_SPEED = 100;
-
+// ===================== ATTACK / PUSH =====================
 const int ATTACK_SPEED = 240;
-
-const int EDGE_RECOVER_SPEED = 170;
-const int EDGE_RECOVER_MAX_SPEED = 230;
-
-const unsigned long EDGE_BRAKE_MS = 60;
-const unsigned long EDGE_RETREAT_MS = 180;      // straight retreat phase
-const unsigned long EDGE_ESCALATE_MS = 220;     // still triggered -> max power
-const unsigned long EDGE_RECOVER_MAX_MS = 700;  // still triggered -> give up, return
-const unsigned long EDGE_CONFIRM_CLEAR_MS = 30; // short confirmation to resume quickly
-
-const int SIDE_TURN_MARGIN = 25;
-const int SIDE_TURN_HYSTERESIS = 10;
-const unsigned long SIDE_TURN_CONFIRM_MS = 50;
-const int STRATEGY2_PUSH_KP = 2;
 const int HAMMER_AMPLITUDE = 50;
 const unsigned long HAMMER_PERIOD_MS = 100;
 
-struct StartRoutine {
-    unsigned long pivotMs;
-    unsigned long forwardMs;
-};
+// After the opponent disappears we keep pushing blind for this long.
+const unsigned long ATTACK_COMMIT_MS = 500;
+// If the last front reading was at least PUSH_READING (opponent very close,
+// sensor may be in its "fold-back" zone) we keep pushing blind for longer.
+// TUNE PUSH_READING from your sensor sweep: the highest reading you see
+// before the value starts dropping as the opponent gets closer.
+const int PUSH_READING = 1024;
+const unsigned long PUSH_COMMIT_MS = 1000;
+// While pushing, steering is limited to this (0-255 scale) so contact stays strong.
+const int PUSH_MAX_CORRECTION = 40;
+const unsigned long SIDE_TURN_CONFIRM_MS = 50;
 
-const StartRoutine START_PALETTE[] = {
-    {200, 300}, // Balanced Offset (The Standard)
-    {100, 400}, // The Aggressor (Fast forward)
-    {300, 200}, // The Flanker (Wider angle)
-    {0, 300}    // The Blitz (Pure straight burst)
-};
+// ===================== LOST TARGET =====================
+// Opponent slipped away to a side: turn toward where it was last seen.
+const unsigned long LOST_TURN_MS = 300;
+const int LOST_TURN_SPEED = 150;
+
+// ===================== EDGE RECOVERY =====================
+const int EDGE_RECOVER_SPEED = 170;
+const int EDGE_RECOVER_MAX_SPEED = 230;
+const unsigned long EDGE_BRAKE_MS = 60;
+const unsigned long EDGE_RETREAT_MS = 180;
+const unsigned long EDGE_ESCALATE_MS = 220;
+const unsigned long EDGE_RECOVER_MAX_MS = 900;
+const unsigned long EDGE_CONFIRM_CLEAR_MS = 30;
+// After backing off a FRONT edge, turn away so we don't drive straight back at it.
+// TUNE EDGE_TURN_MS on the ring until the robot turns roughly 120-150 degrees.
+const int EDGE_TURN_SPEED = 170;
+const unsigned long EDGE_TURN_MS = 300;
 
 const unsigned long REPOSITION_MS = 300;
 const int REPOSITION_SPEED = 150;
+
+// ===================== OFFSET / START MANEUVERS =====================
+struct StartRoutine {
+    unsigned long pivotMs;      // turn in place first (0 = none)
+    unsigned long moveMs;    // then drive this long
+    bool reverse;               // true = move backward, false = forward
+};
+
+const StartRoutine START_PALETTE[] = {
+    {200, 300, false},  
+    {100, 400, false},
+    {300, 200, false},
+    {0,   300, false},
+    {80,  250, true}    // side-step: pivot ~30 deg, back up ~5-10 cm. CALIBRATE both numbers (see section 4)
+};
 
 const unsigned long OFFSET_PIVOT_MS = 200;
 const unsigned long OFFSET_FORWARD_MS = 300;
 const int OFFSET_SPEED = 150;
 
 // ===================== FUNCTIONS =====================
+bool switchesOn();          // true only while BOTH switches are ON
+void abortAttack();
 void initRobot();
-void waitForStart();
+void waitForStart();        // 5.2 s countdown + opening move, then returns
 
-void attack(int correction);
-void hammerAttack(int correction);
+extern unsigned long attackDeadline;
 
-// Returns true when the recovery limit is reached and a fallback reposition is
-// required; false means the edge was cleared normally.
-bool edgeRecover(const EdgeReadings &edges); // corner-aware: front->reverse+turn, back->forward+turn
-bool reposition(bool back);
-bool executeManeuver(unsigned long pivotMs, unsigned long forwardMs);
+// Opponent squarely in front right now: push, and (re)open the blind-push window.
+void commitAttack(int correction, int frontReading);
+// Opponent not visible but the blind-push window is still open.
+void hammerDrive(int correction);
+void resetHammerState();
+
+void edgeRecover(const EdgeReadings &edges);
 bool executeBalancedOffset();
-bool executeRandomStart();
 
 #endif

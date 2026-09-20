@@ -73,18 +73,15 @@ void initSensors() {
   }
 }
 
-void printSensorDebug(OpponentReadings readings, EdgeReadings edges) {
-  Serial.print("OPP [FL FR L R]: ");
-  Serial.print(readings.frontLeft);  Serial.print(" ");
-  Serial.print(readings.frontRight); Serial.print(" ");
-  Serial.print(readings.left);       Serial.print(" ");
-  Serial.print(readings.right);
-
-  Serial.print(" | EDGE [FL FR BL BR]: ");
-  Serial.print(edges.frontLeft  ? "WHITE" : "black"); Serial.print(" ");
-  Serial.print(edges.frontRight ? "WHITE" : "black"); Serial.print(" ");
-  Serial.print(edges.backLeft   ? "WHITE" : "black"); Serial.print(" ");
-  Serial.println(edges.backRight ? "WHITE" : "black");
+void primeOpponentSensors() {
+  for (int i = 0; i < SENSOR_SAMPLES; i++) {
+    frontLeftBuffer[i]  = analogRead(OPPONENT_FRONT_LEFT);
+    frontRightBuffer[i] = analogRead(OPPONENT_FRONT_RIGHT);
+    leftBuffer[i]       = analogRead(OPPONENT_LEFT);
+    rightBuffer[i]      = analogRead(OPPONENT_RIGHT);
+  }
+  bufferIndex = 0;
+  lastOpponentSample = millis();
 }
 
 OpponentReadings readOpponentSensors() {
@@ -109,13 +106,28 @@ OpponentReadings readOpponentSensors() {
   return readings;
 }
 
+static EdgeReadings readEdgesOnce() {
+  EdgeReadings e;
+  e.frontLeft  = (digitalRead(EDGE_FRONT_LEFT)  == EDGE_WHITE_STATE_FL);
+  e.frontRight = (digitalRead(EDGE_FRONT_RIGHT) == EDGE_WHITE_STATE_FR);
+  e.backLeft   = (digitalRead(EDGE_BACK_LEFT)   == EDGE_WHITE_STATE_BL);
+  e.backRight  = (digitalRead(EDGE_BACK_RIGHT)  == EDGE_WHITE_STATE_BR);
+  return e;
+}
+
+// A corner only counts as "edge" if it reads white twice, 200 microseconds
+// apart. When nothing is seen (almost always) this returns immediately.
 EdgeReadings readEdgeSensors() {
-  EdgeReadings edges;
-  edges.frontLeft  = (digitalRead(EDGE_FRONT_LEFT)  == EDGE_WHITE_STATE_FL);
-  edges.frontRight = (digitalRead(EDGE_FRONT_RIGHT) == EDGE_WHITE_STATE_FR);
-  edges.backLeft   = (digitalRead(EDGE_BACK_LEFT)   == EDGE_WHITE_STATE_BL);
-  edges.backRight  = (digitalRead(EDGE_BACK_RIGHT)  == EDGE_WHITE_STATE_BR);
-  return edges;
+  EdgeReadings first = readEdgesOnce();
+  if (!anyEdgeDetected(first)) return first;
+
+  delayMicroseconds(200);
+  EdgeReadings second = readEdgesOnce();
+  first.frontLeft  = first.frontLeft  && second.frontLeft;
+  first.frontRight = first.frontRight && second.frontRight;
+  first.backLeft   = first.backLeft   && second.backLeft;
+  first.backRight  = first.backRight  && second.backRight;
+  return first;
 }
 
 bool isOpponentDetected(int reading) {
