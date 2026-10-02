@@ -134,8 +134,8 @@ const int STRONG_CONFIRM_SAMPLES = 2;                                           
 const float ADC_NOISE_SIGMA = 12.0f; // MEASURE: NoiseLog.ino, back-to-back reads, motors running, target fixed
 const int ADC_MIN_THRESHOLD_GAP = ((NEAR_THRESHOLD - CONTACT_BAND_HIGH) < (STRONG_THRESHOLD - WEAK_THRESHOLD))
                                       ? (NEAR_THRESHOLD - CONTACT_BAND_HIGH)
-                                      : (STRONG_THRESHOLD - WEAK_THRESHOLD);        // = min(125, 150)
-const float ADC_NOISE_SIGMA_TARGET = ADC_MIN_THRESHOLD_GAP / 6.0f;                  // 3-sigma clearance on each side of the tightest threshold
+                                      : (STRONG_THRESHOLD - WEAK_THRESHOLD); // = min(125, 150)
+const float ADC_NOISE_SIGMA_TARGET = ADC_MIN_THRESHOLD_GAP / 6.0f;           // 3-sigma clearance on each side of the tightest threshold
 const int ADC_OVERSAMPLE_MAX = 15;
 // averaging law N = (sigma/target)^2; floor 3 = smallest median that rejects a lone spike; |1 forces odd
 const int ADC_OVERSAMPLE_N = ((int)constrain(ceilf((ADC_NOISE_SIGMA / ADC_NOISE_SIGMA_TARGET) * (ADC_NOISE_SIGMA / ADC_NOISE_SIGMA_TARGET)), 3.0f, (float)ADC_OVERSAMPLE_MAX)) | 1;
@@ -154,20 +154,21 @@ const int POWER_BUTTON_PIN = A3;
 const int START_BUTTON_PIN = A4;
 const bool BUTTON_ACTIVE_LOW = true; // false if wired to 3.3V with an external pull-down
 const unsigned long BUTTON_DEBOUNCE_MS = 30;
-const unsigned long START_DELAY_MS = 5000UL;       // rulebook: mandatory stationary delay
-const unsigned long START_DELAY_MARGIN_MS = 50;    // only ever errs on the late side
+const unsigned long START_DELAY_MS = 5000UL;    // rulebook: mandatory stationary delay
+const unsigned long START_DELAY_MARGIN_MS = 50; // only ever errs on the late side
 const unsigned long START_COUNTDOWN_MS = START_DELAY_MS + START_DELAY_MARGIN_MS;
 
 const unsigned long CONTROL_TICK_MS = 5UL; // fixed loop tick; well under SENSOR_SAMPLE_INTERVAL_MS (15ms)
 
 const int DRIVE_PWM_MAX = 255;
 
-const bool PHANTOM_GATE_ENABLED = false; // keep false until the real 8-point ADC->cm table replaces estimateFarRangeCm()
-const int MIN_MOVE_PWM = 90;             // MEASURE: lowest PWM at which the loaded robot starts moving (deadband)
-const bool MOTOR_SLEW_ENABLED = true;    // A/B on the bench: false = old behaviour
+const bool PHANTOM_GATE_ENABLED = false;                                             // keep false until the real 8-point ADC->cm table replaces estimateFarRangeCm()
+const int MIN_MOVE_PWM = 90;                                                         // MEASURE: lowest PWM at which the loaded robot starts moving (deadband)
+const bool MOTOR_SLEW_ENABLED = true;                                                // A/B on the bench: false = old behaviour
 const float MOTOR_SLEW_PWM_PER_MS = DRIVE_PWM_MAX / (COMMIT_SOFT_START_S * 1000.0f); // 0->full in the traction-limited time v/(mu*g)
 const bool REARM_ENABLED = true;
 const unsigned long REARM_HOLD_MS = 40UL * BUTTON_DEBOUNCE_MS; // 1200 ms: 40x the debounce window, cannot be a bounce/vibration glitch
+const bool START_IS_LATCHING = false;                          // true only if A4 is a toggle switch that stays ON during the round
 
 const float SEARCH_SPIN_CAP_DEGS =
     (2.0f * atanf((ROBOT_WIDTH_CM / 2.0f) / DETECT_RANGE_MAX_CM) * RAD_TO_DEG) / ((SENSOR_REFRESH_NOMINAL_MS + WEAK_CONFIRM_SAMPLES * (float)SENSOR_SAMPLE_INTERVAL_MS) / 1000.0f);
@@ -205,7 +206,7 @@ const unsigned long EDGE_OVERRUN_MS = 80;
 const unsigned long EDGE_RECOVER_MAX_MS = 700; // MEASURE
 
 const unsigned long DOUBLE_EDGE_RECOVER_MAX_MS = 150UL; // caps the both-edges escape before re-reading sensors
-const bool EDGE_SUPPRESSION_ENABLED = false; // map constants unmeasured: edge sensor always wins
+const bool EDGE_SUPPRESSION_ENABLED = false;            // map constants unmeasured: edge sensor always wins
 
 // ============================================================
 // STEERING
