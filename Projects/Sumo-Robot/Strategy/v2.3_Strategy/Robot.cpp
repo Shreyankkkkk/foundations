@@ -78,7 +78,7 @@ static void handleEdgeRecoveryTick(const EdgeReadings &e, unsigned long dtMs)
         stopMotors();
         edgePhase = EDGE_RECOVERY_IDLE;
         if (anyOpponentDetected(d) && !oppositeTriggered && swingClear)
-            strategyEngage();      // left/right -> ALIGN, center -> COMMIT
+            strategyEngage(); // left/right -> ALIGN, center -> COMMIT
         else
             strategyForceReturn();
         return;
@@ -102,16 +102,20 @@ static void waitForPress(int pin, bool pollSensors)
     while (millis() - t < BUTTON_DEBOUNCE_MS)
     {
         stopMotors();
-        if (pollSensors) updateOpponentSensors();
-        if (buttonDown(pin)) t = millis();
+        if (pollSensors)
+            updateOpponentSensors();
+        if (buttonDown(pin))
+            t = millis();
         delay(1);
     }
     t = millis();
     while (millis() - t < BUTTON_DEBOUNCE_MS)
     {
         stopMotors();
-        if (pollSensors) updateOpponentSensors();
-        if (!buttonDown(pin)) t = millis();
+        if (pollSensors)
+            updateOpponentSensors();
+        if (!buttonDown(pin))
+            t = millis();
         delay(1);
     }
 }
@@ -119,14 +123,14 @@ static void waitForPress(int pin, bool pollSensors)
 static bool constantsValid()
 {
     return DRIVE_SPEED_MAX_CMS > 0 && SPIN_RATE_CW_DEGS > 0 && SPIN_RATE_CCW_DEGS > 0 &&
-            STOP_DISTANCE_CM > 0 && FRICTION_MU > 0 && DETECT_RANGE_MAX_CM > 0 &&
-            isfinite(DRIVE_DECEL_CMS2) && isfinite(COMMIT_SOFT_START_S) && isfinite(SEARCH_SPIN_CAP_DEGS) &&
-            isfinite(ALIGN_ACTUAL_SPIN_DEGS) && ALIGN_ACTUAL_SPIN_DEGS > 0 &&
-            SEARCH_SPIN_PWM > 0 && OPEN_SWEEP_LEG_A_MS > 0 && ALIGN_TIMEOUT_MS > 0 &&
-            ADC_OVERSAMPLE_N >= 1 && ADC_OVERSAMPLE_N <= ADC_OVERSAMPLE_MAX &&
-            COMMIT_SOFT_START_S > 0 && isfinite(MOTOR_SLEW_PWM_PER_MS) && MOTOR_SLEW_PWM_PER_MS > 0 &&
-            isfinite(SEARCH_ACTUAL_SPIN_DEGS) && SEARCH_ACTUAL_SPIN_DEGS > 0 &&
-            WEAK_THRESHOLD < STRONG_THRESHOLD && STRONG_THRESHOLD < NEAR_THRESHOLD;
+           STOP_DISTANCE_CM > 0 && FRICTION_MU > 0 && DETECT_RANGE_MAX_CM > 0 &&
+           isfinite(DRIVE_DECEL_CMS2) && isfinite(COMMIT_SOFT_START_S) && isfinite(SEARCH_SPIN_CAP_DEGS) &&
+           isfinite(ALIGN_ACTUAL_SPIN_DEGS) && ALIGN_ACTUAL_SPIN_DEGS > 0 &&
+           SEARCH_SPIN_PWM > 0 && OPEN_SWEEP_LEG_A_MS > 0 && ALIGN_TIMEOUT_MS > 0 &&
+           ADC_OVERSAMPLE_N >= 1 && ADC_OVERSAMPLE_N <= ADC_OVERSAMPLE_MAX &&
+           COMMIT_SOFT_START_S > 0 && isfinite(MOTOR_SLEW_PWM_PER_MS) && MOTOR_SLEW_PWM_PER_MS > 0 &&
+           isfinite(SEARCH_ACTUAL_SPIN_DEGS) && SEARCH_ACTUAL_SPIN_DEGS > 0 &&
+           WEAK_THRESHOLD < STRONG_THRESHOLD && STRONG_THRESHOLD < NEAR_THRESHOLD;
 }
 
 static bool startReleasedSinceStart = false;
@@ -161,7 +165,8 @@ void initRobot()
     // STAGE 0 - boot: everything off. Drivers disabled, no sensor reads, no logic.
     disableMotorDrivers();
     if (!constantsValid())
-        while (true) delay(1000); // bad/zero/NaN constant: stay dead at the bench instead of driving on garbage
+        while (true)
+            delay(1000); // bad/zero/NaN constant: stay dead at the bench instead of driving on garbage
     pinMode(POWER_BUTTON_PIN, BUTTON_ACTIVE_LOW ? INPUT_PULLUP : INPUT);
     pinMode(START_BUTTON_PIN, BUTTON_ACTIVE_LOW ? INPUT_PULLUP : INPUT);
 
@@ -174,8 +179,18 @@ void initRobot()
 
 static void handleDoubleEdgeTick(const EdgeReadings &e, unsigned long dtMs)
 {
-    if (!e.front || !e.back) { stopMotors(); doubleEdgeActive = false; return; }
-    if (millis() - doubleEdgeStartMs > DOUBLE_EDGE_RECOVER_MAX_MS) { stopMotors(); doubleEdgeActive = false; return; }
+    if (!e.front || !e.back)
+    {
+        stopMotors();
+        doubleEdgeActive = false;
+        return;
+    }
+    if (millis() - doubleEdgeStartMs > DOUBLE_EDGE_RECOVER_MAX_MS)
+    {
+        stopMotors();
+        doubleEdgeActive = false;
+        return;
+    }
 
     int speed = doubleEdgeDriveForward ? EDGE_RECOVER_SPEED : -EDGE_RECOVER_SPEED;
     drive(speed, speed, true);
@@ -193,14 +208,20 @@ void robotLoop()
     if (REARM_ENABLED)
     {
         bool down = buttonDown(START_BUTTON_PIN);
-        if (!down) startReleasedSinceStart = true;
+        if (!down)
+            startReleasedSinceStart = true;
         // push button: a NEW press after the round began. latching switch: flipped OFF.
         bool stopRequest = START_IS_LATCHING ? !down : (down && startReleasedSinceStart);
         unsigned long needMs = START_IS_LATCHING ? REARM_HOLD_MS : BUTTON_DEBOUNCE_MS; // latching must persist 1.2 s so impact vibration can't stop us
         if (stopRequest)
         {
-            if (stopSince == 0) stopSince = now;
-            if (now - stopSince >= needMs) { armAndStart(); return; }
+            if (stopSince == 0)
+                stopSince = now;
+            if (now - stopSince >= needMs)
+            {
+                armAndStart();
+                return;
+            }
         }
         else
             stopSince = 0;
@@ -218,7 +239,7 @@ void robotLoop()
             Pose p = getPose();
             float thetaRad = p.thetaDeg * DEG_TO_RAD;
             float frontR = hypotf(p.x + ROBOT_L_F_CM * cosf(thetaRad), p.y + ROBOT_L_F_CM * sinf(thetaRad));
-            float backR  = hypotf(p.x - ROBOT_L_B_CM * cosf(thetaRad), p.y - ROBOT_L_B_CM * sinf(thetaRad));
+            float backR = hypotf(p.x - ROBOT_L_B_CM * cosf(thetaRad), p.y - ROBOT_L_B_CM * sinf(thetaRad));
             doubleEdgeDriveForward = isMapVoid() ? false : (frontR <= backR);
         }
         handleDoubleEdgeTick(e, dtMs);
@@ -253,5 +274,5 @@ void robotLoop()
     if (anyContact(d))
         mapUpdateContact(dtMs);
     else
-        mapUpdateMotion(cmd.leftPwm, cmd.rightPwm, dtMs);
+        mapUpdateMotion(getAppliedLeft(), getAppliedRight(), dtMs);
 }
