@@ -119,13 +119,18 @@ static void waitForPress(int pin, bool pollSensors)
 static bool constantsValid()
 {
     return DRIVE_SPEED_MAX_CMS > 0 && SPIN_RATE_CW_DEGS > 0 && SPIN_RATE_CCW_DEGS > 0 &&
-           STOP_DISTANCE_CM > 0 && FRICTION_MU > 0 && DETECT_RANGE_MAX_CM > 0 &&
-           isfinite(DRIVE_DECEL_CMS2) && isfinite(COMMIT_SOFT_START_S) && isfinite(SEARCH_SPIN_CAP_DEGS) &&
-           isfinite(ALIGN_ACTUAL_SPIN_DEGS) && ALIGN_ACTUAL_SPIN_DEGS > 0 &&
-           SEARCH_SPIN_PWM > 0 && OPEN_SWEEP_LEG_A_MS > 0 && ALIGN_TIMEOUT_MS > 0 &&
-           ADC_OVERSAMPLE_N >= 1 && ADC_OVERSAMPLE_N <= ADC_OVERSAMPLE_MAX &&
-           WEAK_THRESHOLD < STRONG_THRESHOLD && STRONG_THRESHOLD < NEAR_THRESHOLD;
+            STOP_DISTANCE_CM > 0 && FRICTION_MU > 0 && DETECT_RANGE_MAX_CM > 0 &&
+            isfinite(DRIVE_DECEL_CMS2) && isfinite(COMMIT_SOFT_START_S) && isfinite(SEARCH_SPIN_CAP_DEGS) &&
+            isfinite(ALIGN_ACTUAL_SPIN_DEGS) && ALIGN_ACTUAL_SPIN_DEGS > 0 &&
+            SEARCH_SPIN_PWM > 0 && OPEN_SWEEP_LEG_A_MS > 0 && ALIGN_TIMEOUT_MS > 0 &&
+            ADC_OVERSAMPLE_N >= 1 && ADC_OVERSAMPLE_N <= ADC_OVERSAMPLE_MAX &&
+            COMMIT_SOFT_START_S > 0 && isfinite(MOTOR_SLEW_PWM_PER_MS) && MOTOR_SLEW_PWM_PER_MS > 0 &&
+            isfinite(SEARCH_ACTUAL_SPIN_DEGS) && SEARCH_ACTUAL_SPIN_DEGS > 0 &&
+            WEAK_THRESHOLD < STRONG_THRESHOLD && STRONG_THRESHOLD < NEAR_THRESHOLD;
 }
+
+static bool startReleasedSinceStart = false;
+static unsigned long stopSince = 0;
 
 // STAGES 2-4: idle until BUTTON 2, mandatory 5 s stationary delay, then hand over to the strategy.
 static void armAndStart()
@@ -146,6 +151,9 @@ static void armAndStart()
     edgePhase = EDGE_RECOVERY_IDLE;
     doubleEdgeActive = false;
     lastTickMs = millis();
+
+    startReleasedSinceStart = false;
+    stopSince = 0;
 }
 
 void initRobot()
@@ -183,20 +191,19 @@ void robotLoop()
     lastTickMs = now;
 
     if (REARM_ENABLED)
-    { // hold BUTTON 2 for REARM_HOLD_MS: stop and re-arm (round 2, referee reset) without a power cycle
-        static unsigned long heldSince = 0;
-        if (buttonDown(START_BUTTON_PIN))
+    {
+        bool down = buttonDown(START_BUTTON_PIN);
+        if (!down) startReleasedSinceStart = true;
+        // push button: a NEW press after the round began. latching switch: flipped OFF.
+        bool stopRequest = START_IS_LATCHING ? !down : (down && startReleasedSinceStart);
+        unsigned long needMs = START_IS_LATCHING ? REARM_HOLD_MS : BUTTON_DEBOUNCE_MS; // latching must persist 1.2 s so impact vibration can't stop us
+        if (stopRequest)
         {
-            if (heldSince == 0) heldSince = now;
-            if (now - heldSince >= REARM_HOLD_MS)
-            {
-                heldSince = 0;
-                armAndStart();
-                return;
-            }
+            if (stopSince == 0) stopSince = now;
+            if (now - stopSince >= needMs) { armAndStart(); return; }
         }
         else
-            heldSince = 0;
+            stopSince = 0;
     }
 
     updateOpponentSensors();
