@@ -95,3 +95,6 @@ void drive(int leftSpeed, int rightSpeed, bool immediate)
     setSide(LEFT_R_PWM, LEFT_L_PWM, leftSpeed);
     setSide(RIGHT_R_PWM, RIGHT_L_PWM, rightSpeed);
 }
+
+int getAppliedLeft() { return curL; }
+int getAppliedRight() { return curR; }

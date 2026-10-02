@@ -6,4 +6,7 @@ void disableMotorDrivers(); // EN pins LOW, PWM 0: drivers fully off (pre-power-
 void stopMotors();
 void drive(int leftSpeed, int rightSpeed, bool immediate = false); // -255..255; immediate=true bypasses the slew limiter
 
+int getAppliedLeft();
+int getAppliedRight();
+
 #endif
