@@ -50,12 +50,16 @@ const float START_LATERAL_SPREAD_MAX_CM = START_LINE_LENGTH_CM;   // worst case:
 // ============================================================
 // ROBOT GEOMETRY — MEASURE with ruler, from pivot M (midpoint of driven wheel contacts)
 // ============================================================
-const float ROBOT_L_F_CM = 10.5f;               // MEASURE: M to wedge tip
-const float ROBOT_L_B_CM = 9.5f;                // MEASURE: M to rear edge
-const float ROBOT_WIDTH_CM = 20.0f;             // MEASURE: full width
-const float ROBOT_TRACK_CM = 15.0f;             // MEASURE: sideways spacing of the two DRIVEN wheels
-const float EDGE_SENSOR_FRONT_OFFSET_CM = 8.0f; // MEASURE: M to front edge sensor
-const float EDGE_SENSOR_BACK_OFFSET_CM = 8.0f;  // MEASURE: M to back edge sensor
+const float ROBOT_LENGTH_CM = 20.0f;         // MEASURE: wedge tip to chassis rear, wedge ON (= 4.7 + battery length + 3.6)
+const float REAR_TO_AXLE_CM = 3.6f;          // MEASURE: chassis rear to wheel axle line (3.6 only if the axle sits at the back sensor, as you described)
+const float WEDGE_TO_FRONT_SENSOR_CM = 4.7f; // measured
+const float REAR_TO_BACK_SENSOR_CM = 3.6f;   // measured
+const float ROBOT_L_B_CM = REAR_TO_AXLE_CM;
+const float ROBOT_L_F_CM = ROBOT_LENGTH_CM - REAR_TO_AXLE_CM;
+const float ROBOT_WIDTH_CM = 20.0f;                                                // MEASURE: full width
+const float ROBOT_TRACK_CM = 15.0f;                                                // MEASURE: sideways spacing of the two DRIVEN wheels
+const float EDGE_SENSOR_FRONT_OFFSET_CM = ROBOT_L_F_CM - WEDGE_TO_FRONT_SENSOR_CM; // = 11.7
+const float EDGE_SENSOR_BACK_OFFSET_CM = ROBOT_L_B_CM - REAR_TO_BACK_SENSOR_CM;    // = 0.0 when the axle is at the back sensor
 
 // Derived: farthest footprint corner from M (worst-case swing radius)
 const float ROBOT_R_SWING_CM =
@@ -116,6 +120,8 @@ const float K_ERR_PATH_FACTOR = 0.15f;        // MEASURE: run-to-run speed/spin 
 const float SAFETY_ZONE_MIN_CM = 25.0f;       // §9.3, using the minimum stated width (conservative)
 const float DETECT_RANGE_MAX_CM = 80.0f;      // MEASURE: R_det on a black target, sensor's rated max
 
+static_assert(CONTACT_BAND_HIGH < PEAK_BAND_LOW, "Peak band must sit above the contact band, re-measure through the dividers");
+
 // ============================================================
 // SENSOR TIMING — derived from GP2Y0A21 refresh spec (datasheet: 38.3ms +/- 9.6ms, VERIFY)
 // ============================================================
@@ -152,7 +158,7 @@ const unsigned long LOST_CONTACT_GRACE_MS =
 //   BUTTON 2 (A4): "start"     -> 5 s stationary delay, then the strategy runs
 const int POWER_BUTTON_PIN = A3;
 const int START_BUTTON_PIN = A4;
-const bool BUTTON_ACTIVE_LOW = true; // false if wired to 3.3V with an external pull-down
+const bool BUTTON_ACTIVE_LOW = false; // false if wired to 3.3V with an external pull-down
 const unsigned long BUTTON_DEBOUNCE_MS = 30;
 const unsigned long START_DELAY_MS = 5000UL;    // rulebook: mandatory stationary delay
 const unsigned long START_DELAY_MARGIN_MS = 50; // only ever errs on the late side
@@ -167,8 +173,12 @@ const int MIN_MOVE_PWM = 90;                                                    
 const bool MOTOR_SLEW_ENABLED = true;                                                // A/B on the bench: false = old behaviour
 const float MOTOR_SLEW_PWM_PER_MS = DRIVE_PWM_MAX / (COMMIT_SOFT_START_S * 1000.0f); // 0->full in the traction-limited time v/(mu*g)
 const bool REARM_ENABLED = true;
-const unsigned long REARM_HOLD_MS = 40UL * BUTTON_DEBOUNCE_MS; // 1200 ms: 40x the debounce window, cannot be a bounce/vibration glitch
-const bool START_IS_LATCHING = false;                          // true only if A4 is a toggle switch that stays ON during the round
+const unsigned long REARM_HOLD_MS = 10UL * BUTTON_DEBOUNCE_MS;                                // 300 ms: OFF must persist this long to stop, so a hit can't stop us. Flipping OFF now stops in 0.3 s, not 1.2 s. // 300 ms: OFF must persist this long to stop, so a hit can't stop us. Flipping OFF now stops in 0.3 s, not 1.2 s.const bool START_IS_LATCHING = true;      // A4 is a rocker: ON = run, OFF = stop
+const bool START_IS_LATCHING = true;                                                          // A4 is a rocker: ON = run, OFF = stop
+const bool POWER_BUTTON_PRESENT = false;                                                      // KCD4 cuts battery power, nothing is wired to A3
+const bool START_SWITCH_ANALOG = true;                                                        // read A4 as a voltage, not a 0/1 pin
+const int START_SWITCH_ON_ADC = (int)(((5.0f / 2.0f) / 3.3f) * ((1 << SENSOR_ADC_BITS) - 1)); // 5 V UBEC through 10k/10k = 2.5 V of 3.3 V = ~775 counts. MEASURE the real value.
+const int START_SWITCH_THRESHOLD_ADC = START_SWITCH_ON_ADC / 2;                               // midpoint between OFF (0) and ON = ~387
 
 const float SEARCH_SPIN_CAP_DEGS =
     (2.0f * atanf((ROBOT_WIDTH_CM / 2.0f) / DETECT_RANGE_MAX_CM) * RAD_TO_DEG) / ((SENSOR_REFRESH_NOMINAL_MS + WEAK_CONFIRM_SAMPLES * (float)SENSOR_SAMPLE_INTERVAL_MS) / 1000.0f);
@@ -200,7 +210,8 @@ static_assert(STALEMATE_TIMEOUT_MS + STALEMATE_BACKOFF_MS < STALEMATE_HARD_CEILI
 // ============================================================
 // EDGE RECOVERY — reused v4 constants as starting point, MEASURE for v5 chassis
 // ============================================================
-const int EDGE_RECOVER_SPEED = 170; // MEASURE
+const int EDGE_RECOVER_SPEED = 170;                                                                                        // MEASURE
+const float STALEMATE_BACKOFF_CM = DRIVE_SPEED_MAX_CMS * (EDGE_RECOVER_SPEED / 255.0f) * (STALEMATE_BACKOFF_MS / 1000.0f); // distance travelled during the back-off
 const unsigned long EDGE_CLEAR_CONFIRM_MS = 30;
 const unsigned long EDGE_OVERRUN_MS = 80;
 const unsigned long EDGE_RECOVER_MAX_MS = 700; // MEASURE

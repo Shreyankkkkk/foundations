@@ -46,5 +46,6 @@ float getGovernedMaxSpeedCms(); // speed cap so the robot can still stop before 
 // reading physically cannot originate beyond the arena, so never gate those.
 // whichSensor: -1 = left, 0 = center, +1 = right.
 bool isPhantomDetection(int whichSensor, int rawAdc);
+float getRearMaxRadius(); // farthest rear corner's distance from arena center
 
 #endif

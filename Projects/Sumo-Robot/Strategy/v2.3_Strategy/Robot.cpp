@@ -90,7 +90,15 @@ static void handleEdgeRecoveryTick(const EdgeReadings &e, unsigned long dtMs)
     mapUpdateMotion(leftPwm, rightPwm, dtMs);
 }
 
-static bool buttonDown(int pin) { return (digitalRead(pin) == HIGH) != BUTTON_ACTIVE_LOW; }
+static bool buttonDown(int pin)
+{
+    if (START_SWITCH_ANALOG && pin == START_BUTTON_PIN)
+    {
+        (void)analogRead(pin); // dummy read: the ADC still holds the previous channel
+        return analogRead(pin) > START_SWITCH_THRESHOLD_ADC;
+    }
+    return (digitalRead(pin) == HIGH) != BUTTON_ACTIVE_LOW;
+}
 
 // Blocks until `pin` has been RELEASED for a stable window and then PRESSED for a stable window.
 // Requiring release first means a held/stuck/shorted button can never trigger anything, and a
@@ -167,11 +175,12 @@ void initRobot()
     if (!constantsValid())
         while (true)
             delay(1000); // bad/zero/NaN constant: stay dead at the bench instead of driving on garbage
-    pinMode(POWER_BUTTON_PIN, BUTTON_ACTIVE_LOW ? INPUT_PULLUP : INPUT);
     pinMode(START_BUTTON_PIN, BUTTON_ACTIVE_LOW ? INPUT_PULLUP : INPUT);
-
-    // STAGE 1 - BUTTON 1 (A3): power up. Drivers enabled (PWM 0), sensors live. NO logic, no timers.
-    waitForPress(POWER_BUTTON_PIN, false);
+    if (POWER_BUTTON_PRESENT)
+    {
+        pinMode(POWER_BUTTON_PIN, BUTTON_ACTIVE_LOW ? INPUT_PULLUP : INPUT);
+        waitForPress(POWER_BUTTON_PIN, false);
+    }
     initMotors();
     initSensors();
     armAndStart();

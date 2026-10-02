@@ -184,6 +184,11 @@ void strategyEngage()
     enterFromDetection(getOpponentDetection());
 }
 
+static bool rearClearForBackoff()
+{
+    return !isMapVoid() && (getRearMaxRadius() + getUncertainty() + STALEMATE_BACKOFF_CM <= ARENA_RADIUS_CM);
+}
+
 StrategyState getStrategyState() { return state; }
 
 MotorCommand updateStrategy(const OpponentDetection &d)
@@ -351,7 +356,7 @@ MotorCommand updateStrategy(const OpponentDetection &d)
         {
             if (contactStartMs == 0)
                 contactStartMs = millis();
-            if (millis() - contactStartMs > STALEMATE_TIMEOUT_MS)
+            if (millis() - contactStartMs > STALEMATE_TIMEOUT_MS && rearClearForBackoff())
             {
                 state = STATE_STALEMATE_BREAK;
                 stalemateBreakStartMs = millis();
@@ -423,7 +428,8 @@ MotorCommand updateStrategy(const OpponentDetection &d)
             return {0, 0};
         }
         int pwm = cmsToPwm(getGovernedMaxSpeedCms());
-        if (pwm < MIN_MOVE_PWM) pwm = MIN_MOVE_PWM;
+        if (pwm < MIN_MOVE_PWM)
+            pwm = MIN_MOVE_PWM;
         return MotorCommand{pwm, pwm};
     }
     }

@@ -163,7 +163,8 @@ float getGovernedMaxSpeedCms()
 
 bool isPhantomDetection(int whichSensor, int rawAdc)
 {
-    if (!PHANTOM_GATE_ENABLED || isMapVoid()) return false; // never suppress when position isn't trustworthy
+    if (!PHANTOM_GATE_ENABLED || isMapVoid())
+        return false; // never suppress when position isn't trustworthy
 
     float r = getRadiusFromCenter();
     float phantomRiskRadius = (ARENA_OUT_RADIUS_CM + SAFETY_ZONE_MIN_CM) - DETECT_RANGE_MAX_CM;
@@ -180,4 +181,10 @@ bool isPhantomDetection(int whichSensor, int rawAdc)
     float impliedRadius = hypotf(impliedX, impliedY);
 
     return impliedRadius > ARENA_RADIUS_CM;
+}
+
+float getRearMaxRadius()
+{
+    float halfW = ROBOT_WIDTH_CM / 2.0f;
+    return fmaxf(cornerRadius(-ROBOT_L_B_CM, halfW), cornerRadius(-ROBOT_L_B_CM, -halfW));
 }
