@@ -3,8 +3,8 @@
 // Everything here is CALCULATED from Hardware.h. Do not type numbers here.
 
 // ---- arena ----
-const float ARENA_RADIUS_CM = (ARENA_TOTAL_DIAMETER_CM - 2.0f * ARENA_FRAME_THICKNESS_CM) / 2.0f; // 72 black surface
-const float ARENA_OUT_RADIUS_CM = ARENA_TOTAL_DIAMETER_CM / 2.0f;                                  // 75 disqualifying radius
+const float ARENA_RADIUS_CM = (ARENA_TOTAL_DIAMETER_CM - 2.0f * ARENA_FRAME_THICKNESS_CM) / 2.0f;         // 72 black surface
+const float ARENA_OUT_RADIUS_CM = ARENA_TOTAL_DIAMETER_CM / 2.0f;                                         // 75 disqualifying radius
 const float START_LINE_FAR_EDGE_RADIUS_CM = START_LINE_CENTER_RADIUS_CM + START_LINE_THICKNESS_CM / 2.0f; // 11
 const float START_LATERAL_SPREAD_MAX_CM = START_LINE_LENGTH_CM;
 
@@ -21,7 +21,7 @@ const float OPEN_SWEEP_HALF_ANGLE_DEG = atanf(START_LATERAL_SPREAD_MAX_CM / STAR
 
 // ---- motion ----
 const float DRIVE_DECEL_CMS2 = (DRIVE_SPEED_MAX_CMS * DRIVE_SPEED_MAX_CMS) / (2.0f * STOP_DISTANCE_CM); // v^2 = 2ad
-const float COMMIT_SOFT_START_S = DRIVE_SPEED_MAX_CMS / (FRICTION_MU * 981.0f);                           // t = v/(mu*g)
+const float COMMIT_SOFT_START_S = DRIVE_SPEED_MAX_CMS / (FRICTION_MU * 981.0f);                         // t = v/(mu*g)
 const float MOTOR_SLEW_PWM_PER_MS = DRIVE_PWM_MAX / (COMMIT_SOFT_START_S * 1000.0f);
 
 // ---- opponent thresholds: measured-through-divider values, or old bench x divider ratio ----
@@ -50,7 +50,7 @@ const int ADC_OVERSAMPLE_N = ((int)constrain(ceilf((ADC_NOISE_SIGMA / ADC_NOISE_
 
 // ---- start sequence / switch ----
 const unsigned long START_COUNTDOWN_MS = START_DELAY_MS + START_DELAY_MARGIN_MS;
-const unsigned long REARM_HOLD_MS = 10UL * BUTTON_DEBOUNCE_MS; // 300 ms: OFF must persist so a hit can't stop us
+const unsigned long REARM_HOLD_MS = 10UL * BUTTON_DEBOUNCE_MS;                                // 300 ms: OFF must persist so a hit can't stop us
 const int START_SWITCH_ON_ADC = (int)(((5.0f / 2.0f) / 3.3f) * ((1 << SENSOR_ADC_BITS) - 1)); // ~775 (divided 5V); 3.3V feed reads ~1023, also above threshold
 const int START_SWITCH_THRESHOLD_ADC = START_SWITCH_ON_ADC / 2;
 
