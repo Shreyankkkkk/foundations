@@ -1,0 +1,1143 @@
+CHAT: Sumo Robot Strategy Selection | strategy, sensors, repos, Uno Q, specs
+
+LOG:
+- Web research on sumo strategies | user asked for proven strategy, not own idea | none
+- Recommended Search→Attack→Edge-avoid state machine, edge override on top | most-cited architecture | none
+- Flagged 18650 cells bought instead of 3S LiPo | invoice differs from wiring plan | none
+- Corrected: sensors may run before 5s, only movement banned | user's catch, rule 7.3 wording | none
+- Dropped deliberate flank maneuver, kept wedge | complexity/bug risk | none
+- Reviewed 7 GitHub repos | user supplied links | none
+- Noted ethanphunter code attacks before edge-checking | differs from my edge-first advice | none
+- Explained Uno Q dual-processor, advised MCU-only sketch | user asked about "feeding data" | none
+- Proposed continuous-spin search | user wanted a decisive strategy | none
+- User rejected spin ("tornado"); I admitted no documented wins for it | user demanded proof | none
+- Proposed predictive tracking, kept stay-still idea | user wanted something different | none
+- Gave 8-step walkthrough card | user asked for step-by-step | none
+- Agreed 3 selectable strategies on shared core | fallback plus head-to-head testing | none
+- Created strategy spec file for AI-assisted .ino coding | user's request | sumo_robot_strategies.md, v1
+
+CONSTANTS:
+- Initial stationary time | 5 s | rulebook 6.2 | DERIVED
+- Round length | 3 min | rulebook | DERIVED
+- Arena / robot size | 1.5 m dia / 20×20 cm, 3 kg | rulebook | DERIVED
+- Motors | 12V 200 RPM 60:1 ×2 | invoice | MEASURED
+- GP2Y0A21 range | 10–80 cm | invoice | MEASURED
+- Pins: L RPWM D5, LPWM D6, EN D7; R RPWM D9, LPWM D10, EN D8; GP2Y A0–A3; TCRT D3, D4, D12, D13; start D2 | user's unconfirmed "semi model" diagram | ASSUMED
+- 75C 1300mAh LiPo peak | ~97.5 A | 75×1.3 | DERIVED
+- Generic 18650 continuous | 5–20 A | general claim | ASSUMED
+- Wedge angle | 15–25° | single low-credibility source | ASSUMED
+- DIST_THRESHOLD, EDGE_THRESHOLD | none | bench calibration | PLACEHOLDER
+- PREDICT_WINDOW_MS, SWEEP_ANGLE_MS, SPIN_STEP_MS | none | bench tuning | PLACEHOLDER
+
+DECISIONS:
+- Edge check first, every loop | self-exit is a guaranteed loss | attack-before-edge (ethanphunter) | FINAL
+- Search/Attack/Edge state machine | simplest reliable base | none | FINAL as shared core
+- No deliberate flank maneuver | delay, tracking complexity | circle-to-side attack | FINAL
+- Keep wedge | hardware, works with any strategy | none | FINAL
+- Continuous spin as the strategy | simplest | user rejected | SUPERSEDED (by predictive tracking; later Strategy 3)
+- Predictive tracking | real project plus search literature | blind spin | FINAL as Strategy 2
+- Three strategies: S1 sit-turn-attack, S2 sit-predict-turn-attack, S3 rotate-scan-attack | fallback, test head-to-head | single strategy | FINAL
+- Build order: core, S3, S1, S2 | S3 safety net, S2 needs tuning | all at once | FINAL
+- Mode via #define or switch | easy comparison | separate codebases | FINAL
+- All control on MCU, no camera/AI | latency, month deadline, complexity | webcam vision on MPU | FINAL
+- Pre-5s sensing | rule bans movement only | none | FINAL
+
+RESEARCH:
+- Architecture | Cytron, Zbotic, Ahmed-Maher77, JSumo | search/attack/edge-avoid standard; edge top priority
+- Sensors | Zbotic and others | IR <5 ms vs ultrasonic ~50 ms; GP2Y good choice
+- Motors | same | 100–200 RPM suits pushing
+- Wedge | robotwrestling.org, low credibility | 15–25°, low CoG
+- CodyKoInABox | repo page | labeled 3x winner; README has no logic
+- OliverLSanz/project-pineapple | search | All Japan qualifier entrant
+- ethanphunter/Mini-Sumo | repo and .ino | test-then-combine file order; attack checked before edges
+- mechengineermike/SimpleSumo | Instructables | priority-list-first design method
+- santiacq, BitElectronics, Gurmie12 | search | low value, little detail
+- "Tornado" | search | results were Robot Wars robot; no named wins for spin search
+- Predictive tracking | smb288/doubleflop Autonomous-Sumo-Bot; IRandomWalk paper | memory-based beats blind search
+- Uno Q | Arduino docs | STM32U585 MCU plus QRB2210 Linux MPU; sketches run on MCU
+
+PROBLEMS:
+- 18650 instead of 3S LiPo | parts unavailable | check cell datasheet, higher-drain cells, parallel pairs, or LiPo | OPEN
+- Start orientation unspecified | rulebook silent | confirm at inspection | OPEN
+- Sensor mounting layout | not decided | assign before coding | OPEN
+- TCRT polarity | unknown | multimeter test | OPEN
+- Spin search overclaimed as proven | no source | retracted | fixed
+- Raw GitHub fetch blocked | URL not previously seen | used blob URL | fixed
+- Cody's logic unseen | README lacks it | read its .ino | OPEN
+
+END STATE:
+- Spec file covers shared core plus 3 strategies, pins, placeholder tunables
+- No code written; thresholds uncalibrated
+- Next: shared core (edge override) coded and bench-tested
+
+CHAT: Sumo robot GitHub research kickoff | repos, strategies, materials, rules, coding
+
+LOG:
+- Read materials.xlsx | user needs inventory context before coding | read-only, no file changed
+- Read sumo_robot_strategies.md and pasted rulebook | context for 3 strategies and rules | read-only
+- Fetched SimpleSumo repo page | extract useful info from user's link 1 | read-only
+- Raw GitHub URL for Sumo_Battle_Program rejected | URL not previously seen | switched to blob page URL
+- Fetched SimpleSumo Sumo_Battle_Program (blob page) | need the actual code, README was thin | read-only
+- Fetched Mini-Sumo repo page | link 2 | read-only
+- Fetched Mini-Sumo advancedRunCode.ino | main logic file | read-only
+- Fetched project-pineapple repo page | link 3 | read-only
+- CodyKoInABox/sumoRobot not yet fetched | not reached | OPEN
+- No code, files or specs produced | user at 0% coding | none
+
+CONSTANTS:
+- DIST_THRESHOLD | not set | md says calibrate on bench | PLACEHOLDER
+- EDGE_THRESHOLD | not set | md says confirm HIGH/LOW with multimeter | PLACEHOLDER
+- PREDICT_WINDOW_MS | not set | Strategy 2 only | PLACEHOLDER
+- SWEEP_ANGLE_MS | not set | Strategy 2 only | PLACEHOLDER
+- SPIN_STEP_MS | not set | Strategy 3 only | PLACEHOLDER
+- Pin map (md): L BTS7960 D5/D6/D7, R BTS7960 D9/D10/D8, GP2Y0A21 A0–A3, TCRT5000 D3/D4/D12/D13, start D2 | from wiring diagram per md | ASSUMED (not verified in chat)
+- Sensor mounting positions | undefined | md says assign before coding | PLACEHOLDER
+- Rulebook: ≤3 kg, ≤20×20 cm, arena Ø1.5 m, white 3 cm rim, black surface, 5 s stationary, 3 min round, 2 brown lines (2 cm × ≤20 cm, 10 cm from center) | given by rulebook | ASSUMED (taken as stated)
+- SimpleSumo EdgeSensitivity 500 (analog) | other repo's tuning | not for this robot | PLACEHOLDER
+- Mini-Sumo threshold 125, 10-sample average, backup 200 ms, spin 400 ms, 5 ms loop delay | other repo's tuning, own sensors | not for this robot | PLACEHOLDER
+
+DECISIONS:
+- Build order: shared core → Strategy 3 → 1 → 2 | from md; fewest states first | none | FINAL (per md; not discussed in chat)
+- Mode switch (#define or pin) for head-to-head testing | from md | none | FINAL (per md)
+- Edge check before every drive command | from md shared core | none | FINAL (per md)
+- Use repos as idea references only | servo-based, different hardware, license | copying code | FINAL (my working stance; not confirmed by user)
+
+RESEARCH:
+- SimpleSumo | repo + Sumo_Battle_Program | servo/ultrasonic/button robot, loop priority edge > button > ultrasonic > random search; stuck counter and random moves for entertainment; buzzer 5 s countdown; random-duration edge recovery; Battle_Program_Less_Wild removes randomness; mostly not transferable to BTS7960 PWM and GP2Y0A21
+- SimpleSumo license | file header vs repo page | header says CC BY-NC-SA with attribution; repo shows GPL-3.0; conflicting, so take ideas only
+- Mini-Sumo | advancedRunCode.ino | 10-sample rolling average on analog sensors (useful for Strategy 2 history buffer); motors(l,r) −100..100 abstraction; motors attached only after 5 s wait; timed spin-away from edge with early break on target sight; start-button INPUT_PULLUP; 5 ms loop delay
+- Mini-Sumo flaw vs md | same file | checks target before edge, uses blocking delay(200) during backup; both conflict with md's edge-first rule
+- Mini-Sumo other files | repo listing | motorTest, sensorTest, lineFollowing, basicRunCode exist; not read; test sketches likely useful for bench calibration
+- project-pineapple | repo page only | Japan sumo qualifier code; folders for 2- and 3-distance-sensor reading, motor_con_driver, robot-sharp; no code read, so no conclusion beyond relevance
+- CodyKoInABox/sumoRobot | not fetched | none
+- materials.xlsx | read | Uno Q, 4× GP2Y0A21, 2× Titan 12 V 200 rpm 60:1, JS5230 52×30 wheels, 2× BTS7960, 4× TCRT5000, UBEC 5 V 5 A, 18650 holder and cells, caps, fuses, rocker switch; chassis 3 mm aluminum base + wedge CNC-cut by university
+- Rulebook relevance | pasted text | Uno Q mandatory primary controller; premature movement = warning (3 warnings lose round); front must not be white; robot may change size after start
+
+PROBLEMS:
+- Raw GitHub URL fetch rejected | URL not previously seen in chat | used blob URL, FIXED
+- Findings not yet reported to user | turn ended mid-research | OPEN
+- Pineapple code unread, Cody repo unfetched | not reached | OPEN
+- Reference repos use servos/ultrasonic, not H-bridge PWM | different hardware | OPEN, adapt only logic
+- xlsx: fuse 15 A in plan vs 35 A car fuse owned | unresolved | OPEN
+- xlsx: "BTS7690" listed in parts owned vs BTS7960 in plan | likely typo | OPEN
+- xlsx: plan lists Besomi BCBX02 pack, parts owned list 18650 cells + holder | power source unclear | OPEN
+- Brown center lines vs TCRT5000 response | untested, inferred | OPEN
+- Chassis/sensor mounting not available | teammate still developing | OPEN
+
+END STATE:
+- Research of 3 of 4 repos done (Pineapple only at README level); CodyKoInABox/sumoRobot not fetched; nothing delivered to user yet
+- No code or specs written; strategies, rulebook, materials list read; all thresholds and timings still placeholders
+- Chassis and sensor placement unknown (teammate); coding at 0%
+
+CHAT: SumoX-26 code audit & fixes | Uno Q, sensors, edge recovery, strategies
+
+LOG:
+- Initial bug audit, 28 items listed | review of 11 files + spec + rulebook | all files
+- Writing all 11 files + 2 bench sketches | fixes for critical items | v5 set: Hardware.h, Motors.h/.cpp, Sensors.h/.cpp, Robot.h/.cpp, Strategy_1.h/.cpp, Strategy_2.h/.cpp
+- MotorBench.ino created | verify PWM on D3/5/6/9 + motor polarity | new standalone sketch
+- SensorCalibration.ino created | calibrate DIST_THRESHOLD, gains, edge states, brown line, blind zone | new standalone sketch
+- ADC set to 12-bit (ADC_RESOLUTION_BITS/ADC_MAX) | divider loses range; Uno Q ADC capable | Hardware.h, Sensors.cpp
+- Per-sensor OFFSET/GAIN added | cross-sensor comparisons biased by unit variance | Hardware.h, Sensors.cpp
+- Opponent sampling gated to 40 ms + median of 5 + cached result | sensor refreshes ~38 ms; mean smears spikes | Sensors.cpp
+- Serial init added (initSensorDebug, 115200, 1 s wait) | Serial.begin never called | Sensors.h/.cpp
+- Edge confirmation (2 reads) added | single-sample noise aborts push | Sensors.cpp
+- Per-corner EDGE_WHITE_STATE_xx | four modules not guaranteed identical | Hardware.h
+- Reversal brake gap in drive() (400 us, floor 100) | avoid current spike/brownout on reversal | Motors.cpp, Hardware.h
+- attack commit latch (attack/holdAttack/attackCommitted/cancelAttack, 500 ms) | GP2Y0A21 blind <10 cm | Robot.h/.cpp
+- reposition param renamed reverse = direction of travel | prior agent fix reposition(!initialFront) was inverted → drove off ring | Robot.cpp
+- Edge recovery pivots rederived from geometry | prior agent's pivots netted reverse on back edge | Robot.cpp
+- Front+back both triggered at timeout → stop, return true | no safe direction | Robot.cpp
+- Recovery clear-confirm fixed (clearPending flag) | clearedAt==0 logic fragile | Robot.cpp
+- Countdown also warms edge + opponent filters | prior code discarded edge read | Robot.cpp
+- Search direction alternates per round (kept from agent code) | avoid predictable opening | Robot.cpp
+- Strategy 1: front pair drives P error, side override bypasses Kp, squared needs SQUARED_CONFIRM_MS, latch hold | spec said front pair; override was halved | Strategy_1.cpp/.h
+- Strategy_1 tunables moved into Strategy_1.h (Kp 1/8, deadband 80, base 165, max corr 255) | rescale for 12-bit | Strategy_1.h
+- Strategy 2: clearPendingSteering helper, time-based confirm, latch hold | pendingSince reset bug let steering commit instantly | Strategy_2.cpp
+- SIDE_TURN_MARGIN 25→100, HYSTERESIS 10→40 | 12-bit scaling | Robot.h
+- START_COUNTDOWN_MS 5200 (kept) | margin over 5000 | Robot.h
+- Review of 2nd-AI findings, patches issued | user wanted verification, not blind accept | see below
+- REVERSAL_BRAKE_US 400→4000 | 400 only shoot-through guard; 20 ms too costly | Hardware.h
+- EDGE_SAMPLE_INTERVAL_MS 2 added; readEdgeSensors time-gated | confirm counted loop iterations | Hardware.h, Sensors.cpp
+- FLANK_OVERRIDE_MARGIN 100 added | cancel latch only on clear flank | Hardware.h
+- Latch flank-cancel added in both strategies | latch suppressed side sensors | Strategy_1.cpp, Strategy_2.cpp
+- Strategy 1 deadband subtracted before Kp | step discontinuity at deadband | Strategy_1.cpp
+- STRATEGY2_FRONT_PRIORITY_BIAS 50 added | side noise blocked dead-ahead charge | Strategy_2.h/.cpp
+- Strategy 2 turn exit immediate, entry debounced | release delay overshoots | Strategy_2.cpp
+
+CONSTANTS:
+- ADC_RESOLUTION_BITS / ADC_MAX | 12 / 4095 | chosen to offset divider loss | ASSUMED
+- DIST_THRESHOLD | 1600 | none; must sit above empty-ring max, below 60 cm reading, ceiling ~70 cm | PLACEHOLDER
+- OPPONENT_OFFSET_* | 0 | none | PLACEHOLDER
+- OPPONENT_GAIN_* | 1000 | GAIN = 1000 × ref / this at 30 cm | PLACEHOLDER
+- SENSOR_SAMPLE_INTERVAL_MS | 40 | sensor ~38 ms refresh | DERIVED
+- SENSOR_SAMPLES | 5 | odd for median | ASSUMED
+- EDGE_WHITE_STATE_FL/FR/BL/BR | HIGH | none; read from calibration | PLACEHOLDER
+- EDGE_CONFIRM_READS | 2 | none | ASSUMED
+- EDGE_SAMPLE_INTERVAL_MS | 2 | none | ASSUMED
+- REVERSAL_BRAKE_US | 4000 | compromise 0.4 ms vs 20 ms | ASSUMED
+- REVERSAL_BRAKE_FLOOR | 100 | none | ASSUMED
+- LEFT/RIGHT_MOTOR_INVERTED | false | needs MotorBench | PLACEHOLDER
+- START_COUNTDOWN_MS | 5200 | 5000 + margin | DERIVED
+- ATTACK_COMMIT_MS | 500 | none | ASSUMED
+- SQUARED_CONFIRM_MS | 60 | none | ASSUMED
+- SIDE_TURN_MARGIN / HYSTERESIS | 100 / 40 | 25/10 scaled for 12-bit | DERIVED
+- SIDE_TURN_CONFIRM_MS | 50 | 40–60 ms suggested | ASSUMED
+- STRATEGY1_KP | 1/8 | start low | PLACEHOLDER
+- STRATEGY1_ERROR_DEADBAND | 80 | none | PLACEHOLDER
+- STRATEGY1_BASE_SPEED / MAX_CORRECTION | 165 / 255 | none | ASSUMED
+- FLANK_OVERRIDE_MARGIN | 100 | none | ASSUMED
+- STRATEGY2_FRONT_PRIORITY_BIAS | 50 | from 2nd-AI snippet | ASSUMED
+- Divider | 10 kΩ series / 22 kΩ to GND = ×0.688; 3.1 V → 2.13 V | calculated | DERIVED
+- Edge-module fallback divider | 10 k / 20 k = 3.33 V from 5 V | calculated | DERIVED
+- Chassis size | 200.006 × 200.008 mm | STL bounding box | MEASURED
+- Rule size cap | 20 cm incl. extensions | rulebook | MEASURED
+- Suggested rescale | ~196 mm | ~2 % | ASSUMED
+- Speeds (search 120/180, approach 165, turn 100, attack 240, recover 170/230) | unchanged | none | ASSUMED
+- EDGE_RETREAT/ESCALATE/RECOVER_MAX/CONFIRM_CLEAR_MS | 180/220/700/30 | unchanged | ASSUMED
+
+DECISIONS:
+- Fix reposition direction as reposition(initialFront), param = travel direction | agent's !initialFront drove off ring | keep agent version | FINAL
+- Power TCRT5000 from 3.3 V | native 3.3 V output, no parts | 5 V + divider (fallback only) | FINAL
+- Power GP2Y0A21 from 5 V + divider | needs 4.5–5.5 V; A0/A1 not 5 V tolerant | 3.3 V supply | FINAL
+- ADC 12-bit | recover divider loss | stay 10-bit (fallback if 12 fails) | FINAL
+- Median not mean | spikes | mean | FINAL
+- Attack latch for blind zone | sensor falls <10 cm | rely on raw readings | FINAL
+- Recess front sensors (hardware) | move blind zone outside robot | none | FINAL (recommended, not confirmed built)
+- Reversal brake 4000 µs | 20 ms costs responsiveness; bulk cap is real fix | 400 µs, 10–20 ms | FINAL
+- Time-gate edge debounce 2 ms | loop-iteration count not time | leave | FINAL
+- Flank cancel with 100 margin | bare side ≥ front lets noise abort push | bare cancel from 2nd AI | FINAL
+- Front priority bias 50 | noise blocked charge | none | FINAL
+- Asymmetric turn debounce | symmetric overshoots | symmetric | FINAL
+- Deadband subtracted before Kp | smooth ramp | leave | FINAL
+- Skip const→constexpr swap | same linkage; compiler folds scalars | constexpr | FINAL
+- Skip dual-button latch change | START is arm switch, ROUND momentary | latch START | FINAL
+- No .ino until files verified | user instruction | write now | FINAL
+- No files created from last turn onward; copy-paste text only | user instruction | files | FINAL
+- STRATEGY 1 default ACTIVE_STRATEGY | unchanged at 1 | none | FINAL
+
+RESEARCH:
+- Uno Q logic level | Arduino docs, Visuino | 3.3 V MCU GPIO, 3.6 V abs max; A0/A1 not 5 V tolerant, no DC source/sink
+- Uno Q PWM pin map | searches returned only UNO R3 data | not confirmed for D3/5/6/9 → MotorBench
+- Pin current | Arduino store | ~20 mA per pin
+- STL | numpy-stl, rendered views | 200×200×73 mm; sensor windows appear flush
+
+PROBLEMS:
+- reposition direction inverted in agent code | !initialFront | fixed
+- Recovery pivots netted wrong direction | agent's wheel mixes | fixed
+- Chassis 200.006 mm vs 200 mm cap | model size | OPEN (reprint ~196 mm)
+- Uno Q PWM on D3/5/6/9 unverified | no published mapping found | OPEN (MotorBench)
+- 12-bit ADC accepted unverified | analogReadResolution behaviour | OPEN (SensorCalibration)
+- DIST_THRESHOLD window may not exist | blind zone floor vs 70 cm ceiling | OPEN
+- Brown centre lines may trigger edge | trim pots | OPEN (test)
+- Edge pin mapping | continuity not done | OPEN
+- Front sensors flush, contact in fold-back range | chassis design | OPEN (recess)
+- Brownout/reset mid-round | motor current | OPEN (bulk cap, separate regulator)
+- Spec doc stale vs Hardware.h | old pins/tunables | OPEN
+- Edge sensor on D13 shares LED load | pin choice | OPEN (not changed)
+- edgeRecover blocking | design | OPEN
+- Main .ino not written | deferred | OPEN
+- 2nd-AI patches issued as text, not confirmed applied | user editing manually | OPEN
+
+END STATE:
+- Library files v5 revised plus flank/debounce patches given as paste text; user applying by hand
+- Bench sketches exist; no hardware numbers measured yet; all calibration constants still placeholders
+- Next: MotorBench → SensorCalibration → fill constants → .ino
+
+CHAT: SumoX-26 firmware audit & merge | code audit, switch logic, strategy merge, cleanup
+
+LOG:
+- Audited spec/wiring/code (external review) | verify review's claims | all files; C1–C5, M1–M7, m1–m10 confirmed mostly real
+- Claude Code plan: poll START_BUTTON in blocking loops | fix C2 | plan only; stale on 2 resubmissions
+- Added START_BUTTON checks in edgeRecover/reposition/executeManeuver | C2 | Robot.cpp
+- Master gate in loop(): ROUND||START != LOW → stop | C1 | main.ino
+- Added ROUND_BUTTON to countdown loop in waitForStart | M1 | Robot.cpp
+- Listed errors on fresh paste | regroup | found wasArmed never resets
+- Removed Strategy_2 and ACTIVE_STRATEGY macro/#if branches | single strategy | Hardware.h, Robot.cpp, main.ino
+- Wrote Strategy_3.cpp/.h (Strategy 1 P-control + side-override debounce) | merge | Strategy_3.*
+- Flagged guard still STRATEGY_1_H, debounce symmetric | review | Strategy_3.h
+- Renamed to Strategy_Hybrid.*, guard STRATEGY_HYBRID_H | naming | Strategy_Hybrid.h/.cpp
+- Removed STRATEGY2_PUSH_KP, SIDE_TURN_MARGIN, SIDE_TURN_HYSTERESIS | dead after merge | Robot.h
+- Flagged orphan #endif | compile error | Robot.cpp, main.ino; user removed
+- wasArmed → wasReady, reset in gate; powerOn/roundOn/ready vars | re-arm every round | main.ino
+- ROUND_BUTTON added to 4 blocking-loop checks | M1/M2 | Robot.cpp
+- hammerAttack split into commitAttack/hammerDrive (+hammerSpeed helper, resetHammerState) | blind window self-renewed forever (C3) | Robot.cpp/.h
+- Deleted attack(), getTargetSide(), TargetSide enum, lostTargetLoops + sample-count gating | dead code | Robot.*, Strategy_Hybrid.*, main.ino
+- beginSearchArc now resets lastCorrection and hammer state | no cross-round leak | Strategy_Hybrid.cpp
+- Strategy_Hybrid calls commitAttack; main blind branch calls hammerDrive | match split | both files
+- Final audit: found setup() double waitForStart | wasReady=false at boot | main.ino
+
+CONSTANTS:
+- DIST_THRESHOLD | 400 | existing | ASSUMED
+- STRATEGY1_KP | 1/2 | existing | ASSUMED
+- STRATEGY1_ERROR_DEADBAND | 20 | existing | ASSUMED
+- STRATEGY1_BASE_SPEED | 165 | existing | ASSUMED
+- ATTACK_SPEED / HAMMER_AMPLITUDE / HAMMER_PERIOD_MS | 240 / 50 / 100 | existing | ASSUMED
+- ATTACK_COMMIT_MS | 500 | existing | ASSUMED
+- SIDE_TURN_CONFIRM_MS | 50 | reused for side-override debounce | ASSUMED
+- START_COUNTDOWN_MS | 5200 | "at least 5 s" margin; rulebook-dependent | ASSUMED
+- C4 correction -65 / +65 | TURN_SPEED−APPROACH_SPEED = 100−165 | DERIVED
+- Strategy2 push-Kp saturation | ~128 sensor delta | 2×128=256 | DERIVED
+
+DECISIONS:
+- Delete Strategy 2, keep one strategy | simpler, one correction formula | cherry-pick merge; runtime switching | FINAL (as Strategy_Hybrid)
+- Base = Strategy 1 P-controller + debounce on side override | faster convergence, median filter already removes noise | Strategy 2 discrete/hysteresis | FINAL
+- No triple-tap mode switch | unreliable UI, needs refactor | 3-tap toggle | FINAL
+- Switch semantics: A4 power, A5 round start/stop | user-defined | none | FINAL
+- Unconditional gate in loop() | fixes C1 | edge-trigger only | FINAL
+- Strategy-2-base-with-fix option | proposed | — | SUPERSEDED (by Strategy 1 base)
+- Debounce symmetric vs entry-only | flagged | — | OPEN
+- Dead constants removal/lastCorrection reset | low priority | — | FINAL (done)
+
+RESEARCH:
+- Strategy comparison | control-theory reasoning, no bench data | proportional > discrete for convergence
+- Hardware (GP2Y divider, BTS7960 logic, UNO Q PWM/ADC) | external review, not re-verified by me | plausible, pending physical checks
+
+PROBLEMS:
+- A5 OFF didn't stop match | edge-trigger only | FIXED
+- START_BUTTON ignored in blocking loops | no polling | FIXED
+- ROUND_BUTTON ignored in blocking loops | only START checked | FIXED
+- Blind attack never expires | hammerAttack renewed deadline | FIXED
+- Strategy 2 lastCorrection sign reversed | dual formulas | FIXED (strategy deleted)
+- wasArmed never reset | no reset | FIXED
+- Orphan #endif | leftover #if removal | FIXED
+- Stray STRATEGY_1_H guard | copy | FIXED
+- setup() + loop() both call waitForStart (double countdown) | wasReady starts false | OPEN (remove from setup)
+- "Immediate interrupt" claim false | polling only | OPEN
+- Edge not rechecked before every drive | check once per loop | OPEN
+- Stale edge info during 180 ms retreat | design | OPEN
+- Enables always HIGH, no watchdog | design | OPEN
+- Push Kp saturation | n/a after merge | moot
+- millis() absolute deadline compares | not rollover-safe | OPEN
+- Dead: APPROACH_SPEED, TURN_SPEED, getOpponentSampleCount, printSensorDebug | leftovers | OPEN
+- Hardware.h lacks Arduino.h include; calibrate cast order | maintainability | OPEN
+- Spec says "interrupt", 5 s, unique seeds | wording | OPEN
+
+END STATE:
+- 8-file hybrid firmware compiles in theory; switch logic, blind-window, dead-code fixes applied
+- One known bug remaining: remove waitForStart() from setup()
+- Not bench-tested; hardware checks and minor cleanup open
+
+CHAT: SumoX-26 Code Audit | sumo robot final bug review
+
+LOG:
+- Removed `lostTargetLoops` OR-clause from blind-window branch → now `trackingTarget && millis() < attackDeadline` | uncommitted-attack false hammer during approach blip | main.ino
+- Added `randomSeed(micros())` in setup() | PRNG fixed default seed → same start maneuver | main.ino
+- Added `randomSeed(micros())` after debounce-confirmed round button in waitForStart() (setup() seed kept) | boot-timing jitter weak entropy; human press timing varies | Robot.cpp
+- `executeBalancedOffset()` now `executeManeuver(OFFSET_PIVOT_MS, OFFSET_FORWARD_MS)` instead of hardcoded 200,300 | tuning landmine | Robot.cpp
+- Added ROUND_BUTTON rising-edge detector in loop() with `lastRoundButtonState` + `roundButtonStateInitialized` guard; state refreshed after every waitForStart() return | round switch ignored after match 1 (no re-arm without main power cycle); first version false-fired double countdown due to static init = false | main.ino
+- Added `sideOverride == 0 &&` to hammerAttack engage condition in approachTarget() | side-override ±255 correction into hammerAttack clamps 0..255 → one wheel full, other stopped (hard pivot instead of push) | Strategy_1.cpp
+- Edge-recovery reset of trackingTarget/lostTargetLoops + beginSearchArc(SEARCH_RIGHT) present in loop() | prevent ghost hammering post-recovery | main.ino
+
+CONSTANTS:
+- START_COUNTDOWN_MS | 5200 | 200ms margin over 5s rule | DERIVED
+- ATTACK_COMMIT_MS | 500 | n/a | PLACEHOLDER
+- DIST_THRESHOLD | 400 | n/a | PLACEHOLDER
+- SENSOR_SAMPLE_INTERVAL_MS | 40 | GP2Y0A21 ~40ms update | DERIVED
+- STRATEGY1_KP | 1/2 | n/a | PLACEHOLDER
+- ATTACK_SPEED | 240 | n/a | PLACEHOLDER
+- HAMMER_AMPLITUDE / PERIOD | 50 / 100ms | n/a | PLACEHOLDER
+- OFFSET_PIVOT_MS / FORWARD_MS | 200 / 300 | n/a | PLACEHOLDER
+- START_DEBOUNCE_MS | 50 | n/a | PLACEHOLDER
+- ACTIVE_STRATEGY | 1 | n/a | ASSUMED
+
+DECISIONS:
+- Drop OR-clause, keep deadline only | attackDeadline = single source of truth for committed push | keep OR / debounce now | FINAL
+- Leave lostTargetLoops as dead weight | zero behavioral risk, avoid new risk pre-competition | strip now | FINAL
+- Reseed per round at button confirm | human timing entropy | setup()-only seed | FINAL
+- Round-switch rising-edge only (no falling-edge stop) | matches described workflow: switch off after fight | falling-edge handling | FINAL
+- ROUND_BUTTON assumed maintained toggle | user described flipping off/on | momentary | ASSUMED, bench-verify
+- Option B (`sideOverride == 0` gate) | skips committing to push with bad angle; costs ~1 loop | Option A (use frontDelta in hammer path); threshold/weighted-merge alt (sideOverride is binary 0/±255) | FINAL
+
+RESEARCH:
+- Rulebook cross-check | Techbots League rulebook | 5s stationary rule met by 5200ms; no edge recovery in countdown avoids premature-movement warning; 3kg / 20cm limits and Uno Q primary controller noted; nothing else constrains code
+- Spec doc vs code | strategy spec | calibration table matches constants
+
+PROBLEMS:
+- False hammer during approach blip | OR-clause leak, stale attackDeadline | removed clause
+- Weak boot-time seed | deterministic boot timing | per-round reseed
+- Round switch dead after match 1 | loop() never read ROUND_BUTTON | rising-edge detector
+- Double countdown at match 1 start | static init false vs real LOW | init-sync guard
+- Hard pivot during attack | side-override ±255 into hammerAttack | sideOverride == 0 gate
+- Single noisy sample in approach → full disengage/reposition | no debounce on lost-target | OPEN (tune only if bench shows noisy sensors)
+- Hammer-vs-side-override geometry | n/a | bench-watch, OPEN
+- Dead code: edgeRecover return unused, reposition() unreachable branch, getTargetSide() unused, countdown readEdgeSensors() call inert | n/a | left, OPEN (cosmetic)
+- Random palette distribution, round switch cycling 2–3 mock rounds | n/a | OPEN bench tests
+
+END STATE:
+- All fixes applied and verified across 12 files; no known code-correctness risks remaining
+- Open items are bench tests only (palette variation, toggle-switch behavior, side-override geometry)
+- Strategy 1 active; flash-ready for Tuesday
+
+CHAT: SumoX-26 firmware review and overhaul | review, dividers, brown-line, staging, diagonal-start
+
+LOG:
+- Full code review; verdict YES (compiles, state machine terminates) | user asked work/no-work | all files, no change
+- Edge-case list given (motor polarity, EDGE_WHITE_STATE, fold-back, palette side-step, MAX_CORRECTION 255, CLEAR/BRAKE ms, analogWriteResolution) | requested | no change
+- TCRT5000 explained as comparator + trimpot, digital only; bench calibration procedure | brown-line concern | Sensors.cpp unchanged
+- Dividers required on A0–A3 only; edge pins D10–13 left direct | datasheet check | wiring
+- 2×10k per opponent sensor, 8 total, on signal wire only | 4.95V output vs 3.3V ADC | wiring
+- DIST_THRESHOLD 400→100 | divider halves scale | Hardware.h (user pasted later)
+- SENSOR_PEAK 960→220 (PUSH_READING 187) | same | Robot.h (user pasted later)
+- Proposed EDGE_CONFIRM_MS time filter | brown-line fallback | Sensors.cpp, not applied
+- Proposed ADS1115 analog edge path | analog edge threshold | Hardware.h/Sensors.cpp, not applied; user had no parts, withdrawn
+- Proposed EDGE_SENSORS_ON_EXPANSION define (Case A digital pins, Case B analogRead) | expansion-board prep | Hardware.h/Sensors.cpp, dormant, not applied
+- Re-reviewed current code; static_asserts pass | user request | no change
+- Simulation planned, frontend skill viewed, nothing built | user cancelled | none
+- Meeting brief given | user request | none
+- Clarified no flanking logic | user question | none
+- Clarified START/ROUND ANDed, no staging | user question | Robot.cpp as-is
+- Firmware report written | user request | SumoX-26_Firmware_Report.md
+- Staged-switch code v1 (startOn(), switchesOn() split, robotLoop standby) | START=standby, ROUND=logic | Robot.h/.cpp, .ino, not applied
+- Restated as find/replace diffs; waitForStart switchesRawOn→bothRawOn | user pasted current code | not applied
+- Full 3-file replacements (staging) | user said nothing applied yet | Robot.h, Robot.cpp, .ino
+- Diagonal opening step: constants, pivotInPlace, driveStraight, executeDiagonalStart; waitForStart swapped | new-chassis opening move | Robot.h/.cpp snippets
+- Full merged 3 files (staging + diagonal), supersede all prior; START_PALETTE/executeRandomStart left dormant | user confused by piecemeal patches | Robot.h, Robot.cpp, .ino
+
+CONSTANTS:
+- DIST_THRESHOLD | 100 | raw 105 at 40cm, 139 at 30cm, post-divider | DERIVED (unmeasured)
+- SENSOR_PEAK | 220 | midpoint of 194–240 peak-zone row | DERIVED (arithmetic suspect, see PROBLEMS)
+- PUSH_READING | 187 | 220×85/100; asserts 187>150, ≤1000 pass | DERIVED
+- Divider ratio | 0.5 | 10k/10k | DERIVED
+- raw ≈ V_bare×155 | 155 | 0.5/3.3×1023 | DERIVED
+- ADC Vref | 3.3V (3.1–3.5) | Uno Q datasheet | DERIVED
+- Sensor curve V≈27/L cm | 27 | common GP2Y0A21 fit | ASSUMED
+- GP2Y0A21 anchors | 0.4V@80cm, ΔVo 1.9V (1.65–2.15), ~2.3V@10cm | datasheet search | DERIVED
+- Raw by distance | 80cm 62, 60cm 70, 40cm 105, 30cm 139, 20cm 209, 15cm 279, 10cm 357 | formula | DERIVED
+- Error band | ±30–40% | reflectivity, fold-back, ±13% unit spread, ±6% Vref | ASSUMED
+- Opponent sensor output | 4.95V | user bench | MEASURED (user-reported)
+- OPPONENT_GAIN/OFFSET | 1000 / 0 | identity, left unchanged | PLACEHOLDER
+- START_COUNTDOWN_MS | 5200 | rule ≥5s | DERIVED
+- EDGE_CONFIRM_MS | 60 | guess, not in delivered files | PLACEHOLDER
+- EDGE_THRESHOLD_* (ADS1115) | 15000 | GAIN_ONE ~125µV/count, ~2.5V ≈ 20000 | PLACEHOLDER (not applied)
+- EDGE_THRESHOLD_* (expansion) | 500; pins A6–A9 / 100–103 | none | PLACEHOLDER (not applied)
+- DIAGONAL_TURN_MS | 100 | EDGE_TURN_MS 300 ≈120–150°, scaled to 45° | PLACEHOLDER
+- DIAGONAL_TURN_SPEED | 170 | = EDGE_TURN_SPEED | ASSUMED
+- DIAGONAL_DRIVE_MS | 300 | step length guess | PLACEHOLDER
+- DIAGONAL_DRIVE_SPEED | 150 | = OFFSET_SPEED | PLACEHOLDER
+- Wheels | 52×30mm silicone | user | MEASURED (user-stated)
+- Max speed | ~0.54 m/s at PWM 255 | 200RPM × π×0.052; motor RPM not stated by user in chat | ASSUMED
+- Track width | ~12cm | guess | ASSUMED
+- 255/128 drive | ~0.41 m/s, ~18cm radius | kinematics on above | DERIVED
+- TCRT5000 height | ~5mm, pointing down | user | MEASURED (approx)
+- TCRT5000 working range | ~2–15mm, peak ~2.5mm | recalled, not searched | ASSUMED
+- Dividers | 8×10kΩ | user listed/bought | user-stated
+
+DECISIONS:
+- Code works: YES | compiles, loops bounded, PWM pins valid | none | FINAL
+- Dividers on opponent sensors only | A0–A5 not 5V-tolerant; D10–13 are | dividers on edge pins | FINAL
+- Resistors can't fix brown/white | comparator output already binary | resistor trick | FINAL
+- No sensor swap/rewrite 2 days out | risk and time | new sensor, full rewrite | FINAL
+- Fishnet/mesh rejected | spatial mask doesn't change reflectance ratio | mesh | FINAL
+- Brown fallback: height test, shroud, confirm filter | feasible in time | TCS34725 (needs mux), ADS1115 (no parts) | OPEN, not implemented
+- ADS1115 plan | SUPERSEDED by expansion-board prep with define switch | — | dormant, unapplied
+- Simulation | SUPERSEDED by user cancelling | — | dropped
+- Strategy = reactive proportional front-push, no flanking | code reading | — | FINAL
+- Report as .md file | no format named | docx, HTML artifact | FINAL
+- START = standby (sensors read, motors zero, no logic); START+ROUND = full round with 5.2s countdown | user spec | AND-gate | FINAL
+- No motor warm-up code | heat needs current; EN pins already HIGH at boot; stall-heat advised against | stall-heat | FINAL
+- Holonomic motion impossible with 2 coaxial wheels | nonholonomic | mecanum/omni/swerve (extra hardware) | FINAL
+- Opening move = executeDiagonalStart: random first pivot, drive, 45° back opposite, in place, replaces palette | user idea plus my defaults | arc-while-driving, add alongside palette | FINAL (first-turn angle and replace-vs-add unconfirmed)
+- Deliver full merged files | piecemeal patches confused user | diffs | FINAL
+
+RESEARCH:
+- Uno Q voltage tolerance | Arduino ABX00162 datasheet (fetched) | A0–A5 ≤VDD+0.3V not 5V-tolerant; JDIGITAL 5V-tolerant inputs except D3; use divider
+- Uno Q PWM pins | web search | {3,5,6,9,10,11}; code uses 3,5,6,9
+- Uno Q ADC resolution | web search | 8/10/12/14 configurable; analogReadResolution(10) fine
+- GP2Y0A21YK0F curve | datasheet search | anchors and V≈27/L fit above
+- Uno Q expansion board | hands-on review, generic GPIO shield FAQ | no official boards at review time; bottom connectors for camera/display/audio; generic shields add digital only
+- Rulebook (provided) | doc | ≥5s stationary, 3 min round, 20×20cm, 3kg, Uno Q only, 1.5m ring, 3cm white border, two 2cm brown lines 10cm from centre
+- Holonomic drive | general knowledge | needs mecanum/omni/swerve
+
+PROBLEMS:
+- Brown line may read white and trigger edge recovery | TCRT5000 reflectance/trimpot | height test, shroud, confirm filter | OPEN
+- Report says brown=white bench-confirmed; user later phrased it as "if the test shows" | overstated | OPEN (unconfirmed)
+- SENSOR_PEAK 220 may be ~2× low | peak-zone row 194–240 for 1.25–1.55V at ADC; recomputed ≈387–480; not told to user | OPEN
+- Thresholds unmeasured | physics estimates only | bench with SENSOR_DEBUG | OPEN
+- Divider install not verified | user said bought/listed | OPEN
+- Motor polarity untested | flags default false | OPEN
+- Per-corner EDGE_WHITE_STATE untested | trimpots | OPEN
+- Fold-back below ~8cm can drop reading mid-push | sensor curve | OPEN
+- DIAGONAL timings unmeasured | chassis overhaul invalidates extrapolation | OPEN
+- Power-enable pin/relay for START question unanswered | EN pins always HIGH today | OPEN
+- BTS7960 (not B) driven at 3.3V logic | untested | OPEN
+- analogWriteResolution(8) may not compile | existing in-code note | OPEN
+- D20/D21 and A4/A5 move unverified | only in dormant ADS1115 plan | OPEN
+- Unused executeRandomStart warning | left dormant | harmless
+- ADS1115 confused user | no parts on hand | withdrawn
+
+END STATE:
+- User had applied no changes; full replacements for Robot.h, Robot.cpp, .ino (staged switches plus diagonal start) delivered, unapplied.
+- Thresholds 100/220 are derived and unmeasured, 8×10k dividers bought, brown-line, motor polarity and edge polarity unverified.
+- Open: diagonal first-turn angle and replace-vs-add, power-enable pin question, SENSOR_PEAK recheck.
+
+CHAT: Sumo IR sensor calibration | GP2Y0A21, TCRT5000, deadzone, thresholds, direction
+
+LOG:
+- Reviewed two GP2Y0A21 loggers (manual press-Enter vs auto 8 s settle) | user hit auto one, couldn't keep pace | GP2Y manual logger (script 1) recommended; auto logger (script 2) has LIVE_MODE
+- Judged both GP2Y scripts logically correct | ADC/voltage/median math fine | calculateMedian array fixed at 40, breaks if SAMPLES_PER_POINT grows
+- Explained calibration, deadzone, noise-floor check, black-vs-white calibration | user had no background | no code change
+- Explained direction via sector/vote logic, not angle | single IR sensor gives no angle | no code change
+- Reviewed TCRT5000 bench test (A1, analog+digital) | assumed bare 4-leg part with resistors | TCRT5000 bench test, wiring comments stale
+- Flagged brown start-line triggering edgeRecover, Uno Q 3.3 V divider for TCRT output | protect board, avoid false edge | advice only
+- Identified board as 3-pin "Tracker Sensor" (OUT/VCC/GND) | photos | wiring OUT→A1, VCC→5V, GND→GND, no resistors
+- Clarified PWM irrelevant, A0–A5 usable as digital | no free digital pins | no code change
+- Checked breadboard photos | wrongly said sensor unconnected, retracted | no code change
+- New short HIGH/LOW stream sketch (A1) | user wanted continuous output, no timed logger | HIGH/LOW stream sketch
+- User saw old GP2Y logger output | new sketch never uploaded | Verify then Upload
+- Test on A1: LOW for nothing, white, brown | measured | HIGH/LOW stream sketch
+- Searched module behavior, advised trim-pot turning and ambient-light check | known always-LOW complaints | advice only
+- User retested on pin 2 (digitalRead): LOW nothing, HIGH for anything | measured | pin-2 digitalRead sketch
+- Advised pot sweep with fixed ~2.5 mm spacer | user photo shows no pot | superseded
+- Switched to raw analogRead on A1, print value, ask for 4 numbers | no pot, need own threshold | analogRead sketch
+
+CONSTANTS:
+- GP2Y0A21 useful range | ~10–80 cm | from user's script comment | ASSUMED
+- GP2Y sensor refresh | ~38 ms | script comment; sample interval 50 ms | DERIVED
+- Samples per point | 40 | script | PLACEHOLDER
+- Distance formula | ~27 / V (cm) | rough web fit, per-unit variance | PLACEHOLDER
+- GP2Y deadzone | <~10 cm | typical, not measured | PLACEHOLDER
+- Bench board | Uno R3, 5 V, ADC 1023 | script | MEASURED
+- Robot board | Uno Q, 3.3 V, 10k/10k divider, 10-bit | script comment | ASSUMED
+- TCRT5000 range | 1–15 mm, optimal ~2–5 mm, focal 2.5 mm | web sources | DERIVED
+- TCRT5000 test gap | ~2.5 mm | user's choice | ASSUMED
+- A1 digitalRead | LOW for nothing, white, brown | observed | MEASURED
+- Pin 2 digitalRead | LOW nothing, HIGH black/white/brown/grey | observed | MEASURED
+- Analog thresholds | none yet | pending readings | PLACEHOLDER
+- Serial baud | 115200 | script | MEASURED
+
+DECISIONS:
+- Use manual press-Enter GP2Y script | auto window too fast | auto script | FINAL
+- Test TCRT5000 first, then GP2Y sweep (0–10 cm in 1 cm steps, then 10–80) | quick go/no-go before assembly | none | FINAL
+- Lookup table/thresholds over generic formula | per-unit and reflectivity variance | 27/V alone | FINAL
+- Recalibrate with black surface, use black numbers for detection | opponent is black | white-only | FINAL
+- Sector/vote logic for direction | no angle from one sensor | exact-angle computing | FINAL
+- Deadzone reading treated as "very close, push" | precision irrelevant at contact | none | FINAL
+- 4 sensors vs 3 at 45° | coverage vs simplicity | none | UNDECIDED
+- Bench on Uno R3 | protect Uno Q | direct Uno Q test | FINAL
+- Edge sensors on A0–A5 as digital | no free digital pins | none | SUPERSEDED (pin 2 test, then analogRead on A1)
+- Pot adjustment to separate white/brown | board has no pot | none | SUPERSEDED (analogRead + software threshold)
+- Grace window after start for edge logic | brown center line under robot | none | FINAL (advice)
+
+RESEARCH:
+- GP2Y0A21 formula | web search | datasheet is a graph; ~27/V approximation; output non-monotonic near deadzone
+- Bare TCRT5000 pinout | Cirkit Designer | LED A/K, phototransistor C/E, order varies by maker (not used; board is 3-pin)
+- Uno analog pins as digital | web search | stated A0–A5 work with digitalRead; Uno Q carryover asserted, not verified
+- TCRT5000 module behavior | vendor pages, Arduino forum, Soldered | reflection → LOW + LED on, 1–8/15 mm, optimal 2–5 mm, ambient IR affects it, comparator boards have threshold pot
+
+PROBLEMS:
+- Old logger output shown | sketch not uploaded | Verify + Upload, resolved
+- Auto script rushed user | 8 s fixed window | manual script
+- "Sensor unconnected" claim | photo angle | retracted
+- Assumed bare 4-leg part | actually 3-pin module | instructions redone
+- Expected white = HIGH | cited convention is reflection = LOW | OPEN, user's pin-2 data (nothing = LOW, anything = HIGH) contradicts that convention
+- A1 all LOW vs pin 2 LOW/HIGH | cause unknown (pin, ambient light, damage?) | OPEN
+- Earlier "blue trim pot" | blue item was sensor dome, no pot exists | pot steps dropped
+- "No comparator, raw voltage" claim | earlier photo shows an IC on board | OPEN, unverified
+- Last photo: sensor domes look charred/damaged | unconfirmed | OPEN, compare with another unit
+- Brown vs white separation | no data | OPEN, pending analog values
+- Brown start line triggering edgeRecover | not tested | OPEN
+- 0–10 cm blind zone, front-left/right gap | physics | push rule, overlap or scan; GP2Y deadzone sweep not yet run, OPEN
+
+END STATE:
+- GP2Y0A21 sweep not yet run; manual script chosen.
+- TCRT5000 module has no pot; pin-2 digital gives nothing = LOW, anything = HIGH; brown vs white undetermined; possible physical damage.
+- Next: analogRead on A1 at fixed ~2.5 mm for nothing/white/brown/black, then set threshold.
+
+CHAT: GP2Y0A21 calibration and filtering | sensor formula, threshold, median filter
+
+LOG:
+- Reviewed S1 5-pass manual log | readings flat ~330–360 ADC at all distances 5–80 cm, with random dropouts and spikes | data judged unusable; no file change
+- Charted S1 passes | show the flatness and glitches | chart only
+- Gave wiring checks (wiggle test, multimeter on Vo, 10 µF+ cap at sensor, skip 5 cm) | suspected intermittent connection or supply ripple | advice only
+- Explained "zones" | GP2Y0A21 has no zones; user unsure what they meant | no code built
+- Added gp2y0a21_live_test.ino | live voltage to verify inverse relation; 5-sample average, 150 ms print | new file
+- Gave datasheet estimate distance ≈ 27 / V | quick opponent-distance estimate before own calibration | advice only
+- Added gp2y0a21_calibration_logger_v2.ino | single pass, 10 distances, 100 samples/point, 20% trimmed mean, press-Enter, CSV out | new file
+- Added fit_calibration.py | least-squares fit of distance = m/V + c, prints R² and errors, saves plot | new file
+- Reviewed pasted Robot.cpp, Sensors.cpp, Strategy_Hybrid, main loop, Hardware.h, Motors, Robot.h, Sensors.h, Strategy_Hybrid.h | context for filter and threshold | no robot code edited
+- Added sensor_bench_monitor.ino | no press-Enter; all 4 opponent pins streamed live, median of 7; serves no-object floor and manual calibration | new file; replaces logger workflow
+
+CONSTANTS:
+- Distance scale factor | ~27 V·cm | Pololu datasheet-based generic formula | DERIVED
+- Valid sensing range | 10–80 cm | datasheet | DERIVED
+- Supply cap | 10 µF+ across Vcc/GND at sensor | datasheet recommendation | ASSUMED
+- S1 baseline ADC | ~330–360 (1.6–1.8 V), flat across distance | user's 5-pass log | MEASURED
+- S1 glitch values | dropouts ~70–95, spikes ~980 | user's 5-pass log | MEASURED
+- Live test smoothing | 5 samples, 150 ms print | design choice | ASSUMED
+- Logger v2 | 100 samples, 5 ms gap, 20% trim, distances 10–80 cm in 10 steps | design choice | ASSUMED
+- Bench monitor | median of 7, 3 ms gap, 200 ms print, VREF 5 V, ADC 1023 | design choice | ASSUMED
+- Calibration points | 10, 20, 30, 45, 60, 80 cm | suggested | ASSUMED
+- Fit warning | R² < 0.98 | suggested | ASSUMED
+- DIST_THRESHOLD | 100 | existing code; user wants to re-set from floor test | PLACEHOLDER
+- SENSOR_PEAK | 220 | existing code comment says replace with measured peak | PLACEHOLDER
+- SENSOR_SAMPLES | 3 | existing code | ASSUMED
+- SENSOR_SAMPLE_INTERVAL_MS | 40 | existing code | ASSUMED
+- Per-sensor OFFSET / GAIN | 0 / 1000 | existing defaults, no calibration yet | PLACEHOLDER
+- Per-sensor m and c | none yet | needs clean data | PLACEHOLDER
+
+DECISIONS:
+- Linearize: distance = m/V + c | voltage roughly linear in 1/distance | piecewise "zones" | FINAL
+- Own fit per sensor | unit-to-unit variance | single generic 27/V | FINAL
+- Calibrate in volts | portable to Uno Q ADC/divider | raw counts | FINAL
+- Skip 5 cm point | outside range, curve folds back | include | FINAL
+- Trimmed mean in logger v2 | reject glitches | plain mean | SUPERSEDED (by median in bench monitor)
+- Press-Enter, 16-point logger | tedious and gave bad data | keep | SUPERSEDED (by bench monitor)
+- Median, not mean | user: mean blends detect/no-detect into half value | averaging | FINAL
+- One sketch reads all 4 pins | no per-sensor reflash | SENSOR_LABEL per upload | FINAL
+- Set DIST_THRESHOLD above worst no-object floor plus margin | avoid false detects | keep 100 | FINAL
+- 3 opponent + 2 edge redesign (curved T, coaxial front/back edge sensors) | user plan, deferred | do now | FINAL (deferred)
+
+RESEARCH:
+- GP2Y0A21 voltage→distance | Pololu product page | distance ≈ 27/V; offset and scale tweaks improve fit; 10 µF cap advised
+- Zones | own knowledge | not a feature; multi-zone ToF sensors have them
+- Near range | own knowledge | output folds back below ~10 cm, ambiguous
+
+PROBLEMS:
+- S1 flat readings plus dropouts/spikes | suspected loose wiring or supply ripple | OPEN
+- Earlier readings "incorrect" | same as above | OPEN
+- "Average gives half value" | mean blends detect and no-detect; Sensors.cpp already uses median, no averaging bug found | median used in new tool; OPEN whether user means something else
+- DIST_THRESHOLD unverified | no floor data yet | OPEN
+- S2–S4 uncalibrated, no m/c for any sensor | clean data not collected | OPEN
+- Runtime filter accuracy ("need more accurate filter") | SENSOR_SAMPLES=3 median unchanged | OPEN
+- Manual distance placement tedious | simplified to live monitor | fix delivered, untested
+
+END STATE:
+- Delivered: live test, logger v2, fit script, bench monitor; no robot code edited
+- No valid calibration data, no per-sensor m/c, threshold unverified
+- Next: fix S1 hardware, run floor test, take ~6 points per sensor, fit
+
+CHAT: SumoX-26 v4 code overhaul | ramming strategy, sensors, edge recovery
+
+LOG:
+- Ram plan drafted: Search→Triage→Align→Commit, flanking deferred | overhaul to drop calibration-heavy logic | plan only
+- Sensor range corrected to 10–80 cm, not 130 cm | datasheet search | plan only
+- v3 frozen, v4 started, 6-file layout planned | portfolio, clean overhaul | v4
+- Hardware.h draft 1: 3 opponent + 2 edge sensors, button pins removed, offset/gain kept | two power switches, no polled buttons | Hardware.h v4
+- Hardware.h revised: offset/gain removed, per-sensor DETECT/ENGAGE thresholds, edge digital | no time to calibrate; edge boards have trim pot | Hardware.h v4
+- Sensors.h/.cpp written: per-sensor time median, detected/engaged booleans, edge double-read 200 µs apart | avoid cross-sensor averaging | Sensors v4
+- Strategy_Ram first cut: v3 search arc ported, 120 ms ramp, commit hold | ram strategy | Strategy_Ram v4
+- Strategy_Ram rewritten: arc replaced by bounded oscillation ±100°, dead-reckoned heading, creep near 0°, post-contact caution | translating arc drifts to edge; bearing lost after turns | Strategy_Ram + Hardware.h v4
+- Robot.h/.cpp written: blocking 5 s start, fixed-time edge recovery (front→reverse, back→forward) | lifecycle + edge | Robot v4
+- Start gap derived (22 cm to opponent face, 24 cm sensor to sensor); no code change | placement clarified: front edge touching line | none
+- 124 cm virtual boundary rejected | no position sensing, wheel slip | none
+- Sensors.h/.cpp rewritten; compile errors fixed | case, type and signature mismatches in pasted files | Sensors v4
+- Edge recovery changed to drive-until-clear + confirm + overrun + timeout; resetStateKeepHeading added | fixed duration may stop short or overshoot; straight recovery keeps heading valid | Robot, Strategy_Ram, Hardware.h
+- Engaged latch added in Commit, ENGAGE_MAX_MS cap | 0–10 cm sensor dropout must not end the push | Strategy_Ram, Hardware.h
+- Motors.h/.cpp written without enable gate; .ino written (setup→initRobot, loop→robotLoop) | no switch signal to read | Motors, .ino v4
+- inPostContactCaution dropped | unresolved and unused | Strategy_Ram.h/.cpp
+- Align re-checks side each loop; ALIGN_TIMEOUT_MS then commit | wrong-direction chase bug | Strategy_Ram, Hardware.h
+- Clean Strategy_Ram.cpp issued, broken pasted merge discarded | duplicate case block, undeclared variable, stray '.' | Strategy_Ram.cpp
+- Both-edge-fire guard (stop, re-prime, reset) and dead-code removal (POST_CONTACT_CAUTION_MS, contactEndTime) given | arbitrary branch order; unused code | Robot.cpp, Hardware.h, Strategy_Ram.cpp
+
+CONSTANTS:
+- Motor pins L: 2,3,4,5; R: 6,7,8,9 | carried from v3 | ASSUMED (not bench-verified)
+- EDGE_FRONT/BACK 10/11; OPPONENT L/C/R A0/A1/A2 | user wiring | ASSUMED
+- LEFT_MOTOR_INVERTED false / RIGHT_MOTOR_INVERTED true | user-set | ASSUMED (bench-confirm)
+- EDGE_WHITE_STATE HIGH | carried from v3 | ASSUMED
+- DETECT_THRESHOLD_L/C/R 150 | none | PLACEHOLDER
+- ENGAGE_THRESHOLD_L/C/R 550 | none | PLACEHOLDER
+- SENSOR_SAMPLE_INTERVAL_MS 40 | matches ~38 ms GP2Y0A21 response | DERIVED
+- SENSOR_SAMPLE 3 | v3 | ASSUMED
+- TURN_RATE_DEG_PER_MS 0.18 | needs 1000 ms turn + protractor on assembled robot | PLACEHOLDER
+- SEARCH_SPIN_SPEED 150, SEARCH_MAX_SWEEP_DEG 100 | chosen | PLACEHOLDER
+- CREEP_SPEED 140, CREEP_PULSE_MS 120, CREEP_ALLOWED_HEADING_BAND_DEG 25 | chosen | PLACEHOLDER
+- START_COUNTDOWN_MS 5000 | v3 used 5200; confirm vs ruleset | ASSUMED
+- EDGE_RECOVER_SPEED 170, EDGE_CLEAR_CONFIRM_MS 30 | v3 values | ASSUMED
+- EDGE_OVERRUN_MS 80, EDGE_RECOVER_MAX_MS 700 | chosen | PLACEHOLDER
+- ENGAGE_MAX_MS 3000 | safety cap | ASSUMED
+- ALIGN_TIMEOUT_MS 600 | chosen | PLACEHOLDER
+- ALIGN_SPEED 170, COMMIT_HOLD_MS 400 | chosen | PLACEHOLDER
+- RAMP_START 60 / RAMP_MAX 255 / RAMP_TIME_MS 120 | 80–150 ms ramp from traction reasoning; bench-tune | PLACEHOLDER
+- POST_CONTACT_CAUTION_MS 400 | unused, delete | PLACEHOLDER (dead)
+- Start gap 24 cm | 20 line gap + 2 + 2 (sensor 18 cm from back of 20 cm robot) | DERIVED
+- Sensor range 10–80 cm, ~38 ms response | datasheet search | DERIVED
+- Arena 150 cm outer, 3 cm border, lines 20 cm apart and 20 long, 10 cm from center | user diagram | ASSUMED (user-stated)
+- 130 cm = 150 − 20 | user arena math | DERIVED (not used as cutoff)
+
+DECISIONS:
+- v3 frozen, v4 new | portfolio, full overhaul | edit v3 | FINAL
+- Switch A powers robot + sensors, Switch B powers Arduino; no switch pins in code | Arduino unpowered until B | button polling/standby | FINAL
+- Skip ECS | one entity, one state machine | ECS | FINAL
+- Edge sensors digital, trim pot sets threshold | no code calibration | analog edge | FINAL
+- Raw > threshold per sensor, no offset/gain | no calibration time | linear calibration formula | FINAL
+- No cross-sensor averaging, per-sensor median only | averaging dilutes a single-sensor spike | blended value | FINAL
+- Detect and engage thresholds per sensor | separate "present" vs "point-blank" | one threshold | FINAL
+- Ramp ~120 ms then max | avoid wheel slip at launch | instant full power | FINAL (value PLACEHOLDER)
+- v3 translating search arc | ported first | SUPERSEDED (by bounded oscillation + dead-reckoned heading + creep)
+- Blind charge at t=0 | floated | SUPERSEDED (by normal Search→Commit, handles any gap)
+- v3 diagonal opening / offset maneuvers | opponent is near dead-ahead | deleted | FINAL
+- 124 cm virtual boundary | no position sensing | rejected | FINAL
+- Fixed-duration edge recovery | first version | SUPERSEDED (by drive-until-clear)
+- Engaged latch for 0–10 cm dropout | push must not drop to Search | exit on dropout | FINAL
+- inPostContactCaution | lateral-drift mitigation half-designed | dropped, risk accepted | FINAL
+- Motors without enable gate | no switch signal | v3 setMotorsEnabled/inhibit | FINAL
+- Arduino IDE: all files in one folder named like the .ino | IDE compiles folder as one sketch | merging into one file | FINAL
+- Flanking | undecided | menu offered, not built | FINAL (deferred)
+
+RESEARCH:
+- GP2Y0A21 range/response | web search of datasheet | 10–80 cm, ~38 ms, non-linear; <10 cm voltage drop stated from general knowledge, not searched
+- GP2Y0A21 ambient IR | reasoning, no source | triangulation sensor, far stray light not main risk; reflective objects near threshold are
+- Push physics | reasoning, no source | traction-limited; short ramp beats instant
+- TCRT5000 boards | inferred from v3 digitalRead | comparator + trim pot version
+- Mutual-exit win rule | not verified | check SumoX-26 rulebook
+
+PROBLEMS:
+- Opponent spike diluted by averaging | cross-sensor mean | removed | fixed
+- Old layout missed off-axis opponents under threshold | calibration-dependent | 3 front + 2 edge layout | fixed
+- "Not detected = behind" invalid after turns | no heading reference | dead-reckoned heading | partial, accuracy OPEN until TURN_RATE measured
+- Static or free-spin search exploitable by orbiting | no reacquire | bounded sweep + creep | fixed
+- Beam gaps between L/C/R and rear blind arc | hardware | none | OPEN (accepted)
+- Lateral push not seen by front/back edge sensors | sensor layout | none | OPEN (accepted)
+- Pure spin may drift | staggered motors | bench test | OPEN
+- Left/right motor mapping and inversion unverified | wiring | bench-confirm | OPEN
+- Drive wheels on same transverse line? | unknown | confirm on bench | OPEN
+- Compile errors in pasted Sensors files | case, type, signature mismatches | rewritten | fixed
+- Duplicate Sensors.cpp with Opponent_CENTER/Edge_FRONT typos still in final paste | stale copy | use corrected version | OPEN
+- Pasted Strategy_Ram.cpp broken | merge error | clean version issued | fixed
+- Align chased wrong direction, could stall | no side re-check | re-check + timeout | fixed
+- Heading zeroed after straight recovery | full reset | resetStateKeepHeading | fixed
+- Both edges firing ambiguous | branch order | guard patch | fixed (applied?) unconfirmed
+- 5 V sensor outputs into 3.3 V pins | Uno Q limit | dividers on all 5 sensor lines, check with multimeter | OPEN
+- Motor EN pins float with only Switch A on | no Arduino driving them | pull-downs on EN lines | OPEN
+- Suspension compression shifts edge-sensor height | mechanical | set trim pot in running stance | OPEN
+- Matte black opponent returns less IR | surface reflectivity | calibrate against dark matte plastic | OPEN
+- Defensive opponent outlasting ENGAGE_MAX_MS | fixed cap | judgment call | OPEN
+- Push-through with opponent at front edge, hammer pulsing not built | deferred; rule unverified | OPEN
+
+END STATE:
+- v4 set (Hardware, Motors, Sensors, Robot, Strategy_Ram, .ino) complete; compiles only with the corrected Sensors.cpp and clean Strategy_Ram.cpp.
+- Last patches (both-edge guard, dead-code removal) given, not confirmed applied; thresholds, TURN_RATE, ramp and timing constants are still placeholders for bench tuning at the practice arena.
+- Open: motor polarity, level shifters, EN pull-downs, mutual-exit rule, lateral edge blind spot, flanking.
+
+CHAT: Sumo robot code audit + sensor bring-up | code review, calibration, wiring
+
+LOG:
+- Full code review vs rulebook (5-state ram strategy, motors, sensors, edge recovery) | user asked: works? rule-compliant? | all files
+- Flagged engagedSinceMs reset every frame, so ENGAGE_MAX_MS never fires | safety cap defeated, incl. stuck-high sensor | Strategy_Ram.cpp
+- Fix: `if (!engagedLatched) engagedSinceMs = millis();` before latching | stamp only on transition | Strategy_Ram.cpp (user re-pasted, confirmed correct, no other errors)
+- Study plan for 3 min brief + 2 min Q&A: state-machine diagram, sensors, own weaknesses, dry run | no file change
+- Calibration plan for next day's testing: thresholds first, edge-sensor sanity, turn rate by eye | placeholders in Hardware.h | Hardware.h
+- TCRT5000 results reviewed; brown center lines may read HIGH and false-trigger edge recovery | fix is trimpot or sensor height, not code | hardware, untested on real arena
+- Explained manager's L/C/R triplet matrix (110, 011, 100, 010, 001, 000, 111, 101); 101 has no explicit branch | user didn't understand it | no file change
+- Wrote standalone sketch: raw A0/A1/A2 plus triplet from one DETECT_THRESHOLD, 9600 baud | user wanted simple bench test on Uno R3 | gp2y0a21_test.ino
+- Wiring explained: red = 5V, black = GND, yellow = Vo to A0/A1/A2; shared rails | user had 3 wires per sensor, 2 GND pins | none
+- Thin sensor leads won't seat in breadboard; options given (twist onto jumper, alligator clips, terminal block, tin with solder) | stranded leads | none
+- Breadboard wiring diagram generated; rails are parallel, not series, so no voltage division | user's misconception | diagram only
+- Mapped manager's task (noise handling, max range, turn toward object) onto existing SEARCH, ALIGN and COMMIT states plus 3-sample median | already built | none
+- From user's data, recommended DETECT 150 and ENGAGE 480 for L/C/R | replaces 550 guess | Hardware.h (recommended; not confirmed applied)
+- Rejected 27/V distance formula; keep raw-ADC thresholds | unit variance, curve non-monotonic | none
+- Next-test list given: 12 cm crossing, 8-combo matrix, flicker at boundary, L/R individual sweeps, fast-approach reaction | no rewiring needed | none
+
+CONSTANTS:
+- TURN_RATE_DEG_PER_MS | 0.18 | code comment says placeholder; plan is to tune by eye | PLACEHOLDER
+- DETECT_THRESHOLD_L/C/R | 150 (kept) | noise floor <100; lowest in-range reading ~250 | DERIVED
+- ENGAGE_THRESHOLD_L/C/R | 550 in code; 480 recommended | between blind-zone max 350 and approach curve (C ≈ 410–450 at 15 cm, peak 600–700 at 10 cm); crossing at ~12–14 cm interpolated | DERIVED (interpolated, unverified at 12 cm)
+- GP2Y0A21 no object | <100 | user experiment | MEASURED
+- GP2Y0A21 0–10 cm | 250–350 | user experiment (blind-zone dip) | MEASURED
+- GP2Y0A21 at 10 cm | 600–700 | user experiment | MEASURED
+- GP2Y0A21 >80 cm | <100 | user experiment | MEASURED
+- GP2Y0A21 at 20 cm | L ≈ 325, C ≈ 290–300 | bench log (R off-axis) | MEASURED
+- GP2Y0A21 at 15 cm | C ≈ 410–450, R ≈ 300 | bench log (L off-axis) | MEASURED
+- TCRT5000 height ≥3 cm | white 0, black 0 | lit room | MEASURED
+- TCRT5000 height 1.5–3 cm | white ~1015/1016, black 0 | lit room | MEASURED
+- TCRT5000 height <1.5 cm | both ~1015/1016 | lit room | MEASURED
+- TCRT5000 brown | untested; printed paper all HIGH | real arena may differ | OPEN
+- START_COUNTDOWN_MS | 5000 | rule 6.2 five-second wait; ~5300 suggested for margin, not applied | ASSUMED
+- ENGAGE_MAX_MS | 3000 | no source | ASSUMED
+- LOST_CONTACT_GRACE_MS | 150 | no source | ASSUMED
+- Test sketch DETECT_THRESHOLD | 150 | starting guess for bench | ASSUMED
+
+DECISIONS:
+- Stamp engagedSinceMs only on latch transition | makes cap measure continuous engagement | stamping every frame | FINAL
+- Calibrate on raw ADC, not cm | per-unit tolerance, non-monotonic curve | 27/V formula | FINAL
+- Blind-zone dip is not a blocker | latch exit needs detect-level loss for 150 ms, and 250–350 stays above DETECT | treating it as critical bug (first review) | FINAL (supersedes first review)
+- Brown-line fix via trimpot or sensor height | hardware problem, not code | code workaround | FINAL (pending real-arena test)
+- Test sketch minimal: raw plus triplet, one threshold, no filtering | user asked for simple | reusing full state machine or median | FINAL
+- Rails for power and ground; extend or adapt thin leads | not enough GND pins; leads too thin | none | FINAL
+- Keep a voltage divider for threshold transfer | Uno Q ADC differs from R3 | none | SUPERSEDED (user said none needed on R3 test)
+- Keep per-sensor thresholds, don't force identical | component tolerance | none | FINAL
+- Hysteresis for threshold flicker | filters boundary flapping | none | OPEN (offered, not implemented)
+- Explicit 101 branch | currently falls through to turn left | leave as is | OPEN (add only if 101 appears in testing)
+
+RESEARCH:
+- GP2Y0A21 close-range non-monotonic | prior knowledge, confirmed by user's own readings | output drops inside ~10 cm
+- 27/V distance approximation | prior knowledge | approximate only, ±10% unit variance, not used
+- Judging criteria (programming, strategy) | rulebook text from user | Q&A component implied
+- No web search done
+
+PROBLEMS:
+- engagedSinceMs reset every frame | stamped on every engaged loop | FIXED
+- Close-range reading dip | sensor physics | mitigated by latch and detect-level exit, ENGAGE set below peak
+- Brown lines may trigger edge recovery mid-match | IR reflectance of brown | OPEN (test real arena, trimpot or height)
+- TURN_RATE placeholder | never measured | OPEN
+- R3 test (5V, no divider) vs Uno Q target (3.3V max) | ADC scale differs; thresholds may not transfer | OPEN
+- Recommended thresholds not confirmed in Hardware.h | only advised in chat | OPEN
+- anyOpponentDetected() unused | dead code | OPEN
+- Start delay exactly 5000 ms | no margin vs rule 6.2 | OPEN
+- No defensive behavior beyond edge recovery | design | OPEN
+- 101 case unhandled | no tie-break | OPEN
+- Thin sensor leads wouldn't seat in breadboard | stranded wire | options given; user later reported connection done
+- Rail-voltage-division confusion | thought parallel taps divide voltage | CLARIFIED
+
+END STATE:
+- Strategy_Ram.cpp has the engagedSinceMs fix; rest of code unchanged and judged compile-clean.
+- Three GP2Y0A21s wired on breadboard to an R3 running the test sketch; DETECT 150 / ENGAGE 480 recommended from measured curve but not confirmed applied.
+- Still pending: 12 cm crossing, L/R solo sweeps, 8-combo matrix, flicker and reaction tests, brown-line test on real arena, TURN_RATE tuning, Q&A prep.
+
+CHAT: Multi-file Arduino sketch deploy | 12 files, Uno Q, single .ino?
+
+LOG:
+- Asked whether to merge 12 files (.ino/.h/.cpp) into one .ino for Uno Q | deploy/verify question | no file changed
+- Advised against merging; keep all files in one folder named after main .ino | Arduino IDE compiles whole folder | no file/version stated
+
+CONSTANTS: none stated in this chat
+
+DECISIONS:
+- Keep 12 files in one sketch folder, don't merge | IDE auto-compiles .ino (concatenated) + .cpp (linked) + .h (#include) | single merged .ino | FINAL (advice given; user's confirmation not stated)
+
+RESEARCH:
+- Multi-file sketch build | Arduino GitHub issues / IDE docs | all .ino concatenated alphabetically, main first; .cpp compiled separately and linked
+- Class name vs sketch name | Arduino GitHub issue | class files named same as main .ino drop the .ino from build, causing missing setup()/loop() errors
+- Uno Q specifics | not found in search | assumed same Arduino IDE/CLI sketch build process (ASSUMED, unverified)
+
+PROBLEMS:
+- Stale build artifacts after renaming .cpp | old object file stays in build folder, causing duplicate-definition link errors | clean build folder / `--clean` flag (surfaced in search, not user-reported)
+- Class/sketch name collision | see above | rename sketch or class (not user-reported)
+
+END STATE:
+- User hadn't yet verified or uploaded; no errors reported
+- Advised folder structure: main .ino plus .h/.cpp in same folder
+- Uno Q multi-file behavior unconfirmed
+
+CHAT: Sumo robot code Q&A prep | code walkthrough, calibration, heading, search
+
+LOG:
+- Full code pasted (main, Hardware.h, Motors, Robot, Sensors, Strategy_Ram) | baseline for judge Q&A prep | all files
+- Gave detailed file-by-file explanation | user needs to defend every variable | all files
+- Flagged creep pulse never held for CREEP_PULSE_MS | creepDue only gates re-entry; next tick overwrites | Strategy_Ram updateSearch
+- Gave technical and plain-language versions | two audiences for judges | all files
+- Hardware.h re-pasted with new values | user calibrated sensors and turn rate | Hardware.h
+- Flagged stray `s` before LOST_CONTACT section | won't compile | Hardware.h
+- Calculated theoretical turn rate and min sweep angle | user asked for theory values | Hardware.h
+- Explained `f` suffix | float vs double literal | Hardware.h
+- Confirmed edge logic: front trips → reverse, back trips → forward | user check | Robot.cpp
+- Explained nearCenter as heading band, not position | user confusion | Strategy_Ram
+- Analyzed dead-reckoned return-to-center idea | user proposal to replace creep | not implemented
+- Proposed TRACK_CORRECTION rewrite | 255+60 clamps to 255 | not applied
+- User showed rewrite is functionally identical | agreed no bug, readability only | Strategy_Ram RAM_COMMIT
+- Re-explained whole code casually | easier to say aloud | all files
+
+CONSTANTS:
+- DETECT_THRESHOLD_L/C/R | 150 → 100 | idle reads 80–90 | MEASURED
+- ENGAGE_THRESHOLD_L/C/R | 550 → 465 | 600–700 at 10 cm; margin for 3-sample median | MEASURED
+- TURN_RATE_DEG_PER_MS | 0.18 → 0.216 | no measurement shown for 0.216 | PLACEHOLDER (0.18) / ASSUMED (0.216)
+- Theoretical turn rate | 0.3217°/ms at PWM 255; 0.189 at 150; 0.214 at 170 | 52 mm wheel, 200 RPM, 194 mm track, linear PWM scaling | DERIVED
+- Wheel linear speed | 544.5 mm/s at full PWM | π×52 mm × 3.333 rev/s | DERIVED
+- SEARCH_MAX_SWEEP_DEG | 100 → 180 | minimum 130.7 = 180 − 45 − 4.29; suggested 135–140 | 180 ASSUMED, 130.7 DERIVED
+- Sensor geometry | 45° mount, 8.58° beam | user-given | MEASURED
+- START_COUNTDOWN_MS | 5000 | code comment says confirm vs ruleset | ASSUMED
+- Others (SEARCH_SPIN 150, ALIGN_SPEED 170, CREEP 140/120/25°, EDGE_RECOVER 170/30/80/700, ENGAGE_MAX 3000, ALIGN 600/3, REACQUIRE 1500/130, TRACK_CORRECTION 60, LOST_CONTACT 150, COMMIT_HOLD 400, RAMP 60→255 over 120) | unchanged | no calc shown | ASSUMED
+- Arena radius | user said 144 cm; I flagged a conflict with a 1.5 m diameter ring | unresolved | ASSUMED
+
+DECISIONS:
+- Edge recovery direction: front → reverse, back → forward | away from the triggered edge | fixed direction | FINAL
+- Leave TRACK_CORRECTION code as is | works identically | explicit one-sided rewrite; RAMP_MAX 195 symmetric steer | FINAL
+- Dead-reckoned position + return to center, drop creep | user idea; slip during ram makes it unreliable | none | OPEN (not decided)
+- Two explanation styles (technical and casual) | judge Q&A | none | FINAL
+
+RESEARCH:
+- Turn rate theory | wheel/track math from user specs | 0.189 (search), 0.214 (align); bench-test still needed
+- Sweep coverage | 45° mount + 4.29° half-beam geometry | min ~131°, use 135–140
+- Position tracking feasibility | open-loop dead reckoning | feasible; drifts and fails after ram slip
+- `f` suffix | C++ literal typing | marks float literal; ints need none
+
+PROBLEMS:
+- Stray `s` in Hardware.h | typo | delete; OPEN until confirmed
+- Creep pulse not sustained | gate only, next tick overwrites | OPEN
+- One turn-rate for search (150) and align (170) | ~13% real difference | scale by PWM; OPEN
+- analogReadResolution(10) may not compile on Uno Q | core support uncertain | OPEN
+- Edge retreat blocked by opponent | no blocked-case logic, only 700 ms timeout | OPEN
+- alignFlipCount not cleared on COMMIT → REACQUIRE | benign in reachable paths | OPEN
+- Arena size mismatch (144 cm radius vs 1.5 m diameter) | user figure vs earlier note | OPEN
+- Unused functions: anyEdgeDetected, getHeadingEstimate, getRamState | debug hooks | none needed
+- TRACK_CORRECTION 255+60 clamp | readability only | closed, no bug
+
+END STATE:
+Hardware.h has calibrated detect/engage thresholds, turn rate 0.216 and sweep 180, plus a stray `s` still to remove.
+Creep pulse behavior, turn-rate vs PWM mismatch and return-to-center idea remain undecided.
+User has technical and casual walkthroughs ready for judge Q&A.
+
+CHAT: Sumo robot code review | code review, fixes, strategy redesign
+
+LOG:
+- Stray `s` token removed | compile error | Hardware.h
+- Creep latch added (`creeping`, `creepStartMs`, hold drive for CREEP_PULSE_MS) | one-shot creep was overridden next loop | Strategy_Ram.cpp
+- ENGAGE_MAX_MS block removed from RAM_COMMIT; constant deleted | forced release of a live push at 3s | Strategy_Ram.cpp, Hardware.h
+- TURN_RATE_DEG_PER_MS 0.216 → 0.312 | recomputed from wheel/motor geometry | Hardware.h
+- `trackHeading(sign, pwmMagnitude=0)` scaled by `/255.0f` | one constant wrong for two spin speeds | Strategy_Ram.cpp
+  - first attempt left `pwmMagnitude` undeclared and omitted `/255`; fixed
+- `forceCommit()` added (COMMIT, commitStart, engagedLatched=true, engagedSinceMs) and declared | edge-recovery bail should go to COMMIT, not SEARCH | Strategy_Ram.cpp/.h
+  - first header declaration lacked a semicolon; fixed
+- `recoverFromEdge` rewritten: opposite-edge check inside loop, `bailToCommit` flag → `forceCommit()` else `resetStateKeepHeading()` | blind reverse could leave the far edge; state loss on engage | Robot.cpp
+  - first attempt had `break` outside the loop and a missing semicolon; fixed
+- Four spin call sites changed to `trackHeading(±1, SEARCH_SPIN_SPEED / ALIGN_SPEED)` | pass PWM magnitude | Strategy_Ram.cpp
+  - `;;` left in the align branches (cosmetic)
+
+CONSTANTS:
+- DETECT_THRESHOLD L/C/R | 100 | no-object reading <100 (code comment 80–90) | MEASURED
+- ENGAGE_THRESHOLD L/C/R | 465 | peak 600–700 at ~10cm, margin for median filter | MEASURED (margin chosen)
+- Opponent sensor curve | <100 none; 250–350 at 0–10cm; 600–700 at ~10cm; <100 past 80cm | bench test, all three sensors | MEASURED
+- Edge sensor mount band | 1.5–3cm | ≥3cm both LOW; 1.5–3cm white HIGH/black LOW; <1.5cm both HIGH | MEASURED
+- TURN_RATE_DEG_PER_MS | 0.312 at PWM 255 | circumference π×0.052=0.1634m; 200 RPM=3.333 rev/s; v=0.545 m/s; ω=2v/L, L=0.20m → 5.45 rad/s ≈312°/s | DERIVED (free-run upper bound; L = chassis width ASSUMED)
+- Per-speed turn rates | ~0.1835 (PWM 150), ~0.208 (PWM 170) °/ms | 0.312 × PWM/255 | DERIVED (applied by scaling, not stored)
+- START_COUNTDOWN_MS | 5000 | rule 6.2, 5s stationary | DERIVED
+- Arena | 150cm outer, 3cm edge, 144cm black, radius 72cm | rulebook; sensor range 10–80cm | DERIVED
+- Speeds and timeouts (SEARCH_SPIN 150, ALIGN 170, CREEP 140/120ms, REACQUIRE 130/1500ms, EDGE_RECOVER 170/700ms, COMMIT_HOLD 400, LOST_CONTACT_GRACE 150, ALIGN_TIMEOUT 600, FLIP_LIMIT 3, TRACK_CORRECTION 60, ramp 60→255 over 120ms) | as in code | provenance not stated | PLACEHOLDER
+- DETECT bump | ~120 | extra noise headroom | PLACEHOLDER (optional, not adopted)
+- Fault-safety engage cap | 10–15s (20s alt) | well under 30s stuck rule | PLACEHOLDER (optional, not adopted)
+- Recenter drive distance | ~50cm | start value, bench-tune | PLACEHOLDER (proposed)
+- Stationary-before-rotate timeout | ~1.5–2s | proposed | PLACEHOLDER (proposed)
+
+DECISIONS:
+- Delete ENGAGE_MAX_MS | genuine lost-contact check already exists; simpler | extend to 20s | FINAL
+- Heading rate scaled by PWM fraction | spin speeds differ | two constants | FINAL
+- Edge-recovery engage bail → `forceCommit` | opponent already at point-blank | change `resetStateKeepHeading` globally | FINAL
+- Check opposite edge during recovery | blind reverse risk | none | FINAL
+- Edge recovery direction left as is | already moves away from triggering sensor | none | FINAL
+- Rear/side sensing deferred | hardware-only; user wants bugs fixed first | code workaround | OPEN
+- Latched creep in code | fix for one-shot bug | none | FINAL in code (dropping creep recommended, not adopted)
+- Keep logic on MCU, not Linux/RPC side | real-time latency | none | FINAL
+- Continuous x,y dead-reckoned position tracking | unbounded error from drift and slip, no correction | adopt it | REJECTED
+- Edge-trigger heading-based recenter (turn heading+180, drive ~50cm, resume search) | trusts heading only briefly | full tracking | OPEN (proposed, not implemented)
+- Drive-to-center at round start | assumed start near boundary | none | SUPERSEDED (start lines assumed ~10cm from center per rulebook)
+- Blank-slate strategy: stationary default → unbounded single-direction spin after timeout → align/commit/floor → edge → reorient → return to stationary; no cap, no creep | less dependence on drifting heading | rotation-first | OPEN (proposed, not implemented)
+
+RESEARCH:
+- Near-field rollover | Sharp curve behavior + user bench test | real (250–350 at contact vs 600–700 peak), but lost-contact timer uses the 100-threshold flags, so no false REACQUIRE; earlier claim refined
+- Edge sensor height | user bench test | reliable only 1.5–3cm
+- Rulebook | user paste | autonomous only; Uno Q only; ≤3kg; ≤20×20cm; 5s stationary; 3min rounds; 30s stuck rule; brown lines 10cm from center
+- Uno Q | user paste | STM32U585 MCU + QRB2210 Linux MPU, RPC bridge; keep real-time logic on the MCU
+- IMU | general explanation | accel+gyro; would give true heading and flip detection
+- Archetype comparison | code trace | remaining loss conditions are chassis/sensing-layout, not logic
+
+PROBLEMS:
+- Stray `s` | leftover keystroke | removed
+- Premature REACQUIRE from near-field rollover | not a real trigger | no fix needed
+- ENGAGE_MAX_MS release | fixed-time cap | removed
+- Creep one-shot | no hold | fixed
+- Blind reverse in edge recovery | triggering sensor only | fixed
+- Edge-recovery bail to SEARCH | wrong state | fixed
+- Compile errors (trackHeading, header semicolon, break, semicolon) | edit mistakes | fixed
+- `forceCommit` doesn't reset `alignFlipCount`/`lastAlignDir` | omitted | OPEN (add both resets)
+- `;;` in align branches | typo | OPEN (cosmetic)
+- No rear/side sensing | all 3 sensors face forward | OPEN (hardware)
+- No flip/lift detection; heading drift | no IMU | OPEN (hardware)
+- Wedge-under claim | teammate assurance, unverified | OPEN (measure ground clearance)
+- Edge sensor mount height | must sit inside 1.5–3cm | OPEN (verify physically)
+- Thin detect margin | 80–90 baseline vs 100 | OPEN (optional bump)
+- Detection reliability at 60–75cm | thin margin near max range | OPEN (verify)
+- Hit-and-run vs COMMIT_HOLD_MS | 400ms may drop back to search | OPEN (test)
+
+END STATE:
+- Code: all fixes applied across Hardware.h, Strategy_Ram.cpp/.h, Robot.cpp; reviewed as consistent; creep latch still present; ENGAGE_MAX_MS gone
+- Open: forceCommit flip reset, edge mount height check, rear sensing, no IMU
+- Proposed but not implemented: stationary-default/center-based redesign, edge-triggered recenter
+
+CHAT: Sumo robot code and strategy | Uno Q, edge logic, blind strategy
+
+LOG:
+- Claude Code `/init` run on repo root; 42-file diff panel explained as the pre-existing git diff | misread | none
+- Told to launch from 5_Strategy, skip `/init`, use plan mode | limit scope | none
+- Wrote deep-research prompt (5 components), later narrowed to Uno Q + GP2Y0A21 + TCRT5000, printed in chat | scope/cost | prompts
+- Wrote 3 audit prompts (code audit, Uno Q timing, sim harness) | find holes | prompts
+- Reviewed research and audit output; flagged Uno R3 data and unsourced boot times | distrust | none
+- Edge-recovery abort fixed: first version committed on first clear tick; moved after clear-timer, added `!oppositeTriggered` | commit at rim | Robot.cpp (`handleEdgeRecoveryTick`)
+- Double-edge escape added (map picks end nearer center) | passive stop with both edges | Robot.cpp, Hardware.h (`DOUBLE_EDGE_RECOVER_MAX_MS`)
+- `centerSustainedBand` added in COMMIT feeding the stalemate timer | late-appearing opponent never latches | Strategy.cpp
+- `strategyEngage()` added (left/right → ALIGN, center → COMMIT) | engage on sensing after clear | Strategy.cpp/.h
+- `EDGE_OVERRUN_MS` 80→30→80 | 30 let a spin swing a corner past the line | Hardware.h
+- `swingClear` gate added to clear condition; user's duplicate `else if` corrected | spin only when corners clear | Robot.cpp
+- Engage in edge-recovery exit gated on `swingClear` | no ALIGN spin at rim | Robot.cpp
+- RETURN abort gated (`d.center || swing clear`); RETURN translate min PWM 120 | spin at rim; governor 0-PWM stall | Strategy.cpp
+- `EDGE_SUPPRESSION_ENABLED=false`, `implausible` line uses it | map constants unmeasured; sensor always wins | Hardware.h, Robot.cpp
+- `COMMIT_VOID_PWM=150` used in COMMIT when map void | governor returns 0 | Hardware.h, Strategy.cpp
+- `SEARCH_ACTUAL_SPIN_DEGS` added; sweep leg A uses it | sweep used unreachable spin rate | Hardware.h
+- Full review: ratings, strategy comparison, placeholder table, field-symptom table, UBEC software mitigations | request | none
+- Brown-line false-edge fix proposed, then dropped | no brown lines at event; box lid used | not applied
+- Created T0_boot, T1_sensors, T2_motors, T3_spin, T4_speed, T5_edge_stop | measure constants | .ino sketches
+- Proposed `mapSnapEdge` rewrite (head-on assumption, M at 64 cm, heading set from snap angle) + `EDGE_HEADING_ASSUMED_ERR_DEG=25` | heading unknown after snap | Map.cpp, Hardware.h (applied? unconfirmed)
+- Proposed `spinCommand` branch swap if T3 shows CW | kinematics | Strategy.cpp (conditional)
+- Proposed pivot-based double-edge handler (`doubleEdgeSpinLeft`, max 250 ms) | tangent robot | Robot.cpp, Hardware.h (applied? unconfirmed)
+- Explained start-sequence concern (boot time vs 5 s hold) | question | none
+- Strategy switched to blind; wrote single-sketch blind ram/reverse/turn-10° cycle | team decision | BlindSumo.ino
+- Fixed compile error (`startPause` takes `int`); added `S_BOOT` + `POWER_ON_WAIT_MS` | Arduino auto-prototype; user's 15 s wait | BlindSumo.ino
+
+CONSTANTS:
+- DRIVE_SPEED_MAX_CMS | 45 | code comment: real ceiling 54.5–57.2 | PLACEHOLDER
+- SPIN_RATE_CW/CCW_DEGS | 120 / 120 | T3 pending | PLACEHOLDER
+- STOP_DISTANCE_CM | 16 | T5 pending | PLACEHOLDER
+- FRICTION_MU | 0.6 | spring-scale test pending | PLACEHOLDER
+- DRIVE_DECEL_CMS2 | ≈63 | 45²/(2·16) | DERIVED
+- COMMIT_SOFT_START_S | ≈0.076 | 45/(0.6·981) | DERIVED
+- ARENA_RADIUS / OUT_RADIUS (v5) | 72 / 75 | (150−6)/2; 150/2 | DERIVED (from rulebook)
+- ROBOT_L_F / L_B / WIDTH / TRACK | 10.5 / 9.5 / 20 / 15 | ruler pending | PLACEHOLDER
+- Edge sensor offsets front/back | 8 / 8 | ruler pending | PLACEHOLDER
+- ROBOT_R_SWING_CM | ≈14.5 | hypot(10, 10.5) | DERIVED
+- START_POSE_RADIUS_CM | 21.5 | 11 + 10.5 | DERIVED
+- OPEN_SWEEP_HALF_ANGLE_DEG | ≈40 | atan(20/32.5) + 8 | DERIVED
+- THETA0 / U0 / HEADING_DRIFT / K_ERR / SPIN_DRIFT | 8° / 5 / 3° per rev / 0.15 / 5 | none | PLACEHOLDER
+- isMapVoid threshold | 41.5 cm | 72 − 14.5 − 16 | DERIVED
+- Contact / peak bands | 250–350 / 600–700 | bench data | MEASURED
+- STRONG / NEAR threshold | 250 / 475 | band edges / midpoint | DERIVED
+- WEAK_THRESHOLD | 100 | venue noise log pending | PLACEHOLDER
+- SENSOR_REFRESH | 38.3 ± 9.6 ms | code says datasheet, "VERIFY" | ASSUMED
+- SENSOR_SAMPLE_INTERVAL / WEAK_CONFIRM | 15 ms / 4 | from refresh spec | DERIVED
+- STRONG_CONFIRM / LOST_CONTACT_GRACE | 2 / 60 ms | none | PLACEHOLDER
+- SENSOR_ADC_BITS | 10 | forced; verify saturated reading ≈1023 | ASSUMED
+- BOOT_DELAY_ESTIMATE_MS | 200 | T0 pending | PLACEHOLDER
+- START_COUNTDOWN_MS | 4850 | 5000 − 200 + 50 | DERIVED
+- SEARCH_SPIN_CAP / PWM | ≈145°/s / 255 | formula; 308 clamped to 255 | DERIVED
+- ALIGN_BASE_SPEED / timeout | 170 / ≈560 ms | 45 / (120·170/255) | PLACEHOLDER / DERIVED
+- ALIGN gain / max bias | 0.3 / 85 | none | PLACEHOLDER
+- STALEMATE timeout / backoff / trim / ceiling | 9000 / 300 / 40 / 30000 ms | ceiling from rule 6.6.D | PLACEHOLDER (ceiling rule)
+- EDGE_RECOVER_SPEED / CLEAR_CONFIRM / OVERRUN / MAX | 170 / 30 / 80 / 700 | none | PLACEHOLDER
+- DOUBLE_EDGE_RECOVER_MAX_MS | 150 (250 proposed) | none | PLACEHOLDER
+- COMMIT_VOID_PWM | 150 | none | ASSUMED
+- Front sensor margin to nose | 2.5 cm | 10.5 − 8 | DERIVED
+- EDGE_HEADING_ASSUMED_ERR_DEG | 25 | proposed | ASSUMED
+- TCRT5000 mount height | 1.5–3 cm reliable | bench (user) | MEASURED
+- Blind: arena diameter | 100 cm | user-stated; v5 rulebook said 150 | ASSUMED
+- Blind: body / wheel offset / start distance | 20×20 / 7.4 / 15 cm | user-stated | MEASURED
+- Blind: EDGE_MARGIN / LIMIT_R | 5 / 45 cm | 50 − 5 | ASSUMED / DERIVED
+- Blind: SWING_R | 14.15 | half-diagonal of 20×20 | DERIVED
+- Blind: DRIVE_SPEED / RAM_PWM / SPIN_PWM | 45 / 255 / 160 | T4 pending | PLACEHOLDER
+- Blind: SPIN_RATE_DEGS | ≈219 | 45/7.4·57.3·160/255 | DERIVED
+- Blind: TURN_STEP | 10° | user-specified | FINAL
+- Blind: DRIFT_FRAC / TURN_ERR / MIN_LEG / PAUSE | 0.05 / 1° / 6 cm / 80 ms | none | ASSUMED
+- Blind: first ram length | ≈19.9 cm | reverse limit from home | DERIVED
+- Blind: START_HOLD / POWER_ON_WAIT | 5050 / 15000 ms | 5 s rule + margin; user's 15 s, changeable | DERIVED / FINAL
+- Blind: CONTACT_ADC / IGNORE / EXTEND_MAX / CONTACT_SPEED | 500 / 150 ms / 1000 ms / 10 cm/s | none | PLACEHOLDER
+
+DECISIONS:
+- Keep v4 as fallback | safety | none | FINAL
+- Edge sensor always wins (suppression off) | map constants unmeasured | suppression | FINAL
+- No longer edge confirm for scratches | nose margin ≈0.5 cm; false trigger cheap, miss costly | longer debounce | FINAL
+- Engage via `strategyEngage` after clearing | user wanted ALIGN/COMMIT on sight | blind force-commit | FINAL
+- Keep `EDGE_OVERRUN_MS` 80 | swing clearance | 30 | FINAL
+- Brown-line fix | no brown lines used | apply fix | SUPERSEDED (box lid at center)
+- No code for rear/low opponent, sideways push, tilt, stuck sensor, brownout | no sensors/IMU, guesses risk worse behavior | watchdogs | FINAL
+- No adaptive WEAK_THRESHOLD at start | opponent visible during hold | auto-calibrate | FINAL
+- Map heading after snap | open-loop heading unreliable | trust map heading | PROPOSED (heading-free snap)
+- Blind strategy replaces sensor-based v5 | team decision | v5 sensors | FINAL (latest)
+- Blind leg length = min(forward limit, reverse limit) minus drift | must return home safely | longer rams | FINAL
+- `USE_EDGE`/`USE_CONTACT` default false | user dropped sensors; IS not wired | on by default | FINAL (edge advised if still wired)
+- 15 s power-on wait then A4 press then 5 s hold | user requirement | none | FINAL
+
+RESEARCH:
+- Uno Q architecture, boot | forum thread via Claude Code, not confirmed | ~43 s boot reported; "Immediate mode ~200 ms" unconfirmed
+- Uno Q pins/ADC/PWM | research report | cited Uno R3 docs; unreliable
+- Uno Q 3.3 V logic, 5 V tolerance, ADC reference, reset-cause API, power input | docs fetch and searches | not found
+- GP2Y0A21 | report | 10–80 cm, non-monotonic under ~10 cm, ~39 ms refresh, 4.5–5.5 V supply; output-range claim unverified
+- TCRT5000 | report plus user bench | 2.5 mm optimal in datasheet; 1.5–3 cm works on arena
+- BTS7960 PWM | report | up to 25 kHz; Uno Q analogWrite frequency not found
+- UBEC ripple | general practice, no Uno Q sources | oversample ADC, log noise under load, keep confirm counters; no EMA
+- Motor resistance via BTS7960 IS pins | general knowledge, untested | needs IS wiring to ADC; can't tell wall from opponent
+
+PROBLEMS:
+- Edge-abort committed at rim | sequencing | fixed
+- 42-file diff panel | pre-existing uncommitted changes | explained
+- "Invalid tool parameters" on `/init` | likely `/advisor` passed as argument | OPEN (run `/init` alone)
+- Search blocked once | classifier timeout | retry
+- Boot time vs 5 s hold | Linux boot reported ~43 s | OPEN (T0, ask organizers)
+- `spinCommand(true)` clockwise by kinematics, map/RETURN expect CCW; RETURN could oscillate | unresolved polarity from v4 | OPEN (T3; swap branches if CW)
+- Heading unknown after edge snap | open-loop heading | proposed snap rewrite | OPEN
+- Both edges at once | robot tangent to rim | proposed pivot handler | OPEN
+- Scratches/fade read as white | 200 µs double-read only filters glitches | accepted | OPEN
+- Map void after ~150 cm or ~1 s contact | uncertainty growth | by design | accepted
+- Not handled: rear/low opponent, sideways push, tilt, stuck sensor, brownout | hardware limits | none | OPEN
+- UBEC ripple on ADC | switching regulator | oversampling, noise-floor `WEAK_THRESHOLD` | OPEN
+- Blind drift and contact break dead reckoning | timed moves, no feedback | shrinking legs, retire after ~7 rams | OPEN
+- Resistance sensing | IS pins not wired | wire R_IS/L_IS to A0/A1, calibrate `CONTACT_ADC` | OPEN
+- Arena 150 vs 100 cm | conflicting statements | confirm rulebook | OPEN
+- `startPause(St)` compile error | IDE prototype before enum | param `int` | FIXED
+- RouterBridge library warning | duplicate libraries | ignore | n/a
+
+END STATE:
+- Blind `BlindSumo.ino` with 15 s power-on wait, A4 start, 5 s hold; uncompiled, constants placeholders
+- Open: boot time, spin polarity, edge-snap/double-edge edits unconfirmed, arena size, drift
+- T0–T5 sketches ready to measure constants
+
+CHAT: Sumo robot code audit and deploy | start sequence, bugs, upload errors
+
+LOG:
+- Read repo with git clone (web_fetch blocked, GitHub API rate-limited) | needed code access | 5_Strategy (12 files)
+- Built host-side sim (stub Arduino.h + harness) | test logic without hardware | local only
+- Found no start button; 5 s counted from boot (~4.85 s, guessed boot time) | hard rule broken | Hardware.h, Robot.cpp
+- initRobot waits for debounced start press (pin 12 assumed), release-first, then 5000+50 ms countdown with motors 0 | enforce 5 s rule | Hardware.h, Robot.cpp → 5_Strategy_fixed
+- Swapped spinCommand signs | towardLeft was CW but Map/COMMIT/RETURN treat left as CCW; ALIGN turned away, RETURN deadlocked | Strategy.cpp
+- Added enterCommit() (sets lastDetectMs, resets align flips) | stale lost-target timer | Strategy.cpp
+- enterSearch resets alignFlipCount/lastAlignDir | old flips forced blind COMMIT | Strategy.cpp
+- Swapped spinCommand args in OPEN_SWEEP legs | keep original sweep direction after sign fix | Strategy.cpp
+- Delivered zip + diff | handoff | 5_Strategy_fixed.zip, changes.diff
+- Rebuilt start flow as two buttons: A3 power-up (drivers on, sensors live, no logic), A4 start (5 s then logic); boot state = drivers disabled | user clarified flow | Hardware.h, Motors.h/.cpp (disableMotorDrivers), Robot.cpp
+- Added waitForPress(pin, pollSensors), release-then-press, 30 ms debounce | stuck/held button can't trigger | Robot.cpp
+- Re-diffed vs GitHub | user asked "nothing accidentally removed" | changes_vs_github.diff
+- Sim scenarios run: normal, only1, only2, p2first, p2held, bothheld | verify button logic | harness
+- v2.2_Strategy found identical to my fixed version; deeper review started, nothing reported | user rename | v2.2
+- v2.4_Strategy (13 files, new Formulas.h) compiled/linked on host stub; upload guide given | user changes | v2.4
+- Advised deleting analogWriteResolution(8) | IDE compile error (2-arg signature) | Motors.cpp line 7 (v2.4)
+- Wiring clarified (VIN switch + A4 rocker) → no functional change; comment edits suggested | v2.4 already matches | Hardware.h line 20, Robot.cpp line 181
+- Drafted judges' Q&A answers | competition prep | none
+- Gave arduino:zephyr "platform not installed" troubleshooting | IDE error | none
+
+CONSTANTS:
+- START_DELAY_MS | 5000 | user-stated rule | ASSUMED
+- START_DELAY_MARGIN_MS | 50 | added so delay errs late | ASSUMED
+- START_COUNTDOWN_MS | 5050 | 5000+50 | DERIVED
+- Original boot-based delay | ~4.85 s | guessed boot time in old code | PLACEHOLDER (replaced)
+- START_BUTTON_PIN | 12 → A4 | pin 12 guessed; A4 user-stated | pin 12 ASSUMED (superseded); A4 final
+- POWER_BUTTON_PIN | A3 | user-stated, later unused in v2.4 | superseded
+- BUTTON_DEBOUNCE_MS | 30 | my choice | ASSUMED
+- BUTTON_ACTIVE_LOW | true → false | rocker to 3.3 V with 10k pull-down = active-high | final false
+- POWER_BUTTON_PRESENT / START_IS_LATCHING / START_SWITCH_ANALOG | false / true / true | v2.4 config | matches wiring
+- SENSOR_ADC_BITS | 10 | v2.4 comment says VERIFY | ASSUMED
+- START_SWITCH_ON_ADC | ~775 | (5/2)/3.3 × 1023 | DERIVED
+- START_SWITCH_THRESHOLD_ADC | ~387 | ON/2; 3.3 V reads ~1023, 0 V reads 0 | DERIVED
+- REARM_HOLD_MS | 300 | 10 × debounce | DERIVED
+- ADC_OVERSAMPLE_N | 3–15, odd | from ADC_NOISE_SIGMA / target | DERIVED (value not computed here)
+- IR thresholds | 100 / 250 / 475 | as seen in code, bench-calibrated per user | MEASURED (unverified by me)
+- Sim motion model | 45 cm/s at full PWM, 120°/s spin | from code placeholders | PLACEHOLDER
+
+DECISIONS:
+- One start button → two buttons A3/A4 | user clarified | one-button version | SUPERSEDED by v2.4 (VIN switch + A4 rocker)
+- 5 s counted from debounced start press, not boot | rule compliance | boot-based | FINAL
+- Release-before-press on buttons | held/stuck switch can't start robot | simple level read | FINAL
+- Flip spinCommand to match Map/COMMIT/RETURN | one place to fix | changing every other convention | FINAL
+- Swap sweep legs after sign flip | preserve original sweep behavior | none | FINAL
+- Upload via Arduino IDE as one sketch folder | .ino + .h/.cpp in same folder compile together | merging files | FINAL
+- Delete analogWriteResolution(8) | 8-bit is default | other overload workarounds | pending confirmation
+- No functional code change for final wiring | v2.4 already matches | none | FINAL
+
+RESEARCH:
+- Uno Q multi-file upload | Arduino UNO Q docs (web search) | IDE 2.x + "UNO Q" / Arduino Zephyr Boards core; flashes MCU only; may need Arduino_RouterBridge; after core update, burn bootloader with OpenOCD
+- analogWriteResolution signature | ArduinoCore-zephyr repo (main, tags 0.56.0 and 0.90.0) | single-arg (int bits) in all; no 2-arg overload found; error origin unknown
+- Uno Q analogReference/ADC | web search | no conclusion reported
+- Error-text search | web search | no direct hit
+- GitHub access | tool attempts | git clone works; fetch and API don't
+- UBEC ripple software solutions | none done | unanswered; v2.4 already has median oversampling + dummy read
+
+PROBLEMS:
+- No start button; 5 s from boot | original design | fixed
+- ALIGN turned away; RETURN deadlock | inverted spin polarity | fixed, sim-verified
+- Stale align flips and lastDetectMs | missing resets | fixed
+- Stop-hold time stated as 1.2 s | misstatement | corrected to ~0.3 s (REARM_HOLD_MS=300)
+- IDE: too few arguments to analogWriteResolution(uint8_t, uint8_t) | source not found | delete Motors.cpp line 7; OPEN (unconfirmed)
+- Possible next error at analogReadResolution (Sensors.cpp ~line 96); Uno Q default 12-bit vs 10-bit thresholds | unconfirmed | OPEN
+- IDE: Platform 'arduino:zephyr' not found though core shown installed | stale board selection/cache or broken install | steps given; OPEN
+- Code-reading concerns in v2.2, never reported, not sim-verified: COMMIT governed PWM can reach 0 near outer radius; linear range estimate overestimates distance (phantom gate may reject real far targets); no spin-PWM floor; no zero/NaN guards on derived constants; left+right without center waits for ALIGN timeout | OPEN, v2.4 not audited
+- Hardware checks pending: motor forward direction, A0 = left sensor, spin PWM vs placeholder, lid removed before delay ends, brownout reset leaves robot idle, thresholds measured with dividers in place | OPEN
+
+END STATE:
+- v2.4_Strategy (13 files) compiles on host stub; wiring is VIN switch for power and A4 KCD1 rocker (3.3 V, 10k pull-down) for start; only comments need editing.
+- IDE verify still failing: the analogWriteResolution error (fix: delete Motors.cpp line 7, unconfirmed), then arduino:zephyr platform not found (OPEN).
+- Not done: v2.4 logic audit, UBEC/ADC noise answer, strategy refinement, bench test sketches.
