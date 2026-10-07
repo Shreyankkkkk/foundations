@@ -2,8 +2,8 @@
 
 Status: finished. Eliminated after the first 3 matches (2026-10-04). Retrospective: `Retrospective.md`.
 Controller: Arduino UNO Q (sole controller, fully autonomous, max 20x20 cm / 3 kg).
-Code that was on the board: `Strategy/v2.4_Strategy/`.
-Full history: `LOG.md`. Raw per-chat summaries: `Notes/chat-summaries/`.
+Code that was on the board: `firmware/strategy/v2.4_Strategy/`.
+Full history: `LOG.md`. Raw per-chat summaries: `notes/chat-summaries/`.
 
 ## Result
 | Match | Outcome |
@@ -15,11 +15,11 @@ Full history: `LOG.md`. Raw per-chat summaries: `Notes/chat-summaries/`.
 Causes: (1) the whole competition day went on wiring and it was never completed; (2) the robot sat so low that opponents' sensors could not detect it.
 v2.4 and every motion constant below were never tested on the real robot (no time).
 
-## Version map (repo folder = name used in chats)
+## Version map (folders in `firmware/strategy/`; name used in chats)
 | Folder | Chat name | What it is |
 |---|---|---|
-| v1.0_Strategy | 1_strategy | early modular firmware (Strategy_1/2); exact content not confirmed from summaries |
-| v1.1_Strategy | 2_strategy | not confirmed from summaries |
+| v1.0_Strategy | 1_strategy | first strategy split: Strategy_1/2 files only |
+| v1.1_Strategy | 2_strategy | first full modular sketch: Hardware, Motors, Robot, Sensors + Strategy_1/2 |
 | v1.2_Strategy | 3_strategy ("v3") | Hybrid: Strategy 1 P-control + side-override debounce, hammer attack, start palette |
 | v1.3_Strategy | 4_strategy ("v4") | Strategy_Ram: 3 opponent + 2 edge sensors, Search/Align/Commit, dead-reckoned heading |
 | v2.0_Strategy, v2.1_Strategy | 5_strategy ("v5") | map-based: ram at t=5 s, center-anchored position map, 6 files |
@@ -34,7 +34,7 @@ v2.4 and every motion constant below were never tested on the real robot (no tim
 - Power as bought per chats: 35 A fuse, one 2200 uF cap on the motor bus, 470 uF on the UBEC 5 V rail, 8x 10k resistors for dividers
 - Battery: 3S nominal 11.1 V (3 x 3.7), full 12.6 V (3 x 4.2); cell type never settled in the summaries (18650 holder vs LiPo): UNCONFIRMED
 - KCD4 switch DC rating never confirmed (listing gives 16 A / 250 VAC only; load ~8.2 A stall): UNCONFIRMED
-- Files: `Details/markdown/final_wiring.md`, `Details/materials.xlsx`
+- Files: `docs/specs/final_wiring.md` (materials.xlsx is not in the repo)
 
 ## Rulebook limits used in code and design
 | Rule | Value | Where used |
@@ -137,7 +137,7 @@ Values that changed between versions (check before trusting any old number)
 | Arena diameter in BlindSumo | 100 cm (placeholder) vs 150 cm rulebook | conflicting statements, never settled; blind sketch constants unreliable |
 
 ## Strategy summary (v2.4)
-5 ms loop: stop switch > edge sensors > strategy > motors > map update. States: OPEN_SWEEP, SEARCH, ALIGN, COMMIT, RETURN, STALEMATE_BREAK. Dead-reckoning map with uncertainty limits speed so the robot can stop before the rim. Detail: `Strategy/CodeGuide.md` (OUTDATED). Fallbacks that existed: v4 (Strategy_Ram, v1.3) and BlindSumo (sensor-free, timed).
+5 ms loop: stop switch > edge sensors > strategy > motors > map update. States: OPEN_SWEEP, SEARCH, ALIGN, COMMIT, RETURN, STALEMATE_BREAK. Dead-reckoning map with uncertainty limits speed so the robot can stop before the rim. Detail: `firmware/strategy/CodeGuide.md` (OUTDATED). Fallbacks that existed: v4 (Strategy_Ram, v1.3) and BlindSumo (sensor-free, timed).
 
 ## Lessons
 - Very low ground clearance meant opponents' sensors could not see the robot. Check ground clearance against typical opponent sensor height at design time.
@@ -146,13 +146,13 @@ Values that changed between versions (check before trusting any old number)
 - Full lessons by stage: `Retrospective.md`.
 
 ## Where things are
-- Strategy code: `Strategy/v1.0_Strategy` ... `v2.4_Strategy`
-- Tests/calibration sketches: `tests/Code/` (GP2Y0A21, TCRT5000, Calibrate, robot_testing)
-- CAD: `Design/`, `tests/Design/`
-- Docs: `Details/markdown/`, rulebook PDF in `Details/pdfs/`
-- Notes: `Notes/`; chat summaries and index: `Notes/chat-summaries/`
+- Strategy code: `firmware/strategy/v1.0_Strategy` ... `v2.4_Strategy`
+- Tests/calibration sketches: `firmware/tests/` (GP2Y0A21, TCRT5000, Calibrate, Motor_Sensor, robot_testing)
+- CAD: `design/` (`cad-v1`, `cad-v2`, `parametric`)
+- Docs: `docs/specs/`, rulebook PDF in `docs/rulebook/`
+- Notes: `notes/` (scans in `notes/scans/`); chat summaries and index: `notes/chat-summaries/`
 
 ## TODO
 - Clean up `v2.4_Strategy` (unnecessary lines; user estimates 300+). Keep the original, work on a copy.
-- Update or archive `Strategy/CodeGuide.md` to match the clean-up
-- Confirm real dates for the 33 backfilled chats (`Notes/chat-summaries/INDEX.md`), then move them into dated LOG lines
+- Update or archive `firmware/strategy/CodeGuide.md` to match the clean-up
+- Confirm real dates for the 33 backfilled chats (`notes/chat-summaries/INDEX.md`), then move them into dated LOG lines

@@ -1,21 +1,23 @@
 # Sumo-Robot LOG
 
 Format: `date | what changed | why | evidence`. Newest at the bottom. Add backfilled entries in date order.
+Path map (folders renamed 2026-10-06; entries below may use the old names): `Strategy/` = `firmware/strategy/`; `tests/Code/` = `firmware/tests/`; `tests/Design/` = `design/parametric/`; `Design/1_Design`, `Design/2_Design` = `design/cad-v1`, `design/cad-v2`; `Details/markdown/` = `docs/specs/`; `Details/pdfs/` = `docs/rulebook/` (scans moved to `notes/scans/`); `Notes/` = `notes/`.
 
 ## Dated entries (from file metadata and the repo)
 
-2026-09-24 | scanned handwritten pages | design/calibration notes | Details/pdfs/CamScanner 09-24-2026 22.13.12.pdf
-2026-09-25 | scanned notes + 6 design photos; first sensor calibration sketches | design v2 body + GP2Y0A21 calibration | Details/pdfs/CamScanner 25-09-2026 10.00.pdf, Design/2_Design/, tests/Code/sketch_sep25a/
-2026-09-26 | parametric CAD for front wedge and main deck | wedge/deck geometry from code | tests/Design/front_wedge_PARAMETRIC_SOURCE.py, main_deck_PARAMETRIC_SOURCE.py
-2026-09-30 | scanned notes | TODO describe | Details/pdfs/CamScanner 30-09-2026 20.46.pdf
-2026-10-0? (last day before the event) | created v2.2, v2.3, v2.4 and renamed all versions from N_strategy to vX.Y | final strategy iterations | Strategy/v2.2_Strategy ... v2.4_Strategy
-2026-10-04 | competition: match 1 skipped (wiring not done); match 2 stalemate, won coin flip; match 3 stalemate, lost coin flip, eliminated | wiring never finished; robot too low for opponent sensors to detect; v2.4 and motion constants never tested | Projects/Sumo-Robot/STATE.md
+2026-09-24 | scanned handwritten pages | design/calibration notes | notes/scans/2026-09-24-scan.pdf
+2026-09-25 | scanned notes + 6 design photos; first sensor calibration sketches | design v2 body + GP2Y0A21 calibration | notes/scans/2026-09-25-scan.pdf, design/cad-v2/, firmware/tests/
+2026-09-26 | parametric CAD for front wedge and main deck | wedge/deck geometry from code | design/parametric/front_wedge_PARAMETRIC_SOURCE.py, main_deck_PARAMETRIC_SOURCE.py
+2026-09-30 | scanned notes | TODO describe | notes/scans/2026-09-30-scan.pdf
+2026-10-0? (last day before the event) | created v2.2, v2.3, v2.4 and renamed all versions from N_strategy to vX.Y | final strategy iterations | firmware/strategy/v2.2_Strategy ... v2.4_Strategy
+2026-10-04 | competition: match 1 skipped (wiring not done); match 2 stalemate, won coin flip; match 3 stalemate, lost coin flip, eliminated | wiring never finished; robot too low for opponent sensors to detect; v2.4 and motion constants never tested | projects/sumo-robot/STATE.md
 2026-10-04 | set up MCP logging for the repo (AI-CONTEXT.md, STATE.md, LOG.md) | cut tokens per chat, keep proof of work | AI-CONTEXT.md
-2026-10-06 | backfilled this log from 33 chat summaries (18 from account 1, 15 from account 2); extended STATE.md constants; wrote Retrospective.md; added chat index | prove the work, build the project template | Notes/chat-summaries/INDEX.md, Retrospective.md
+2026-10-06 | backfilled this log from 33 chat summaries (18 from account 1, 15 from account 2); extended STATE.md constants; wrote Retrospective.md; added chat index | prove the work, build the project template | notes/chat-summaries/INDEX.md, Retrospective.md
+2026-10-06 | restructured the repo: folders lowercased and regrouped (learning/, projects/, certificates/, journal/, _local/); Sumo split into docs/, design/, firmware/, notes/ | professional learning-log layout | README.md, AI-CONTEXT.md
 
 ## Backfill: chat history
 
-The summaries carry no dates. Order below is inferred from cross-references between chats (file names, version numbers, "prior agent" mentions) and the dated anchors above. Confirm real dates from the chat sidebar and fill `Notes/chat-summaries/INDEX.md`; then move these lines up into the dated section.
+The summaries carry no dates. Order below is inferred from cross-references between chats (file names, version numbers, "prior agent" mentions) and the dated anchors above. Confirm real dates from the chat sidebar and fill `notes/chat-summaries/INDEX.md`; then move these lines up into the dated section.
 ID = `A1-nn` / `A2-nn`: chat nn in the account-1 / account-2 summary file. Raw summaries: `Notes/chat-summaries/`. Chat naming differs from repo folders: chat v3 = Hybrid = v1.2, chat v4 = Strategy_Ram = v1.3, chat v5 = map-based = v2.0/v2.1.
 
 ### Phase 1: planning, learning, parts
