@@ -1,21 +1,16 @@
-Technical-skills/git-github/Context_Transfers/
-Technical-skills/artificial-intelligence/Context_Transfers/
+# Local-only: never published (books, vendor files, AI context transfers, coursework)
+_local/
+coursework/school/
+coursework/university/
 
-# Ignore folders not currently part of the repository
-
-Assets/
-docs/
-Engineering/
-Finance/
-Mathematics/Mathematics_Books/
-Mathematics/Context_Transfers/
-Snippets/
-University/
-School/
-Technical-skills/robotics/faulhaber
-Journal/
-
-# Python cache files
+# Python / Numba caches
 __pycache__/
 *.pyc
 *.pyo
+*.nbi
+*.nbc
+
+# Office lock files and OS clutter
+~$*
+Thumbs.db
+.DS_Store
