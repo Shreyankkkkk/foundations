@@ -7,7 +7,7 @@ Each project has `STATE.md` (where it stands now), `LOG.md` (dated changes: what
 | `sumo-robot` | Finished (competed 2026-10-04, eliminated) | `README.md`, `STATE.md`, `Retrospective.md` |
 | `monte-carlo-simulation` | Active | `STATE.md`, code in `current/` |
 | `quant-finance-sim-forage` | To redo | single early attempt file |
-| `amd-hackathon` | Day 0 (research; not yet registered) | `STATE.md`, `docs/brief.md` |
+| `amd-hackathon` | Day 0 (research; not yet registered). AMD AI Academy Challenge, a different event from ACT III | `STATE.md`, `docs/brief.md` |
 | `amd-hackathon-act-iii` | Day 0 (pre-kickoff 2026-10-12; AMD sign-up done) | `STATE.md`, `docs/brief.md` |
 
 New project or resume: follow `WORKFLOW.md` in this folder (stages, session loop, git routine, prompts).
