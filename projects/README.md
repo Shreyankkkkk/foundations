@@ -8,4 +8,4 @@ Each project has `STATE.md` (where it stands now), `LOG.md` (dated changes: what
 | `monte-carlo-simulation` | Active | `STATE.md`, code in `current/` |
 | `quant-finance-sim-forage` | To redo | single early attempt file |
 
-New project checklist: create `projects/<name>/` with `STATE.md` and `LOG.md`, add a row above, add a line to `journal/`.
+New project or resume: follow `WORKFLOW.md` in this folder (stages, session loop, git routine, prompts).

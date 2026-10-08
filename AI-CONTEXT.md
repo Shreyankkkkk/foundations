@@ -1,6 +1,6 @@
 # AI-CONTEXT (read this first, every chat)
 
-Purpose: one-page entry point for any AI working on this repo. Read this, then only the STATE.md of the project in question. Do not ask for whole codebases and do not open `_local/`.
+Purpose: one-page entry point for any AI working on this repo. Read this, then only the STATE.md of the project in question. Do not ask for whole codebases and do not open `_local/`. New project or resuming one: follow `projects/WORKFLOW.md`.
 
 ## Who
 Shreyank, 2nd-year Mechatronics Engineering student (UOWD). Goal: quantitative finance (discretionary trading + systematic/quant development). This repo is a public log of everything he learns, builds and earns.
