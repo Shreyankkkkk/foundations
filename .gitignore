@@ -3,6 +3,10 @@ _local/
 coursework/school/
 coursework/university/
 
+# Generated code map (rebuilt automatically by scripts/codemap/codemap.py)
+scripts/codemap/CODEMAP.md
+scripts/codemap/CODEMAP.tmp
+
 # Python / Numba caches
 __pycache__/
 *.pyc

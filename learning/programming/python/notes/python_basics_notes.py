@@ -75,4 +75,19 @@ re.search(object, iterable, re.IGNORECASE)
     # + checks for one or more digits
 re.fullmatch(object, iterable)
     # The fullmatch function returns a match object when the regex pattern matches the entire string and None otherwise.
+
+--------------------------------
+defaultdict, f-string format specs, generator expressions (from token_tools.py)
+
+from collections import defaultdict
+counts = defaultdict(int)       # a dict that creates a starting value for a missing key (int -> 0)
+counts["a"] += 1                # no KeyError, even though "a" was never added
+    # defaultdict(lambda: {"calls": 0, "total": 0}) creates a fresh dict for each new key
+
+f"{x:.1f}"          # one decimal place: 3.14159 -> 3.1
+f"{x:g}"            # drops trailing zeros: 95.0 -> 95
+f"{3 / 4 * 100:.1f}%"   # 75.0%
+
+sum(r["total"] for r in rows)       # generator expression: a loop written inside sum(), no list is built
+all(n > 0 for n in numbers)         # same idea works with all() / any() / max() / min()
 '''

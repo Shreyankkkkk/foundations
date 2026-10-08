@@ -47,4 +47,21 @@ logger.function_name(value)
     error - a serious problem
     critical - severe failure
 
+---------------------------------------------------------------------------------------------------------------------------
+Handling expected errors (from token_tools.py and codemap.py)
+
+try:
+    import tiktoken
+except ImportError:                 # the library is not installed
+    sys.exit("tiktoken is not installed. Run: pip install tiktoken")
+
+except (SyntaxError, UnicodeDecodeError) as error:      # a tuple catches several error types in one block
+    print(type(error).__name__)                          # type(error).__name__ = the error's class name, e.g. SyntaxError
+
+import sys
+sys.exit("message")
+    # stops the program and prints the message to stderr, exit code 1
+    # use for expected problems (missing file, bad input): the user sees one clear line, not a traceback
+    # sys.exit() with no message exits with code 0 = success
+
 '''
