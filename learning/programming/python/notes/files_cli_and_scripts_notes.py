@@ -108,3 +108,99 @@ pythonw script.py          # like python, but no console window (print() output 
 Startup folder (shell:startup): a shortcut placed there runs at every login
     # target: pythonw.exe   arguments: path/to/script.py --watch
 '''
+
+'''
+subprocess: running another program from Python (from codemap.py and helper_server.py)
+
+import subprocess
+result = subprocess.run(["git", "ls-files", "-z"], cwd=folder, capture_output=True, text=True)
+result.stdout  result.stderr  result.returncode     # output, error text, 0 = success
+    # a list, not one string, so spaces in names cannot break the command
+    # git ls-files --cached --others --exclude-standard = files git tracks + new files - .gitignore matches
+    # -z separates names with a null character, so any file name splits correctly: output.split("\0")
+creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)
+    # Windows only: no flashing console window; getattr(obj, name, default) returns the default if the name does not exist
+'''
+
+'''
+MCP server (scripts/mcp_helper/helper_server.py)
+
+MCP = Model Context Protocol: a standard way for an AI app to call tools in a program you write.
+Claude Desktop starts the program itself and talks to it through stdin/stdout ("stdio").
+    -> never print() in a stdio server, extra text on stdout breaks the conversation
+
+server = MCPServer("name")
+@server.tool()                  # a decorator: registers the function below as a tool
+def read_lines(path: str, start: int, end: int) -> str:
+    """This docstring becomes the tool description the AI sees (and is sent every turn: keep it short)."""
+    # the type hints (str, int) become the tool's input schema
+server.run()                    # stdio by default
+
+try:
+    from mcp.server import MCPServer                         # SDK 2.x
+except ImportError:
+    from mcp.server.fastmcp import FastMCP as MCPServer      # SDK 1.x: same code runs on both ("as" renames on import)
+
+pip install "mcp>=1.28,<2"      # >=1.28,<2 = any 1.x from 1.28 up, but not 2.0 (version pinning)
+
+Safe file access (path traversal):
+    target = (REPO_ROOT / user_path).resolve()               # resolve() removes ../ and follows symlinks
+    target.relative_to(REPO_ROOT.resolve())                  # raises ValueError if target is outside the repo
+    # then also require the file to be in git's publishable list, so ignored/private files are refused
+
+fnmatch.fnmatch("a/b.py", "*.py")    # shell-style wildcard match on a string (here * also matches /)
+raw = open(path, "rb").read();  b"\0" in raw[:8000]    # binary check: git treats a NUL byte in the first 8000 bytes as binary
+raw.decode("utf-8-sig", errors="replace")                # bad bytes become ? instead of crashing
+'''
+
+'''
+re: regular expressions (build_portable.py repo_slug)
+
+import re
+m = re.search(r"github[.]com[:/](.+?)(?:[.]git)?$", url)    # r"..." = raw string: backslashes stay as written; [.] = a literal dot (same as an escaped dot)
+m.group(1) if m else None          # search returns None when nothing matches, always check
+    # . any character, [.] or a backslash-dot = a real dot   [:/] one of : or /   (...) capture group   (?:...) group, not captured
+    # +? lazy (as few as possible)   ? optional   $ end of text
+'''
+
+'''
+Decorators that wrap a function (helper_server.py logged)
+
+import functools
+def logged(function):
+    @functools.wraps(function)           # copies name, docstring, type hints onto wrapper (MCP reads them)
+    def wrapper(*args, **kwargs):        # *args/**kwargs = accept any arguments and pass them on
+        ...before...
+        result = function(*args, **kwargs)
+        ...after...
+        return result
+    return wrapper                       # the decorator returns the new function that replaces the old one
+@server.tool()
+@logged
+def f(): ...                             # stacked: logged wraps f first, then server.tool() registers the wrapped result
+'''
+
+'''
+async / await (selftest.py)
+
+import asyncio
+async def main(): ...            # coroutine function: calling it only creates a coroutine
+await something()                # run it and wait, letting other work happen meanwhile
+asyncio.run(main())              # the single entry point that starts everything
+async with open_connection() as c: ...    # with, where opening/closing needs await
+await asyncio.wait_for(coro, 60)           # raises asyncio.TimeoutError if it takes over 60 s (how a hang is detected)
+'''
+
+'''
+Small tools used across the scripts
+
+from collections import defaultdict
+groups = defaultdict(lambda: {"calls": 0, "total": 0})    # a missing key is created with this default instead of KeyError
+sorted(d.items(), key=lambda item: item[1]["total"], reverse=True)    # sort by a chosen value, biggest first
+sys.exit("message")              # stop the script, print the message to stderr, exit code 1 (no traceback)
+for n, line in enumerate(lines, start=1):    # number the items from 1 (line numbers)
+"x".startswith(("a", "b"))       # a tuple = true if it starts with any of them
+text or "(none)"                 # `or` returns the right side when the left is empty/falsy
+
+Full walkthrough of every script: scripts_walkthrough_notes.py (same folder).
+'''
