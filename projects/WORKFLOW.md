@@ -80,6 +80,36 @@ Where things are (folders)
 ## 6. Finish a project
 Write `Retrospective.md` (what worked and what didn't per stage, decisions, open items); add certificates to `certificates/README.md`; push; then archive or delete the old chats.
 
+## 7. Which AI for which task (free plans, decided 2026-10-09)
+One AI per task. Use the fallback only when the main one hits its free limit. The only AI that edits files is Claude desktop (MCP). Every other AI gets PORTABLE.md (section 3a) and returns text you paste yourself.
+
+| Task | Use | Fallback | Link | Input you give it | Check it with |
+|---|---|---|---|---|---|
+| Edit repo files, STATE/LOG/README, `log it` | Claude desktop (MCP) | none (wait for the limit reset) | https://claude.ai/ | `Continue a project` prompt | `git diff` |
+| Write/change code: sumo (Arduino Uno Q C++), EURUSD backtest (Python), Pine Script, scripts/ | Claude desktop (MCP) | none | https://claude.ai/ | `Continue a project` prompt, goal in one line | compile and run on the real target; backtest stage output vs TradingView |
+| Review a code diff (second model family) | ChatGPT Free | DeepSeek | https://chatgpt.com/ | `External start` prompt + the `git diff` + test output | your own run; a finding is a claim, not a patch |
+| Primary research (rules, constants, what to measure) | Claude desktop (MCP) | none | https://claude.ai/ | `Research (primary)` prompt; reads `docs/brief.md` + STATE.md | the rulebook itself; unmeasured stays `PLACEHOLDER` |
+| Secondary research: find current sources, repos, docs, release notes | Perplexity Free | ChatGPT Free (search on) | https://www.perplexity.ai/ | `Research (secondary)` prompt | open the source link; tag `SOURCED` only if you opened it |
+| Find academic papers (quant stats, edge validation, control, hackathon topics) | Consensus | Perplexity Free | https://consensus.app/ | the question in one line | read the paper's abstract and method |
+| Work through a pile of PDFs/rulebooks/papers you already collected | NotebookLM | Claude web (paste ONE file) | https://notebooklm.google.com/ | upload only the files for that project | its citation, opened in the source |
+| Learn a new term/topic from zero (`Teach me`) | ChatGPT Free, fresh chat per topic | Claude web | https://chatgpt.com/ | `Glossary` then `Teach me` prompt | the Quiz me step below |
+| Test that you learned it (`Quiz me`) | Claude web, fresh chat, paste ONE note | ChatGPT Free | https://claude.ai/ | `Quiz me` prompt + the note | your answers; re-read what it flags |
+| Math/physics/stats coursework (MATH291, STAT291, PHYS, ECTE) and quant derivations | ChatGPT Free (reasoning mode) | DeepSeek | https://chatgpt.com/ | the problem + what you tried | SymPy/NumPy in Python, units, boundary cases |
+| Second opinion on a derivation or statistical-test design | DeepSeek | ChatGPT Free | https://chat.deepseek.com/ | the derivation only, no repo | recompute in Python |
+| Read a circuit/schematic/robot-layout image | ChatGPT Free | DeepSeek (if it accepts images) | https://chatgpt.com/ | image + one question | datasheet pinout and a multimeter, never the AI alone |
+| Close a session with a non-MCP AI | the same AI | none | n/a | `External end` prompt | paste into STATE.md and LOG.md yourself |
+
+Not in the pipeline (no account, no handoffs): Kimi, Z.ai, Qwen, Grok, Le Chat, Gemini, GitHub Copilot. Add one only if a task above is blocked by a limit for more than a day, and write the reason here.
+
+Normal code change (3 steps, nothing extra): (1) Claude desktop plans and edits; (2) you compile/run/test and read `git diff`; (3) only if the change is consequential (strategy logic, motor/edge-sensor code, backtest logic, anything you cannot test yourself), send diff + test output to ChatGPT Free for review. Then `log it`, commit.
+
+Rules:
+- Author and reviewer are never the same model family. A fresh chat of the same AI does not count.
+- Reviewer never rewrites; it lists bugs with file/line and a failure scenario, marked confirmed or possible.
+- No AI is the calculator of record. Numbers come from Python or a real measurement.
+- Free limits and model names change monthly. Before relying on one, check what the app actually offers on your account, and put the model name you saw in the LOG line.
+- This table was set from a research snapshot (2026-10-09). The model names in it (GPT-6 Luna, DeepSeek V4.1-Flash and others) were not independently verified; the tool roles above do not depend on them.
+
 ## Prompts
 **New project**
 ```
