@@ -1,4 +1,43 @@
-# CODEMAP (auto-generated, do not edit) | L<n> = line number, may lag behind edits | 45 files listed, 10 without functions/classes omitted
+# CODEMAP (auto-generated, do not edit) | L<n> = line number, may lag behind edits | 56 files listed, 54 without functions/classes omitted
+coursework/school/Class-11/Classwork/2nd-chapter-(II).py
+  (could not read: SyntaxError)
+coursework/school/Class-11/Classwork/2nd-chapter.py
+  (could not read: IndentationError)
+coursework/school/Class-11/Classwork/Worksheet.py
+  (could not read: IndentationError)
+coursework/school/Class-11/Project/Project - Fibonacci series.py
+  fibonacci_numbers(n: int) L4
+coursework/school/Class-12/Class work/file_handling_classword(ii).py
+  (could not read: IndentationError)
+coursework/school/Class-12/Class work/python-connector1.py
+  display() L7
+  records() L15
+  age_display() L21
+  insert_value() L43
+  delete() L64
+  update() L69
+  display() L72
+coursework/school/Class-12/Project/CS Project - Final.py
+  get_time_input(date) L43
+  addEvent() L147
+  loadEvents() L164
+  callback(event) L188
+  updateCal() L206
+  nextMonth() L246
+  prevMonth() L260
+  goToday() L275
+  login() L341
+coursework/school/Class-12/Project/calendar final.py
+  get_time_input(date) L30
+  addEvent() L103
+  loadEvents() L118
+  callback(event) L137
+  updateCal() L155
+  nextMonth() L189
+  prevMonth() L202
+  goToday() L216
+coursework/school/Class-12/Project/inventory-management/manage.py
+  main() L7
 learning/programming/data-analysis/exercises/pandas_basics_excercise.py
   list_functions(module) L3
 learning/programming/python/data-structure-algorithm/LinkedList.py
@@ -409,6 +448,17 @@ scripts/codemap/codemap.py
   snapshot() L123
   watch(cpu_budget) L135
   main() L159
+scripts/mcp_helper/helper_server.py
+  debug(message) L56
+  logged(function) L66
+  publishable_files() L84
+  read_text(path) L102
+  search_code(query: str, glob: str='') L115
+  read_lines(path: str, start: int, end: int) L159
+scripts/mcp_helper/selftest.py
+  async step(label, coroutine) L25
+  async call(session, name, **arguments) L39
+  async main() L44
 scripts/token_tools/token_tools.py
   count_tokens(text, encoding_name=DEFAULT_ENCODING) L33
   run_count(args) L47
