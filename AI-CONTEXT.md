@@ -22,7 +22,7 @@ Inside a learning topic: `notes/`, `exercises/`, `datasets/`, `projects/` (only 
 Inside a project: `STATE.md`, `LOG.md`, then folders by kind (`docs/`, `design/`, `firmware/`, `notes/`, `archive/`). Sumo detail: `projects/sumo-robot/README.md`.
 
 ## Rules for AI
-1. Read `AI-CONTEXT.md`, then `projects/<X>/STATE.md`. Open code files only when the task needs them. To find code, read `scripts/codemap/CODEMAP.md` first (auto-generated functions/classes per file with line numbers; trust names, line numbers may lag).
+1. Read `AI-CONTEXT.md`, then `projects/<X>/STATE.md`. Open code files only when the task needs them. To find code, read `scripts/codemap/CODEMAP.md` first (auto-generated functions/classes per file with line numbers; trust names, line numbers may lag; outside the MCP open `https://raw.githubusercontent.com/Shreyankkkkk/foundations/main/scripts/codemap/CODEMAP.md`).
 2. Constants: never invent or hard-code. Every constant gets its calculation or measurement shown beside it, plus the source. Unmeasured = say so, mark it `PLACEHOLDER`; assumed = `ASSUMED`.
 3. Code changes: give the code and say which file and where in it the change goes (he does not know the file layout by heart).
 4. Be token-efficient: no padding.

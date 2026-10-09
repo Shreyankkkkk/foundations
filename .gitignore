@@ -3,8 +3,7 @@ _local/
 coursework/school/
 coursework/university/
 
-# Generated code map (rebuilt automatically by scripts/codemap/codemap.py)
-scripts/codemap/CODEMAP.md
+# Temp file used while codemap.py rewrites scripts/codemap/CODEMAP.md (the map itself is committed)
 scripts/codemap/CODEMAP.tmp
 
 # Python / Numba caches

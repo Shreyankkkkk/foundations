@@ -7,7 +7,7 @@ If you cannot write files, give me log lines and STATE edits as text to paste.
 Shreyank, 2nd-year Mechatronics Engineering student (UOWD). Goal: quantitative finance (discretionary trading + systematic/quant development). This repo is a public log of everything he learns, builds and earns.
 
 ## Rules for AI
-1. Read `AI-CONTEXT.md`, then `projects/<X>/STATE.md`. Open code files only when the task needs them. To find code, read `scripts/codemap/CODEMAP.md` first (auto-generated functions/classes per file with line numbers; trust names, line numbers may lag).
+1. Read `AI-CONTEXT.md`, then `projects/<X>/STATE.md`. Open code files only when the task needs them. To find code, read `scripts/codemap/CODEMAP.md` first (auto-generated functions/classes per file with line numbers; trust names, line numbers may lag; outside the MCP open `https://raw.githubusercontent.com/Shreyankkkkk/foundations/main/scripts/codemap/CODEMAP.md`).
 2. Constants: never invent or hard-code. Every constant gets its calculation or measurement shown beside it, plus the source. Unmeasured = say so, mark it `PLACEHOLDER`; assumed = `ASSUMED`.
 3. Code changes: give the code and say which file and where in it the change goes (he does not know the file layout by heart).
 4. Be token-efficient: no padding.

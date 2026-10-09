@@ -5,7 +5,9 @@ so an AI can find code by reading the map instead of opening many files.
     python scripts/codemap/codemap.py            # build the map once
     python scripts/codemap/codemap.py --watch    # keep it up to date automatically
 
-Output: scripts/codemap/CODEMAP.md (gitignored, rebuilt only when something changed).
+Output: scripts/codemap/CODEMAP.md (committed, so any AI can read it from GitHub; rewritten only
+when something changed). Only files git would publish are listed, so gitignored private folders
+(coursework, _local, ...) never appear in it.
 
 Watch mode checks file timestamps on a timer. The wait between checks is not a guess:
     interval = (time one check takes) / cpu_budget
@@ -14,6 +16,7 @@ so the watcher uses about cpu_budget of one CPU core (default 1%, a deliberate c
 import argparse
 import ast
 import os
+import subprocess
 import sys
 import time
 from pathlib import Path
@@ -38,6 +41,26 @@ def find_py_files():
             if filename.endswith(".py"):
                 found.append(Path(folder) / filename)
     return sorted(found, key=lambda path: path.relative_to(REPO_ROOT).as_posix())
+
+
+def publishable_py_files():
+    """Python files git would publish: tracked or new, minus anything matched by .gitignore.
+    git is the single source of truth, so private folders can never leak into the map."""
+    result = subprocess.run(
+        ["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"],
+        cwd=REPO_ROOT, capture_output=True, text=True, encoding="utf-8", errors="replace",
+        # Windows only: stops a console window flashing each time the hidden watcher calls git.
+        # The flag does not exist on other systems, so getattr falls back to 0 (no flag).
+        creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+    if result.returncode != 0:
+        raise OSError(f"git ls-files failed: {result.stderr.strip()}")
+    paths = []
+    for name in result.stdout.split("\0"):  # -z separates names with a null character
+        if name.endswith(".py") and not SKIP_DIRS.intersection(Path(name).parts):
+            path = REPO_ROOT / name
+            if path.is_file():  # skips files deleted but not yet committed
+                paths.append(path)
+    return sorted(paths, key=lambda path: path.relative_to(REPO_ROOT).as_posix())
 
 
 def signature(node):
@@ -69,7 +92,7 @@ def describe_file(path):
 # ---------- building and writing the map ----------
 
 def build_map():
-    files = find_py_files()
+    files = publishable_py_files()
     body = []
     omitted = 0
     for path in files:
@@ -148,7 +171,10 @@ def main():
         except KeyboardInterrupt:
             print("Stopped.")
     else:
-        changed = write_if_changed(build_map())
+        try:
+            changed = write_if_changed(build_map())
+        except OSError as error:
+            sys.exit(f"Could not build the map: {error}")
         print(f"{'Wrote' if changed else 'Already up to date:'} {OUTPUT}")
 
 

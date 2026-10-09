@@ -6,6 +6,7 @@ Rule of thumb: **the repo is the shared context.** Never paste code between chat
 - The local MCP lives in `%APPDATA%\Claude\claude_desktop_config.json` (a JSON file, not JavaScript). It belongs to the computer, not to a Claude account, so any account logged into the desktop app on this PC should get the same `foundations` server. After switching accounts, fully restart the app and check in a new chat that the foundations tools are listed. If not, re-check that JSON file.
 - Memory and preferences are per account and are NOT shared between accounts. Everything that must apply to every chat lives in `AI-CONTEXT.md`.
 - Phone, web or a PC without the MCP: the AI can read only what is pushed, so push at the end of every session. Use section 3a.
+- Code map: `scripts/codemap/codemap.py --watch` keeps `scripts/codemap/CODEMAP.md` current. On a new PC, set it to start at login (Startup-folder shortcut to `pythonw codemap.py --watch`). It lists only git-publishable files, and it is committed so other AIs can read it.
 - The GitHub repo is named `foundations` (`https://github.com/Shreyankkkkk/foundations`). Its old name `quant-foundations` is retired; do not use it in links.
 
 ## 1. Start a project (5 min)
@@ -29,7 +30,7 @@ Hackathon/competition: split the time before you start (about 20% research, 60% 
 One self-contained file per project, built by a script (no AI tokens): `projects/<slug>/PORTABLE.md` = rules + STATE + last 10 LOG lines + raw links to docs/notes.
 1. Commit and push (a git hook rebuilds PORTABLE.md on every commit; if it did not run, run `python scripts/build_portable.py` first).
 2. New chat, send the **External start** prompt below with that project's raw link.
-3. If the AI says it cannot open the link, do not argue: open the file in your browser, copy it, paste it into the chat. It is only about 1.5-3k tokens.
+3. For code questions also send the raw link to `scripts/codemap/CODEMAP.md` (function/class index; it is only as new as your last push). If the AI says it cannot open a link, do not argue: open the file in your browser, copy it, paste it into the chat. It is only about 1.5-3k tokens.
 4. Work. The AI cannot edit your files, so at the end send the **External end** prompt and paste the result into STATE.md and LOG.md yourself.
 
 ## 3b. Learning notes (new topics, zero knowledge)
@@ -44,6 +45,7 @@ The AI writes the note content only; you paste it into the file. That costs zero
 - The AI reads at most: `AI-CONTEXT.md` + one `STATE.md` + the last 10 LOG lines. Never a whole LOG, never `learning/`, never `_local/`.
 - `STATE.md` is rewritten only where the truth changed. `LOG.md` and the journal get one appended line each, only on `log it`.
 - One topic or task per chat. Start a new chat when the topic changes or the chat gets long.
+- To find code, read `scripts/codemap/CODEMAP.md` first, then open only the one file it points to.
 - Do not paste code or files the AI can open itself (MCP) or that are in PORTABLE.md.
 - Keep prompts short: goal + constraint + output format.
 
