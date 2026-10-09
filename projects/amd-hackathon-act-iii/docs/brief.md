@@ -17,6 +17,7 @@ Hybrid hackathon. Everything runs in the cloud on AMD GPUs with the ROCm stack, 
 2. Health and Wellbeing: make part of the patient journey safer or clearer; no autonomous diagnosis; show uncertainty and human review.
 3. Reinvent Commerce: help a business understand customers and act (recommendations, support, demand planning); an LLM may not be the only forecasting method.
 4. Create a New Kind of Experience: media, marketing or entertainment that adapts per audience; show at least two audiences, cost per experience and who pays.
+
 Partner track: Evolus Business Agents on AMD (agent that runs a real business process end to end on Evolus, with an open model served on AMD through your own vLLM endpoint).
 Partner awards: Evolus and Google technologies are optional; a project may qualify for the main prize, one partner prize, or both. Google's prize terms are not described on the page.
 

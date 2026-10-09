@@ -38,7 +38,7 @@ Note: the earlier Dec 1 date belonged to a different event (AMD AI Academy Chall
 ## Constants (name | value | calculation | source | status)
 | Name | Value | Calculation | Source | Status |
 |---|---|---|---|---|
-| days_to_kickoff | 4 | 2026-10-12 minus 2026-10-08 | calendar | DERIVED |
+| days_to_kickoff | 3 | 2026-10-12 minus 2026-10-09 (was 4 on 2026-10-08) | calendar | DERIVED |
 | kickoff_gst | 19:00 GST on 2026-10-12 | 15:00 UTC + 4 h (GST = UTC+4) | live page | DERIVED |
 | submission_close_gst | 19:00 GST on 2026-10-18 | 15:00 UTC + 4 h | live page | DERIVED |
 | build_window_h | 144 h | 6 days x 24 h (kickoff to submission close) | live page | DERIVED (calendar hours, not working hours) |
@@ -56,17 +56,18 @@ Note: the earlier Dec 1 date belonged to a different event (AMD AI Academy Chall
 |---|---|---|---|
 | Enroll before kickoff | Registration closes at 2026-10-12 15:00 UTC | Enrolling late | Recommended, pending Shreyank |
 | Team vs solo | Allowed 1-6; undecided | - | OPEN |
-| Track | Not chosen; needs team and skills known | - | OPEN |
+| Track | Not chosen; needs team and skills known. Event page says "one or more tracks" but submit form says "Selected challenge"; plan for one until answered (primary-research F1/U4) | - | OPEN |
 
 ## Open items / next actions
 1. Confirm lablab enrollment and Discord join (deadline above). Shreyank.
 2. Answer the 3 setup questions (hours per day, solo or team and skills, online only); fills `hours_available`, team decision.
 3. Read the getting-started guide in a browser (fetcher cannot render lablab guide pages reliably); settle the "Not covered by the rule book" row.
 4. Check whether ACT III counts toward AI Academy XP (see `projects/amd-hackathon/`).
-5. Primary research queue (not started): AMD Developer Cloud GPU type, $/h, credit hours, vLLM serve test; Docker/Linux on Shreyank's machine; schedule and mentor hours in GST; track requirements vs skills.
+5. Primary research queue (checklist done 2026-10-09 in `docs/primary-research.md`: findings F1-F12, unknowns U1-U12, constants C1-C9; measurements and answers still pending): AMD Developer Cloud GPU type, $/h, credit hours, vLLM serve test; Docker/Linux on Shreyank's machine; schedule and mentor hours in GST; track requirements vs skills.
 6. Secondary research queue (not started): past lablab/AMD winners in tracks of interest, vLLM-on-ROCm docs, Evolus quickstart, track datasets. Tag each finding SOURCED or RECALLED.
 7. No code until primary research is logged here.
 
 ## Where things are
 - `docs/brief.md`: complete brief (event, tracks, rules, submission, judging, discrepancies, sources)
+- `docs/primary-research.md`: primary research checklist (findings, unknowns U1-U12 with where to find them, constants C1-C9 to measure, judge view, track fit)
 - `LOG.md`: dated changes
