@@ -1,43 +1,4 @@
-# CODEMAP (auto-generated, do not edit) | L<n> = line number, may lag behind edits | 56 files listed, 54 without functions/classes omitted
-coursework/school/Class-11/Classwork/2nd-chapter-(II).py
-  (could not read: SyntaxError)
-coursework/school/Class-11/Classwork/2nd-chapter.py
-  (could not read: IndentationError)
-coursework/school/Class-11/Classwork/Worksheet.py
-  (could not read: IndentationError)
-coursework/school/Class-11/Project/Project - Fibonacci series.py
-  fibonacci_numbers(n: int) L4
-coursework/school/Class-12/Class work/file_handling_classword(ii).py
-  (could not read: IndentationError)
-coursework/school/Class-12/Class work/python-connector1.py
-  display() L7
-  records() L15
-  age_display() L21
-  insert_value() L43
-  delete() L64
-  update() L69
-  display() L72
-coursework/school/Class-12/Project/CS Project - Final.py
-  get_time_input(date) L43
-  addEvent() L147
-  loadEvents() L164
-  callback(event) L188
-  updateCal() L206
-  nextMonth() L246
-  prevMonth() L260
-  goToday() L275
-  login() L341
-coursework/school/Class-12/Project/calendar final.py
-  get_time_input(date) L30
-  addEvent() L103
-  loadEvents() L118
-  callback(event) L137
-  updateCal() L155
-  nextMonth() L189
-  prevMonth() L202
-  goToday() L216
-coursework/school/Class-12/Project/inventory-management/manage.py
-  main() L7
+# CODEMAP (auto-generated, do not edit) | L<n> = line number, may lag behind edits | 48 files listed, 11 without functions/classes omitted
 learning/programming/data-analysis/exercises/pandas_basics_excercise.py
   list_functions(module) L3
 learning/programming/python/data-structure-algorithm/LinkedList.py
@@ -440,25 +401,34 @@ scripts/build_portable.py
   main() L99
 scripts/codemap/codemap.py
   find_py_files() L34
-  publishable_py_files() L46
-  signature(node) L66
-  describe_file(path) L72
-  build_map() L94
-  write_if_changed(text) L110
-  snapshot() L123
-  watch(cpu_budget) L135
-  main() L159
+  git_names(*options) L46
+  publishable_py_files() L59
+  signature(node) L73
+  describe_file(path) L79
+  build_map() L101
+  write_if_changed(text) L117
+  snapshot() L130
+  watch(cpu_budget) L142
+  main() L166
 scripts/mcp_helper/helper_server.py
   debug(message) L56
   logged(function) L66
-  publishable_files() L84
-  read_text(path) L102
-  search_code(query: str, glob: str='') L115
-  read_lines(path: str, start: int, end: int) L159
+  git_names(*options) L84
+  publishable_files() L97
+  read_text(path) L110
+  search_code(query: str, glob: str='') L123
+  read_lines(path: str, start: int, end: int) L167
 scripts/mcp_helper/selftest.py
   async step(label, coroutine) L25
   async call(session, name, **arguments) L39
   async main() L44
+scripts/repo_health.py
+  git_names(*options) L38
+  tokens(path) L48
+  check_tracked_ignored(tracked_ignored) L54
+  check_codemap(tracked_ignored) L67
+  check_sizes() L90
+  main() L123
 scripts/token_tools/token_tools.py
   count_tokens(text, encoding_name=DEFAULT_ENCODING) L33
   run_count(args) L47

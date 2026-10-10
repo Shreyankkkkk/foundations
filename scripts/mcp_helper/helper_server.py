@@ -81,20 +81,28 @@ def logged(function):
 
 # ---------- helpers ----------
 
-def publishable_files():
-    """{repo-relative path with /: absolute Path} for every file git would publish."""
+def git_names(*options):
+    """Names printed by git ls-files with the given options (null-separated, so any name splits correctly)."""
     result = subprocess.run(
-        ["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"],
+        ["git", "ls-files", *options, "--exclude-standard", "-z"],
         # stdin=DEVNULL: git must not inherit this server's stdin, which is the channel to Claude Desktop.
         cwd=REPO_ROOT, stdin=subprocess.DEVNULL, capture_output=True, text=True, encoding="utf-8", errors="replace",
         # Windows only: stops a console window flashing on every call. getattr -> 0 elsewhere.
         creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     if result.returncode != 0:
         raise OSError(f"git ls-files failed: {result.stderr.strip()}")
+    return set(result.stdout.split("\0")) - {""}
+
+
+def publishable_files():
+    """{repo-relative path with /: absolute Path} for every file git would publish.
+    --cached also lists files committed BEFORE .gitignore matched them, so those are subtracted
+    explicitly with `--cached --ignored`; otherwise a tracked private file would stay visible."""
+    names = git_names("--cached", "--others") - git_names("--cached", "--ignored")
     files = {}
-    for name in result.stdout.split("\0"):  # -z separates names with a null character
+    for name in names:
         path = REPO_ROOT / name
-        if name and path.is_file():  # skips files deleted but not yet committed
+        if path.is_file():  # skips files deleted but not yet committed
             files[name] = path
     return files
 

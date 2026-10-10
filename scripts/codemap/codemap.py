@@ -43,19 +43,26 @@ def find_py_files():
     return sorted(found, key=lambda path: path.relative_to(REPO_ROOT).as_posix())
 
 
-def publishable_py_files():
-    """Python files git would publish: tracked or new, minus anything matched by .gitignore.
-    git is the single source of truth, so private folders can never leak into the map."""
+def git_names(*options):
+    """Names printed by git ls-files with the given options (null-separated, so any name splits correctly)."""
     result = subprocess.run(
-        ["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"],
+        ["git", "ls-files", *options, "--exclude-standard", "-z"],
         cwd=REPO_ROOT, capture_output=True, text=True, encoding="utf-8", errors="replace",
         # Windows only: stops a console window flashing each time the hidden watcher calls git.
         # The flag does not exist on other systems, so getattr falls back to 0 (no flag).
         creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     if result.returncode != 0:
         raise OSError(f"git ls-files failed: {result.stderr.strip()}")
+    return set(result.stdout.split("\0")) - {""}
+
+
+def publishable_py_files():
+    """Python files git would publish: tracked or new, minus anything matched by .gitignore.
+    --cached also lists files committed BEFORE .gitignore matched them, so those are subtracted
+    explicitly with `--cached --ignored`; otherwise a tracked private file would leak into the map."""
+    names = git_names("--cached", "--others") - git_names("--cached", "--ignored")
     paths = []
-    for name in result.stdout.split("\0"):  # -z separates names with a null character
+    for name in names:
         if name.endswith(".py") and not SKIP_DIRS.intersection(Path(name).parts):
             path = REPO_ROOT / name
             if path.is_file():  # skips files deleted but not yet committed

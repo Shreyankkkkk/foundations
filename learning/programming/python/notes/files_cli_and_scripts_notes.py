@@ -154,6 +154,39 @@ raw.decode("utf-8-sig", errors="replace")                # bad bytes become ? in
 '''
 
 '''
+Git hooks and automation (scripts/repo_health.py, .git/hooks/pre-commit)
+
+A git hook is a script git runs at a set moment. .git/hooks/pre-commit runs before every commit.
+    exit 0 = let the commit go ahead; any other exit code would cancel it. Ours always exits 0 (warn-only).
+    (python a.py || py a.py) && git add file || echo "skipped"
+        # a || b = run b only if a failed;  a && b = run b only if a worked
+    A hook can change files and `git add` them, so the commit always contains the fresh result.
+
+git ls-files --cached --ignored --exclude-standard    # files git ALREADY tracks that .gitignore now matches
+    # .gitignore only stops NEW files; a file committed earlier stays tracked (and public) until: git rm -r --cached <folder>
+set arithmetic: set(a) - set(b)       # the items in a that are not in b; here: (tracked + new files) - (tracked-but-ignored)
+
+Return codes:  sys.exit(main())  where main() returns 0 (fine) or 1 (problem); the shell reads it as the exit code.
+    # a check that must never block anything returns 0 even after catching its own error
+
+try:
+    check()
+except Exception as error:         # catch-all: one crashing check must not hide the others
+    print(type(error).__name__, error)
+
+collections.Counter(items).most_common(4)       # counts how often each item appears; the 4 most common as (item, count)
+max(d, key=d.get)                                # the key of dict d with the largest value
+f"{1153:,}"                                      # 1,153  (thousands separator)
+f"{x:.1f}"  f"{x:g}"                             # (see python_basics_notes.py)
+lambda: check_codemap(x)                         # a tiny unnamed function with no arguments, used to delay a call
+
+importlib.util: loading a .py file by its path (instead of `import name`)
+    spec = importlib.util.spec_from_file_location("codemap", path)
+    module = importlib.util.module_from_spec(spec);  spec.loader.exec_module(module)
+    module.build_map()                           # now the file's functions can be called
+'''
+
+'''
 re: regular expressions (build_portable.py repo_slug)
 
 import re
