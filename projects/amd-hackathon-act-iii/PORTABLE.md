@@ -132,4 +132,5 @@ Note: the earlier Dec 1 date belonged to a different event (AMD AI Academy Chall
 
 - https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/brief.md
 - https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/notes_1.md
+- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/Opportunity_Research_Report.md
 - https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/primary-research.md
