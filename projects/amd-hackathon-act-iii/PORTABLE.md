@@ -1,5 +1,5 @@
 # PORTABLE CONTEXT: amd-hackathon-act-iii
-Generated 2026-10-10 by scripts/build_portable.py. Read-only copy; the source of truth is STATE.md / LOG.md in the repo.
+Generated 2026-10-11 by scripts/build_portable.py. Read-only copy; the source of truth is STATE.md / LOG.md in the repo.
 Rule: if you cannot open a link below, say so and ask me to paste it. Never claim to have read what you could not open.
 If you cannot write files, give me log lines and STATE edits as text to paste.
 
@@ -130,7 +130,8 @@ Note: the earlier Dec 1 date belonged to a different event (AMD AI Academy Chall
 
 ## Other files (open only if the task needs them)
 
-- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/brief.md
-- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/notes_1.md
-- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/Opportunity_Research_Report.md
-- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/primary-research.md
+- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/notes/notes_0.md
+- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/notes/notes_1.md
+- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/research/brief.md
+- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/research/Opportunity_Research_Report.md
+- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/research/research_1.md
