@@ -1,5 +1,5 @@
 # PORTABLE CONTEXT: sumo-robot
-Generated 2026-10-09 by scripts/build_portable.py. Read-only copy; the source of truth is STATE.md / LOG.md in the repo.
+Generated 2026-10-11 by scripts/build_portable.py. Read-only copy; the source of truth is STATE.md / LOG.md in the repo.
 Rule: if you cannot open a link below, say so and ask me to paste it. Never claim to have read what you could not open.
 If you cannot write files, give me log lines and STATE edits as text to paste.
 
@@ -207,6 +207,8 @@ Values that changed between versions (check before trusting any old number)
 
 ## Other files (open only if the task needs them)
 
+- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/sumo-robot/docs/rulebook/Dubai%20Techbots%20League%20Competition%202026%20Rulebook.pdf  (binary: AI may not be able to read it, ask me to paste the text)
+- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/sumo-robot/docs/rulebook/Slides%20Sumo%20Robot%20-%20Dubai%20Techbots%20League%20SumoX-26.pdf  (binary: AI may not be able to read it, ask me to paste the text)
 - https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/sumo-robot/docs/specs/final_wiring.md
 - https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/sumo-robot/docs/specs/SumoX-26_Championship_Playbook.md
 - https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/sumo-robot/docs/specs/SumoX-26_Final_Strategies_v1_v2_v3.md
@@ -215,8 +217,14 @@ Values that changed between versions (check before trusting any old number)
 - https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/sumo-robot/docs/specs/SumoX-26_Team_Prompt_Brief.md
 - https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/sumo-robot/docs/specs/SumoX-26_Wiring.md
 - https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/sumo-robot/docs/specs/wiring_reference.md
+- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/sumo-robot/firmware/strategy/CodeGuide.md
 - https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/sumo-robot/notes/chat-summaries/account-1-context.txt
 - https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/sumo-robot/notes/chat-summaries/account-2-context.txt
 - https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/sumo-robot/notes/chat-summaries/INDEX.md
 - https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/sumo-robot/notes/notes_1_brief.md
 - https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/sumo-robot/notes/notes_1_extended.txt
+- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/sumo-robot/notes/scans/2026-09-24-scan.pdf  (binary: AI may not be able to read it, ask me to paste the text)
+- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/sumo-robot/notes/scans/2026-09-25-scan.pdf  (binary: AI may not be able to read it, ask me to paste the text)
+- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/sumo-robot/notes/scans/2026-09-30-scan.pdf  (binary: AI may not be able to read it, ask me to paste the text)
+- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/sumo-robot/README.md
+- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/sumo-robot/Retrospective.md

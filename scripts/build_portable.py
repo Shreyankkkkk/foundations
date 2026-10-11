@@ -11,6 +11,7 @@ Never edit PORTABLE.md by hand; edit STATE.md / LOG.md / AI-CONTEXT.md instead.
 """
 from datetime import date
 from pathlib import Path
+from urllib.parse import quote
 
 import re
 import subprocess
@@ -33,9 +34,9 @@ BRANCH = "main"
 RAW = f"https://raw.githubusercontent.com/{REPO}/{BRANCH}"
 LOG_TAIL = 10
 KEEP_SECTIONS = ("Who", "Rules for AI", "How to log")  # sections copied from AI-CONTEXT.md
-LIST_DIRS = ("docs", "notes")
-LIST_EXT = {".md", ".txt"}
-
+LIST_EXT = {".md", ".txt", ".pdf", ".docx", ".doc", ".pptx", ".xlsx", ".csv"}
+SKIP_NAMES = {"STATE.md", "LOG.md", "PORTABLE.md"}  # already inlined / generated
+SKIP_DIRS = {".git", "__pycache__", "node_modules"}
 
 def read(path):
     return path.read_text(encoding="utf-8") if path.exists() else ""
@@ -62,18 +63,18 @@ def log_tail(project):
     entries = [l for l in read(project / "LOG.md").splitlines() if l[:2] == "20"]
     return "\n".join(entries[-LOG_TAIL:]) or "(no entries yet)"
 
-
 def file_list(project):
     rows = []
-    for d in LIST_DIRS:
-        base = project / d
-        if base.exists():
-            for f in sorted(base.rglob("*")):
-                if f.is_file() and f.suffix.lower() in LIST_EXT:
-                    rel = f.relative_to(ROOT).as_posix().replace(" ", "%20")
-                    rows.append(f"- {RAW}/{rel}")
+    for f in sorted(project.rglob("*")):
+        if not f.is_file() or f.suffix.lower() not in LIST_EXT:
+            continue
+        if f.name in SKIP_NAMES or SKIP_DIRS & set(f.relative_to(project).parts):
+            continue
+        rel = quote(f.relative_to(ROOT).as_posix())
+        note = "  (binary: AI may not be able to read it, ask me to paste the text)" \
+            if f.suffix.lower() in {".pdf", ".docx", ".doc", ".pptx", ".xlsx"} else ""
+        rows.append(f"- {RAW}/{rel}{note}")
     return "\n".join(rows) or "(none)"
-
 
 def build(project):
     slug = project.name

@@ -133,5 +133,9 @@ Note: the earlier Dec 1 date belonged to a different event (AMD AI Academy Chall
 - https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/notes/notes_0.md
 - https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/notes/notes_1.md
 - https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/research/brief.md
+- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/research/data%20contract.docx  (binary: AI may not be able to read it, ask me to paste the text)
+- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/research/Front-End%20Duo%20Guide%20%E2%80%94%20Procedure%20Drift%20Finder.pdf  (binary: AI may not be able to read it, ask me to paste the text)
 - https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/research/Opportunity_Research_Report.md
+- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/research/Procedure%20Drift%20Finder%20%E2%80%94%20Team%20Playbook.pdf  (binary: AI may not be able to read it, ask me to paste the text)
 - https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/research/research_1.md
+- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/README.md

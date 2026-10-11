@@ -391,14 +391,14 @@ projects/sumo-robot/design/parametric/main_deck_PARAMETRIC_SOURCE.py
   post(cx, cy, z0, z1, d, hole_d) L178
   add_driver_standoffs(deck, center) L197
 scripts/build_portable.py
-  repo_slug() L22
-  read(path) L40
-  context_sections() L44
-  log_tail(project) L61
+  repo_slug() L23
+  read(path) L41
+  context_sections() L45
+  log_tail(project) L62
   file_list(project) L66
-  build(project) L78
-  body(text) L95
-  main() L99
+  build(project) L79
+  body(text) L96
+  main() L100
 scripts/codemap/codemap.py
   find_py_files() L34
   git_names(*options) L46
