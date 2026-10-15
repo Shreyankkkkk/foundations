@@ -1,0 +1,156 @@
+{
+  "flags_total": 29,
+  "drifts_planted": 25,
+  "drifts_found": 8,
+  "false_alarm_count": 21,
+  "false_alarms_by_reason": {
+    "drift note, wrong step or drift type": 5,
+    "trap note": 13,
+    "clean note": 3
+  },
+  "recall_ignoring_drift_type": 0.36,
+  "by_drift_type": {
+    "skipped_step": {
+      "planted": 5,
+      "found": 2
+    },
+    "reordered_steps": {
+      "planted": 5,
+      "found": 0
+    },
+    "workaround_substitution": {
+      "planted": 5,
+      "found": 4
+    },
+    "sop_outdated_or_impractical": {
+      "planted": 5,
+      "found": 2
+    },
+    "sop_unclear": {
+      "planted": 5,
+      "found": 0
+    }
+  },
+  "missed_drifts": [
+    {
+      "note_id": "N003",
+      "sop_id": "SOP-01",
+      "step_id": 1,
+      "drift_type": "skipped_step",
+      "evidence": "we didn't tell the line crew before isolating"
+    },
+    {
+      "note_id": "N018",
+      "sop_id": "SOP-01",
+      "step_id": 10,
+      "drift_type": "sop_unclear",
+      "evidence": "disagree on what everyone is out of the machine means"
+    },
+    {
+      "note_id": "N031",
+      "sop_id": "SOP-02",
+      "step_id": 9,
+      "drift_type": "sop_outdated_or_impractical",
+      "evidence": "the SOP still says paper log"
+    },
+    {
+      "note_id": "N036",
+      "sop_id": "SOP-01",
+      "step_id": 6,
+      "drift_type": "reordered_steps",
+      "evidence": "Tested the terminals with the meter first, then bled the air line afterwards"
+    },
+    {
+      "note_id": "N041",
+      "sop_id": "SOP-02",
+      "step_id": 4,
+      "drift_type": "skipped_step",
+      "evidence": "started without the tyre check"
+    },
+    {
+      "note_id": "N064",
+      "sop_id": "SOP-03",
+      "step_id": 3,
+      "drift_type": "sop_unclear",
+      "evidence": "Runs clear is a judgement call"
+    },
+    {
+      "note_id": "N078",
+      "sop_id": "SOP-03",
+      "step_id": 2,
+      "drift_type": "reordered_steps",
+      "evidence": "put the face shield and gloves on after connecting the hoses"
+    },
+    {
+      "note_id": "N100",
+      "sop_id": "SOP-02",
+      "step_id": 2,
+      "drift_type": "sop_unclear",
+      "evidence": "The SOP just says look for damage"
+    },
+    {
+      "note_id": "N105",
+      "sop_id": "SOP-02",
+      "step_id": 5,
+      "drift_type": "sop_outdated_or_impractical",
+      "evidence": "the 30 percent rule makes us swap batteries too early"
+    },
+    {
+      "note_id": "N117",
+      "sop_id": "SOP-01",
+      "step_id": 5,
+      "drift_type": "reordered_steps",
+      "evidence": "Tags were written up after the work started"
+    },
+    {
+      "note_id": "N128",
+      "sop_id": "SOP-03",
+      "step_id": 10,
+      "drift_type": "skipped_step",
+      "evidence": "signed off without pH strips"
+    },
+    {
+      "note_id": "N131",
+      "sop_id": "SOP-02",
+      "step_id": 3,
+      "drift_type": "workaround_substitution",
+      "evidence": "by looking from the seat instead of getting down"
+    },
+    {
+      "note_id": "N142",
+      "sop_id": "SOP-03",
+      "step_id": 8,
+      "drift_type": "sop_unclear",
+      "evidence": "whether drain the line means opening the low point valve"
+    },
+    {
+      "note_id": "N159",
+      "sop_id": "SOP-03",
+      "step_id": 4,
+      "drift_type": "reordered_steps",
+      "evidence": "titrated the caustic after it was already circulating"
+    },
+    {
+      "note_id": "N181",
+      "sop_id": "SOP-02",
+      "step_id": 8,
+      "drift_type": "sop_unclear",
+      "evidence": "Nobody knows how many metres"
+    },
+    {
+      "note_id": "N192",
+      "sop_id": "SOP-01",
+      "step_id": 2,
+      "drift_type": "sop_outdated_or_impractical",
+      "evidence": "The SOP step does not match the new panel"
+    },
+    {
+      "note_id": "N195",
+      "sop_id": "SOP-02",
+      "step_id": 8,
+      "drift_type": "reordered_steps",
+      "evidence": "did the brake test before the light check"
+    }
+  ],
+  "flags_with_quote_not_in_note": []
+}
