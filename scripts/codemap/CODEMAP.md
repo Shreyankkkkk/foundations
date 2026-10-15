@@ -1,4 +1,4 @@
-# CODEMAP (auto-generated, do not edit) | L<n> = line number, may lag behind edits | 60 files listed, 19 without functions/classes omitted
+# CODEMAP (auto-generated, do not edit) | L<n> = line number, may lag behind edits | 62 files listed, 18 without functions/classes omitted
 learning/programming/data-analysis/exercises/pandas_basics_excercise.py
   list_functions(module) L3
 learning/programming/python/data-structure-algorithm/LinkedList.py
@@ -152,6 +152,13 @@ projects/amd-hackathon-act-iii/backend/scripts/check_data.py
   load(name) L32
 projects/amd-hackathon-act-iii/backend/src/config.py
   require_judge_settings() L55
+projects/amd-hackathon-act-iii/backend/src/models/fake_model.py
+  read_first_step(prompt) L41
+  read_note_text(prompt) L49
+  find_trigger(note_text) L58
+  class FakeModel L68
+    __init__(self, misbehave=True) L69
+    ask(self, prompt) L73
 projects/amd-hackathon-act-iii/backend/src/pipeline.py
   build_flag(number, note, proposal) L34
   process_note(note, steps, model) L51
@@ -178,6 +185,18 @@ projects/amd-hackathon-act-iii/backend/src/stages/matcher.py
 projects/amd-hackathon-act-iii/backend/src/stages/quote_check.py
   words_of(text) L26
   quote_in_note(quote, note_text) L36
+projects/amd-hackathon-act-iii/backend/tests/test_fake_model.py
+  make_note(text) L15
+  find_note_text(wanted, start_text, limit=2000) L19
+  test_reads_note_and_first_step_back_out_of_the_prompt() L28
+  test_find_trigger_picks_the_sentence_with_the_trigger_word() L35
+  test_find_trigger_none_for_a_clean_note() L41
+  test_clean_note_gives_no_flags() L45
+  test_drift_note_gives_a_valid_flag_with_a_real_quote() L51
+  test_same_prompt_gives_same_reply() L59
+  test_misbehaving_model_invents_a_quote_the_quote_check_rejects() L65
+  test_misbehaving_model_sometimes_wraps_reply_in_a_fence_and_parse_reply_copes() L74
+  test_prompt_without_steps_or_note_gives_empty_list() L81
 projects/amd-hackathon-act-iii/backend/tests/test_judge.py
   good_item(**changes) L33
   class StubModel L46
