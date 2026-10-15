@@ -1,0 +1,14 @@
+{
+ "precision": 0.84,
+ "recall": 0.76,
+ "quote_verified_rate": 1.0,
+ "notes_per_minute": 212.4,
+ "matcher_model": "Qwen3-4B",
+ "judge_model": "Qwen3-32B",
+ "gpu": "AMD Instinct MI300X",
+ "false_alarms": [
+  "F027",
+  "F001",
+  "F010"
+ ]
+}

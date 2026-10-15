@@ -1,0 +1,702 @@
+[
+ {
+  "note_id": "N001",
+  "date": "2026-09-15",
+  "shift": "Evening",
+  "source": "maintenance",
+  "text": "Shift ran long and we skipped the try-start on the press again. Flagging for the next team."
+ },
+ {
+  "note_id": "N002",
+  "date": "2026-09-04",
+  "shift": "Day",
+  "source": "maintenance",
+  "text": "Shift ran long and we skipped the try-start on the press again. Flagging for the next team."
+ },
+ {
+  "note_id": "N003",
+  "date": "2026-09-15",
+  "shift": "Day",
+  "source": "maintenance",
+  "text": "Shift ran long and we skipped the try-start on the press again. Flagging for the next team."
+ },
+ {
+  "note_id": "N004",
+  "date": "2026-09-01",
+  "shift": "Night",
+  "source": "maintenance",
+  "text": "Shift ran long and we skipped the try-start on the press again. Flagging for the next team."
+ },
+ {
+  "note_id": "N005",
+  "date": "2026-09-21",
+  "shift": "Day",
+  "source": "handover",
+  "text": "Shift ran long and we skipped the try-start on the press again. Flagging for the next team."
+ },
+ {
+  "note_id": "N006",
+  "date": "2026-09-18",
+  "shift": "Day",
+  "source": "maintenance",
+  "text": "Shift ran long and we skipped the try-start on the press again. Flagging for the next team."
+ },
+ {
+  "note_id": "N007",
+  "date": "2026-09-11",
+  "shift": "Night",
+  "source": "maintenance",
+  "text": "Shift ran long and we skipped the try-start on the press again. Flagging for the next team."
+ },
+ {
+  "note_id": "N008",
+  "date": "2026-10-02",
+  "shift": "Day",
+  "source": "maintenance",
+  "text": "Shift ran long and we skipped the try-start on the press again. Flagging for the next team."
+ },
+ {
+  "note_id": "N009",
+  "date": "2026-09-09",
+  "shift": "Evening",
+  "source": "maintenance",
+  "text": "Shift ran long and used a zip tie instead of a proper tag. Flagging for the next team."
+ },
+ {
+  "note_id": "N010",
+  "date": "2026-09-01",
+  "shift": "Night",
+  "source": "handover",
+  "text": "Shift ran long and used a zip tie instead of a proper tag. Flagging for the next team."
+ },
+ {
+  "note_id": "N011",
+  "date": "2026-09-09",
+  "shift": "Night",
+  "source": "near-miss",
+  "text": "Shift ran long and used a zip tie instead of a proper tag. Flagging for the next team."
+ },
+ {
+  "note_id": "N012",
+  "date": "2026-08-27",
+  "shift": "Day",
+  "source": "near-miss",
+  "text": "Shift ran long and used a zip tie instead of a proper tag. Flagging for the next team."
+ },
+ {
+  "note_id": "N013",
+  "date": "2026-08-24",
+  "shift": "Night",
+  "source": "maintenance",
+  "text": "Shift ran long and not sure who counts as affected staff. Flagging for the next team."
+ },
+ {
+  "note_id": "N014",
+  "date": "2026-09-09",
+  "shift": "Night",
+  "source": "near-miss",
+  "text": "Shift ran long and not sure who counts as affected staff. Flagging for the next team."
+ },
+ {
+  "note_id": "N015",
+  "date": "2026-09-30",
+  "shift": "Evening",
+  "source": "maintenance",
+  "text": "Shift ran long and not sure who counts as affected staff. Flagging for the next team."
+ },
+ {
+  "note_id": "N016",
+  "date": "2026-09-25",
+  "shift": "Night",
+  "source": "near-miss",
+  "text": "Shift ran long and did the stored energy release after the try-start. Flagging for the next team."
+ },
+ {
+  "note_id": "N017",
+  "date": "2026-09-21",
+  "shift": "Evening",
+  "source": "near-miss",
+  "text": "Shift ran long and did the stored energy release after the try-start. Flagging for the next team."
+ },
+ {
+  "note_id": "N018",
+  "date": "2026-08-26",
+  "shift": "Day",
+  "source": "maintenance",
+  "text": "Shift ran long and did the stored energy release after the try-start. Flagging for the next team."
+ },
+ {
+  "note_id": "N019",
+  "date": "2026-09-28",
+  "shift": "Day",
+  "source": "near-miss",
+  "text": "Shift ran long and used regular work gloves because the acid ones were out. Flagging for the next team."
+ },
+ {
+  "note_id": "N020",
+  "date": "2026-09-10",
+  "shift": "Night",
+  "source": "near-miss",
+  "text": "Shift ran long and used regular work gloves because the acid ones were out. Flagging for the next team."
+ },
+ {
+  "note_id": "N021",
+  "date": "2026-09-24",
+  "shift": "Day",
+  "source": "handover",
+  "text": "Shift ran long and used regular work gloves because the acid ones were out. Flagging for the next team."
+ },
+ {
+  "note_id": "N022",
+  "date": "2026-09-21",
+  "shift": "Evening",
+  "source": "maintenance",
+  "text": "Shift ran long and used regular work gloves because the acid ones were out. Flagging for the next team."
+ },
+ {
+  "note_id": "N023",
+  "date": "2026-09-11",
+  "shift": "Evening",
+  "source": "maintenance",
+  "text": "Shift ran long and used regular work gloves because the acid ones were out. Flagging for the next team."
+ },
+ {
+  "note_id": "N024",
+  "date": "2026-10-02",
+  "shift": "Night",
+  "source": "maintenance",
+  "text": "Shift ran long and used regular work gloves because the acid ones were out. Flagging for the next team."
+ },
+ {
+  "note_id": "N025",
+  "date": "2026-10-02",
+  "shift": "Evening",
+  "source": "near-miss",
+  "text": "Shift ran long and topped up mid-shift because a full charge takes eight hours. Flagging for the next team."
+ },
+ {
+  "note_id": "N026",
+  "date": "2026-09-21",
+  "shift": "Day",
+  "source": "handover",
+  "text": "Shift ran long and topped up mid-shift because a full charge takes eight hours. Flagging for the next team."
+ },
+ {
+  "note_id": "N027",
+  "date": "2026-09-04",
+  "shift": "Day",
+  "source": "handover",
+  "text": "Shift ran long and topped up mid-shift because a full charge takes eight hours. Flagging for the next team."
+ },
+ {
+  "note_id": "N028",
+  "date": "2026-09-02",
+  "shift": "Night",
+  "source": "handover",
+  "text": "Shift ran long and topped up mid-shift because a full charge takes eight hours. Flagging for the next team."
+ },
+ {
+  "note_id": "N029",
+  "date": "2026-09-16",
+  "shift": "Evening",
+  "source": "maintenance",
+  "text": "Shift ran long and topped up mid-shift because a full charge takes eight hours. Flagging for the next team."
+ },
+ {
+  "note_id": "N030",
+  "date": "2026-10-01",
+  "shift": "Evening",
+  "source": "near-miss",
+  "text": "Shift ran long and no time to check the vent caps. Flagging for the next team."
+ },
+ {
+  "note_id": "N031",
+  "date": "2026-09-23",
+  "shift": "Evening",
+  "source": "maintenance",
+  "text": "Shift ran long and no time to check the vent caps. Flagging for the next team."
+ },
+ {
+  "note_id": "N032",
+  "date": "2026-10-02",
+  "shift": "Evening",
+  "source": "handover",
+  "text": "Shift ran long and no time to check the vent caps. Flagging for the next team."
+ },
+ {
+  "note_id": "N033",
+  "date": "2026-09-30",
+  "shift": "Night",
+  "source": "handover",
+  "text": "Shift ran long and fifteen minutes of ventilation is not realistic on a night shift. Flagging for the next team."
+ },
+ {
+  "note_id": "N034",
+  "date": "2026-09-15",
+  "shift": "Evening",
+  "source": "handover",
+  "text": "Shift ran long and fifteen minutes of ventilation is not realistic on a night shift. Flagging for the next team."
+ },
+ {
+  "note_id": "N035",
+  "date": "2026-09-15",
+  "shift": "Night",
+  "source": "handover",
+  "text": "Shift ran long and fifteen minutes of ventilation is not realistic on a night shift. Flagging for the next team."
+ },
+ {
+  "note_id": "N036",
+  "date": "2026-09-29",
+  "shift": "Day",
+  "source": "maintenance",
+  "text": "Shift ran long and fifteen minutes of ventilation is not realistic on a night shift. Flagging for the next team."
+ },
+ {
+  "note_id": "N037",
+  "date": "2026-09-30",
+  "shift": "Evening",
+  "source": "near-miss",
+  "text": "Shift ran long and fifteen minutes of ventilation is not realistic on a night shift. Flagging for the next team."
+ },
+ {
+  "note_id": "N038",
+  "date": "2026-09-09",
+  "shift": "Evening",
+  "source": "handover",
+  "text": "Shift ran long and we read the radio check as once per entry, not per shift. Flagging for the next team."
+ },
+ {
+  "note_id": "N039",
+  "date": "2026-09-01",
+  "shift": "Evening",
+  "source": "maintenance",
+  "text": "Shift ran long and we read the radio check as once per entry, not per shift. Flagging for the next team."
+ },
+ {
+  "note_id": "N040",
+  "date": "2026-08-26",
+  "shift": "Night",
+  "source": "handover",
+  "text": "Shift ran long and we read the radio check as once per entry, not per shift. Flagging for the next team."
+ },
+ {
+  "note_id": "N041",
+  "date": "2026-09-08",
+  "shift": "Evening",
+  "source": "handover",
+  "text": "Shift ran long and skipped the gas test since the last reading was fine. Flagging for the next team."
+ },
+ {
+  "note_id": "N042",
+  "date": "2026-08-27",
+  "shift": "Evening",
+  "source": "near-miss",
+  "text": "Shift ran long and skipped the gas test since the last reading was fine. Flagging for the next team."
+ },
+ {
+  "note_id": "N043",
+  "date": "2026-08-25",
+  "shift": "Day",
+  "source": "handover",
+  "text": "Shift ran long and skipped the gas test since the last reading was fine. Flagging for the next team."
+ },
+ {
+  "note_id": "N044",
+  "date": "2026-09-18",
+  "shift": "Night",
+  "source": "near-miss",
+  "text": "Shift ran long and skipped the gas test since the last reading was fine. Flagging for the next team."
+ },
+ {
+  "note_id": "N045",
+  "date": "2026-09-28",
+  "shift": "Day",
+  "source": "handover",
+  "text": "Lockout on line 9 done with every check completed."
+ },
+ {
+  "note_id": "N046",
+  "date": "2026-08-30",
+  "shift": "Night",
+  "source": "handover",
+  "text": "Charger bay 9 used, gloves and shield worn."
+ },
+ {
+  "note_id": "N047",
+  "date": "2026-09-05",
+  "shift": "Day",
+  "source": "near-miss",
+  "text": "Lockout on line 4 done with every check completed."
+ },
+ {
+  "note_id": "N048",
+  "date": "2026-09-11",
+  "shift": "Day",
+  "source": "maintenance",
+  "text": "Charger bay 9 used, gloves and shield worn."
+ },
+ {
+  "note_id": "N049",
+  "date": "2026-09-09",
+  "shift": "Evening",
+  "source": "handover",
+  "text": "Lockout on line 9 done with every check completed."
+ },
+ {
+  "note_id": "N050",
+  "date": "2026-09-15",
+  "shift": "Night",
+  "source": "maintenance",
+  "text": "Confined-space entry 8 finished, readings normal."
+ },
+ {
+  "note_id": "N051",
+  "date": "2026-09-19",
+  "shift": "Day",
+  "source": "maintenance",
+  "text": "Lockout on line 9 done with every check completed."
+ },
+ {
+  "note_id": "N052",
+  "date": "2026-09-26",
+  "shift": "Day",
+  "source": "near-miss",
+  "text": "Lockout on line 9 done with every check completed."
+ },
+ {
+  "note_id": "N053",
+  "date": "2026-10-01",
+  "shift": "Day",
+  "source": "handover",
+  "text": "Lockout on line 1 done with every check completed."
+ },
+ {
+  "note_id": "N054",
+  "date": "2026-09-23",
+  "shift": "Night",
+  "source": "handover",
+  "text": "Charger bay 2 used, gloves and shield worn."
+ },
+ {
+  "note_id": "N055",
+  "date": "2026-09-26",
+  "shift": "Night",
+  "source": "near-miss",
+  "text": "Lockout on line 9 done with every check completed."
+ },
+ {
+  "note_id": "N056",
+  "date": "2026-09-28",
+  "shift": "Day",
+  "source": "handover",
+  "text": "Charger bay 1 used, gloves and shield worn."
+ },
+ {
+  "note_id": "N057",
+  "date": "2026-08-26",
+  "shift": "Night",
+  "source": "near-miss",
+  "text": "Confined-space entry 2 finished, readings normal."
+ },
+ {
+  "note_id": "N058",
+  "date": "2026-08-25",
+  "shift": "Evening",
+  "source": "near-miss",
+  "text": "Confined-space entry 2 finished, readings normal."
+ },
+ {
+  "note_id": "N059",
+  "date": "2026-09-25",
+  "shift": "Day",
+  "source": "maintenance",
+  "text": "Charger bay 9 used, gloves and shield worn."
+ },
+ {
+  "note_id": "N060",
+  "date": "2026-09-21",
+  "shift": "Night",
+  "source": "near-miss",
+  "text": "Confined-space entry 9 finished, readings normal."
+ },
+ {
+  "note_id": "N061",
+  "date": "2026-09-08",
+  "shift": "Evening",
+  "source": "maintenance",
+  "text": "Lockout on line 9 done with every check completed."
+ },
+ {
+  "note_id": "N062",
+  "date": "2026-09-21",
+  "shift": "Evening",
+  "source": "handover",
+  "text": "Charger bay 3 used, gloves and shield worn."
+ },
+ {
+  "note_id": "N063",
+  "date": "2026-09-21",
+  "shift": "Day",
+  "source": "maintenance",
+  "text": "Lockout on line 6 done with every check completed."
+ },
+ {
+  "note_id": "N064",
+  "date": "2026-09-20",
+  "shift": "Day",
+  "source": "maintenance",
+  "text": "Charger bay 2 used, gloves and shield worn."
+ },
+ {
+  "note_id": "N065",
+  "date": "2026-08-31",
+  "shift": "Night",
+  "source": "maintenance",
+  "text": "Confined-space entry 3 finished, readings normal."
+ },
+ {
+  "note_id": "N066",
+  "date": "2026-09-16",
+  "shift": "Evening",
+  "source": "handover",
+  "text": "Charger bay 3 used, gloves and shield worn."
+ },
+ {
+  "note_id": "N067",
+  "date": "2026-09-07",
+  "shift": "Evening",
+  "source": "near-miss",
+  "text": "Lockout on line 2 done with every check completed."
+ },
+ {
+  "note_id": "N068",
+  "date": "2026-09-07",
+  "shift": "Night",
+  "source": "near-miss",
+  "text": "Confined-space entry 3 finished, readings normal."
+ },
+ {
+  "note_id": "N069",
+  "date": "2026-09-18",
+  "shift": "Evening",
+  "source": "handover",
+  "text": "Charger bay 6 used, gloves and shield worn."
+ },
+ {
+  "note_id": "N070",
+  "date": "2026-09-13",
+  "shift": "Night",
+  "source": "near-miss",
+  "text": "Lockout on line 2 done with every check completed."
+ },
+ {
+  "note_id": "N071",
+  "date": "2026-09-14",
+  "shift": "Evening",
+  "source": "near-miss",
+  "text": "Confined-space entry 9 finished, readings normal."
+ },
+ {
+  "note_id": "N072",
+  "date": "2026-08-25",
+  "shift": "Evening",
+  "source": "maintenance",
+  "text": "Confined-space entry 7 finished, readings normal."
+ },
+ {
+  "note_id": "N073",
+  "date": "2026-09-11",
+  "shift": "Day",
+  "source": "handover",
+  "text": "Lockout on line 9 done with every check completed."
+ },
+ {
+  "note_id": "N074",
+  "date": "2026-08-30",
+  "shift": "Evening",
+  "source": "near-miss",
+  "text": "Lockout on line 2 done with every check completed."
+ },
+ {
+  "note_id": "N075",
+  "date": "2026-09-04",
+  "shift": "Day",
+  "source": "near-miss",
+  "text": "Confined-space entry 5 finished, readings normal."
+ },
+ {
+  "note_id": "N076",
+  "date": "2026-09-09",
+  "shift": "Day",
+  "source": "maintenance",
+  "text": "Confined-space entry 7 finished, readings normal."
+ },
+ {
+  "note_id": "N077",
+  "date": "2026-09-29",
+  "shift": "Night",
+  "source": "near-miss",
+  "text": "Lockout on line 8 done with every check completed."
+ },
+ {
+  "note_id": "N078",
+  "date": "2026-09-10",
+  "shift": "Night",
+  "source": "handover",
+  "text": "Charger bay 1 used, gloves and shield worn."
+ },
+ {
+  "note_id": "N079",
+  "date": "2026-08-28",
+  "shift": "Day",
+  "source": "maintenance",
+  "text": "Lockout on line 5 done with every check completed."
+ },
+ {
+  "note_id": "N080",
+  "date": "2026-09-09",
+  "shift": "Night",
+  "source": "handover",
+  "text": "Lockout on line 2 done with every check completed."
+ },
+ {
+  "note_id": "N081",
+  "date": "2026-09-09",
+  "shift": "Evening",
+  "source": "handover",
+  "text": "Charger bay 2 used, gloves and shield worn."
+ },
+ {
+  "note_id": "N082",
+  "date": "2026-09-28",
+  "shift": "Evening",
+  "source": "maintenance",
+  "text": "Lockout on line 7 done with every check completed."
+ },
+ {
+  "note_id": "N083",
+  "date": "2026-08-26",
+  "shift": "Night",
+  "source": "handover",
+  "text": "Lockout on line 9 done with every check completed."
+ },
+ {
+  "note_id": "N084",
+  "date": "2026-09-03",
+  "shift": "Day",
+  "source": "handover",
+  "text": "Lockout on line 5 done with every check completed."
+ },
+ {
+  "note_id": "N085",
+  "date": "2026-09-12",
+  "shift": "Night",
+  "source": "handover",
+  "text": "Charger bay 5 used, gloves and shield worn."
+ },
+ {
+  "note_id": "N086",
+  "date": "2026-09-21",
+  "shift": "Night",
+  "source": "handover",
+  "text": "Charger bay 9 used, gloves and shield worn."
+ },
+ {
+  "note_id": "N087",
+  "date": "2026-09-15",
+  "shift": "Evening",
+  "source": "handover",
+  "text": "Lockout on line 1 done with every check completed."
+ },
+ {
+  "note_id": "N088",
+  "date": "2026-08-25",
+  "shift": "Night",
+  "source": "handover",
+  "text": "Confined-space entry 9 finished, readings normal."
+ },
+ {
+  "note_id": "N089",
+  "date": "2026-09-23",
+  "shift": "Evening",
+  "source": "handover",
+  "text": "Confined-space entry 4 finished, readings normal."
+ },
+ {
+  "note_id": "N090",
+  "date": "2026-09-20",
+  "shift": "Night",
+  "source": "near-miss",
+  "text": "Confined-space entry 8 finished, readings normal."
+ },
+ {
+  "note_id": "N091",
+  "date": "2026-09-12",
+  "shift": "Day",
+  "source": "near-miss",
+  "text": "Lockout on line 4 done with every check completed."
+ },
+ {
+  "note_id": "N092",
+  "date": "2026-10-03",
+  "shift": "Evening",
+  "source": "near-miss",
+  "text": "Lockout on line 3 done with every check completed."
+ },
+ {
+  "note_id": "N093",
+  "date": "2026-09-01",
+  "shift": "Day",
+  "source": "maintenance",
+  "text": "Confined-space entry 1 finished, readings normal."
+ },
+ {
+  "note_id": "N094",
+  "date": "2026-09-09",
+  "shift": "Day",
+  "source": "handover",
+  "text": "Lockout on line 7 done with every check completed."
+ },
+ {
+  "note_id": "N095",
+  "date": "2026-09-17",
+  "shift": "Night",
+  "source": "near-miss",
+  "text": "Confined-space entry 9 finished, readings normal."
+ },
+ {
+  "note_id": "N096",
+  "date": "2026-09-08",
+  "shift": "Day",
+  "source": "near-miss",
+  "text": "Lockout on line 5 done with every check completed."
+ },
+ {
+  "note_id": "N097",
+  "date": "2026-09-03",
+  "shift": "Evening",
+  "source": "handover",
+  "text": "Charger bay 5 used, gloves and shield worn."
+ },
+ {
+  "note_id": "N098",
+  "date": "2026-09-16",
+  "shift": "Night",
+  "source": "near-miss",
+  "text": "Lockout on line 6 done with every check completed."
+ },
+ {
+  "note_id": "N099",
+  "date": "2026-08-26",
+  "shift": "Day",
+  "source": "near-miss",
+  "text": "Lockout on line 5 done with every check completed."
+ },
+ {
+  "note_id": "N100",
+  "date": "2026-08-24",
+  "shift": "Evening",
+  "source": "handover",
+  "text": "Charger bay 6 used, gloves and shield worn."
+ }
+]

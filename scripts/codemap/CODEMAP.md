@@ -1,4 +1,4 @@
-# CODEMAP (auto-generated, do not edit) | L<n> = line number, may lag behind edits | 69 files listed, 17 without functions/classes omitted
+# CODEMAP (auto-generated, do not edit) | L<n> = line number, may lag behind edits | 69 files listed, 20 without functions/classes omitted
 learning/programming/data-analysis/exercises/pandas_basics_excercise.py
   list_functions(module) L3
 learning/programming/python/data-structure-algorithm/LinkedList.py
@@ -307,29 +307,29 @@ projects/amd-hackathon-act-iii/backend/tests/test_quote_check.py
   test_punctuation_inside_a_word_must_match() L78
   test_changed_word_still_fails_with_punctuation_ignored() L84
   test_punctuation_only_quote_fails() L88
-projects/amd-hackathon-act-iii/frontend/data_loader.py
-  _read(k) L10
-  _live(k) L13
-  get_data(want_demo) L21
-projects/amd-hackathon-act-iii/frontend/theme.py
+projects/amd-hackathon-act-iii/frontend/src/data_loader.py
+  _read(k) L7
+  _live(k) L10
+  get_data(want_demo) L18
+projects/amd-hackathon-act-iii/frontend/src/theme.py
   title(question, sub) L59
   big(value, label) L62
   banner(mode) L67
-projects/amd-hackathon-act-iii/frontend/views_a.py
+projects/amd-hackathon-act-iii/frontend/src/views/analytics.py
   _frame(d) L9
   _trend(f, label) L18
   overview(d) L26
   heat_strip(d) L46
   benchmark(d) L87
   amd(d) L108
-projects/amd-hackathon-act-iii/frontend/views_b.py
-  _save(fid, status) L7
-  _goto(fid) L14
-  _note(r, notes) L17
-  _chips(r) L25
-  _fix(r) L30
-  review_queue(d) L35
-  evidence_viewer(d) L69
+projects/amd-hackathon-act-iii/frontend/src/views/review.py
+  _save(fid, status) L8
+  _goto(fid) L15
+  _note(r, notes) L18
+  _chips(r) L26
+  _fix(r) L31
+  review_queue(d) L36
+  evidence_viewer(d) L70
 projects/monte-carlo-simulation/archive/monte_carlo_chatgpt_v6.0.0.py
   generate_monthly_split(trades) L162
   generate_weekly_split(trades) L182

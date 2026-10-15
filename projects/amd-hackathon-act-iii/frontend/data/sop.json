@@ -1,0 +1,122 @@
+[
+ {
+  "sop_id": "SOP-LOTO",
+  "step_id": 1,
+  "title": "Notify affected staff",
+  "text": "Tell everyone near the machine before shutdown."
+ },
+ {
+  "sop_id": "SOP-LOTO",
+  "step_id": 2,
+  "title": "Shut down the machine",
+  "text": "Use the normal stop sequence."
+ },
+ {
+  "sop_id": "SOP-LOTO",
+  "step_id": 3,
+  "title": "Isolate energy sources",
+  "text": "Switch off electrical, air and hydraulic supply."
+ },
+ {
+  "sop_id": "SOP-LOTO",
+  "step_id": 4,
+  "title": "Apply lock and tag",
+  "text": "Each worker fits a personal lock and a tag."
+ },
+ {
+  "sop_id": "SOP-LOTO",
+  "step_id": 5,
+  "title": "Release stored energy",
+  "text": "Bleed pressure and block moving parts."
+ },
+ {
+  "sop_id": "SOP-LOTO",
+  "step_id": 6,
+  "title": "Verify zero energy",
+  "text": "Try to start the machine. It must not move."
+ },
+ {
+  "sop_id": "SOP-LOTO",
+  "step_id": 7,
+  "title": "Perform the work",
+  "text": "Only after steps 1 to 6 are done."
+ },
+ {
+  "sop_id": "SOP-LOTO",
+  "step_id": 8,
+  "title": "Remove locks and restore",
+  "text": "Check the area, then remove locks and restart."
+ },
+ {
+  "sop_id": "SOP-FORK",
+  "step_id": 1,
+  "title": "Park in the charging bay",
+  "text": "Set the brake and lower the forks."
+ },
+ {
+  "sop_id": "SOP-FORK",
+  "step_id": 2,
+  "title": "Wear acid-resistant gloves and face shield",
+  "text": "Required for all battery work."
+ },
+ {
+  "sop_id": "SOP-FORK",
+  "step_id": 3,
+  "title": "Check vent caps and electrolyte level",
+  "text": "Look before every charge."
+ },
+ {
+  "sop_id": "SOP-FORK",
+  "step_id": 4,
+  "title": "Connect charger only when off",
+  "text": "Plug in with the charger switched off."
+ },
+ {
+  "sop_id": "SOP-FORK",
+  "step_id": 5,
+  "title": "Charge to full without interruption",
+  "text": "Full charge takes eight hours."
+ },
+ {
+  "sop_id": "SOP-FORK",
+  "step_id": 6,
+  "title": "Disconnect and wipe terminals",
+  "text": "Switch off first, then unplug."
+ },
+ {
+  "sop_id": "SOP-CONF",
+  "step_id": 1,
+  "title": "Issue entry permit",
+  "text": "Supervisor signs before entry."
+ },
+ {
+  "sop_id": "SOP-CONF",
+  "step_id": 2,
+  "title": "Test the atmosphere",
+  "text": "Check oxygen and gas levels."
+ },
+ {
+  "sop_id": "SOP-CONF",
+  "step_id": 3,
+  "title": "Ventilate for 15 minutes",
+  "text": "Run the fan before anyone enters."
+ },
+ {
+  "sop_id": "SOP-CONF",
+  "step_id": 4,
+  "title": "Station an attendant outside",
+  "text": "One person stays at the opening."
+ },
+ {
+  "sop_id": "SOP-CONF",
+  "step_id": 5,
+  "title": "Confirm rescue plan and radio check",
+  "text": "Done at the start of each entry."
+ },
+ {
+  "sop_id": "SOP-CONF",
+  "step_id": 6,
+  "title": "Enter and monitor continuously",
+  "text": "Keep gas readings on screen."
+ }
+]
