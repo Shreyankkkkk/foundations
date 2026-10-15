@@ -1,5 +1,5 @@
 # PORTABLE CONTEXT: amd-hackathon-act-iii
-Generated 2026-10-13 by scripts/build_portable.py. Read-only copy; the source of truth is STATE.md / LOG.md in the repo.
+Generated 2026-10-15 by scripts/build_portable.py. Read-only copy; the source of truth is STATE.md / LOG.md in the repo.
 Rule: if you cannot open a link below, say so and ask me to paste it. Never claim to have read what you could not open.
 If you cannot write files, give me log lines and STATE edits as text to paste.
 
@@ -99,7 +99,7 @@ Note: the earlier Dec 1 date belonged to a different event (AMD AI Academy Chall
 2. Answer the remaining setup questions (hours per day per member, online only); fills `hours_available`. Team is decided.
 3. Read the getting-started guide in a browser (fetcher cannot render lablab guide pages reliably); settle the "Not covered by the rule book" row.
 4. Check whether ACT III counts toward AI Academy XP (see `projects/amd-hackathon/`).
-5. Primary research queue (checklist done 2026-10-09 in `docs/primary-research.md`: findings F1-F12, unknowns U1-U12, constants C1-C9; measurements and answers still pending): AMD Developer Cloud GPU type, $/h, credit hours, vLLM serve test; Docker/Linux on Shreyank's machine; schedule and mentor hours in GST; track requirements vs skills.
+5. Primary research queue (checklist done 2026-10-09 in `docs/research/primary-research-checklist.md`: findings F1-F12, unknowns U1-U12, constants C1-C9; measurements and answers still pending): AMD Developer Cloud GPU type, $/h, credit hours, vLLM serve test; Docker/Linux on Shreyank's machine; schedule and mentor hours in GST; track requirements vs skills.
 6. Secondary research queue (not started): past lablab/AMD winners in tracks of interest, vLLM-on-ROCm docs, Evolus quickstart, track datasets. Tag each finding SOURCED or RECALLED.
 7. No code until primary research is logged here.
 8. Idea validation (primary research, not started): what input quality the image-to-3D step needs (single photos vs many overlapping photos), whether it runs on AMD GPU and at what time/cost per building, existing indoor-tour products to compare against.
@@ -107,11 +107,11 @@ Note: the earlier Dec 1 date belonged to a different event (AMD AI Academy Chall
 9. DONE 2026-10-12: Playbook, Front-End Guide and data contract text pasted by Shreyank and folded in (project section below). Open: which builder (A or B) Shreyank is; who is data lead.
 
 ## Research folder summary (docs/research/, read 2026-10-12)
-- `Opportunity_Research_Report.md` (2026-10-10, analyst report): covers the four tracks and shortlists 8 areas (1.2, 1.3, 2.1, 2.2, 3.1, 3.2, 3.3, 4.1). Provisional analyst-judgment ranking: 2.1 discharge comprehension 21; 3.2 SMB forecasting and 2.2 language barriers 20; 1.2 defect detection 19; 3.3, 1.3, 3.1 at 18; 4.1 audio description 17. States it does not choose a project. No SOP/procedure-drift area is analysed in it.
+- `opportunity-research-report.md` (2026-10-10, analyst report; was Opportunity_Research_Report.md): covers the four tracks and shortlists 8 areas (1.2, 1.3, 2.1, 2.2, 3.1, 3.2, 3.3, 4.1). Provisional analyst-judgment ranking: 2.1 discharge comprehension 21; 3.2 SMB forecasting and 2.2 language barriers 20; 1.2 defect detection 19; 3.3, 1.3, 3.1 at 18; 4.1 audio description 17. States it does not choose a project. No SOP/procedure-drift area is analysed in it.
 - AMD path facts it records (SOURCED to vLLM/AMD docs): pre-built vLLM ROCm wheels need Python 3.12 only; MI300-class GPUs supported; AMD Developer Cloud offers 1x MI300X (192 GB) or 8x MI300X. Still unverified there: instance availability and quota in event week, VLM-specific throughput, speech/TTS on ROCm.
-- `research_1.md` (2026-10-09): findings F1-F12, unknowns U1-U12, constants C1-C9 (C1-C9 still unmeasured). U11 (enrollment/Discord) is now resolved; F12 (days_to_kickoff) corrected above.
+- `primary-research-checklist.md` (2026-10-09; was research_1.md): findings F1-F12, unknowns U1-U12, constants C1-C9 (C1-C9 still unmeasured). U11 (enrollment/Discord) is now resolved; F12 (days_to_kickoff) corrected above.
 - `brief.md`: reduced version only, see its own warning.
-- Playbook PDF, Front-End Guide PDF and data contract .docx: AI could not read the files; Shreyank pasted their text 2026-10-12 and it is folded into the project section below.
+- Playbook PDF, Front-End Guide PDF and data contract .docx (moved 2026-10-14 to `docs/guides/`): AI could not read the files; Shreyank pasted their text 2026-10-12 and it is folded into the project section below.
 
 ## Project: Procedure Drift Finder (Team Playbook and Front-End Guide 2026-10-10, data contract; text pasted 2026-10-12)
 - What: Track 1 Intelligent Industry. User: plant safety/process manager. Reads the notes a plant already writes (handover, near-miss, maintenance) against its SOPs, finds drift, shows the exact quote as proof. Data is synthetic and labelled so.
@@ -145,17 +145,17 @@ Note: the earlier Dec 1 date belonged to a different event (AMD AI Academy Chall
 
 ## Where things are
 - `docs/research/brief.md`: REDUCED brief (event page and live page only); the full version was overwritten 2026-10-08, rule-book facts live in the Rules table above
-- `docs/research/research_1.md`: primary research checklist (findings F1-F12, unknowns U1-U12, constants C1-C9, judge view, track fit); earlier called docs/primary-research.md
-- `docs/research/Opportunity_Research_Report.md`: analyst report, 8 shortlisted areas, provisional ranking
-- `docs/research/` also holds the Procedure Drift Finder Playbook, Front-End Duo Guide and data contract (unread by AI); `docs/notes/notes_0.md`, `notes_1.md` not read
+- `docs/research/primary-research-checklist.md`: primary research checklist (findings F1-F12, unknowns U1-U12, constants C1-C9, judge view, track fit); earlier called research_1.md and docs/primary-research.md
+- `docs/research/opportunity-research-report.md`: analyst report, 8 shortlisted areas, provisional ranking; earlier called Opportunity_Research_Report.md
+- `docs/guides/`: `team-playbook.pdf`, `frontend-duo-guide.pdf`, `data-contract.docx` (unread by AI, text pasted 2026-10-12 and folded in above; moved here from docs/research/ on 2026-10-14 and renamed)
+- `docs/notes/`: `notes_0.md`, `notes_1.md` not read
+- `backend/`: `src/` (config.py, pipeline.py; `stages/` = loader, matcher, judge, quote_check; `models/` = fake_model; `evaluation/` = benchmark), `scripts/` (build_data.py generates the data, check_data.py checks it), `data/` (sop.json, notes.json, answer_key.json; `demo/` = saved demo copy), `output/` (run results, git-ignored), `tests/`, `docs/amd-runbook.md`, `README.md`, `requirements.txt`; see `backend/README.md`
 - `LOG.md`: dated changes
 
 ---
 
 ## LOG (last 10 entries)
 
-2026-10-08 | rule book and lablab guides (pasted by Shreyank) folded in: brief.md rewritten as the complete brief; STATE.md gained demo-platform, repo, late-submission, conduct, IBM Bob and rule-book-gap rows, manual_submission_close_gst, research queues | initial setup completed; research not started | docs/brief.md, STATE.md
-2026-10-08 | ERROR: a parallel session's complete docs/brief.md was overwritten with the reduced first version; warning added at its top; duplicate projects/README.md row removed | two sessions wrote to this folder without read-before-write | docs/brief.md, projects/README.md
 2026-10-09 | primary research checklist written (12 findings, 12 unknowns, 9 constants to measure, judge view, track fit); STATE updated: days_to_kickoff 3, track-count conflict noted, research pointer | event page re-read; brief.md left unchanged by request; getting-started guide unreadable by fetcher, still needed | docs/primary-research.md, STATE.md
 2026-10-09 | team decided after team meeting (reported by Shreyank); initial idea: AI-generated 3D indoor walkthrough from owner images (hotels, factory training); roles and PR workflow recorded; risks and idea-validation item added; track still open | team meeting outcome, not yet validated against rules or AMD hardware | STATE.md
 2026-10-10 | team composition corrected: 6 members (2 backend, 2 frontend, 1 marketing, 1 repo), not 5; Roles and Team line in STATE updated | Shreyank clarified; logged only, discussion continues in the main ACT III chat | STATE.md
@@ -164,17 +164,22 @@ Note: the earlier Dec 1 date belonged to a different event (AMD AI Academy Chall
 2026-10-12 | NOT read: Procedure Drift Finder Team Playbook PDF, Front-End Duo Guide PDF, data contract .docx (binary, no text extraction); Idea, Track and Roles rows left unchanged; open item 9 added | file tool cannot extract text from these formats | STATE.md
 2026-10-12 | Playbook, Front-End Guide and data contract text (pasted by Shreyank) folded into STATE: new Procedure Drift Finder project section; Idea and Track rows changed; 3D idea marked superseded (inferred, team confirmation not seen); open item 9 closed | Shreyank supplied the text the file tool could not read | STATE.md
 2026-10-13 | Backend plan agreed and recorded in STATE (21:00 GST): Claude builds and tests the code, Shreyank runs only AMD-machine and account steps, Shreyank assumed Builder A; matcher is plain-Python word overlap, Evolus excluded, schedule 10-13 to 10-18 with freeze 10-16 | Shreyank cannot build it himself in time and will learn it after the event | STATE.md
+2026-10-14 | Synthetic test data built (3 SOPs, 32 steps; 200 notes = 25 drift + 30 trap + 145 clean; answer key; check_data.py passes) and empty backend skeleton added; docs reorganised: Playbook, Front-End Guide and data contract moved to docs/guides/ with plain names, research files renamed (opportunity-research-report.md, primary-research-checklist.md), backend/data/demo/ and project .gitignore added | clean structure before first commit; PORTABLE.md still lists the old docs paths and needs regenerating | STATE.md, backend/, docs/
+2026-10-14 | backend/ regrouped into subfolders: src/ (config, pipeline; stages/ loader, matcher, judge, quote_check; models/ fake_model; evaluation/ benchmark), scripts/ (build_data.py, check_data.py; their paths fixed, run as python scripts/check_data.py from backend/), docs/amd-runbook.md | root of backend/ had loose .py files and a generator inside data/ | STATE.md, backend/
 
 ---
 
 ## Other files (open only if the task needs them)
 
+- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/backend/docs/amd-runbook.md
+- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/backend/README.md
+- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/backend/requirements.txt
+- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/guides/data-contract.docx  (binary: AI may not be able to read it, ask me to paste the text)
+- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/guides/frontend-duo-guide.pdf  (binary: AI may not be able to read it, ask me to paste the text)
+- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/guides/team-playbook.pdf  (binary: AI may not be able to read it, ask me to paste the text)
 - https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/notes/notes_0.md
 - https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/notes/notes_1.md
 - https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/research/brief.md
-- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/research/data%20contract.docx  (binary: AI may not be able to read it, ask me to paste the text)
-- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/research/Front-End%20Duo%20Guide%20%E2%80%94%20Procedure%20Drift%20Finder.pdf  (binary: AI may not be able to read it, ask me to paste the text)
-- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/research/Opportunity_Research_Report.md
-- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/research/Procedure%20Drift%20Finder%20%E2%80%94%20Team%20Playbook.pdf  (binary: AI may not be able to read it, ask me to paste the text)
-- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/research/research_1.md
+- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/research/opportunity-research-report.md
+- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/research/primary-research-checklist.md
 - https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/README.md

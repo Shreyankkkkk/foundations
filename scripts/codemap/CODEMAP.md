@@ -1,4 +1,4 @@
-# CODEMAP (auto-generated, do not edit) | L<n> = line number, may lag behind edits | 50 files listed, 11 without functions/classes omitted
+# CODEMAP (auto-generated, do not edit) | L<n> = line number, may lag behind edits | 50 files listed, 29 without functions/classes omitted
 learning/programming/data-analysis/exercises/pandas_basics_excercise.py
   list_functions(module) L3
 learning/programming/python/data-structure-algorithm/LinkedList.py
@@ -144,12 +144,12 @@ learning/programming/python/notes/oop_pillars_notes_and_demos.py
     radius(self) L127
 playground/EURUSD_graph_test.py
   plot_chart(interval) L7
-projects/amd-hackathon-act-iii/backend/check_data.py
+projects/amd-hackathon-act-iii/backend/scripts/build_data.py
+  build() L373
+projects/amd-hackathon-act-iii/backend/scripts/check_data.py
   check(ok, label, detail='') L21
   norm(s) L27
   load(name) L32
-projects/amd-hackathon-act-iii/backend/data/build_data.py
-  build() L373
 projects/monte-carlo-simulation/archive/monte_carlo_chatgpt_v6.0.0.py
   generate_monthly_split(trades) L162
   generate_weekly_split(trades) L182

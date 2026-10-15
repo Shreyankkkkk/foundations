@@ -67,7 +67,7 @@ Note: the earlier Dec 1 date belonged to a different event (AMD AI Academy Chall
 2. Answer the remaining setup questions (hours per day per member, online only); fills `hours_available`. Team is decided.
 3. Read the getting-started guide in a browser (fetcher cannot render lablab guide pages reliably); settle the "Not covered by the rule book" row.
 4. Check whether ACT III counts toward AI Academy XP (see `projects/amd-hackathon/`).
-5. Primary research queue (checklist done 2026-10-09 in `docs/primary-research.md`: findings F1-F12, unknowns U1-U12, constants C1-C9; measurements and answers still pending): AMD Developer Cloud GPU type, $/h, credit hours, vLLM serve test; Docker/Linux on Shreyank's machine; schedule and mentor hours in GST; track requirements vs skills.
+5. Primary research queue (checklist done 2026-10-09 in `docs/research/primary-research-checklist.md`: findings F1-F12, unknowns U1-U12, constants C1-C9; measurements and answers still pending): AMD Developer Cloud GPU type, $/h, credit hours, vLLM serve test; Docker/Linux on Shreyank's machine; schedule and mentor hours in GST; track requirements vs skills.
 6. Secondary research queue (not started): past lablab/AMD winners in tracks of interest, vLLM-on-ROCm docs, Evolus quickstart, track datasets. Tag each finding SOURCED or RECALLED.
 7. No code until primary research is logged here.
 8. Idea validation (primary research, not started): what input quality the image-to-3D step needs (single photos vs many overlapping photos), whether it runs on AMD GPU and at what time/cost per building, existing indoor-tour products to compare against.
@@ -75,11 +75,11 @@ Note: the earlier Dec 1 date belonged to a different event (AMD AI Academy Chall
 9. DONE 2026-10-12: Playbook, Front-End Guide and data contract text pasted by Shreyank and folded in (project section below). Open: which builder (A or B) Shreyank is; who is data lead.
 
 ## Research folder summary (docs/research/, read 2026-10-12)
-- `Opportunity_Research_Report.md` (2026-10-10, analyst report): covers the four tracks and shortlists 8 areas (1.2, 1.3, 2.1, 2.2, 3.1, 3.2, 3.3, 4.1). Provisional analyst-judgment ranking: 2.1 discharge comprehension 21; 3.2 SMB forecasting and 2.2 language barriers 20; 1.2 defect detection 19; 3.3, 1.3, 3.1 at 18; 4.1 audio description 17. States it does not choose a project. No SOP/procedure-drift area is analysed in it.
+- `opportunity-research-report.md` (2026-10-10, analyst report; was Opportunity_Research_Report.md): covers the four tracks and shortlists 8 areas (1.2, 1.3, 2.1, 2.2, 3.1, 3.2, 3.3, 4.1). Provisional analyst-judgment ranking: 2.1 discharge comprehension 21; 3.2 SMB forecasting and 2.2 language barriers 20; 1.2 defect detection 19; 3.3, 1.3, 3.1 at 18; 4.1 audio description 17. States it does not choose a project. No SOP/procedure-drift area is analysed in it.
 - AMD path facts it records (SOURCED to vLLM/AMD docs): pre-built vLLM ROCm wheels need Python 3.12 only; MI300-class GPUs supported; AMD Developer Cloud offers 1x MI300X (192 GB) or 8x MI300X. Still unverified there: instance availability and quota in event week, VLM-specific throughput, speech/TTS on ROCm.
-- `research_1.md` (2026-10-09): findings F1-F12, unknowns U1-U12, constants C1-C9 (C1-C9 still unmeasured). U11 (enrollment/Discord) is now resolved; F12 (days_to_kickoff) corrected above.
+- `primary-research-checklist.md` (2026-10-09; was research_1.md): findings F1-F12, unknowns U1-U12, constants C1-C9 (C1-C9 still unmeasured). U11 (enrollment/Discord) is now resolved; F12 (days_to_kickoff) corrected above.
 - `brief.md`: reduced version only, see its own warning.
-- Playbook PDF, Front-End Guide PDF and data contract .docx: AI could not read the files; Shreyank pasted their text 2026-10-12 and it is folded into the project section below.
+- Playbook PDF, Front-End Guide PDF and data contract .docx (moved 2026-10-14 to `docs/guides/`): AI could not read the files; Shreyank pasted their text 2026-10-12 and it is folded into the project section below.
 
 ## Project: Procedure Drift Finder (Team Playbook and Front-End Guide 2026-10-10, data contract; text pasted 2026-10-12)
 - What: Track 1 Intelligent Industry. User: plant safety/process manager. Reads the notes a plant already writes (handover, near-miss, maintenance) against its SOPs, finds drift, shows the exact quote as proof. Data is synthetic and labelled so.
@@ -113,7 +113,9 @@ Note: the earlier Dec 1 date belonged to a different event (AMD AI Academy Chall
 
 ## Where things are
 - `docs/research/brief.md`: REDUCED brief (event page and live page only); the full version was overwritten 2026-10-08, rule-book facts live in the Rules table above
-- `docs/research/research_1.md`: primary research checklist (findings F1-F12, unknowns U1-U12, constants C1-C9, judge view, track fit); earlier called docs/primary-research.md
-- `docs/research/Opportunity_Research_Report.md`: analyst report, 8 shortlisted areas, provisional ranking
-- `docs/research/` also holds the Procedure Drift Finder Playbook, Front-End Duo Guide and data contract (unread by AI); `docs/notes/notes_0.md`, `notes_1.md` not read
+- `docs/research/primary-research-checklist.md`: primary research checklist (findings F1-F12, unknowns U1-U12, constants C1-C9, judge view, track fit); earlier called research_1.md and docs/primary-research.md
+- `docs/research/opportunity-research-report.md`: analyst report, 8 shortlisted areas, provisional ranking; earlier called Opportunity_Research_Report.md
+- `docs/guides/`: `team-playbook.pdf`, `frontend-duo-guide.pdf`, `data-contract.docx` (unread by AI, text pasted 2026-10-12 and folded in above; moved here from docs/research/ on 2026-10-14 and renamed)
+- `docs/notes/`: `notes_0.md`, `notes_1.md` not read
+- `backend/`: `src/` (config.py, pipeline.py; `stages/` = loader, matcher, judge, quote_check; `models/` = fake_model; `evaluation/` = benchmark), `scripts/` (build_data.py generates the data, check_data.py checks it), `data/` (sop.json, notes.json, answer_key.json; `demo/` = saved demo copy), `output/` (run results, git-ignored), `tests/`, `docs/amd-runbook.md`, `README.md`, `requirements.txt`; see `backend/README.md`
 - `LOG.md`: dated changes

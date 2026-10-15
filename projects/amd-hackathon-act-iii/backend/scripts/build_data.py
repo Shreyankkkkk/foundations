@@ -1,14 +1,14 @@
 """Builds sop.json, notes.json and answer_key.json (synthetic data, labelled as such).
 
-Run from this folder:  python build_data.py
-Edit the text below, re-run, then run:  python ../check_data.py
+Run from the backend folder:  python scripts/build_data.py
+Edit the text below, re-run, then run:  python scripts/check_data.py
 """
 import json
 import random
 from datetime import date, timedelta
 from pathlib import Path
 
-OUT = Path(__file__).parent
+OUT = Path(__file__).resolve().parent.parent / "data"
 
 # ---------------------------------------------------------------- SOPs
 # (sop_id, title of the whole procedure, [(step title, step text), ...])

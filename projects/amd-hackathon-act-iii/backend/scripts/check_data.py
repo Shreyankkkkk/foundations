@@ -1,4 +1,4 @@
-"""Checks the test data. Run from the backend folder:  python check_data.py
+"""Checks the test data. Run from the backend folder:  python scripts/check_data.py
 
 Prints one line per check and exits with code 1 if anything fails.
 """
@@ -9,7 +9,7 @@ from collections import Counter
 from datetime import date
 from pathlib import Path
 
-DATA = Path(__file__).parent / "data"
+DATA = Path(__file__).resolve().parent.parent / "data"
 DRIFT_TYPES = {"skipped_step", "reordered_steps", "workaround_substitution",
                "sop_outdated_or_impractical", "sop_unclear"}
 SOURCES = {"handover", "near-miss", "maintenance"}

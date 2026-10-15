@@ -1,0 +1,8 @@
+# Virtual environments and test caches
+.venv/
+venv/
+.pytest_cache/
+
+# Raw run results: the committed copies live in backend/data/demo/
+backend/output/*.json
+backend/output/*.log
