@@ -1,5 +1,5 @@
 # PORTABLE CONTEXT: monte-carlo-simulation
-Generated 2026-10-11 by scripts/build_portable.py. Read-only copy; the source of truth is STATE.md / LOG.md in the repo.
+Generated 2026-10-15 by scripts/build_portable.py. Read-only copy; the source of truth is STATE.md / LOG.md in the repo.
 Rule: if you cannot open a link below, say so and ask me to paste it. Never claim to have read what you could not open.
 If you cannot write files, give me log lines and STATE edits as text to paste.
 
@@ -65,4 +65,4 @@ O(1) rolling-peak drawdown, all-core parallelism, cached JIT, fractional Kelly s
 
 ## Other files (open only if the task needs them)
 
-- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/monte-carlo-simulation/current/README.md
+- https://raw.githubusercontent.com/Shreyankkkkk/foundations/main/projects/monte-carlo-simulation/current/README.md

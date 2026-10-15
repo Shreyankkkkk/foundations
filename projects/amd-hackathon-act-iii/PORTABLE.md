@@ -171,15 +171,15 @@ Note: the earlier Dec 1 date belonged to a different event (AMD AI Academy Chall
 
 ## Other files (open only if the task needs them)
 
-- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/backend/docs/amd-runbook.md
-- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/backend/README.md
-- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/backend/requirements.txt
-- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/guides/data-contract.docx  (binary: AI may not be able to read it, ask me to paste the text)
-- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/guides/frontend-duo-guide.pdf  (binary: AI may not be able to read it, ask me to paste the text)
-- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/guides/team-playbook.pdf  (binary: AI may not be able to read it, ask me to paste the text)
-- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/notes/notes_0.md
-- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/notes/notes_1.md
-- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/research/brief.md
-- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/research/opportunity-research-report.md
-- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/docs/research/primary-research-checklist.md
-- https://raw.githubusercontent.com/Shreyankkkkk/quant-foundations/main/projects/amd-hackathon-act-iii/README.md
+- https://raw.githubusercontent.com/Shreyankkkkk/foundations/main/projects/amd-hackathon-act-iii/backend/docs/amd-runbook.md
+- https://raw.githubusercontent.com/Shreyankkkkk/foundations/main/projects/amd-hackathon-act-iii/backend/README.md
+- https://raw.githubusercontent.com/Shreyankkkkk/foundations/main/projects/amd-hackathon-act-iii/backend/requirements.txt
+- https://raw.githubusercontent.com/Shreyankkkkk/foundations/main/projects/amd-hackathon-act-iii/docs/guides/data-contract.docx  (binary: AI may not be able to read it, ask me to paste the text)
+- https://raw.githubusercontent.com/Shreyankkkkk/foundations/main/projects/amd-hackathon-act-iii/docs/guides/frontend-duo-guide.pdf  (binary: AI may not be able to read it, ask me to paste the text)
+- https://raw.githubusercontent.com/Shreyankkkkk/foundations/main/projects/amd-hackathon-act-iii/docs/guides/team-playbook.pdf  (binary: AI may not be able to read it, ask me to paste the text)
+- https://raw.githubusercontent.com/Shreyankkkkk/foundations/main/projects/amd-hackathon-act-iii/docs/notes/notes_0.md
+- https://raw.githubusercontent.com/Shreyankkkkk/foundations/main/projects/amd-hackathon-act-iii/docs/notes/notes_1.md
+- https://raw.githubusercontent.com/Shreyankkkkk/foundations/main/projects/amd-hackathon-act-iii/docs/research/brief.md
+- https://raw.githubusercontent.com/Shreyankkkkk/foundations/main/projects/amd-hackathon-act-iii/docs/research/opportunity-research-report.md
+- https://raw.githubusercontent.com/Shreyankkkkk/foundations/main/projects/amd-hackathon-act-iii/docs/research/primary-research-checklist.md
+- https://raw.githubusercontent.com/Shreyankkkkk/foundations/main/projects/amd-hackathon-act-iii/README.md
