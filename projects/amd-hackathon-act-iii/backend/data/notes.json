@@ -1,0 +1,1402 @@
+[
+  {
+    "note_id": "N001",
+    "date": "2026-09-01",
+    "shift": "Day",
+    "source": "maintenance",
+    "text": "Replaced faulty pressure gauge at the Line 3 air bleed valve. Reads zero when vented."
+  },
+  {
+    "note_id": "N002",
+    "date": "2026-09-01",
+    "shift": "Evening",
+    "source": "maintenance",
+    "text": "Tightened loose guard bolts on Line 3 discharge."
+  },
+  {
+    "note_id": "N003",
+    "date": "2026-09-01",
+    "shift": "Night",
+    "source": "maintenance",
+    "text": "Fitters swapped the Line 3 gearbox. Crew was on break so we didn't tell the line crew before isolating, supervisor was informed afterwards."
+  },
+  {
+    "note_id": "N004",
+    "date": "2026-09-01",
+    "shift": "Day",
+    "source": "handover",
+    "text": "The new label printer on Line 3 jammed twice, supplier contacted."
+  },
+  {
+    "note_id": "N005",
+    "date": "2026-09-01",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "Lights in the forklift bay replaced by the electrician. Fixed and tested."
+  },
+  {
+    "note_id": "N006",
+    "date": "2026-09-01",
+    "shift": "Night",
+    "source": "handover",
+    "text": "Skipped the second break to finish the Line 3 clean-down. All lockout steps were followed and the line was handed back on time."
+  },
+  {
+    "note_id": "N007",
+    "date": "2026-09-01",
+    "shift": "Day",
+    "source": "maintenance",
+    "text": "Checked the emergency stop on Line 3 operates correctly, test logged."
+  },
+  {
+    "note_id": "N008",
+    "date": "2026-09-02",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "Outfeed conveyor on Line 3 running with a slight noise. Logged for maintenance, no action needed tonight."
+  },
+  {
+    "note_id": "N009",
+    "date": "2026-09-02",
+    "shift": "Night",
+    "source": "handover",
+    "text": "Line 2 fitter used a group lock box during the belt change. Line 2 has its own local procedure, nothing to do with the Line 3 SOP."
+  },
+  {
+    "note_id": "N010",
+    "date": "2026-09-02",
+    "shift": "Day",
+    "source": "handover",
+    "text": "Rain overnight, loading dock floor slippery. Mats put down and the sign out."
+  },
+  {
+    "note_id": "N011",
+    "date": "2026-09-02",
+    "shift": "Evening",
+    "source": "maintenance",
+    "text": "Replaced the horn on truck 2 and tested it with the seat belt fitted. Entry in the truck log."
+  },
+  {
+    "note_id": "N012",
+    "date": "2026-09-02",
+    "shift": "Night",
+    "source": "near-miss",
+    "text": "A bag of caustic pellets stored near water, moved to the dry shelf."
+  },
+  {
+    "note_id": "N013",
+    "date": "2026-09-02",
+    "shift": "Day",
+    "source": "maintenance",
+    "text": "Replaced worn belt on Line 3 outfeed. Followed the full lockout, each fitter on own lock and tag, zero volts confirmed with the tester before work."
+  },
+  {
+    "note_id": "N014",
+    "date": "2026-09-02",
+    "shift": "Evening",
+    "source": "maintenance",
+    "text": "Sensor replacement on Line 3 with two fitters. Used a single group lock on the isolator instead of a lock each, tags written with both names."
+  },
+  {
+    "note_id": "N015",
+    "date": "2026-09-03",
+    "shift": "Night",
+    "source": "handover",
+    "text": "Line 3 wrapper arm replaced. Maintenance team closed out the work order."
+  },
+  {
+    "note_id": "N016",
+    "date": "2026-09-03",
+    "shift": "Day",
+    "source": "maintenance",
+    "text": "Serviced truck 4 battery connector. Restraint checked and secure."
+  },
+  {
+    "note_id": "N017",
+    "date": "2026-09-03",
+    "shift": "Evening",
+    "source": "maintenance",
+    "text": "Changed the CIP pump seal. Pump isolated and locked, tagged with name, date and reason."
+  },
+  {
+    "note_id": "N018",
+    "date": "2026-09-03",
+    "shift": "Night",
+    "source": "handover",
+    "text": "Fitters disagree on what everyone is out of the machine means in the lock removal step, a head count or just a look round. Raised with the supervisor."
+  },
+  {
+    "note_id": "N019",
+    "date": "2026-09-03",
+    "shift": "Day",
+    "source": "maintenance",
+    "text": "Replaced the control cable on the Line 3 stop button. Isolation and lock applied, tested at zero volts."
+  },
+  {
+    "note_id": "N020",
+    "date": "2026-09-03",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "Cartons for the Hall A order arrived short by one pallet. Warehouse told, supplier chasing."
+  },
+  {
+    "note_id": "N021",
+    "date": "2026-09-03",
+    "shift": "Night",
+    "source": "near-miss",
+    "text": "Operator climbed on the conveyor to clear a jam instead of using the step. Reminded of the walkway rule, no injury."
+  },
+  {
+    "note_id": "N022",
+    "date": "2026-09-04",
+    "shift": "Day",
+    "source": "maintenance",
+    "text": "Greased bearings on the Line 3 conveyor during the planned stop. Locks and tags on, tested for zero energy first, all removed by their owners after."
+  },
+  {
+    "note_id": "N023",
+    "date": "2026-09-04",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "M2 rinse water tested after the final rinse, pH 7.4. Hoses disconnected with the line vented and ports capped."
+  },
+  {
+    "note_id": "N024",
+    "date": "2026-09-04",
+    "shift": "Night",
+    "source": "handover",
+    "text": "Quality hold on batch 4471 released after the lab result came back clear."
+  },
+  {
+    "note_id": "N025",
+    "date": "2026-09-04",
+    "shift": "Day",
+    "source": "maintenance",
+    "text": "Repainted the walkway lines next to Line 3."
+  },
+  {
+    "note_id": "N026",
+    "date": "2026-09-04",
+    "shift": "Evening",
+    "source": "maintenance",
+    "text": "Used an extra danger sign and a second lock on the Line 3 isolator in addition to each fitter's own lock, more than the SOP asks."
+  },
+  {
+    "note_id": "N027",
+    "date": "2026-09-04",
+    "shift": "Night",
+    "source": "maintenance",
+    "text": "Cleaned and inspected the eye wash station near the CIP skid. Flow test passed."
+  },
+  {
+    "note_id": "N028",
+    "date": "2026-09-04",
+    "shift": "Day",
+    "source": "maintenance",
+    "text": "Greased all truck mast channels. Logged against each truck."
+  },
+  {
+    "note_id": "N029",
+    "date": "2026-09-05",
+    "shift": "Evening",
+    "source": "near-miss",
+    "text": "Step ladder footing slipped on the wet floor, operator held on. Ladder replaced with a platform."
+  },
+  {
+    "note_id": "N030",
+    "date": "2026-09-05",
+    "shift": "Night",
+    "source": "near-miss",
+    "text": "Pallet jack rolled slightly on the ramp. Chocks fitted."
+  },
+  {
+    "note_id": "N031",
+    "date": "2026-09-05",
+    "shift": "Day",
+    "source": "handover",
+    "text": "Operators are using the tablet checklist for the truck checks now, but the SOP still says paper log and nobody has the log book at the bay."
+  },
+  {
+    "note_id": "N032",
+    "date": "2026-09-05",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "Quiet night. Caustic tote for M2 delivered at 02:00 and stored in the bunded area. Two pallets of cartons staged for the morning."
+  },
+  {
+    "note_id": "N033",
+    "date": "2026-09-05",
+    "shift": "Night",
+    "source": "handover",
+    "text": "Inspected truck 5 twice today, first at shift start and again after a pallet of caustic was moved into its path. Both checks clean and logged."
+  },
+  {
+    "note_id": "N034",
+    "date": "2026-09-05",
+    "shift": "Day",
+    "source": "maintenance",
+    "text": "Replaced worn mast chain on truck 1. Tension set to spec and checked by a second fitter."
+  },
+  {
+    "note_id": "N035",
+    "date": "2026-09-05",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "Spare forks for the trucks delivered and stored in the maintenance cage."
+  },
+  {
+    "note_id": "N036",
+    "date": "2026-09-06",
+    "shift": "Night",
+    "source": "maintenance",
+    "text": "Line 3 sensor job. Tested the terminals with the meter first, then bled the air line afterwards while waiting for the part."
+  },
+  {
+    "note_id": "N037",
+    "date": "2026-09-06",
+    "shift": "Day",
+    "source": "handover",
+    "text": "Overtime list for the weekend posted on the board. Eight volunteers so far."
+  },
+  {
+    "note_id": "N038",
+    "date": "2026-09-06",
+    "shift": "Evening",
+    "source": "maintenance",
+    "text": "Fixed the sticking gate on the forklift bay."
+  },
+  {
+    "note_id": "N039",
+    "date": "2026-09-06",
+    "shift": "Night",
+    "source": "handover",
+    "text": "Without the usual crowd the dock was calm. Trucks 1 to 3 checked first thing as normal and logged."
+  },
+  {
+    "note_id": "N040",
+    "date": "2026-09-06",
+    "shift": "Day",
+    "source": "handover",
+    "text": "Line 3 ran slow after lunch because of a reel with uneven tension. Reel replaced, speed back to normal."
+  },
+  {
+    "note_id": "N041",
+    "date": "2026-09-06",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "Dispatch were waiting so trucks 4 and 6 started without the tyre check. Everything else on the list was done and signed."
+  },
+  {
+    "note_id": "N042",
+    "date": "2026-09-06",
+    "shift": "Night",
+    "source": "near-miss",
+    "text": "Static shock from the wrapper film. Operator unhurt."
+  },
+  {
+    "note_id": "N043",
+    "date": "2026-09-07",
+    "shift": "Day",
+    "source": "handover",
+    "text": "Line 3 ran normally all shift. Two label rolls changed, no stoppages. Spare film roll in the cage for the next shift."
+  },
+  {
+    "note_id": "N044",
+    "date": "2026-09-07",
+    "shift": "Evening",
+    "source": "maintenance",
+    "text": "Replaced the Line 3 outfeed motor with a different brand of the same rating, supplier changed. Full lockout, zero volts confirmed."
+  },
+  {
+    "note_id": "N045",
+    "date": "2026-09-07",
+    "shift": "Night",
+    "source": "maintenance",
+    "text": "Repaired the pallet jack handle near dock 2."
+  },
+  {
+    "note_id": "N046",
+    "date": "2026-09-07",
+    "shift": "Day",
+    "source": "near-miss",
+    "text": "Operator tripped on a cable lead. Cable taped down."
+  },
+  {
+    "note_id": "N047",
+    "date": "2026-09-07",
+    "shift": "Evening",
+    "source": "near-miss",
+    "text": "Cut finger on a strapping band. First aid applied."
+  },
+  {
+    "note_id": "N048",
+    "date": "2026-09-07",
+    "shift": "Night",
+    "source": "near-miss",
+    "text": "Forklift horn heard late by a pedestrian near the corner. Mirror and sign added at the corner."
+  },
+  {
+    "note_id": "N049",
+    "date": "2026-09-07",
+    "shift": "Day",
+    "source": "handover",
+    "text": "Safety walk by the manager today, no actions raised for Line 3 or the forklift bay."
+  },
+  {
+    "note_id": "N050",
+    "date": "2026-09-08",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "Line 3 stopped for 20 minutes for a film jam at the wrapper. Operator cleared it with the line stopped at the panel. No injuries."
+  },
+  {
+    "note_id": "N051",
+    "date": "2026-09-08",
+    "shift": "Night",
+    "source": "handover",
+    "text": "Forklift horn on truck 5 tested at the pre-shift check, working. Log signed."
+  },
+  {
+    "note_id": "N052",
+    "date": "2026-09-08",
+    "shift": "Day",
+    "source": "handover",
+    "text": "Visitor group toured the packaging hall, escorted throughout and wearing hi-vis."
+  },
+  {
+    "note_id": "N053",
+    "date": "2026-09-08",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "Titration kit empty again, so we used the conductivity meter to estimate caustic strength instead. Reading looked fine."
+  },
+  {
+    "note_id": "N054",
+    "date": "2026-09-08",
+    "shift": "Night",
+    "source": "near-miss",
+    "text": "A carton fell from a stack on the top rack, nobody underneath. Stack reorganised."
+  },
+  {
+    "note_id": "N055",
+    "date": "2026-09-08",
+    "shift": "Day",
+    "source": "near-miss",
+    "text": "Hi-vis not worn by a visitor on the dock, spotted and corrected immediately."
+  },
+  {
+    "note_id": "N056",
+    "date": "2026-09-08",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "CIP on M2 started late because the caustic tote arrived late. All steps followed in order once it arrived."
+  },
+  {
+    "note_id": "N057",
+    "date": "2026-09-09",
+    "shift": "Night",
+    "source": "near-miss",
+    "text": "Door of the packaging hall swung into a passing packer. No injury, closer adjusted."
+  },
+  {
+    "note_id": "N058",
+    "date": "2026-09-09",
+    "shift": "Day",
+    "source": "handover",
+    "text": "Line 3 film tracking adjusted by the operator at the panel, line stopped first."
+  },
+  {
+    "note_id": "N059",
+    "date": "2026-09-09",
+    "shift": "Evening",
+    "source": "near-miss",
+    "text": "Forklift driver almost skipped the horn test because of a phone call, noticed and did it before moving. Log signed."
+  },
+  {
+    "note_id": "N060",
+    "date": "2026-09-09",
+    "shift": "Night",
+    "source": "near-miss",
+    "text": "Hot surface on the M2 heater touched briefly, minor redness, first aid, warning sign added."
+  },
+  {
+    "note_id": "N061",
+    "date": "2026-09-09",
+    "shift": "Day",
+    "source": "maintenance",
+    "text": "Truck 7 charger fault traced to a loose lead. Re-seated and tested over a full cycle."
+  },
+  {
+    "note_id": "N062",
+    "date": "2026-09-09",
+    "shift": "Evening",
+    "source": "maintenance",
+    "text": "Changed the Line 3 safety relay under full lockout, own locks and tags, all removed by their owners at the end."
+  },
+  {
+    "note_id": "N063",
+    "date": "2026-09-09",
+    "shift": "Night",
+    "source": "near-miss",
+    "text": "Pallet on the top rack leaning. Straightened with the truck, rack inspected."
+  },
+  {
+    "note_id": "N064",
+    "date": "2026-09-10",
+    "shift": "Day",
+    "source": "handover",
+    "text": "Runs clear is a judgement call. One crew rinses M2 for 10 minutes and the other crew for 15 before moving on."
+  },
+  {
+    "note_id": "N065",
+    "date": "2026-09-10",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "Cold morning, trucks started slowly but passed all checks."
+  },
+  {
+    "note_id": "N066",
+    "date": "2026-09-10",
+    "shift": "Night",
+    "source": "maintenance",
+    "text": "Changed hydraulic hose on truck 6. Truck tagged out, repaired, brake and steering tested in the yard before release."
+  },
+  {
+    "note_id": "N067",
+    "date": "2026-09-10",
+    "shift": "Day",
+    "source": "handover",
+    "text": "M2 heater cannot get past 65 degrees in winter, so the 70 degree circulation in the SOP can't be done as written."
+  },
+  {
+    "note_id": "N068",
+    "date": "2026-09-10",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "Caustic sample titrated at 1.8 percent before the CIP on M2, inside the range. Circulation ran 20 minutes at 70 degrees."
+  },
+  {
+    "note_id": "N069",
+    "date": "2026-09-10",
+    "shift": "Night",
+    "source": "near-miss",
+    "text": "Glove torn during the caustic hose connection, replaced before the caustic flowed."
+  },
+  {
+    "note_id": "N070",
+    "date": "2026-09-10",
+    "shift": "Day",
+    "source": "handover",
+    "text": "Line 3 panel screen replaced with an updated version, same buttons and same stop sequence as before."
+  },
+  {
+    "note_id": "N071",
+    "date": "2026-09-11",
+    "shift": "Evening",
+    "source": "maintenance",
+    "text": "Replaced two door seals on the packaging hall entrance."
+  },
+  {
+    "note_id": "N072",
+    "date": "2026-09-11",
+    "shift": "Night",
+    "source": "handover",
+    "text": "One pallet re-stacked by hand after a wrap failure. No damage to product."
+  },
+  {
+    "note_id": "N073",
+    "date": "2026-09-11",
+    "shift": "Day",
+    "source": "maintenance",
+    "text": "Fitter used a torque wrench instead of a spanner on the Line 3 guard bolts to match the new spec. Line locked out first."
+  },
+  {
+    "note_id": "N074",
+    "date": "2026-09-11",
+    "shift": "Evening",
+    "source": "near-miss",
+    "text": "Operator slipped slightly on the dock plate. Anti-slip tape added."
+  },
+  {
+    "note_id": "N075",
+    "date": "2026-09-11",
+    "shift": "Night",
+    "source": "handover",
+    "text": "Instead of the usual pH strips the lab supplied a new brand with the same range, 0 to 14. M2 rinse water read 7.6."
+  },
+  {
+    "note_id": "N076",
+    "date": "2026-09-11",
+    "shift": "Day",
+    "source": "handover",
+    "text": "Truck 4 on charge, trucks 5 and 6 out. Pre-shift checks done and logged for all three."
+  },
+  {
+    "note_id": "N077",
+    "date": "2026-09-11",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "Pallet wrap supply low. Reorder placed with stores."
+  },
+  {
+    "note_id": "N078",
+    "date": "2026-09-12",
+    "shift": "Night",
+    "source": "near-miss",
+    "text": "Near miss on the M2 CIP. The operator put the face shield and gloves on after connecting the hoses and a drip of caustic reached his sleeve. No injury, sleeve changed."
+  },
+  {
+    "note_id": "N079",
+    "date": "2026-09-12",
+    "shift": "Day",
+    "source": "handover",
+    "text": "All forklifts accounted for at the start of the day. Truck 2 battery swapped at 06:00. Dock 4 door sticking, work order raised."
+  },
+  {
+    "note_id": "N080",
+    "date": "2026-09-12",
+    "shift": "Evening",
+    "source": "maintenance",
+    "text": "Adjusted brake pedal free play on truck 2. Retested in the yard, fine."
+  },
+  {
+    "note_id": "N081",
+    "date": "2026-09-12",
+    "shift": "Night",
+    "source": "maintenance",
+    "text": "Replaced a worn timing belt on the wrapper. Line stopped, isolated, own locks fitted, tag attached, start tried and zero volts confirmed."
+  },
+  {
+    "note_id": "N082",
+    "date": "2026-09-12",
+    "shift": "Day",
+    "source": "maintenance",
+    "text": "Replaced the air cylinder on Line 3 infeed. Locked out at the isolator and tagged. Did not bleed the air as the valve was shut so we assumed it was fine."
+  },
+  {
+    "note_id": "N083",
+    "date": "2026-09-12",
+    "shift": "Evening",
+    "source": "maintenance",
+    "text": "Line 3 photo-eye cleaned and realigned under lockout. Zero volts confirmed, locks removed by their owners."
+  },
+  {
+    "note_id": "N084",
+    "date": "2026-09-12",
+    "shift": "Night",
+    "source": "handover",
+    "text": "Forklift charging bay clear and tidy. Spare battery on the second charger."
+  },
+  {
+    "note_id": "N085",
+    "date": "2026-09-13",
+    "shift": "Day",
+    "source": "near-miss",
+    "text": "Cleaner did not wear gloves while wiping the label printer. Not a hazard area and no procedure covers it, reminded anyway."
+  },
+  {
+    "note_id": "N086",
+    "date": "2026-09-13",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "Pre-rinse on M2 ran 10 minutes and the drain ran clear before moving on. Caustic circulation started after the strength test."
+  },
+  {
+    "note_id": "N087",
+    "date": "2026-09-13",
+    "shift": "Night",
+    "source": "maintenance",
+    "text": "Checked caustic hose clamps on both M2 hoses and replaced one worn clamp."
+  },
+  {
+    "note_id": "N088",
+    "date": "2026-09-13",
+    "shift": "Day",
+    "source": "near-miss",
+    "text": "Forklift reversed close to a packer at the dock door. Horn sounded, nobody touched. Briefed the driver and packer at the toolbox talk."
+  },
+  {
+    "note_id": "N089",
+    "date": "2026-09-13",
+    "shift": "Evening",
+    "source": "maintenance",
+    "text": "Repaired the film cutter on the Line 3 wrapper."
+  },
+  {
+    "note_id": "N090",
+    "date": "2026-09-13",
+    "shift": "Night",
+    "source": "handover",
+    "text": "Pre-rinse on M2 was longer than normal, 15 minutes, as the drain was cloudy. Went on once it ran clear."
+  },
+  {
+    "note_id": "N091",
+    "date": "2026-09-13",
+    "shift": "Day",
+    "source": "near-miss",
+    "text": "A fitter nearly dropped a wrench from the platform. Lanyard now required."
+  },
+  {
+    "note_id": "N092",
+    "date": "2026-09-14",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "Dock door 2 repaired by the contractor and signed off."
+  },
+  {
+    "note_id": "N093",
+    "date": "2026-09-14",
+    "shift": "Night",
+    "source": "maintenance",
+    "text": "Truck 3 pre-shift check found a loose wheel nut on the front left. Tightened, re-checked, logged, truck out after sign-off."
+  },
+  {
+    "note_id": "N094",
+    "date": "2026-09-14",
+    "shift": "Day",
+    "source": "handover",
+    "text": "M2 empty and rinsed, ready for the next batch. CIP sheet filed in the folder, permit closed."
+  },
+  {
+    "note_id": "N095",
+    "date": "2026-09-14",
+    "shift": "Evening",
+    "source": "maintenance",
+    "text": "No tester at the Line 3 cabinet so the fitter used a non-contact pen instead of the voltage tester before touching the terminals."
+  },
+  {
+    "note_id": "N096",
+    "date": "2026-09-14",
+    "shift": "Night",
+    "source": "maintenance",
+    "text": "Replaced the tank level gauge on M2. Tank empty and permit signed before work."
+  },
+  {
+    "note_id": "N097",
+    "date": "2026-09-14",
+    "shift": "Day",
+    "source": "maintenance",
+    "text": "Checked all fork tines on trucks 1 to 7 as part of the monthly inspection, no cracks found."
+  },
+  {
+    "note_id": "N098",
+    "date": "2026-09-14",
+    "shift": "Evening",
+    "source": "maintenance",
+    "text": "Changed the Line 3 motor contactor. Voltage tester used on all terminals, zero reading, work completed, locks off by the owners."
+  },
+  {
+    "note_id": "N099",
+    "date": "2026-09-15",
+    "shift": "Night",
+    "source": "handover",
+    "text": "First aid kit by Line 3 checked and in date. Hand sanitiser stations on the mezzanine refilled."
+  },
+  {
+    "note_id": "N100",
+    "date": "2026-09-15",
+    "shift": "Day",
+    "source": "handover",
+    "text": "New operators ask what the walk-around should cover. The SOP just says look for damage and nobody has said how closely to look."
+  },
+  {
+    "note_id": "N101",
+    "date": "2026-09-15",
+    "shift": "Evening",
+    "source": "maintenance",
+    "text": "Replaced gasket on the M2 caustic return hose coupling. Line vented first."
+  },
+  {
+    "note_id": "N102",
+    "date": "2026-09-15",
+    "shift": "Night",
+    "source": "maintenance",
+    "text": "Replaced faulty indicator on truck 1 battery gauge, reads correctly against the charger."
+  },
+  {
+    "note_id": "N103",
+    "date": "2026-09-15",
+    "shift": "Day",
+    "source": "maintenance",
+    "text": "Fitters wrote the tags in red pen for visibility. Every tag had name, date and reason and went on before work started."
+  },
+  {
+    "note_id": "N104",
+    "date": "2026-09-15",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "Stores received a new voltage tester and two padlocks for the lockout board. Tester placed in the Line 3 cabinet."
+  },
+  {
+    "note_id": "N105",
+    "date": "2026-09-15",
+    "shift": "Night",
+    "source": "handover",
+    "text": "Trucks swapped batteries early again. The new trucks lock lifting at 20 percent, so the 30 percent rule makes us swap batteries too early."
+  },
+  {
+    "note_id": "N106",
+    "date": "2026-09-16",
+    "shift": "Day",
+    "source": "near-miss",
+    "text": "Forklift driver forgot hi-vis at the start of the shift, collected it from the locker, corrected."
+  },
+  {
+    "note_id": "N107",
+    "date": "2026-09-16",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "Weekly housekeeping audit scored 94 percent. Actions: bin lids and one missing floor marking."
+  },
+  {
+    "note_id": "N108",
+    "date": "2026-09-16",
+    "shift": "Night",
+    "source": "handover",
+    "text": "Truck 3 battery was at 28 percent in the evening and was put on charge instead of going out."
+  },
+  {
+    "note_id": "N109",
+    "date": "2026-09-16",
+    "shift": "Day",
+    "source": "maintenance",
+    "text": "Replaced a cracked guard on Line 3 infeed. Lockout applied by each person with own lock and tag, guard refitted and checked before the locks came off."
+  },
+  {
+    "note_id": "N110",
+    "date": "2026-09-16",
+    "shift": "Evening",
+    "source": "maintenance",
+    "text": "Descaled the M2 heater element. Tank empty, permit signed."
+  },
+  {
+    "note_id": "N111",
+    "date": "2026-09-16",
+    "shift": "Night",
+    "source": "maintenance",
+    "text": "Replaced the air regulator on Line 3. Air valve locked, line bled to zero on the gauge, then work started."
+  },
+  {
+    "note_id": "N112",
+    "date": "2026-09-16",
+    "shift": "Day",
+    "source": "handover",
+    "text": "Operator trained on the new film splice tool. Sign-off sheet filed."
+  },
+  {
+    "note_id": "N113",
+    "date": "2026-09-17",
+    "shift": "Evening",
+    "source": "near-miss",
+    "text": "Cardboard blocking the emergency exit sign. Cleared."
+  },
+  {
+    "note_id": "N114",
+    "date": "2026-09-17",
+    "shift": "Night",
+    "source": "handover",
+    "text": "Line 3 ran on the new film first, then the old film after lunch. Product quality was identical."
+  },
+  {
+    "note_id": "N115",
+    "date": "2026-09-17",
+    "shift": "Day",
+    "source": "maintenance",
+    "text": "Topped up CIP tank with fresh caustic. Strength 1.9 percent by titration."
+  },
+  {
+    "note_id": "N116",
+    "date": "2026-09-17",
+    "shift": "Evening",
+    "source": "maintenance",
+    "text": "Cleaned the M2 spray ball. CIP permit signed before the cleaning started."
+  },
+  {
+    "note_id": "N117",
+    "date": "2026-09-17",
+    "shift": "Night",
+    "source": "maintenance",
+    "text": "Locked out Line 3 for the wrapper repair. Tags were written up after the work started because the tag book was in the office."
+  },
+  {
+    "note_id": "N118",
+    "date": "2026-09-17",
+    "shift": "Day",
+    "source": "handover",
+    "text": "Production planning moved the Line 3 changeover to Thursday. Operators informed at the board."
+  },
+  {
+    "note_id": "N119",
+    "date": "2026-09-17",
+    "shift": "Evening",
+    "source": "maintenance",
+    "text": "Replaced the broken seat belt on truck 3. Fitted and tested before the truck went out."
+  },
+  {
+    "note_id": "N120",
+    "date": "2026-09-18",
+    "shift": "Night",
+    "source": "near-miss",
+    "text": "Colleague asked why the horn test comes after the seat belt. Explained it is the order in the SOP and that the steps were followed."
+  },
+  {
+    "note_id": "N121",
+    "date": "2026-09-18",
+    "shift": "Day",
+    "source": "near-miss",
+    "text": "Loose pallet board spotted and removed before use."
+  },
+  {
+    "note_id": "N122",
+    "date": "2026-09-18",
+    "shift": "Evening",
+    "source": "near-miss",
+    "text": "Caustic tote cap found loose at the delivery, tightened by the driver and logged."
+  },
+  {
+    "note_id": "N123",
+    "date": "2026-09-18",
+    "shift": "Night",
+    "source": "handover",
+    "text": "The permit was already signed by the supervisor so the CIP on M2 started right away with no wait."
+  },
+  {
+    "note_id": "N124",
+    "date": "2026-09-18",
+    "shift": "Day",
+    "source": "handover",
+    "text": "Dock scale recalibrated by the contractor. Certificate on the notice board."
+  },
+  {
+    "note_id": "N125",
+    "date": "2026-09-18",
+    "shift": "Evening",
+    "source": "near-miss",
+    "text": "Forklift mirror knocked off at the dock door. No injury, mirror refitted."
+  },
+  {
+    "note_id": "N126",
+    "date": "2026-09-18",
+    "shift": "Night",
+    "source": "near-miss",
+    "text": "Pallet stacked too high at the dock, restacked to 1.6 m."
+  },
+  {
+    "note_id": "N127",
+    "date": "2026-09-19",
+    "shift": "Day",
+    "source": "handover",
+    "text": "Shift briefing covered the new emergency exit route. All present signed the sheet."
+  },
+  {
+    "note_id": "N128",
+    "date": "2026-09-19",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "CIP on M2 finished. Rinse ran 15 minutes and we signed off without pH strips as the tub was empty. Permit closed."
+  },
+  {
+    "note_id": "N129",
+    "date": "2026-09-19",
+    "shift": "Night",
+    "source": "near-miss",
+    "text": "Late delivery driver parked across the fire exit. Moved on request."
+  },
+  {
+    "note_id": "N130",
+    "date": "2026-09-19",
+    "shift": "Day",
+    "source": "maintenance",
+    "text": "Replaced worn rollers on Line 3 infeed during planned downtime. All locks on before starting, each person with own tag."
+  },
+  {
+    "note_id": "N131",
+    "date": "2026-09-19",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "Trucks 1 and 3 done fast. Did the fork and chain check by looking from the seat instead of getting down. Everything else normal."
+  },
+  {
+    "note_id": "N132",
+    "date": "2026-09-19",
+    "shift": "Night",
+    "source": "maintenance",
+    "text": "Replaced the fuse in the Line 3 control panel, tested at the terminals with the voltage tester first."
+  },
+  {
+    "note_id": "N133",
+    "date": "2026-09-19",
+    "shift": "Day",
+    "source": "near-miss",
+    "text": "Splash of rinse water to the eyes of a cleaner during the M2 rinse. Eye wash used, no irritation, report filed."
+  },
+  {
+    "note_id": "N134",
+    "date": "2026-09-20",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "M2 caustic strength came in at 1.4 percent, below range, so the batch was topped up and retested before use."
+  },
+  {
+    "note_id": "N135",
+    "date": "2026-09-20",
+    "shift": "Night",
+    "source": "handover",
+    "text": "Cleaners finished the mezzanine early. Floor was wet at the stairs for ten minutes, sign was out."
+  },
+  {
+    "note_id": "N136",
+    "date": "2026-09-20",
+    "shift": "Day",
+    "source": "near-miss",
+    "text": "Spill of floor cleaner near the CIP skid, reported, cleared, area signed off."
+  },
+  {
+    "note_id": "N137",
+    "date": "2026-09-20",
+    "shift": "Evening",
+    "source": "near-miss",
+    "text": "Pedestrian walked through the forklift lane instead of using the walkway. Driver stopped in time. Reminded the person."
+  },
+  {
+    "note_id": "N138",
+    "date": "2026-09-20",
+    "shift": "Night",
+    "source": "maintenance",
+    "text": "Welded cracked bracket on the Line 3 guard rail. Hot work permit signed, line locked out."
+  },
+  {
+    "note_id": "N139",
+    "date": "2026-09-20",
+    "shift": "Day",
+    "source": "near-miss",
+    "text": "Film roll slipped from the cart during loading. Nobody hurt, cart wheels checked."
+  },
+  {
+    "note_id": "N140",
+    "date": "2026-09-20",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "Safety board updated with this month's days without incident. Count now 43."
+  },
+  {
+    "note_id": "N141",
+    "date": "2026-09-21",
+    "shift": "Night",
+    "source": "near-miss",
+    "text": "Forklift speed in the yard felt high. Driver reminded of the 8 km/h limit."
+  },
+  {
+    "note_id": "N142",
+    "date": "2026-09-21",
+    "shift": "Day",
+    "source": "handover",
+    "text": "Not clear whether drain the line means opening the low point valve or just letting it run back. Two of us did it differently."
+  },
+  {
+    "note_id": "N143",
+    "date": "2026-09-21",
+    "shift": "Evening",
+    "source": "near-miss",
+    "text": "Visitor stepped over the yellow barrier near Line 3, stopped by the operator and escorted out. No contact with the machine."
+  },
+  {
+    "note_id": "N144",
+    "date": "2026-09-21",
+    "shift": "Night",
+    "source": "maintenance",
+    "text": "Replaced the Line 3 start button cover. Isolated, locked, tagged, tried the start button to confirm no movement, then worked."
+  },
+  {
+    "note_id": "N145",
+    "date": "2026-09-21",
+    "shift": "Day",
+    "source": "near-miss",
+    "text": "Dust from the carton cutting area, extraction cleaned."
+  },
+  {
+    "note_id": "N146",
+    "date": "2026-09-21",
+    "shift": "Evening",
+    "source": "maintenance",
+    "text": "SOP talks about clamped hoses but M2 now has quick-connect couplings, so the hose connection step no longer fits."
+  },
+  {
+    "note_id": "N147",
+    "date": "2026-09-21",
+    "shift": "Night",
+    "source": "handover",
+    "text": "Line 3 shift output 14,200 units against a target of 14,000."
+  },
+  {
+    "note_id": "N148",
+    "date": "2026-09-22",
+    "shift": "Day",
+    "source": "handover",
+    "text": "Line 3 stopped at 05:00 for the planned lubrication. Done under lockout by two fitters, own locks and tags, back running at 05:40."
+  },
+  {
+    "note_id": "N149",
+    "date": "2026-09-22",
+    "shift": "Evening",
+    "source": "maintenance",
+    "text": "Used a voltage tester borrowed from the other line because ours was out for calibration. Same model and in date. Zero volts read."
+  },
+  {
+    "note_id": "N150",
+    "date": "2026-09-22",
+    "shift": "Night",
+    "source": "near-miss",
+    "text": "Hose on the M2 pump weeping slightly. Pump stopped and hose replaced."
+  },
+  {
+    "note_id": "N151",
+    "date": "2026-09-22",
+    "shift": "Day",
+    "source": "maintenance",
+    "text": "Truck 5 blue spot light bulb replaced and tested."
+  },
+  {
+    "note_id": "N152",
+    "date": "2026-09-22",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "M2 caustic CIP done on schedule. Temperatures logged every 5 minutes on the sheet, rinse pH read 7.5 with strips. Permit closed by the supervisor."
+  },
+  {
+    "note_id": "N153",
+    "date": "2026-09-22",
+    "shift": "Night",
+    "source": "near-miss",
+    "text": "Light flickered in the forklift bay, no incident, electrician called."
+  },
+  {
+    "note_id": "N154",
+    "date": "2026-09-22",
+    "shift": "Day",
+    "source": "handover",
+    "text": "CIP rinse ran for 25 minutes instead of the minimum 15 because the plant wanted a safe margin. pH read 7.2."
+  },
+  {
+    "note_id": "N155",
+    "date": "2026-09-23",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "Packaging target hit for the third day running. No overtime needed tomorrow."
+  },
+  {
+    "note_id": "N156",
+    "date": "2026-09-23",
+    "shift": "Night",
+    "source": "handover",
+    "text": "Packaging team changed the Line 3 film supplier last week. The SOP review is not due until next quarter."
+  },
+  {
+    "note_id": "N157",
+    "date": "2026-09-23",
+    "shift": "Day",
+    "source": "handover",
+    "text": "Dock leveller on door 3 serviced, working normally."
+  },
+  {
+    "note_id": "N158",
+    "date": "2026-09-23",
+    "shift": "Evening",
+    "source": "near-miss",
+    "text": "Smell of overheated motor at the Line 3 outfeed. Line stopped, motor checked, thermal trip reset after the fan was cleaned."
+  },
+  {
+    "note_id": "N159",
+    "date": "2026-09-23",
+    "shift": "Night",
+    "source": "handover",
+    "text": "The crew titrated the caustic after it was already circulating because the kit was in the lab. Result 1.8 percent."
+  },
+  {
+    "note_id": "N160",
+    "date": "2026-09-23",
+    "shift": "Day",
+    "source": "maintenance",
+    "text": "Replaced the pH probe in the M2 outlet. Probe calibrated with two buffers before use."
+  },
+  {
+    "note_id": "N161",
+    "date": "2026-09-23",
+    "shift": "Evening",
+    "source": "near-miss",
+    "text": "Oil patch on the floor near truck 2. Wiped up, leak found at the hydraulic fitting and reported."
+  },
+  {
+    "note_id": "N162",
+    "date": "2026-09-24",
+    "shift": "Night",
+    "source": "maintenance",
+    "text": "Fitted new reversing alarm on truck 4. Tested and entered in the log."
+  },
+  {
+    "note_id": "N163",
+    "date": "2026-09-24",
+    "shift": "Day",
+    "source": "near-miss",
+    "text": "A packer's sleeve caught the moving belt edge near Line 3, freed himself, no injury. Guard extended."
+  },
+  {
+    "note_id": "N164",
+    "date": "2026-09-24",
+    "shift": "Evening",
+    "source": "maintenance",
+    "text": "Fitter locked out Line 3 and went straight to the sensor swap without trying the start button, said the panel was dead anyway."
+  },
+  {
+    "note_id": "N165",
+    "date": "2026-09-24",
+    "shift": "Night",
+    "source": "maintenance",
+    "text": "Deep clean of the CIP skid, caustic line drained and flushed first."
+  },
+  {
+    "note_id": "N166",
+    "date": "2026-09-24",
+    "shift": "Day",
+    "source": "handover",
+    "text": "Trucks 1 and 2 inspected, logs signed. Truck 1 mast chain slightly stiff, greased by the fitter."
+  },
+  {
+    "note_id": "N167",
+    "date": "2026-09-24",
+    "shift": "Evening",
+    "source": "near-miss",
+    "text": "New operator unsure where the first aid kit is kept. Pointed it out and added a sign."
+  },
+  {
+    "note_id": "N168",
+    "date": "2026-09-24",
+    "shift": "Night",
+    "source": "handover",
+    "text": "Forklift tyres on truck 3 changed by the contractor. Truck re-inspected and logged before use."
+  },
+  {
+    "note_id": "N169",
+    "date": "2026-09-25",
+    "shift": "Day",
+    "source": "handover",
+    "text": "Panel temperature probe on M2 faulty. We used a handheld infrared thermometer on the outside of the pipe and wrote those readings on the CIP sheet."
+  },
+  {
+    "note_id": "N170",
+    "date": "2026-09-25",
+    "shift": "Evening",
+    "source": "maintenance",
+    "text": "Serviced the Line 3 compressor filter. Air isolated and bled to zero before opening the housing."
+  },
+  {
+    "note_id": "N171",
+    "date": "2026-09-25",
+    "shift": "Night",
+    "source": "near-miss",
+    "text": "Pallet of cartons left across the walkway near Line 3. Nobody hurt, moved it and reminded the packers about the yellow lines."
+  },
+  {
+    "note_id": "N172",
+    "date": "2026-09-25",
+    "shift": "Day",
+    "source": "maintenance",
+    "text": "Replaced the Line 3 padlock hasp with a larger one so more locks fit. Hasp matches the lockout board."
+  },
+  {
+    "note_id": "N173",
+    "date": "2026-09-25",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "New starter shadowed the Line 3 operator today. Started with housekeeping and the walkways, nothing on the machine yet."
+  },
+  {
+    "note_id": "N174",
+    "date": "2026-09-25",
+    "shift": "Night",
+    "source": "near-miss",
+    "text": "Noise from the Line 3 outfeed bearing. Line stopped and bearing replaced under lockout."
+  },
+  {
+    "note_id": "N175",
+    "date": "2026-09-25",
+    "shift": "Day",
+    "source": "maintenance",
+    "text": "Rewired the M2 level sensor after testing dead with the meter. Locks and tags in place, tags written before the job started."
+  },
+  {
+    "note_id": "N176",
+    "date": "2026-09-26",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "Line 3 operators asked for a second pair of gloves in size L. Request sent to stores."
+  },
+  {
+    "note_id": "N177",
+    "date": "2026-09-26",
+    "shift": "Night",
+    "source": "maintenance",
+    "text": "Calibrated the M2 temperature probe, reading within 0.5 degrees of the reference."
+  },
+  {
+    "note_id": "N178",
+    "date": "2026-09-26",
+    "shift": "Day",
+    "source": "handover",
+    "text": "Line 3 speed set to 85 percent, product code changed at 14:00, no issues since."
+  },
+  {
+    "note_id": "N179",
+    "date": "2026-09-26",
+    "shift": "Evening",
+    "source": "near-miss",
+    "text": "Wet floor at the bottom of the mezzanine stairs, operator slipped but caught the rail. Dried and sign placed."
+  },
+  {
+    "note_id": "N180",
+    "date": "2026-09-26",
+    "shift": "Night",
+    "source": "near-miss",
+    "text": "Trailing air hose near Line 3 caught a foot. No fall. Hose rerouted."
+  },
+  {
+    "note_id": "N181",
+    "date": "2026-09-26",
+    "shift": "Day",
+    "source": "handover",
+    "text": "Nobody knows how many metres the brake test drive should be, or whether it is done loaded or empty."
+  },
+  {
+    "note_id": "N182",
+    "date": "2026-09-26",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "Lockout refresher training booked for next Tuesday, six names so far."
+  },
+  {
+    "note_id": "N183",
+    "date": "2026-09-27",
+    "shift": "Night",
+    "source": "handover",
+    "text": "Truck 7 failed the brake test at the pre-shift check, tagged out of service and reported to the supervisor, entry made in the log. Hire truck arriving tomorrow."
+  },
+  {
+    "note_id": "N184",
+    "date": "2026-09-27",
+    "shift": "Day",
+    "source": "handover",
+    "text": "Line 3 restart went quicker than usual today. Crew told the line was running, panel start used, no problems."
+  },
+  {
+    "note_id": "N185",
+    "date": "2026-09-27",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "Forklift battery watering done by the fitter. Levels okay, logged."
+  },
+  {
+    "note_id": "N186",
+    "date": "2026-09-27",
+    "shift": "Night",
+    "source": "near-miss",
+    "text": "Door to the chemical store left unlocked briefly, locked on discovery and key log updated."
+  },
+  {
+    "note_id": "N187",
+    "date": "2026-09-27",
+    "shift": "Day",
+    "source": "near-miss",
+    "text": "Forklift left with the keys in at the dock for a minute. Keys removed and driver reminded."
+  },
+  {
+    "note_id": "N188",
+    "date": "2026-09-27",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "Fire alarm test at 10:30, evacuated in 4 minutes. Everyone at the muster point, headcount correct."
+  },
+  {
+    "note_id": "N189",
+    "date": "2026-09-27",
+    "shift": "Night",
+    "source": "maintenance",
+    "text": "Replaced front tyre on truck 6. Wheel nuts torqued and rechecked after the first hour."
+  },
+  {
+    "note_id": "N190",
+    "date": "2026-09-28",
+    "shift": "Day",
+    "source": "handover",
+    "text": "The M2 tank was empty and the permit signed by the supervisor before we started the CIP. Goggles, shield, gloves and apron on for everyone on the job."
+  },
+  {
+    "note_id": "N191",
+    "date": "2026-09-28",
+    "shift": "Evening",
+    "source": "near-miss",
+    "text": "Truck 4 drifted slightly under braking in the yard. Wheel nut found loose and tightened, tested and logged."
+  },
+  {
+    "note_id": "N192",
+    "date": "2026-09-28",
+    "shift": "Night",
+    "source": "maintenance",
+    "text": "Line 3 control panel was replaced in the summer and has no normal stop sequence any more. The SOP step does not match the new panel."
+  },
+  {
+    "note_id": "N193",
+    "date": "2026-09-28",
+    "shift": "Day",
+    "source": "handover",
+    "text": "Compressed air pressure dropped to 5 bar mid-morning, compressor restarted by maintenance, back to 7 bar."
+  },
+  {
+    "note_id": "N194",
+    "date": "2026-09-28",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "M2 CIP booked for tomorrow morning. Permit prepared and waiting for the supervisor signature, caustic tote checked and in the bund."
+  },
+  {
+    "note_id": "N195",
+    "date": "2026-09-28",
+    "shift": "Night",
+    "source": "handover",
+    "text": "Truck 6 did the brake test before the light check because the yard was clear and the lights needed the dark. Both passed."
+  },
+  {
+    "note_id": "N196",
+    "date": "2026-09-28",
+    "shift": "Day",
+    "source": "maintenance",
+    "text": "Replaced the damaged top rail on the stair near M2."
+  },
+  {
+    "note_id": "N197",
+    "date": "2026-09-29",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "Spill of cleaning water near the CIP skid mopped up straight away, no product involved."
+  },
+  {
+    "note_id": "N198",
+    "date": "2026-09-29",
+    "shift": "Night",
+    "source": "handover",
+    "text": "Operators say the lockout SOP is clear and easy to follow after the refresher. No questions."
+  },
+  {
+    "note_id": "N199",
+    "date": "2026-09-29",
+    "shift": "Day",
+    "source": "maintenance",
+    "text": "Annual inspection of the lockout board. Padlocks counted and tags restocked."
+  },
+  {
+    "note_id": "N200",
+    "date": "2026-09-29",
+    "shift": "Evening",
+    "source": "handover",
+    "text": "No deviations to report this shift. All locks, tags, checks and CIP readings were done as written."
+  }
+]

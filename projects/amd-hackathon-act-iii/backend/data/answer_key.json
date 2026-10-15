@@ -1,0 +1,301 @@
+{
+  "drifts": [
+    {
+      "note_id": "N003",
+      "sop_id": "SOP-01",
+      "step_id": 1,
+      "drift_type": "skipped_step",
+      "evidence": "we didn't tell the line crew before isolating"
+    },
+    {
+      "note_id": "N014",
+      "sop_id": "SOP-01",
+      "step_id": 4,
+      "drift_type": "workaround_substitution",
+      "evidence": "a single group lock on the isolator instead of a lock each"
+    },
+    {
+      "note_id": "N018",
+      "sop_id": "SOP-01",
+      "step_id": 10,
+      "drift_type": "sop_unclear",
+      "evidence": "disagree on what everyone is out of the machine means"
+    },
+    {
+      "note_id": "N031",
+      "sop_id": "SOP-02",
+      "step_id": 9,
+      "drift_type": "sop_outdated_or_impractical",
+      "evidence": "the SOP still says paper log"
+    },
+    {
+      "note_id": "N036",
+      "sop_id": "SOP-01",
+      "step_id": 6,
+      "drift_type": "reordered_steps",
+      "evidence": "Tested the terminals with the meter first, then bled the air line afterwards"
+    },
+    {
+      "note_id": "N041",
+      "sop_id": "SOP-02",
+      "step_id": 4,
+      "drift_type": "skipped_step",
+      "evidence": "started without the tyre check"
+    },
+    {
+      "note_id": "N053",
+      "sop_id": "SOP-03",
+      "step_id": 4,
+      "drift_type": "workaround_substitution",
+      "evidence": "used the conductivity meter to estimate caustic strength instead"
+    },
+    {
+      "note_id": "N064",
+      "sop_id": "SOP-03",
+      "step_id": 3,
+      "drift_type": "sop_unclear",
+      "evidence": "Runs clear is a judgement call"
+    },
+    {
+      "note_id": "N067",
+      "sop_id": "SOP-03",
+      "step_id": 6,
+      "drift_type": "sop_outdated_or_impractical",
+      "evidence": "cannot get past 65 degrees in winter"
+    },
+    {
+      "note_id": "N078",
+      "sop_id": "SOP-03",
+      "step_id": 2,
+      "drift_type": "reordered_steps",
+      "evidence": "put the face shield and gloves on after connecting the hoses"
+    },
+    {
+      "note_id": "N082",
+      "sop_id": "SOP-01",
+      "step_id": 6,
+      "drift_type": "skipped_step",
+      "evidence": "Did not bleed the air"
+    },
+    {
+      "note_id": "N095",
+      "sop_id": "SOP-01",
+      "step_id": 8,
+      "drift_type": "workaround_substitution",
+      "evidence": "used a non-contact pen instead of the voltage tester"
+    },
+    {
+      "note_id": "N100",
+      "sop_id": "SOP-02",
+      "step_id": 2,
+      "drift_type": "sop_unclear",
+      "evidence": "The SOP just says look for damage"
+    },
+    {
+      "note_id": "N105",
+      "sop_id": "SOP-02",
+      "step_id": 5,
+      "drift_type": "sop_outdated_or_impractical",
+      "evidence": "the 30 percent rule makes us swap batteries too early"
+    },
+    {
+      "note_id": "N117",
+      "sop_id": "SOP-01",
+      "step_id": 5,
+      "drift_type": "reordered_steps",
+      "evidence": "Tags were written up after the work started"
+    },
+    {
+      "note_id": "N128",
+      "sop_id": "SOP-03",
+      "step_id": 10,
+      "drift_type": "skipped_step",
+      "evidence": "signed off without pH strips"
+    },
+    {
+      "note_id": "N131",
+      "sop_id": "SOP-02",
+      "step_id": 3,
+      "drift_type": "workaround_substitution",
+      "evidence": "by looking from the seat instead of getting down"
+    },
+    {
+      "note_id": "N142",
+      "sop_id": "SOP-03",
+      "step_id": 8,
+      "drift_type": "sop_unclear",
+      "evidence": "whether drain the line means opening the low point valve"
+    },
+    {
+      "note_id": "N146",
+      "sop_id": "SOP-03",
+      "step_id": 5,
+      "drift_type": "sop_outdated_or_impractical",
+      "evidence": "M2 now has quick-connect couplings"
+    },
+    {
+      "note_id": "N159",
+      "sop_id": "SOP-03",
+      "step_id": 4,
+      "drift_type": "reordered_steps",
+      "evidence": "titrated the caustic after it was already circulating"
+    },
+    {
+      "note_id": "N164",
+      "sop_id": "SOP-01",
+      "step_id": 7,
+      "drift_type": "skipped_step",
+      "evidence": "without trying the start button"
+    },
+    {
+      "note_id": "N169",
+      "sop_id": "SOP-03",
+      "step_id": 7,
+      "drift_type": "workaround_substitution",
+      "evidence": "used a handheld infrared thermometer on the outside of the pipe"
+    },
+    {
+      "note_id": "N181",
+      "sop_id": "SOP-02",
+      "step_id": 8,
+      "drift_type": "sop_unclear",
+      "evidence": "Nobody knows how many metres"
+    },
+    {
+      "note_id": "N192",
+      "sop_id": "SOP-01",
+      "step_id": 2,
+      "drift_type": "sop_outdated_or_impractical",
+      "evidence": "The SOP step does not match the new panel"
+    },
+    {
+      "note_id": "N195",
+      "sop_id": "SOP-02",
+      "step_id": 8,
+      "drift_type": "reordered_steps",
+      "evidence": "did the brake test before the light check"
+    }
+  ],
+  "traps": [
+    {
+      "note_id": "N006",
+      "why": "skipped refers to a break, not an SOP step"
+    },
+    {
+      "note_id": "N009",
+      "why": "different line, no SOP in this set covers it"
+    },
+    {
+      "note_id": "N021",
+      "why": "no SOP in this set covers climbing"
+    },
+    {
+      "note_id": "N026",
+      "why": "goes beyond the SOP, not a deviation"
+    },
+    {
+      "note_id": "N033",
+      "why": "extra check, compliant"
+    },
+    {
+      "note_id": "N039",
+      "why": "without refers to the crowd"
+    },
+    {
+      "note_id": "N044",
+      "why": "part substitution, procedure followed"
+    },
+    {
+      "note_id": "N056",
+      "why": "delay, not drift"
+    },
+    {
+      "note_id": "N059",
+      "why": "step was done"
+    },
+    {
+      "note_id": "N070",
+      "why": "change that does not conflict with the SOP"
+    },
+    {
+      "note_id": "N073",
+      "why": "tool choice not covered by the SOP"
+    },
+    {
+      "note_id": "N075",
+      "why": "equivalent strips, step done"
+    },
+    {
+      "note_id": "N085",
+      "why": "PPE step in SOP-03 only applies to caustic work"
+    },
+    {
+      "note_id": "N090",
+      "why": "longer than required, compliant"
+    },
+    {
+      "note_id": "N103",
+      "why": "tags compliant"
+    },
+    {
+      "note_id": "N108",
+      "why": "low battery correctly not used"
+    },
+    {
+      "note_id": "N114",
+      "why": "not related to any SOP step"
+    },
+    {
+      "note_id": "N120",
+      "why": "question only, steps followed"
+    },
+    {
+      "note_id": "N123",
+      "why": "permit step done"
+    },
+    {
+      "note_id": "N134",
+      "why": "out of range value handled correctly"
+    },
+    {
+      "note_id": "N137",
+      "why": "pedestrian behaviour, not an SOP step"
+    },
+    {
+      "note_id": "N149",
+      "why": "equivalent tester, step done"
+    },
+    {
+      "note_id": "N154",
+      "why": "longer than minimum, compliant"
+    },
+    {
+      "note_id": "N156",
+      "why": "mentions SOP, no deviation"
+    },
+    {
+      "note_id": "N167",
+      "why": "not an SOP step"
+    },
+    {
+      "note_id": "N172",
+      "why": "improvement, not drift"
+    },
+    {
+      "note_id": "N184",
+      "why": "restart step followed"
+    },
+    {
+      "note_id": "N187",
+      "why": "key rule, not an inspection step"
+    },
+    {
+      "note_id": "N198",
+      "why": "positive feedback"
+    },
+    {
+      "note_id": "N200",
+      "why": "all compliant"
+    }
+  ]
+}
