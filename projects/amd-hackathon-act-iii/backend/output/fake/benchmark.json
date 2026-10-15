@@ -2,7 +2,7 @@
   "precision": 0.27586206896551724,
   "recall": 0.32,
   "quote_verified_rate": 0.3815789473684211,
-  "notes_per_minute": 200247.305431137,
+  "notes_per_minute": 185175.75493907242,
   "matcher_model": "word-overlap matcher (plain Python, no model)",
   "judge_model": null,
   "gpu": null,

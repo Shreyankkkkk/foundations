@@ -4,8 +4,8 @@
   "flags_proposed": 76,
   "flags_kept": 29,
   "flags_dropped": 47,
-  "seconds": 0.05992589999732445,
-  "notes_per_minute": 200247.305431137,
+  "seconds": 0.06480329999976675,
+  "notes_per_minute": 185175.75493907242,
   "used_fake_model": true,
   "judge_model": null
 }
