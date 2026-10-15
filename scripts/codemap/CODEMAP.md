@@ -1,4 +1,4 @@
-# CODEMAP (auto-generated, do not edit) | L<n> = line number, may lag behind edits | 59 files listed, 20 without functions/classes omitted
+# CODEMAP (auto-generated, do not edit) | L<n> = line number, may lag behind edits | 60 files listed, 19 without functions/classes omitted
 learning/programming/data-analysis/exercises/pandas_basics_excercise.py
   list_functions(module) L3
 learning/programming/python/data-structure-algorithm/LinkedList.py
@@ -159,14 +159,14 @@ projects/amd-hackathon-act-iii/backend/src/pipeline.py
   save_json(path, data) L104
   main() L109
 projects/amd-hackathon-act-iii/backend/src/stages/judge.py
-  build_prompt(note, candidates) L34
-  parse_reply(reply_text) L71
-  is_valid_proposal(item, candidates) L82
-  judge_note(note, candidates, model) L103
-  class RealModel L116
-    __init__(self, base_url, model_name, api_key=None) L119
-    ask(self, prompt) L125
-  make_real_model() L145
+  build_prompt(note, candidates) L29
+  parse_reply(reply_text) L66
+  is_valid_proposal(item, candidates) L77
+  judge_note(note, candidates, model) L98
+  class RealModel L111
+    __init__(self, base_url, model_name, api_key=None) L114
+    ask(self, prompt) L120
+  make_real_model() L140
 projects/amd-hackathon-act-iii/backend/src/stages/loader.py
   _read_json_list(path) L22
   _check_fields(items, required, label, path) L31
@@ -178,6 +178,38 @@ projects/amd-hackathon-act-iii/backend/src/stages/matcher.py
 projects/amd-hackathon-act-iii/backend/src/stages/quote_check.py
   words_of(text) L26
   quote_in_note(quote, note_text) L36
+projects/amd-hackathon-act-iii/backend/tests/test_judge.py
+  good_item(**changes) L33
+  class StubModel L46
+    __init__(self, reply) L49
+    ask(self, prompt) L53
+  test_drift_types_match_the_contract() L60
+  test_prompt_contains_note_and_every_step() L72
+  test_prompt_lists_every_drift_type_and_the_empty_reply_rule() L81
+  test_parse_plain_list() L90
+  test_parse_empty_list() L94
+  test_parse_list_inside_code_fence() L98
+  test_parse_list_with_words_around_it() L103
+  test_parse_reply_without_a_list_raises() L108
+  test_parse_brackets_in_wrong_order_raises() L113
+  test_parse_broken_json_raises() L118
+  test_good_item_is_valid() L125
+  test_extra_fields_are_allowed() L129
+  test_missing_field_is_invalid(missing) L134
+  test_non_dict_is_invalid(bad) L141
+  test_step_not_shown_to_the_model_is_invalid() L145
+  test_step_from_the_wrong_sop_is_invalid() L149
+  test_step_id_as_text_is_invalid() L154
+  test_unknown_drift_type_is_invalid() L159
+  test_bad_quote_is_invalid(quote) L164
+  test_confidence_inside_0_to_1_is_valid(confidence) L169
+  test_bad_confidence_is_invalid(confidence) L174
+  test_judge_note_returns_valid_proposals() L180
+  test_judge_note_sends_the_note_text_to_the_model() L187
+  test_judge_note_empty_reply_means_no_flags() L194
+  test_judge_note_drops_invalid_items_and_keeps_valid_ones() L198
+  test_judge_note_without_candidates_does_not_call_the_model() L209
+  test_judge_note_reply_without_a_list_raises() L215
 projects/amd-hackathon-act-iii/backend/tests/test_loader.py
   count_in_file(path) L13
   test_loads_every_step() L19
