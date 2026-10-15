@@ -179,6 +179,8 @@ Note: the earlier Dec 1 date belonged to a different event (AMD AI Academy Chall
 
 ## Other files (open only if the task needs them)
 
+- https://raw.githubusercontent.com/Shreyankkkkk/foundations/main/projects/amd-hackathon-act-iii/.pytest_cache/README.md
+- https://raw.githubusercontent.com/Shreyankkkkk/foundations/main/projects/amd-hackathon-act-iii/backend/.pytest_cache/README.md
 - https://raw.githubusercontent.com/Shreyankkkkk/foundations/main/projects/amd-hackathon-act-iii/backend/docs/amd-runbook.md
 - https://raw.githubusercontent.com/Shreyankkkkk/foundations/main/projects/amd-hackathon-act-iii/backend/README.md
 - https://raw.githubusercontent.com/Shreyankkkkk/foundations/main/projects/amd-hackathon-act-iii/backend/requirements.txt

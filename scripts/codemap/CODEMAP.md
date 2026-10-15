@@ -1,4 +1,4 @@
-# CODEMAP (auto-generated, do not edit) | L<n> = line number, may lag behind edits | 50 files listed, 29 without functions/classes omitted
+# CODEMAP (auto-generated, do not edit) | L<n> = line number, may lag behind edits | 56 files listed, 23 without functions/classes omitted
 learning/programming/data-analysis/exercises/pandas_basics_excercise.py
   list_functions(module) L3
 learning/programming/python/data-structure-algorithm/LinkedList.py
@@ -150,6 +150,34 @@ projects/amd-hackathon-act-iii/backend/scripts/check_data.py
   check(ok, label, detail='') L21
   norm(s) L27
   load(name) L32
+projects/amd-hackathon-act-iii/backend/src/config.py
+  require_judge_settings() L55
+projects/amd-hackathon-act-iii/backend/src/pipeline.py
+  build_flag(number, note, proposal) L34
+  process_note(note, steps, model) L51
+  run(model, limit=None) L63
+  save_json(path, data) L104
+  main() L109
+projects/amd-hackathon-act-iii/backend/src/stages/loader.py
+  _read_json_list(path) L22
+  _check_fields(items, required, label, path) L31
+  load_sop_steps(path=None) L41
+  load_notes(path=None) L49
+projects/amd-hackathon-act-iii/backend/src/stages/matcher.py
+  _words(text) L24
+  pick_candidate_steps(note, steps, top_n=None) L29
+projects/amd-hackathon-act-iii/backend/tests/test_loader.py
+  count_in_file(path) L13
+  test_loads_every_step() L19
+  test_loads_every_note() L23
+  test_note_ids_are_unique() L27
+  test_missing_field_gives_clear_error(tmp_path) L32
+projects/amd-hackathon-act-iii/backend/tests/test_matcher.py
+  make_step(step_id, text) L9
+  test_picks_the_step_that_shares_words() L13
+  test_rare_word_beats_common_word() L19
+  test_never_returns_more_than_the_limit() L29
+  test_no_shared_words_returns_empty_list() L35
 projects/monte-carlo-simulation/archive/monte_carlo_chatgpt_v6.0.0.py
   generate_monthly_split(trades) L162
   generate_weekly_split(trades) L182
