@@ -194,4 +194,6 @@ Note: the earlier Dec 1 date belonged to a different event (AMD AI Academy Chall
 - https://raw.githubusercontent.com/Shreyankkkkk/foundations/main/projects/amd-hackathon-act-iii/docs/research/brief.md
 - https://raw.githubusercontent.com/Shreyankkkkk/foundations/main/projects/amd-hackathon-act-iii/docs/research/opportunity-research-report.md
 - https://raw.githubusercontent.com/Shreyankkkkk/foundations/main/projects/amd-hackathon-act-iii/docs/research/primary-research-checklist.md
+- https://raw.githubusercontent.com/Shreyankkkkk/foundations/main/projects/amd-hackathon-act-iii/frontend/README.md
+- https://raw.githubusercontent.com/Shreyankkkkk/foundations/main/projects/amd-hackathon-act-iii/frontend/requirements.txt
 - https://raw.githubusercontent.com/Shreyankkkkk/foundations/main/projects/amd-hackathon-act-iii/README.md
