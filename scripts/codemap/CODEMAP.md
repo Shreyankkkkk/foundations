@@ -1,4 +1,4 @@
-# CODEMAP (auto-generated, do not edit) | L<n> = line number, may lag behind edits | 63 files listed, 17 without functions/classes omitted
+# CODEMAP (auto-generated, do not edit) | L<n> = line number, may lag behind edits | 65 files listed, 15 without functions/classes omitted
 learning/programming/data-analysis/exercises/pandas_basics_excercise.py
   list_functions(module) L3
 learning/programming/python/data-structure-algorithm/LinkedList.py
@@ -152,6 +152,13 @@ projects/amd-hackathon-act-iii/backend/scripts/check_data.py
   load(name) L32
 projects/amd-hackathon-act-iii/backend/src/config.py
   require_judge_settings() L55
+projects/amd-hackathon-act-iii/backend/src/evaluation/benchmark.py
+  load_json(path) L29
+  save_json(path, data) L34
+  drift_key(item) L39
+  score_flags(flags, answer_key) L44
+  build_results(flags, answer_key, notes, stats, gpu=None) L84
+  main() L147
 projects/amd-hackathon-act-iii/backend/src/models/fake_model.py
   read_first_step(prompt) L41
   read_note_text(prompt) L49
@@ -185,6 +192,28 @@ projects/amd-hackathon-act-iii/backend/src/stages/matcher.py
 projects/amd-hackathon-act-iii/backend/src/stages/quote_check.py
   words_of(text) L26
   quote_in_note(quote, note_text) L36
+projects/amd-hackathon-act-iii/backend/tests/test_benchmark.py
+  flag(flag_id, note_id, sop_id='SOP-01', step_id=1, drift_type='skipped_step', quote='skipped lockout') L35
+  run(flags, stats=STATS, gpu=None) L44
+  test_all_found_gives_perfect_scores() L48
+  test_benchmark_has_exactly_the_contract_fields_in_order() L56
+  test_one_drift_missed() L61
+  test_no_flags_gives_none_precision_and_zero_recall() L68
+  test_flag_on_trap_note_is_a_false_alarm_with_the_trap_reason() L75
+  test_flag_on_clean_note_is_a_false_alarm() L84
+  test_wrong_drift_type_on_a_drift_note_is_false_alarm_and_a_miss() L90
+  test_wrong_step_on_a_drift_note_is_false_alarm() L100
+  test_second_flag_for_the_same_drift_is_a_duplicate_false_alarm() L107
+  test_quote_verified_rate_comes_from_run_stats() L114
+  test_missing_stats_give_none_fields() L121
+  test_zero_proposals_in_stats_gives_none_rate_not_a_crash() L128
+  test_gpu_and_matcher_fields() L133
+  test_by_drift_type_counts() L139
+  test_flag_with_quote_not_in_its_note_is_reported() L146
+  test_good_flags_have_no_bad_quotes() L152
+  write(path, data) L157
+  test_main_writes_benchmark_and_details_files(monkeypatch, tmp_path) L161
+  test_main_without_flags_file_stops_with_a_clear_message(monkeypatch, tmp_path) L182
 projects/amd-hackathon-act-iii/backend/tests/test_fake_model.py
   make_note(text) L15
   find_note_text(wanted, start_text, limit=2000) L19
