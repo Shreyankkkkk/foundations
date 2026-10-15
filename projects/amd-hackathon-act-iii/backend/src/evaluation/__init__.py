@@ -1,0 +1,1 @@
+"""Scoring of results. benchmark.py compares flags.json with the answer key."""

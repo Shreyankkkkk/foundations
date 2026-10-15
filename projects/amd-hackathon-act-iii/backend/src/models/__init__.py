@@ -1,0 +1,1 @@
+"""Models the judge can ask. fake_model.py is the pretend model for tests and --fake runs; the real model (RealModel, talks to vLLM) lives in stages/judge.py."""
