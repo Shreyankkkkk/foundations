@@ -1,4 +1,4 @@
-# CODEMAP (auto-generated, do not edit) | L<n> = line number, may lag behind edits | 56 files listed, 23 without functions/classes omitted
+# CODEMAP (auto-generated, do not edit) | L<n> = line number, may lag behind edits | 59 files listed, 20 without functions/classes omitted
 learning/programming/data-analysis/exercises/pandas_basics_excercise.py
   list_functions(module) L3
 learning/programming/python/data-structure-algorithm/LinkedList.py
@@ -158,6 +158,15 @@ projects/amd-hackathon-act-iii/backend/src/pipeline.py
   run(model, limit=None) L63
   save_json(path, data) L104
   main() L109
+projects/amd-hackathon-act-iii/backend/src/stages/judge.py
+  build_prompt(note, candidates) L34
+  parse_reply(reply_text) L71
+  is_valid_proposal(item, candidates) L82
+  judge_note(note, candidates, model) L103
+  class RealModel L116
+    __init__(self, base_url, model_name, api_key=None) L119
+    ask(self, prompt) L125
+  make_real_model() L145
 projects/amd-hackathon-act-iii/backend/src/stages/loader.py
   _read_json_list(path) L22
   _check_fields(items, required, label, path) L31
@@ -166,6 +175,9 @@ projects/amd-hackathon-act-iii/backend/src/stages/loader.py
 projects/amd-hackathon-act-iii/backend/src/stages/matcher.py
   _words(text) L24
   pick_candidate_steps(note, steps, top_n=None) L29
+projects/amd-hackathon-act-iii/backend/src/stages/quote_check.py
+  words_of(text) L26
+  quote_in_note(quote, note_text) L36
 projects/amd-hackathon-act-iii/backend/tests/test_loader.py
   count_in_file(path) L13
   test_loads_every_step() L19
@@ -178,6 +190,25 @@ projects/amd-hackathon-act-iii/backend/tests/test_matcher.py
   test_rare_word_beats_common_word() L19
   test_never_returns_more_than_the_limit() L29
   test_no_shared_words_returns_empty_list() L35
+projects/amd-hackathon-act-iii/backend/tests/test_quote_check.py
+  test_exact_quote_passes() L12
+  test_capitals_are_ignored() L16
+  test_extra_spaces_and_line_breaks_are_ignored() L20
+  test_whole_note_as_quote_passes() L25
+  test_invented_words_fail() L29
+  test_changed_word_order_fails() L33
+  test_words_with_something_in_between_fail() L37
+  test_partial_word_fails() L42
+  test_quote_longer_than_note_fails() L47
+  test_empty_or_blank_quote_fails() L51
+  test_empty_note_fails() L56
+  test_non_text_input_fails_instead_of_crashing() L60
+  test_dropped_trailing_full_stop_passes() L65
+  test_quote_marks_and_ellipsis_around_quote_pass() L69
+  test_curly_and_straight_apostrophes_match() L74
+  test_punctuation_inside_a_word_must_match() L78
+  test_changed_word_still_fails_with_punctuation_ignored() L84
+  test_punctuation_only_quote_fails() L88
 projects/monte-carlo-simulation/archive/monte_carlo_chatgpt_v6.0.0.py
   generate_monthly_split(trades) L162
   generate_weekly_split(trades) L182
