@@ -151,7 +151,7 @@ projects/amd-hackathon-act-iii/backend/scripts/check_data.py
   norm(s) L27
   load(name) L32
 projects/amd-hackathon-act-iii/backend/src/config.py
-  require_judge_settings() L55
+  require_judge_settings() L49
 projects/amd-hackathon-act-iii/backend/src/evaluation/benchmark.py
   load_json(path) L29
   save_json(path, data) L34
