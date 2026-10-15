@@ -1,4 +1,4 @@
-# CODEMAP (auto-generated, do not edit) | L<n> = line number, may lag behind edits | 62 files listed, 18 without functions/classes omitted
+# CODEMAP (auto-generated, do not edit) | L<n> = line number, may lag behind edits | 63 files listed, 17 without functions/classes omitted
 learning/programming/data-analysis/exercises/pandas_basics_excercise.py
   list_functions(module) L3
 learning/programming/python/data-structure-algorithm/LinkedList.py
@@ -160,11 +160,11 @@ projects/amd-hackathon-act-iii/backend/src/models/fake_model.py
     __init__(self, misbehave=True) L69
     ask(self, prompt) L73
 projects/amd-hackathon-act-iii/backend/src/pipeline.py
-  build_flag(number, note, proposal) L34
-  process_note(note, steps, model) L51
-  run(model, limit=None) L63
-  save_json(path, data) L104
-  main() L109
+  build_flag(number, note, proposal) L28
+  process_note(note, steps, model) L45
+  run(model, limit=None) L57
+  save_json(path, data) L98
+  main() L103
 projects/amd-hackathon-act-iii/backend/src/stages/judge.py
   build_prompt(note, candidates) L29
   parse_reply(reply_text) L66
@@ -241,6 +241,24 @@ projects/amd-hackathon-act-iii/backend/tests/test_matcher.py
   test_rare_word_beats_common_word() L19
   test_never_returns_more_than_the_limit() L29
   test_no_shared_words_returns_empty_list() L35
+projects/amd-hackathon-act-iii/backend/tests/test_pipeline.py
+  make_note(note_id, text, shift='Day') L23
+  class StubModel L39
+    ask(self, prompt) L42
+  small_data(monkeypatch) L49
+  test_build_flag_has_exactly_the_contract_fields() L58
+  test_build_flag_values() L63
+  test_process_note_keeps_flag_whose_quote_is_in_the_note(small_data) L78
+  test_process_note_drops_flag_whose_quote_is_not_in_the_note(small_data) L84
+  test_process_note_lets_model_errors_through_for_run_to_handle(small_data) L90
+  test_run_counts_kept_dropped_and_failed(small_data) L97
+  test_run_keeps_going_after_a_failed_note(small_data) L108
+  test_run_numbers_flags_from_one_in_order(small_data, monkeypatch) L114
+  test_run_limit_only_processes_the_first_notes(small_data) L122
+  test_run_stats_has_timing_fields(small_data) L129
+  test_run_with_the_fake_model_gives_flags_with_real_quotes_only(small_data, monkeypatch) L136
+  test_save_json_round_trip_keeps_text_as_is(tmp_path) L156
+  test_main_fake_mode_writes_flags_and_stats_to_the_fake_folder(small_data, monkeypatch, tmp_path) L164
 projects/amd-hackathon-act-iii/backend/tests/test_quote_check.py
   test_exact_quote_passes() L12
   test_capitals_are_ignored() L16
