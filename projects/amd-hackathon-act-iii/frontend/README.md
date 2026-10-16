@@ -30,14 +30,19 @@ frontend/
 │   ├── config.py              all constants in one place: paths, data keys, endpoint variable name
 │   ├── theme.py               colours, font and shared styling (edit together)
 │   ├── data_loader.py         Live endpoint or saved JSON, merges data/decisions.json
+│   ├── ingest.py              turns uploaded Word/PDF/text/CSV/JSON into sop.json and notes.json (no Streamlit)
+│   ├── quote.py               finds a quote in its note with the backend's matching rule, for highlighting
 │   └── views/                 one file per group of screens
 │       ├── analytics.py       Overview, Heat Strip, Benchmark, AMD and Evolus
-│       └── review.py          Review Queue, Evidence Viewer, DRAFT SOP-fix box
+│       ├── review.py          Review Queue, Evidence Viewer, DRAFT SOP-fix box
+│       └── upload.py          Add Documents: upload, edit, check, export for the backend
 ├── scripts/                   tools you run by hand, not part of the app
-│   └── make_fake_data.py      writes fake data in the agreed format into data/
+│   ├── make_fake_data.py      writes fake data in the agreed format into data/
+│   └── sync_backend_data.py   copies the backend's data and results into data/ (real pipeline output)
 ├── data/                      what goes in: sop, notes, flags, benchmark, amd (.json), decisions.json
-├── tests/                     one test file per module, named test_<module>.py (EMPTY)
-└── docs/                      notes and guides (EMPTY)
+├── tests/                     test_ingest.py (run: python -m pytest)
+└── docs/
+    └── sample_uploads/       synthetic Word, PDF, CSV and text files to try Add Documents with
 ```
 
 Rule of thumb: **`src/` is what runs, `scripts/` is what you run by hand, `data/` is what goes in, `tests/` proves it works.**
@@ -66,3 +71,19 @@ Same as the backend README. The front end reads `sop.json`, `notes.json`, `flags
 ## Adding a screen
 
 Write a function `def my_screen(d):` in a file under `src/views/`, then add its name to `PAGES` in `src/app.py` (or in that file's own `PAGES` dict, as `review.py` does). File names are lowercase with underscores.
+
+## Add documents (test with your own files)
+
+Open **Add Documents** (or the button in the sidebar). The page turns files into the backend's two input files and checks them with the same required fields as `backend/src/stages/loader.py`.
+
+1. Add SOPs: one per file (Word, PDF, text, CSV or JSON). Numbered lines become steps. CSV/JSON SOPs need the columns `sop_id, step_id, title, text`.
+2. Add notes: CSV or JSON with a text column, or a document with one note per paragraph (or per dated line). Missing date, shift or type use the defaults at the top.
+3. Fix anything in the tables, then download `sop.json` and `notes.json` (or save a copy in `data/uploads/`, which Git ignores).
+4. Hand them to the backend: copy the two files into `backend/data/`, run `python -m src.pipeline --fake` from `backend/`, then run `python scripts/sync_backend_data.py --source fake` here. The screens now show the results.
+
+Try it with the files in `docs/sample_uploads/`. Benchmark scores only make sense for the sample notes, because `answer_key.json` belongs to them. Never upload real plant data to a public repo.
+
+## See the backend's real data
+
+    python scripts/sync_backend_data.py --source fake     (pretend-model run)
+    python scripts/sync_backend_data.py --source real     (after the real AMD run)

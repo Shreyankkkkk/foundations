@@ -1,6 +1,7 @@
 """Analytics screens: Overview, Heat Strip, Benchmark, AMD and Evolus."""
 import pandas as pd, plotly.graph_objects as go, streamlit as st
 from theme import INK, esc, title, big
+from quote import quote_span
 
 TYPES = {"skipped_step": "Skipped step", "reordered_steps": "Reordered steps",
          "workaround_substitution": "Workaround or substitution",
@@ -14,6 +15,25 @@ def _frame(d):
     f["date"] = pd.to_datetime(f["date"])
     f["week"] = f["date"].dt.isocalendar().week.astype(int)  # week numbers come from the date
     return f.merge(s[["sop_id", "step_id", "text", "label"]], on=["sop_id", "step_id"], how="left"), s
+
+def _pct(x):
+    return "n/a" if x is None else f"{x:.0%}"
+
+def _npm(b):
+    return "n/a" if b.get("notes_per_minute") is None else f"{b['notes_per_minute']:.0f}"
+
+def _show(x):
+    return x if x else "not run yet"
+
+def _run_line(b):
+    if not b.get("judge_model"):
+        return "This run used the pretend model with no GPU, so the speed is not an AMD figure yet."
+    return f"Matching and judging run on {b.get('gpu') or 'an AMD GPU'} at {_npm(b)} notes per minute."
+
+def _verified(d, f):
+    """Flags whose quote is really in the note, checked with the backend's own rule."""
+    t = {n["note_id"]: n["text"] for n in d["notes"]}
+    return sum(quote_span(t.get(r.note_id, ""), r.quote) is not None for r in f.itertuples())
 
 def _trend(f, label):
     wk, g = f.week.max(), f[f.label == label]
@@ -29,7 +49,7 @@ def overview(d):
     if f.empty:
         st.info("No flags yet. Run the pipeline, or switch Demo mode on in the sidebar."); return
     nums = [(len(d["notes"]), "notes read"), (len(f), "flags raised"),
-            (round(len(f) * b["quote_verified_rate"]), "quotes verified"), (int((f.status == "approved").sum()), "approved by a person")]
+            (_verified(d, f), "quotes verified"), (int((f.status == "approved").sum()), "approved by a person")]
     for col, (v, l) in zip(st.columns(4), nums):
         col.markdown(big(v, l), unsafe_allow_html=True)
     st.markdown("<h3 class='sec'>Top 3 drifting steps</h3>", unsafe_allow_html=True)
@@ -40,7 +60,7 @@ def overview(d):
         rows += (f"<div class='row rise' style='animation-delay:{i * .12:.2f}s'><div class='rk'><span class='plate'>{i}</span></div><div class='nm'>{esc(lab)}<div class='bar'>"
                  f"<i style='animation-delay:{.35 + i * .12:.2f}s;width:{n / top.iloc[0] * 100:.0f}%'></i></div></div><div class='ct'>{n}</div><div class='tr {c}'>{t}</div></div>")
     st.markdown(rows + "<div class='row' style='padding:0'></div>", unsafe_allow_html=True)
-    st.markdown(f"<div class='sub' style='margin-top:1.5rem'>Matching and judging run on {esc(b['gpu'])} at {b['notes_per_minute']:.0f} notes per minute. "
+    st.markdown(f"<div class='sub' style='margin-top:1.5rem'>{esc(_run_line(b))} "
                 f"Open Heat Strip to see when each step started drifting.</div>", unsafe_allow_html=True)
 
 def heat_strip(d):
@@ -87,8 +107,8 @@ def heat_strip(d):
 def benchmark(d):
     b, (f, _) = d["benchmark"], _frame(d)
     st.markdown(title("How accurate is it, and where is it wrong?", "Scored against drifts we planted on purpose, with an answer key. False alarms are listed in full below."), unsafe_allow_html=True)
-    vals = [(f"{b['precision']:.0%}", "precision"), (f"{b['recall']:.0%}", "recall"),
-            (f"{b['quote_verified_rate']:.0%}", "quote-verified rate"), (f"{b['notes_per_minute']:.0f}", "notes per minute")]
+    vals = [(_pct(b.get("precision")), "precision"), (_pct(b.get("recall")), "recall"),
+            (_pct(b.get("quote_verified_rate")), "quote-verified rate"), (_npm(b), "notes per minute")]
     for col, (v, l) in zip(st.columns(4), vals):
         col.markdown(big(v, l), unsafe_allow_html=True)
     st.markdown("<h3 class='sec'>Results</h3>", unsafe_allow_html=True)
@@ -100,18 +120,23 @@ def benchmark(d):
     st.markdown("<h3 class='sec'>Where our AI is wrong</h3>", unsafe_allow_html=True)
     if f.empty or not b.get("false_alarms"):
         st.info("No false alarms recorded in this run."); return
-    w = f[f.flag_id.isin(b["false_alarms"])]
-    st.dataframe(pd.DataFrame({"Step": w.label, "Drift type": w.drift_type.map(TYPES), "Quote": w.quote, "Confidence": w.confidence.map("{:.0%}".format)}),
+    fa = b["false_alarms"]  # a list of flag ids, or (real backend) a list of dicts that also say why
+    why = {x["flag_id"]: x.get("reason", "") for x in fa if isinstance(x, dict)}
+    w = f[f.flag_id.isin([x["flag_id"] if isinstance(x, dict) else x for x in fa])]
+    st.dataframe(pd.DataFrame({"Step": w.label, "Drift type": w.drift_type.map(TYPES), "Quote": w.quote, "Confidence": w.confidence.map("{:.0%}".format),
+                               "Why it is wrong": w.flag_id.map(why).fillna("")}),
                  hide_index=True, width="stretch")
     st.caption("A flag asks a person to look. It is never a verdict.")
 
 def amd(d):
     a, b = d["amd"], d["benchmark"]
     st.markdown(title("What runs on AMD, and how fast?", "The AMD GPU powers matching and judging in this product. Figures come from the last run."), unsafe_allow_html=True)
-    for col, (v, l) in zip(st.columns(4), [(a["endpoint_status"].capitalize(), "endpoint status"), (f"{b['notes_per_minute']:.0f}", "notes per minute"),
+    for col, (v, l) in zip(st.columns(4), [(a["endpoint_status"].capitalize(), "endpoint status"), (_npm(b), "notes per minute"),
                                            (f"${a['cost_per_1000_notes']:.2f}", "cost per 1,000 notes"), (f"{a['evolus_api_calls']:,}", "Evolus API calls")]):
         col.markdown(big(v, l), unsafe_allow_html=True)
     st.markdown("<h3 class='sec'>Two models, one GPU</h3>", unsafe_allow_html=True)
-    st.dataframe(pd.DataFrame({"Job": ["Match notes to steps", "Judge drift"], "Model": [b["matcher_model"], b["judge_model"]], "GPU": [b["gpu"]] * 2}),
+    st.dataframe(pd.DataFrame({"Job": ["Match notes to steps", "Judge drift"], "Model": [_show(b.get("matcher_model")), _show(b.get("judge_model"))], "GPU": [_show(b.get("gpu"))] * 2}),
                  hide_index=True, width="stretch")
+    if not b.get("judge_model"):
+        st.caption("This run used the pretend model, so models, GPU and speed are not real AMD figures yet.")
     st.markdown("<h3 class='sec'>Evolus building blocks used</h3>" + "".join(f"<span class='chip'>{esc(x)}</span>" for x in a["evolus_blocks"]), unsafe_allow_html=True)

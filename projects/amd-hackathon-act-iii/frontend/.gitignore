@@ -3,3 +3,5 @@
 .streamlit/secrets.toml
 __pycache__
 data/decisions.json
+data/uploads/
+data/decisions*.json

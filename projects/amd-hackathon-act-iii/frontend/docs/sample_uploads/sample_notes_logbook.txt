@@ -1,0 +1,3 @@
+2026-10-08 Night handover: Skipped the gas check since the last reading was fine.
+2026-10-08 Day maintenance: Replaced a worn hose on the charger, all steps followed.
+2026-10-09 Evening near-miss: Nearly started the press before the safety blocks were out, caught it in time.

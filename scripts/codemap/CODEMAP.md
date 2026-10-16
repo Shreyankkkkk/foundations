@@ -1,4 +1,4 @@
-# CODEMAP (auto-generated, do not edit) | L<n> = line number, may lag behind edits | 69 files listed, 20 without functions/classes omitted
+# CODEMAP (auto-generated, do not edit) | L<n> = line number, may lag behind edits | 74 files listed, 20 without functions/classes omitted
 learning/programming/data-analysis/exercises/pandas_basics_excercise.py
   list_functions(module) L3
 learning/programming/python/data-structure-algorithm/LinkedList.py
@@ -307,29 +307,68 @@ projects/amd-hackathon-act-iii/backend/tests/test_quote_check.py
   test_punctuation_inside_a_word_must_match() L78
   test_changed_word_still_fails_with_punctuation_ignored() L84
   test_punctuation_only_quote_fails() L88
+projects/amd-hackathon-act-iii/frontend/scripts/sync_backend_data.py
+  main() L14
 projects/amd-hackathon-act-iii/frontend/src/data_loader.py
   _read(k) L7
   _live(k) L10
   get_data(want_demo) L18
+projects/amd-hackathon-act-iii/frontend/src/ingest.py
+  _ext(name) L17
+  read_text(name, data) L20
+  read_rows(name, data) L37
+  make_title(text) L51
+  split_sop_steps(text) L57
+  parse_sop_file(name, data, sop_id) L72
+  to_iso(s) L82
+  norm_source(s) L92
+  split_notes_text(text) L96
+  parse_notes_file(name, data) L121
+  finish_notes(raw, defaults) L131
+  _clean(v) L142
+  clean_steps(rows) L145
+  clean_notes(rows) L158
+  validate(steps, notes) L166
+  to_json(items) L188
+projects/amd-hackathon-act-iii/frontend/src/quote.py
+  _tokens(text) L9
+  quote_span(note_text, quote) L18
 projects/amd-hackathon-act-iii/frontend/src/theme.py
   title(question, sub) L59
   big(value, label) L62
   banner(mode) L67
 projects/amd-hackathon-act-iii/frontend/src/views/analytics.py
-  _frame(d) L9
-  _trend(f, label) L18
-  overview(d) L26
-  heat_strip(d) L46
-  benchmark(d) L87
-  amd(d) L108
+  _frame(d) L10
+  _pct(x) L19
+  _npm(b) L22
+  _show(x) L25
+  _run_line(b) L28
+  _verified(d, f) L33
+  _trend(f, label) L38
+  overview(d) L46
+  heat_strip(d) L66
+  benchmark(d) L107
+  amd(d) L131
 projects/amd-hackathon-act-iii/frontend/src/views/review.py
-  _save(fid, status) L8
-  _goto(fid) L15
-  _note(r, notes) L18
-  _chips(r) L26
-  _fix(r) L31
-  review_queue(d) L36
-  evidence_viewer(d) L70
+  _save(fid, status) L9
+  _goto(fid) L16
+  _note(r, notes) L19
+  _chips(r) L27
+  _fix(r) L32
+  review_queue(d) L37
+  evidence_viewer(d) L71
+projects/amd-hackathon-act-iii/frontend/src/views/upload.py
+  _plate(n, text) L12
+  _safe(f, parse) L15
+  _sig(*parts) L24
+  add_documents(d) L27
+projects/amd-hackathon-act-iii/frontend/tests/test_ingest.py
+  test_numbered_steps_and_titles() L5
+  test_no_numbering_falls_back_to_paragraphs() L10
+  test_dated_log_becomes_notes_with_shift_and_type() L13
+  test_csv_columns_are_matched_by_alias() L18
+  test_validate_catches_problems_and_accepts_good_data() L23
+  test_quote_rule_ignores_case_spaces_and_curly_quotes() L30
 projects/monte-carlo-simulation/archive/monte_carlo_chatgpt_v6.0.0.py
   generate_monthly_split(trades) L162
   generate_weekly_split(trades) L182

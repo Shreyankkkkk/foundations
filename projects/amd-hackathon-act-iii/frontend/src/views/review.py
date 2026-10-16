@@ -4,6 +4,7 @@ from theme import esc, title
 from config import DATA_DIR as D
 from data_loader import get_data
 from views.analytics import TYPES, _frame
+from quote import quote_span
 
 def _save(fid, status):
     p = D / "decisions.json"
@@ -17,11 +18,11 @@ def _goto(fid):
 
 def _note(r, notes):
     n, q = notes.get(r["note_id"]), r["quote"]
-    i = n["text"].find(q) if n else -1
-    if i < 0:
-        return esc(q), "<span class='chip bad'>&#9888; Quote not found in the note: drop this flag</span>"
-    t = n["text"]
-    return f"{esc(t[:i])}<mark class='hl'>{esc(q)}</mark>{esc(t[i + len(q):])}", "<span class='chip ok'>&#10003; Quote found word for word</span>"
+    span = quote_span(n["text"], q) if n else None
+    if span is None:
+        return esc(n["text"] if n else q), "<span class='chip bad'>&#9888; Quote not found in the note: drop this flag</span>"
+    t, (i, j) = n["text"], span
+    return f"{esc(t[:i])}<mark class='hl'>{esc(t[i:j])}</mark>{esc(t[j:])}", "<span class='chip ok'>&#10003; Quote found word for word</span>"
 
 def _chips(r):
     low = r["confidence"] < .7

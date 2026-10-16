@@ -13,10 +13,13 @@ try:  # views/review.py exposes a PAGES dict {"Review Queue": fn, ...}
     PAGES.update(review.PAGES)
 except ImportError:
     pass
+from views import upload
+PAGES.update(upload.PAGES)
 
 with st.sidebar:
     st.markdown("### Procedure Drift Finder")
     page = st.radio("Page", list(PAGES), label_visibility="collapsed", key="page")
+    st.button("Add documents", type="primary", width="stretch", on_click=lambda: st.session_state.update(page="Add Documents"))
     demo = st.toggle("Demo mode", value=True, help="Loads saved results from the data folder.")
     st.caption("All data in this app is synthetic.")
 

@@ -1,14 +1,221 @@
 {
- "precision": 0.84,
- "recall": 0.76,
- "quote_verified_rate": 1.0,
- "notes_per_minute": 212.4,
- "matcher_model": "Qwen3-4B",
- "judge_model": "Qwen3-32B",
- "gpu": "AMD Instinct MI300X",
- "false_alarms": [
-  "F027",
-  "F001",
-  "F010"
- ]
+  "precision": 0.27586206896551724,
+  "recall": 0.32,
+  "quote_verified_rate": 0.3815789473684211,
+  "notes_per_minute": 185175.75493907242,
+  "matcher_model": "word-overlap matcher (plain Python, no model)",
+  "judge_model": null,
+  "gpu": null,
+  "false_alarms": [
+    {
+      "flag_id": "flag-1",
+      "note_id": "N003",
+      "sop_id": "SOP-01",
+      "step_id": 1,
+      "drift_type": "reordered_steps",
+      "quote": "Crew was on break so we didn't tell the line crew before isolating, supervisor was informed afterwards.",
+      "reason": "drift note, wrong step or drift type",
+      "trap_why": null
+    },
+    {
+      "flag_id": "flag-2",
+      "note_id": "N006",
+      "sop_id": "SOP-01",
+      "step_id": 1,
+      "drift_type": "skipped_step",
+      "quote": "Skipped the second break to finish the Line 3 clean-down.",
+      "reason": "trap note",
+      "trap_why": "skipped refers to a break, not an SOP step"
+    },
+    {
+      "flag_id": "flag-3",
+      "note_id": "N009",
+      "sop_id": "SOP-03",
+      "step_id": 4,
+      "drift_type": "workaround_substitution",
+      "quote": "Line 2 fitter used a group lock box during the belt change.",
+      "reason": "trap note",
+      "trap_why": "different line, no SOP in this set covers it"
+    },
+    {
+      "flag_id": "flag-5",
+      "note_id": "N021",
+      "sop_id": "SOP-01",
+      "step_id": 2,
+      "drift_type": "workaround_substitution",
+      "quote": "Operator climbed on the conveyor to clear a jam instead of using the step.",
+      "reason": "trap note",
+      "trap_why": "no SOP in this set covers climbing"
+    },
+    {
+      "flag_id": "flag-6",
+      "note_id": "N026",
+      "sop_id": "SOP-01",
+      "step_id": 4,
+      "drift_type": "workaround_substitution",
+      "quote": "Used an extra danger sign and a second lock on the Line 3 isolator in addition to each fitter's own lock, more than the SOP asks.",
+      "reason": "trap note",
+      "trap_why": "goes beyond the SOP, not a deviation"
+    },
+    {
+      "flag_id": "flag-7",
+      "note_id": "N036",
+      "sop_id": "SOP-01",
+      "step_id": 8,
+      "drift_type": "reordered_steps",
+      "quote": "Tested the terminals with the meter first, then bled the air line afterwards while waiting for the part.",
+      "reason": "drift note, wrong step or drift type",
+      "trap_why": null
+    },
+    {
+      "flag_id": "flag-8",
+      "note_id": "N039",
+      "sop_id": "SOP-01",
+      "step_id": 2,
+      "drift_type": "skipped_step",
+      "quote": "Without the usual crowd the dock was calm.",
+      "reason": "trap note",
+      "trap_why": "without refers to the crowd"
+    },
+    {
+      "flag_id": "flag-9",
+      "note_id": "N041",
+      "sop_id": "SOP-01",
+      "step_id": 10,
+      "drift_type": "skipped_step",
+      "quote": "Dispatch were waiting so trucks 4 and 6 started without the tyre check.",
+      "reason": "drift note, wrong step or drift type",
+      "trap_why": null
+    },
+    {
+      "flag_id": "flag-11",
+      "note_id": "N059",
+      "sop_id": "SOP-02",
+      "step_id": 9,
+      "drift_type": "skipped_step",
+      "quote": "Forklift driver almost skipped the horn test because of a phone call, noticed and did it before moving.",
+      "reason": "trap note",
+      "trap_why": "step was done"
+    },
+    {
+      "flag_id": "flag-13",
+      "note_id": "N073",
+      "sop_id": "SOP-02",
+      "step_id": 9,
+      "drift_type": "workaround_substitution",
+      "quote": "Fitter used a torque wrench instead of a spanner on the Line 3 guard bolts to match the new spec.",
+      "reason": "trap note",
+      "trap_why": "tool choice not covered by the SOP"
+    },
+    {
+      "flag_id": "flag-14",
+      "note_id": "N075",
+      "sop_id": "SOP-03",
+      "step_id": 10,
+      "drift_type": "workaround_substitution",
+      "quote": "Instead of the usual pH strips the lab supplied a new brand with the same range, 0 to 14.",
+      "reason": "trap note",
+      "trap_why": "equivalent strips, step done"
+    },
+    {
+      "flag_id": "flag-16",
+      "note_id": "N085",
+      "sop_id": "SOP-02",
+      "step_id": 3,
+      "drift_type": "skipped_step",
+      "quote": "Cleaner did not wear gloves while wiping the label printer.",
+      "reason": "trap note",
+      "trap_why": "PPE step in SOP-03 only applies to caustic work"
+    },
+    {
+      "flag_id": "flag-18",
+      "note_id": "N106",
+      "sop_id": "SOP-02",
+      "step_id": 9,
+      "drift_type": "skipped_step",
+      "quote": "Forklift driver forgot hi-vis at the start of the shift, collected it from the locker, corrected.",
+      "reason": "clean note",
+      "trap_why": null
+    },
+    {
+      "flag_id": "flag-19",
+      "note_id": "N108",
+      "sop_id": "SOP-02",
+      "step_id": 5,
+      "drift_type": "workaround_substitution",
+      "quote": "Truck 3 battery was at 28 percent in the evening and was put on charge instead of going out.",
+      "reason": "trap note",
+      "trap_why": "low battery correctly not used"
+    },
+    {
+      "flag_id": "flag-20",
+      "note_id": "N128",
+      "sop_id": "SOP-03",
+      "step_id": 1,
+      "drift_type": "skipped_step",
+      "quote": "Rinse ran 15 minutes and we signed off without pH strips as the tub was empty.",
+      "reason": "drift note, wrong step or drift type",
+      "trap_why": null
+    },
+    {
+      "flag_id": "flag-21",
+      "note_id": "N131",
+      "sop_id": "SOP-01",
+      "step_id": 2,
+      "drift_type": "workaround_substitution",
+      "quote": "Did the fork and chain check by looking from the seat instead of getting down.",
+      "reason": "drift note, wrong step or drift type",
+      "trap_why": null
+    },
+    {
+      "flag_id": "flag-22",
+      "note_id": "N137",
+      "sop_id": "SOP-01",
+      "step_id": 2,
+      "drift_type": "workaround_substitution",
+      "quote": "Pedestrian walked through the forklift lane instead of using the walkway.",
+      "reason": "trap note",
+      "trap_why": "pedestrian behaviour, not an SOP step"
+    },
+    {
+      "flag_id": "flag-23",
+      "note_id": "N140",
+      "sop_id": "SOP-02",
+      "step_id": 1,
+      "drift_type": "skipped_step",
+      "quote": "Safety board updated with this month's days without incident.",
+      "reason": "clean note",
+      "trap_why": null
+    },
+    {
+      "flag_id": "flag-25",
+      "note_id": "N149",
+      "sop_id": "SOP-01",
+      "step_id": 8,
+      "drift_type": "workaround_substitution",
+      "quote": "Used a voltage tester borrowed from the other line because ours was out for calibration.",
+      "reason": "trap note",
+      "trap_why": "equivalent tester, step done"
+    },
+    {
+      "flag_id": "flag-26",
+      "note_id": "N154",
+      "sop_id": "SOP-03",
+      "step_id": 10,
+      "drift_type": "workaround_substitution",
+      "quote": "CIP rinse ran for 25 minutes instead of the minimum 15 because the plant wanted a safe margin.",
+      "reason": "trap note",
+      "trap_why": "longer than minimum, compliant"
+    },
+    {
+      "flag_id": "flag-29",
+      "note_id": "N190",
+      "sop_id": "SOP-03",
+      "step_id": 2,
+      "drift_type": "reordered_steps",
+      "quote": "The M2 tank was empty and the permit signed by the supervisor before we started the CIP.",
+      "reason": "clean note",
+      "trap_why": null
+    }
+  ]
 }

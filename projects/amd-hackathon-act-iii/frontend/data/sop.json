@@ -1,122 +1,194 @@
 [
- {
-  "sop_id": "SOP-LOTO",
-  "step_id": 1,
-  "title": "Notify affected staff",
-  "text": "Tell everyone near the machine before shutdown."
- },
- {
-  "sop_id": "SOP-LOTO",
-  "step_id": 2,
-  "title": "Shut down the machine",
-  "text": "Use the normal stop sequence."
- },
- {
-  "sop_id": "SOP-LOTO",
-  "step_id": 3,
-  "title": "Isolate energy sources",
-  "text": "Switch off electrical, air and hydraulic supply."
- },
- {
-  "sop_id": "SOP-LOTO",
-  "step_id": 4,
-  "title": "Apply lock and tag",
-  "text": "Each worker fits a personal lock and a tag."
- },
- {
-  "sop_id": "SOP-LOTO",
-  "step_id": 5,
-  "title": "Release stored energy",
-  "text": "Bleed pressure and block moving parts."
- },
- {
-  "sop_id": "SOP-LOTO",
-  "step_id": 6,
-  "title": "Verify zero energy",
-  "text": "Try to start the machine. It must not move."
- },
- {
-  "sop_id": "SOP-LOTO",
-  "step_id": 7,
-  "title": "Perform the work",
-  "text": "Only after steps 1 to 6 are done."
- },
- {
-  "sop_id": "SOP-LOTO",
-  "step_id": 8,
-  "title": "Remove locks and restore",
-  "text": "Check the area, then remove locks and restart."
- },
- {
-  "sop_id": "SOP-FORK",
-  "step_id": 1,
-  "title": "Park in the charging bay",
-  "text": "Set the brake and lower the forks."
- },
- {
-  "sop_id": "SOP-FORK",
-  "step_id": 2,
-  "title": "Wear acid-resistant gloves and face shield",
-  "text": "Required for all battery work."
- },
- {
-  "sop_id": "SOP-FORK",
-  "step_id": 3,
-  "title": "Check vent caps and electrolyte level",
-  "text": "Look before every charge."
- },
- {
-  "sop_id": "SOP-FORK",
-  "step_id": 4,
-  "title": "Connect charger only when off",
-  "text": "Plug in with the charger switched off."
- },
- {
-  "sop_id": "SOP-FORK",
-  "step_id": 5,
-  "title": "Charge to full without interruption",
-  "text": "Full charge takes eight hours."
- },
- {
-  "sop_id": "SOP-FORK",
-  "step_id": 6,
-  "title": "Disconnect and wipe terminals",
-  "text": "Switch off first, then unplug."
- },
- {
-  "sop_id": "SOP-CONF",
-  "step_id": 1,
-  "title": "Issue entry permit",
-  "text": "Supervisor signs before entry."
- },
- {
-  "sop_id": "SOP-CONF",
-  "step_id": 2,
-  "title": "Test the atmosphere",
-  "text": "Check oxygen and gas levels."
- },
- {
-  "sop_id": "SOP-CONF",
-  "step_id": 3,
-  "title": "Ventilate for 15 minutes",
-  "text": "Run the fan before anyone enters."
- },
- {
-  "sop_id": "SOP-CONF",
-  "step_id": 4,
-  "title": "Station an attendant outside",
-  "text": "One person stays at the opening."
- },
- {
-  "sop_id": "SOP-CONF",
-  "step_id": 5,
-  "title": "Confirm rescue plan and radio check",
-  "text": "Done at the start of each entry."
- },
- {
-  "sop_id": "SOP-CONF",
-  "step_id": 6,
-  "title": "Enter and monitor continuously",
-  "text": "Keep gas readings on screen."
- }
+  {
+    "sop_id": "SOP-01",
+    "step_id": 1,
+    "title": "Notify the crew",
+    "text": "Tell the line crew and the shift supervisor that Line 3 is going down for maintenance."
+  },
+  {
+    "sop_id": "SOP-01",
+    "step_id": 2,
+    "title": "Stop the line",
+    "text": "Stop Line 3 from the control panel using the normal stop sequence."
+  },
+  {
+    "sop_id": "SOP-01",
+    "step_id": 3,
+    "title": "Isolate energy",
+    "text": "Turn the main isolator for Line 3 to OFF and close the compressed air valve at the supply."
+  },
+  {
+    "sop_id": "SOP-01",
+    "step_id": 4,
+    "title": "Apply your lock",
+    "text": "Fit your personal padlock to the isolator hasp and the air valve. Each person working on the line applies their own lock."
+  },
+  {
+    "sop_id": "SOP-01",
+    "step_id": 5,
+    "title": "Attach your tag",
+    "text": "Attach a tag to each lock showing your name, the date and the reason for the lockout."
+  },
+  {
+    "sop_id": "SOP-01",
+    "step_id": 6,
+    "title": "Release stored energy",
+    "text": "Bleed the air pressure at the bleed valve and wait until the gauge reads zero."
+  },
+  {
+    "sop_id": "SOP-01",
+    "step_id": 7,
+    "title": "Try to start",
+    "text": "Press the start button once at the panel to confirm the line does not move, then return the control to stop."
+  },
+  {
+    "sop_id": "SOP-01",
+    "step_id": 8,
+    "title": "Verify zero energy",
+    "text": "Check with the voltage tester that the isolator terminals read zero before touching any conductor."
+  },
+  {
+    "sop_id": "SOP-01",
+    "step_id": 9,
+    "title": "Do the work",
+    "text": "Carry out the maintenance. Keep your lock on until you have finished."
+  },
+  {
+    "sop_id": "SOP-01",
+    "step_id": 10,
+    "title": "Remove your lock",
+    "text": "When the work is done, check tools are clear, guards are refitted and everyone is out of the machine, then remove your own lock only."
+  },
+  {
+    "sop_id": "SOP-01",
+    "step_id": 11,
+    "title": "Restart and inform",
+    "text": "Restore energy, start the line from the panel and tell the crew the line is running."
+  },
+  {
+    "sop_id": "SOP-02",
+    "step_id": 1,
+    "title": "Read the truck log",
+    "text": "Read the previous shift's entries in the truck log for reported faults."
+  },
+  {
+    "sop_id": "SOP-02",
+    "step_id": 2,
+    "title": "Walk around",
+    "text": "Walk around the truck and look for damage, leaks and loose parts."
+  },
+  {
+    "sop_id": "SOP-02",
+    "step_id": 3,
+    "title": "Forks and mast",
+    "text": "Check the forks for cracks and bends and the mast chains for wear and correct tension."
+  },
+  {
+    "sop_id": "SOP-02",
+    "step_id": 4,
+    "title": "Tyres",
+    "text": "Check the tyres for cuts and flat spots and check the wheel nuts are tight."
+  },
+  {
+    "sop_id": "SOP-02",
+    "step_id": 5,
+    "title": "Battery",
+    "text": "Check the battery charge indicator reads above 30 percent and the battery restraint is secure."
+  },
+  {
+    "sop_id": "SOP-02",
+    "step_id": 6,
+    "title": "Seat belt and horn",
+    "text": "Fit the seat belt, then test the horn."
+  },
+  {
+    "sop_id": "SOP-02",
+    "step_id": 7,
+    "title": "Lights and alarm",
+    "text": "Test the headlights, the blue spot light and the reversing alarm."
+  },
+  {
+    "sop_id": "SOP-02",
+    "step_id": 8,
+    "title": "Brakes and steering",
+    "text": "Drive a few metres in the yard and test the service brake, the parking brake and the steering."
+  },
+  {
+    "sop_id": "SOP-02",
+    "step_id": 9,
+    "title": "Sign the log",
+    "text": "Record the result in the truck log and sign it. Report any fault to the supervisor and tag the truck out of service if it is unsafe."
+  },
+  {
+    "sop_id": "SOP-03",
+    "step_id": 1,
+    "title": "Confirm tank empty and permit",
+    "text": "Confirm Tank M2 is empty and that the supervisor has signed the CIP permit."
+  },
+  {
+    "sop_id": "SOP-03",
+    "step_id": 2,
+    "title": "Put on PPE",
+    "text": "Put on chemical goggles, face shield, caustic-resistant gloves and apron before opening any caustic line."
+  },
+  {
+    "sop_id": "SOP-03",
+    "step_id": 3,
+    "title": "Pre-rinse",
+    "text": "Pre-rinse the tank with water for 10 minutes until the drain runs clear."
+  },
+  {
+    "sop_id": "SOP-03",
+    "step_id": 4,
+    "title": "Check caustic strength",
+    "text": "Test the caustic solution with the titration kit. The concentration must be 1.5 to 2.0 percent."
+  },
+  {
+    "sop_id": "SOP-03",
+    "step_id": 5,
+    "title": "Connect hoses",
+    "text": "Connect the caustic supply hose and the return hose, and check both clamps are tight."
+  },
+  {
+    "sop_id": "SOP-03",
+    "step_id": 6,
+    "title": "Circulate caustic",
+    "text": "Start the CIP pump and circulate caustic at 70 degrees C for 20 minutes."
+  },
+  {
+    "sop_id": "SOP-03",
+    "step_id": 7,
+    "title": "Record temperature",
+    "text": "Read the temperature on the panel every 5 minutes and write it on the CIP sheet."
+  },
+  {
+    "sop_id": "SOP-03",
+    "step_id": 8,
+    "title": "Drain caustic",
+    "text": "Stop the pump, return the caustic to the CIP tank and drain the line."
+  },
+  {
+    "sop_id": "SOP-03",
+    "step_id": 9,
+    "title": "Final rinse",
+    "text": "Rinse the tank with fresh water for at least 15 minutes."
+  },
+  {
+    "sop_id": "SOP-03",
+    "step_id": 10,
+    "title": "Check rinse water",
+    "text": "Test the outlet water with pH strips. The reading must be 7 to 8 before sign-off."
+  },
+  {
+    "sop_id": "SOP-03",
+    "step_id": 11,
+    "title": "Disconnect and cap",
+    "text": "Disconnect the hoses with the line vented and cap the ports."
+  },
+  {
+    "sop_id": "SOP-03",
+    "step_id": 12,
+    "title": "Close the permit",
+    "text": "Complete the CIP sheet and have the supervisor sign the permit closed."
+  }
 ]
