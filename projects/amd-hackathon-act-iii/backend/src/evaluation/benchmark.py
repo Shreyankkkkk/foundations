@@ -96,7 +96,9 @@ def build_results(flags, answer_key, notes, stats, gpu=None):
     judge_model = None
     if stats:
         if stats.get("flags_proposed"):
-            quote_verified_rate = stats["flags_kept"] / stats["flags_proposed"]
+            # older run_stats.json files have no "quotes_verified"; there flags_kept was the same number
+            verified = stats["quotes_verified"] if "quotes_verified" in stats else stats["flags_kept"]
+            quote_verified_rate = verified / stats["flags_proposed"]
         notes_per_minute = stats.get("notes_per_minute")
         judge_model = stats.get("judge_model")
 
@@ -144,6 +146,19 @@ def build_results(flags, answer_key, notes, stats, gpu=None):
     return benchmark, details
 
 
+def real_run_problem(stats):
+    """None if run_stats.json describes a finished REAL run; otherwise a message saying what is wrong."""
+    if not stats:
+        return "run_stats.json not found in output/. Run the pipeline first."
+    if stats.get("used_fake_model") is not False:
+        return "run_stats.json says the pretend model (or an unknown model) made these flags. Use --fake, or run the real pipeline."
+    if not stats.get("judge_model"):
+        return "run_stats.json has no judge_model. Set JUDGE_MODEL and run the real pipeline again."
+    if not stats.get("notes_per_minute"):
+        return "run_stats.json has no notes_per_minute. Run the real pipeline again."
+    return None
+
+
 def main():
     parser = argparse.ArgumentParser(description="Score flags.json against the answer key.")
     parser.add_argument("--fake", action="store_true",
@@ -151,6 +166,9 @@ def main():
     parser.add_argument("--gpu", default=None,
                         help='GPU name for the record, e.g. "1x MI300X" (the code cannot know it)')
     args = parser.parse_args()
+    if not args.fake and not args.gpu:
+        raise SystemExit('A real run needs --gpu "<name>", for example --gpu "1x MI300X".')
+    gpu = None if args.fake else args.gpu  # a pretend run never records a GPU
 
     out_dir = config.FAKE_OUTPUT_DIR if args.fake else config.OUTPUT_DIR
     flags_path = out_dir / config.FLAGS_FILE.name
@@ -163,7 +181,12 @@ def main():
     answer_key = load_json(config.ANSWER_KEY_FILE)
     notes = load_json(config.NOTES_FILE)
 
-    benchmark, details = build_results(flags, answer_key, notes, stats, args.gpu)
+    if not args.fake:
+        problem = real_run_problem(stats)
+        if problem:
+            raise SystemExit(problem)
+
+    benchmark, details = build_results(flags, answer_key, notes, stats, gpu)
 
     save_json(out_dir / config.BENCHMARK_FILE.name, benchmark)
     save_json(out_dir / DETAILS_FILE_NAME, details)

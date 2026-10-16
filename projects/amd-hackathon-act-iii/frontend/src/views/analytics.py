@@ -1,7 +1,6 @@
 """Analytics screens: Overview, Heat Strip, Benchmark, AMD and Evolus."""
 import pandas as pd, plotly.graph_objects as go, streamlit as st
 from theme import INK, esc, title, big
-from quote import quote_span
 
 TYPES = {"skipped_step": "Skipped step", "reordered_steps": "Reordered steps",
          "workaround_substitution": "Workaround or substitution",
@@ -28,12 +27,7 @@ def _show(x):
 def _run_line(b):
     if not b.get("judge_model"):
         return "This run used the pretend model with no GPU, so the speed is not an AMD figure yet."
-    return f"Matching and judging run on {b.get('gpu') or 'an AMD GPU'} at {_npm(b)} notes per minute."
-
-def _verified(d, f):
-    """Flags whose quote is really in the note, checked with the backend's own rule."""
-    t = {n["note_id"]: n["text"] for n in d["notes"]}
-    return sum(quote_span(t.get(r.note_id, ""), r.quote) is not None for r in f.itertuples())
+    return f"The judging model runs on {b.get('gpu') or 'an AMD GPU'}; the full run reads {_npm(b)} notes per minute. Matching is plain Python."
 
 def _trend(f, label):
     wk, g = f.week.max(), f[f.label == label]
@@ -49,7 +43,7 @@ def overview(d):
     if f.empty:
         st.info("No flags yet. Run the pipeline, or switch Demo mode on in the sidebar."); return
     nums = [(len(d["notes"]), "notes read"), (len(f), "flags raised"),
-            (_verified(d, f), "quotes verified"), (int((f.status == "approved").sum()), "approved by a person")]
+            (f.label.nunique(), "steps with drift"), (int((f.status == "approved").sum()), "approved by a person")]
     for col, (v, l) in zip(st.columns(4), nums):
         col.markdown(big(v, l), unsafe_allow_html=True)
     st.markdown("<h3 class='sec'>Top 3 drifting steps</h3>", unsafe_allow_html=True)
@@ -107,15 +101,18 @@ def heat_strip(d):
 def benchmark(d):
     b, (f, _) = d["benchmark"], _frame(d)
     st.markdown(title("How accurate is it, and where is it wrong?", "Scored against drifts we planted on purpose, with an answer key. False alarms are listed in full below."), unsafe_allow_html=True)
+    if not b.get("judge_model"):
+        st.warning("These numbers come from the pretend model (no real AI, no GPU). They say nothing about the real system.")
+    
     vals = [(_pct(b.get("precision")), "precision"), (_pct(b.get("recall")), "recall"),
-            (_pct(b.get("quote_verified_rate")), "quote-verified rate"), (_npm(b), "notes per minute")]
+            (_pct(b.get("quote check pass rate")), "quote check pass rate"), (_npm(b), "notes per minute")]
     for col, (v, l) in zip(st.columns(4), vals):
         col.markdown(big(v, l), unsafe_allow_html=True)
     st.markdown("<h3 class='sec'>Results</h3>", unsafe_allow_html=True)
     st.dataframe(pd.DataFrame({"Measure": [l for _, l in vals],
         "Value": [v for v, _ in vals],
         "What it means": ["Of the flags we raised, how many were real drift.", "Of the real drifts, how many we found.",
-                          "Share of quotes that appear word for word in the note.", "How many notes the AI reads per minute."]}),
+                          "Share of the AI's proposed flags whose quote was really in the note. The rest were dropped.", "How many notes the AI reads per minute."]}),
         hide_index=True, width="stretch")
     st.markdown("<h3 class='sec'>Where our AI is wrong</h3>", unsafe_allow_html=True)
     if f.empty or not b.get("false_alarms"):
@@ -130,13 +127,24 @@ def benchmark(d):
 
 def amd(d):
     a, b = d["amd"], d["benchmark"]
-    st.markdown(title("What runs on AMD, and how fast?", "The AMD GPU powers matching and judging in this product. Figures come from the last run."), unsafe_allow_html=True)
-    for col, (v, l) in zip(st.columns(4), [(a["endpoint_status"].capitalize(), "endpoint status"), (_npm(b), "notes per minute"),
-                                           (f"${a['cost_per_1000_notes']:.2f}", "cost per 1,000 notes"), (f"{a['evolus_api_calls']:,}", "Evolus API calls")]):
+    st.markdown(title("What runs on AMD, and how fast?", "Only the judging model runs on the AMD GPU. Matching is plain Python. Figures come from the last saved run."), unsafe_allow_html=True)
+    cost, calls = a.get("cost_per_1000_notes"), a.get("evolus_api_calls")
+    tiles = [((a.get("endpoint_status") or "not measured").capitalize(), "endpoint status"),
+             (_npm(b), "notes per minute"),
+             ("not measured" if cost is None else f"${cost:.2f}", "cost per 1,000 notes"),
+             ("not measured" if calls is None else f"{calls:,}", "Evolus API calls")]
+    for col, (v, l) in zip(st.columns(4), tiles):
         col.markdown(big(v, l), unsafe_allow_html=True)
-    st.markdown("<h3 class='sec'>Two models, one GPU</h3>", unsafe_allow_html=True)
-    st.dataframe(pd.DataFrame({"Job": ["Match notes to steps", "Judge drift"], "Model": [_show(b.get("matcher_model")), _show(b.get("judge_model"))], "GPU": [_show(b.get("gpu"))] * 2}),
+    st.markdown("<h3 class='sec'>What runs where</h3>", unsafe_allow_html=True)
+    st.dataframe(pd.DataFrame({"Job": ["Match notes to steps", "Judge drift"],
+                               "Runs on": ["Plain Python, no GPU", _show(b.get("gpu"))],
+                               "Model": ["None (shared-word scoring)", _show(b.get("judge_model"))]}),
                  hide_index=True, width="stretch")
     if not b.get("judge_model"):
-        st.caption("This run used the pretend model, so models, GPU and speed are not real AMD figures yet.")
-    st.markdown("<h3 class='sec'>Evolus building blocks used</h3>" + "".join(f"<span class='chip'>{esc(x)}</span>" for x in a["evolus_blocks"]), unsafe_allow_html=True)
+        st.caption("This run used the pretend model, so the model, GPU and speed are not real AMD figures yet.")
+    blocks = a.get("evolus_blocks") or []
+    if blocks:
+        st.markdown("<h3 class='sec'>Evolus building blocks used</h3>" + "".join(f"<span class='chip'>{esc(x)}</span>" for x in blocks), unsafe_allow_html=True)
+    else:
+        st.markdown("<h3 class='sec'>Evolus building blocks used</h3>", unsafe_allow_html=True)
+        st.caption("None recorded yet. This fills in once the Evolus part has run.")

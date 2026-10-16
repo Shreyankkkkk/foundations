@@ -1,4 +1,4 @@
-# CODEMAP (auto-generated, do not edit) | L<n> = line number, may lag behind edits | 74 files listed, 20 without functions/classes omitted
+# CODEMAP (auto-generated, do not edit) | L<n> = line number, may lag behind edits | 76 files listed, 20 without functions/classes omitted
 learning/programming/data-analysis/exercises/pandas_basics_excercise.py
   list_functions(module) L3
 learning/programming/python/data-structure-algorithm/LinkedList.py
@@ -151,14 +151,26 @@ projects/amd-hackathon-act-iii/backend/scripts/check_data.py
   norm(s) L27
   load(name) L32
 projects/amd-hackathon-act-iii/backend/src/config.py
-  require_judge_settings() L49
+  require_judge_settings() L52
 projects/amd-hackathon-act-iii/backend/src/evaluation/benchmark.py
   load_json(path) L29
   save_json(path, data) L34
   drift_key(item) L39
   score_flags(flags, answer_key) L44
   build_results(flags, answer_key, notes, stats, gpu=None) L84
-  main() L147
+  real_run_problem(stats) L149
+  main() L162
+projects/amd-hackathon-act-iii/backend/src/evaluation/publish.py
+  _is_number(value) L42
+  _is_whole(value) L46
+  _is_text(value) L50
+  _is_date(value) L54
+  _is_share(value) L61
+  _wrong_fields(item, expected) L65
+  check_contract(sop, notes, flags, bench) L75
+  check_real_run(stats, bench, details, flags, notes) L157
+  build_amd(stats, price_per_hour=None) L178
+  main() L195
 projects/amd-hackathon-act-iii/backend/src/models/fake_model.py
   read_first_step(prompt) L41
   read_note_text(prompt) L49
@@ -167,11 +179,12 @@ projects/amd-hackathon-act-iii/backend/src/models/fake_model.py
     __init__(self, misbehave=True) L69
     ask(self, prompt) L73
 projects/amd-hackathon-act-iii/backend/src/pipeline.py
-  build_flag(number, note, proposal) L28
-  process_note(note, steps, model) L45
-  run(model, limit=None) L57
-  save_json(path, data) L98
-  main() L103
+  flag_id_for(note_id, sop_id, step_id, drift_type) L29
+  build_flag(note, proposal) L38
+  process_note(note, steps, model) L55
+  run(model, limit=None) L78
+  save_json(path, data) L128
+  main() L133
 projects/amd-hackathon-act-iii/backend/src/stages/judge.py
   build_prompt(note, candidates) L29
   parse_reply(reply_text) L66
@@ -190,8 +203,11 @@ projects/amd-hackathon-act-iii/backend/src/stages/matcher.py
   _words(text) L24
   pick_candidate_steps(note, steps, top_n=None) L29
 projects/amd-hackathon-act-iii/backend/src/stages/quote_check.py
-  words_of(text) L26
-  quote_in_note(quote, note_text) L36
+  _tokens(text) L36
+  words_of(text) L46
+  find_quote(quote, note_text) L51
+  quote_in_note(quote, note_text) L69
+  exact_quote(quote, note_text) L74
 projects/amd-hackathon-act-iii/backend/tests/test_benchmark.py
   flag(flag_id, note_id, sop_id='SOP-01', step_id=1, drift_type='skipped_step', quote='skipped lockout') L35
   run(flags, stats=STATS, gpu=None) L44
@@ -213,7 +229,13 @@ projects/amd-hackathon-act-iii/backend/tests/test_benchmark.py
   test_good_flags_have_no_bad_quotes() L152
   write(path, data) L157
   test_main_writes_benchmark_and_details_files(monkeypatch, tmp_path) L161
-  test_main_without_flags_file_stops_with_a_clear_message(monkeypatch, tmp_path) L182
+  test_quote_verified_rate_uses_quotes_verified_when_the_run_stats_have_it() L182
+  test_main_without_flags_file_stops_with_a_clear_message(monkeypatch, tmp_path) L188
+  setup_real_run(monkeypatch, tmp_path, stats) L196
+  test_real_run_without_gpu_is_refused(monkeypatch, tmp_path) L209
+  test_real_run_records_the_gpu(monkeypatch, tmp_path) L217
+  test_real_run_with_pretend_run_stats_is_refused(monkeypatch, tmp_path) L226
+  test_real_run_problem_cases() L235
 projects/amd-hackathon-act-iii/backend/tests/test_fake_model.py
   make_note(text) L15
   find_note_text(wanted, start_text, limit=2000) L19
@@ -274,20 +296,55 @@ projects/amd-hackathon-act-iii/backend/tests/test_pipeline.py
   make_note(note_id, text, shift='Day') L23
   class StubModel L39
     ask(self, prompt) L42
-  small_data(monkeypatch) L49
-  test_build_flag_has_exactly_the_contract_fields() L58
-  test_build_flag_values() L63
-  test_process_note_keeps_flag_whose_quote_is_in_the_note(small_data) L78
-  test_process_note_drops_flag_whose_quote_is_not_in_the_note(small_data) L84
-  test_process_note_lets_model_errors_through_for_run_to_handle(small_data) L90
-  test_run_counts_kept_dropped_and_failed(small_data) L97
-  test_run_keeps_going_after_a_failed_note(small_data) L108
-  test_run_numbers_flags_from_one_in_order(small_data, monkeypatch) L114
-  test_run_limit_only_processes_the_first_notes(small_data) L122
-  test_run_stats_has_timing_fields(small_data) L129
-  test_run_with_the_fake_model_gives_flags_with_real_quotes_only(small_data, monkeypatch) L136
-  test_save_json_round_trip_keeps_text_as_is(tmp_path) L156
-  test_main_fake_mode_writes_flags_and_stats_to_the_fake_folder(small_data, monkeypatch, tmp_path) L164
+  class ReplyModel L48
+    __init__(self, *proposals) L51
+    ask(self, prompt) L54
+  small_data(monkeypatch) L59
+  test_build_flag_has_exactly_the_contract_fields() L68
+  test_build_flag_values() L73
+  test_flag_id_depends_only_on_note_step_and_drift_type() L86
+  test_process_note_keeps_flag_whose_quote_is_in_the_note(small_data) L95
+  test_process_note_drops_flag_whose_quote_is_not_in_the_note(small_data) L101
+  test_process_note_lets_model_errors_through_for_run_to_handle(small_data) L107
+  test_process_note_replaces_the_models_quote_with_the_notes_own_words(small_data) L112
+  test_process_note_keeps_punctuation_that_belongs_to_the_notes_words(small_data) L118
+  test_process_note_gives_whole_number_step_ids(small_data) L125
+  test_run_counts_kept_dropped_and_failed(small_data) L133
+  test_run_keeps_going_after_a_failed_note(small_data) L146
+  test_run_flag_ids_are_stable_and_follow_note_order(small_data, monkeypatch) L152
+  test_run_merges_identical_flags_and_keeps_the_more_confident_one(small_data) L162
+  test_run_limit_only_processes_the_first_notes(small_data) L170
+  test_run_stats_has_timing_fields(small_data) L177
+  test_run_with_the_fake_model_gives_flags_with_real_quotes_only(small_data, monkeypatch) L184
+  test_save_json_round_trip_keeps_text_as_is(tmp_path) L205
+  test_main_fake_mode_writes_flags_and_stats_to_the_fake_folder(small_data, monkeypatch, tmp_path) L213
+projects/amd-hackathon-act-iii/backend/tests/test_publish.py
+  problems(sop=SOP, notes=NOTES, flags=FLAGS, bench=BENCH) L31
+  with_flag(**changes) L35
+  test_good_files_have_no_contract_problems() L41
+  test_a_quote_that_is_not_in_the_note_is_a_problem() L45
+  test_a_flag_on_an_unknown_step_or_note_is_a_problem() L50
+  test_bad_confidence_status_and_drift_type_are_problems() L55
+  test_an_extra_or_missing_flag_field_is_a_problem() L62
+  test_duplicate_flag_ids_are_a_problem() L69
+  test_flag_date_or_shift_that_differs_from_its_note_is_a_problem() L73
+  test_null_benchmark_numbers_are_problems_because_this_is_the_real_run() L77
+  test_a_false_alarm_that_is_not_a_flag_is_a_problem() L84
+  test_bad_sop_and_note_rows_are_problems() L90
+  real_problems(stats=STATS, bench=BENCH, details=DETAILS, flags=FLAGS, notes=NOTES) L98
+  test_a_finished_real_run_has_no_problems() L102
+  test_the_pretend_model_is_refused() L106
+  test_run_with_failed_notes_or_missing_notes_is_refused() L110
+  test_benchmark_from_other_flags_or_other_model_is_refused() L115
+  test_cost_per_1000_notes_comes_from_price_and_speed() L123
+  test_without_a_price_nothing_is_invented() L129
+  write(path, data) L137
+  setup(monkeypatch, tmp_path, stats=STATS) L141
+  test_main_copies_five_files_to_demo_and_front_end(monkeypatch, tmp_path) L160
+  test_main_refuses_the_pretend_model_and_copies_nothing(monkeypatch, tmp_path) L178
+  test_check_only_copies_nothing(monkeypatch, tmp_path) L188
+  test_main_stops_with_a_clear_message_when_the_benchmark_has_not_run(monkeypatch, tmp_path) L196
+  test_main_without_a_front_end_folder_still_writes_the_demo_copy(monkeypatch, tmp_path) L205
 projects/amd-hackathon-act-iii/backend/tests/test_quote_check.py
   test_exact_quote_passes() L12
   test_capitals_are_ignored() L16
@@ -307,6 +364,11 @@ projects/amd-hackathon-act-iii/backend/tests/test_quote_check.py
   test_punctuation_inside_a_word_must_match() L78
   test_changed_word_still_fails_with_punctuation_ignored() L84
   test_punctuation_only_quote_fails() L88
+  test_find_quote_gives_positions_in_the_original_note() L93
+  test_exact_quote_returns_the_notes_own_wording() L99
+  test_exact_quote_keeps_punctuation_attached_to_the_notes_words() L104
+  test_exact_quote_is_always_a_piece_of_the_note() L109
+  test_exact_quote_is_none_when_the_quote_is_not_there_or_not_text() L115
 projects/amd-hackathon-act-iii/frontend/scripts/sync_backend_data.py
   main() L14
 projects/amd-hackathon-act-iii/frontend/src/data_loader.py
@@ -338,17 +400,16 @@ projects/amd-hackathon-act-iii/frontend/src/theme.py
   big(value, label) L62
   banner(mode) L67
 projects/amd-hackathon-act-iii/frontend/src/views/analytics.py
-  _frame(d) L10
-  _pct(x) L19
-  _npm(b) L22
-  _show(x) L25
-  _run_line(b) L28
-  _verified(d, f) L33
-  _trend(f, label) L38
-  overview(d) L46
-  heat_strip(d) L66
-  benchmark(d) L107
-  amd(d) L131
+  _frame(d) L9
+  _pct(x) L18
+  _npm(b) L21
+  _show(x) L24
+  _run_line(b) L27
+  _trend(f, label) L32
+  overview(d) L40
+  heat_strip(d) L60
+  benchmark(d) L101
+  amd(d) L128
 projects/amd-hackathon-act-iii/frontend/src/views/review.py
   _save(fid, status) L9
   _goto(fid) L16

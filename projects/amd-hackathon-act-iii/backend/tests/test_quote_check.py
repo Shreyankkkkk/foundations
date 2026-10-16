@@ -4,7 +4,7 @@ Status: empty skeleton, code comes in the build stage listed in STATE.md.
 """
 """Tests for src/stages/quote_check.py. Run from backend/:  pytest tests/test_quote_check.py"""
 
-from src.stages.quote_check import quote_in_note
+from src.stages.quote_check import exact_quote, find_quote, quote_in_note
 
 NOTE = "Night shift: skipped the lockout step because the key was missing.\nUsed the spare key instead."
 
@@ -88,3 +88,32 @@ def test_changed_word_still_fails_with_punctuation_ignored():
 def test_punctuation_only_quote_fails():
     assert not quote_in_note("...", NOTE)
     assert not quote_in_note("- , .", NOTE)
+
+
+def test_find_quote_gives_positions_in_the_original_note():
+    start, end = find_quote("SKIPPED the lockout STEP", NOTE)
+    assert NOTE[start:end] == "skipped the lockout step"
+    assert find_quote("skipped the lockout procedure", NOTE) is None
+
+
+def test_exact_quote_returns_the_notes_own_wording():
+    assert exact_quote("SKIPPED the   lockout step", NOTE) == "skipped the lockout step"
+    assert exact_quote("operator's note", "Checked the operator\u2019s note today.") == "operator\u2019s note"
+
+
+def test_exact_quote_keeps_punctuation_attached_to_the_notes_words():
+    assert exact_quote("the key was missing", NOTE) == "the key was missing."
+    assert exact_quote('"skipped the lockout step"', NOTE) == "skipped the lockout step"
+
+
+def test_exact_quote_is_always_a_piece_of_the_note():
+    quote = exact_quote("missing. Used the spare key", NOTE)  # crosses the line break
+    assert quote == "missing.\nUsed the spare key"
+    assert quote in NOTE
+
+
+def test_exact_quote_is_none_when_the_quote_is_not_there_or_not_text():
+    assert exact_quote("invented words", NOTE) is None
+    assert exact_quote("", NOTE) is None
+    assert exact_quote(None, NOTE) is None
+    assert exact_quote("skipped", None) is None

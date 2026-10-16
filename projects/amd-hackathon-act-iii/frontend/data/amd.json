@@ -1,9 +1,1 @@
-{
- "endpoint_status": "online",
- "cost_per_1000_notes": 0.42,
- "evolus_api_calls": 128,
- "evolus_blocks": [
-  "Document extractor",
-  "Workflow with sub-agents"
- ]
-}
+{"endpoint_status": null, "cost_per_1000_notes": null, "evolus_api_calls": null, "evolus_blocks": []}

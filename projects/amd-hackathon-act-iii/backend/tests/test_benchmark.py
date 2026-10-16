@@ -175,8 +175,14 @@ def test_main_writes_benchmark_and_details_files(monkeypatch, tmp_path):
     bench = json.loads((fake_dir / config.BENCHMARK_FILE.name).read_text(encoding="utf-8"))
     details = json.loads((fake_dir / benchmark.DETAILS_FILE_NAME).read_text(encoding="utf-8"))
     assert list(bench.keys()) == CONTRACT_FIELDS
-    assert bench["gpu"] == "test-gpu"
+    assert bench["gpu"] is None  # a pretend run never records a GPU, even if one is passed
     assert details["drifts_found"] == 2
+
+
+def test_quote_verified_rate_uses_quotes_verified_when_the_run_stats_have_it():
+    stats = {**STATS, "quotes_verified": 3, "flags_kept": 2}  # 1 of the 3 verified was a duplicate
+    bench, _ = run([F1, F2], stats=stats)
+    assert bench["quote_verified_rate"] == pytest.approx(3 / 5)
 
 
 def test_main_without_flags_file_stops_with_a_clear_message(monkeypatch, tmp_path):
@@ -185,3 +191,51 @@ def test_main_without_flags_file_stops_with_a_clear_message(monkeypatch, tmp_pat
     with pytest.raises(SystemExit) as error:
         benchmark.main()
     assert "Run the pipeline first" in str(error.value)
+
+
+def setup_real_run(monkeypatch, tmp_path, stats):
+    out = tmp_path / "output"
+    out.mkdir()
+    write(out / config.FLAGS_FILE.name, [F1, F2])
+    write(out / config.RUN_STATS_FILE.name, stats)
+    write(tmp_path / "key.json", KEY)
+    write(tmp_path / "notes.json", NOTES)
+    monkeypatch.setattr(config, "OUTPUT_DIR", out)
+    monkeypatch.setattr(config, "ANSWER_KEY_FILE", tmp_path / "key.json")
+    monkeypatch.setattr(config, "NOTES_FILE", tmp_path / "notes.json")
+    return out
+
+
+def test_real_run_without_gpu_is_refused(monkeypatch, tmp_path):
+    setup_real_run(monkeypatch, tmp_path, STATS)
+    monkeypatch.setattr(sys, "argv", ["benchmark"])
+    with pytest.raises(SystemExit) as error:
+        benchmark.main()
+    assert "--gpu" in str(error.value)
+
+
+def test_real_run_records_the_gpu(monkeypatch, tmp_path):
+    out = setup_real_run(monkeypatch, tmp_path, STATS)
+    monkeypatch.setattr(sys, "argv", ["benchmark", "--gpu", "1x MI300X"])
+    benchmark.main()
+    bench = json.loads((out / config.BENCHMARK_FILE.name).read_text(encoding="utf-8"))
+    assert bench["gpu"] == "1x MI300X"
+    assert bench["judge_model"] == "some-model"
+
+
+def test_real_run_with_pretend_run_stats_is_refused(monkeypatch, tmp_path):
+    out = setup_real_run(monkeypatch, tmp_path, {**STATS, "used_fake_model": True})
+    monkeypatch.setattr(sys, "argv", ["benchmark", "--gpu", "1x MI300X"])
+    with pytest.raises(SystemExit) as error:
+        benchmark.main()
+    assert "pretend" in str(error.value)
+    assert not (out / config.BENCHMARK_FILE.name).exists()  # nothing was written
+
+
+def test_real_run_problem_cases():
+    assert benchmark.real_run_problem(STATS) is None
+    assert "not found" in benchmark.real_run_problem(None)
+    assert "judge_model" in benchmark.real_run_problem({**STATS, "judge_model": None})
+    assert "notes_per_minute" in benchmark.real_run_problem({**STATS, "notes_per_minute": None})
+    no_flag = {key: value for key, value in STATS.items() if key != "used_fake_model"}
+    assert "pretend" in benchmark.real_run_problem(no_flag)  # an unknown origin is not trusted

@@ -37,7 +37,7 @@ while len(notes) < 100:
                       text=random.choice([f"Lockout on line {n} done with every check completed.", f"Charger bay {n} used, gloves and shield worn.", f"Confined-space entry {n} finished, readings normal."])))
 low = [f["flag_id"] for f in sorted(flags, key=lambda f: f["confidence"])[:3]]
 bench = dict(precision=.84, recall=.76, quote_verified_rate=1.0, notes_per_minute=212.4, matcher_model="Qwen3-4B", judge_model="Qwen3-32B", gpu="AMD Instinct MI300X", false_alarms=low)
-amd = dict(endpoint_status="online", cost_per_1000_notes=.42, evolus_api_calls=128, evolus_blocks=["Document extractor", "Workflow with sub-agents"])
+amd = dict(endpoint_status=None, cost_per_1000_notes=None, evolus_api_calls=None, evolus_blocks=[])
 for k, v in dict(sop=sop, notes=notes, flags=flags, benchmark=bench, amd=amd).items():
     (DATA / f"{k}.json").write_text(json.dumps(v, indent=1), encoding="utf-8")
 print(len(notes), "notes,", len(flags), "flags written")

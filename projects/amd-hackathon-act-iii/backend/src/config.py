@@ -10,6 +10,8 @@ BACKEND_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BACKEND_DIR / "data"
 DEMO_DIR = DATA_DIR / "demo"
 OUTPUT_DIR = BACKEND_DIR / "output"
+# The front end sits next to backend/ in Foundations and in the team repo.
+FRONTEND_DATA_DIR = BACKEND_DIR.parent / "frontend" / "data"
 
 # --- Input files (made by scripts/build_data.py) -----------------------
 SOP_FILE = DATA_DIR / "sop.json"
@@ -21,6 +23,7 @@ FLAGS_FILE = OUTPUT_DIR / "flags.json"
 BENCHMARK_FILE = OUTPUT_DIR / "benchmark.json"
 
 RUN_STATS_FILE = OUTPUT_DIR / "run_stats.json"
+AMD_FILE = OUTPUT_DIR / "amd.json"  # made by src/evaluation/publish.py, read by the front end's AMD page
 FAKE_OUTPUT_DIR = OUTPUT_DIR / "fake"
 
 # --- Fixed numbers, each with its source -------------------------------
