@@ -1,6 +1,6 @@
 import streamlit as st
 from theme import CSS, banner
-from data_loader import get_data
+from data_loader import get_data, DataError
 from views import analytics
 
 st.set_page_config(page_title="Procedure Drift Finder", layout="wide")
@@ -32,5 +32,7 @@ try:
         st.info("This screen is built on the other branch and appears here after the merge.")
     else:
         PAGES[page](d)
+except DataError as e:
+    st.error(f"{e} Copy the backend's results in with scripts/sync_backend_data.py, or regenerate them with scripts/make_fake_data.py.")
 except Exception as e:
     st.error(f"This page could not load ({type(e).__name__}). Check that the files in data/ match the agreed format, or switch Demo mode on.")

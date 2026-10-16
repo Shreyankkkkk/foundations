@@ -1,6 +1,6 @@
 [
   {
-    "flag_id": "flag-1",
+    "flag_id": "N003-SOP-01-1-reordered_steps",
     "sop_id": "SOP-01",
     "step_id": 1,
     "note_id": "N003",
@@ -13,7 +13,7 @@
     "suggested_fix": null
   },
   {
-    "flag_id": "flag-2",
+    "flag_id": "N006-SOP-01-1-skipped_step",
     "sop_id": "SOP-01",
     "step_id": 1,
     "note_id": "N006",
@@ -26,7 +26,7 @@
     "suggested_fix": null
   },
   {
-    "flag_id": "flag-3",
+    "flag_id": "N009-SOP-03-4-workaround_substitution",
     "sop_id": "SOP-03",
     "step_id": 4,
     "note_id": "N009",
@@ -39,7 +39,7 @@
     "suggested_fix": null
   },
   {
-    "flag_id": "flag-4",
+    "flag_id": "N014-SOP-01-4-workaround_substitution",
     "sop_id": "SOP-01",
     "step_id": 4,
     "note_id": "N014",
@@ -52,7 +52,7 @@
     "suggested_fix": null
   },
   {
-    "flag_id": "flag-5",
+    "flag_id": "N021-SOP-01-2-workaround_substitution",
     "sop_id": "SOP-01",
     "step_id": 2,
     "note_id": "N021",
@@ -65,7 +65,7 @@
     "suggested_fix": null
   },
   {
-    "flag_id": "flag-6",
+    "flag_id": "N026-SOP-01-4-workaround_substitution",
     "sop_id": "SOP-01",
     "step_id": 4,
     "note_id": "N026",
@@ -78,7 +78,7 @@
     "suggested_fix": null
   },
   {
-    "flag_id": "flag-7",
+    "flag_id": "N036-SOP-01-8-reordered_steps",
     "sop_id": "SOP-01",
     "step_id": 8,
     "note_id": "N036",
@@ -91,7 +91,7 @@
     "suggested_fix": null
   },
   {
-    "flag_id": "flag-8",
+    "flag_id": "N039-SOP-01-2-skipped_step",
     "sop_id": "SOP-01",
     "step_id": 2,
     "note_id": "N039",
@@ -104,7 +104,7 @@
     "suggested_fix": null
   },
   {
-    "flag_id": "flag-9",
+    "flag_id": "N041-SOP-01-10-skipped_step",
     "sop_id": "SOP-01",
     "step_id": 10,
     "note_id": "N041",
@@ -117,7 +117,7 @@
     "suggested_fix": null
   },
   {
-    "flag_id": "flag-10",
+    "flag_id": "N053-SOP-03-4-workaround_substitution",
     "sop_id": "SOP-03",
     "step_id": 4,
     "note_id": "N053",
@@ -130,7 +130,7 @@
     "suggested_fix": null
   },
   {
-    "flag_id": "flag-11",
+    "flag_id": "N059-SOP-02-9-skipped_step",
     "sop_id": "SOP-02",
     "step_id": 9,
     "note_id": "N059",
@@ -143,7 +143,7 @@
     "suggested_fix": null
   },
   {
-    "flag_id": "flag-12",
+    "flag_id": "N067-SOP-03-6-sop_outdated_or_impractical",
     "sop_id": "SOP-03",
     "step_id": 6,
     "note_id": "N067",
@@ -156,7 +156,7 @@
     "suggested_fix": null
   },
   {
-    "flag_id": "flag-13",
+    "flag_id": "N073-SOP-02-9-workaround_substitution",
     "sop_id": "SOP-02",
     "step_id": 9,
     "note_id": "N073",
@@ -169,7 +169,7 @@
     "suggested_fix": null
   },
   {
-    "flag_id": "flag-14",
+    "flag_id": "N075-SOP-03-10-workaround_substitution",
     "sop_id": "SOP-03",
     "step_id": 10,
     "note_id": "N075",
@@ -182,7 +182,7 @@
     "suggested_fix": null
   },
   {
-    "flag_id": "flag-15",
+    "flag_id": "N082-SOP-01-6-skipped_step",
     "sop_id": "SOP-01",
     "step_id": 6,
     "note_id": "N082",
@@ -195,7 +195,7 @@
     "suggested_fix": null
   },
   {
-    "flag_id": "flag-16",
+    "flag_id": "N085-SOP-02-3-skipped_step",
     "sop_id": "SOP-02",
     "step_id": 3,
     "note_id": "N085",
@@ -208,7 +208,7 @@
     "suggested_fix": null
   },
   {
-    "flag_id": "flag-17",
+    "flag_id": "N095-SOP-01-8-workaround_substitution",
     "sop_id": "SOP-01",
     "step_id": 8,
     "note_id": "N095",
@@ -221,7 +221,7 @@
     "suggested_fix": null
   },
   {
-    "flag_id": "flag-18",
+    "flag_id": "N106-SOP-02-9-skipped_step",
     "sop_id": "SOP-02",
     "step_id": 9,
     "note_id": "N106",
@@ -234,7 +234,7 @@
     "suggested_fix": null
   },
   {
-    "flag_id": "flag-19",
+    "flag_id": "N108-SOP-02-5-workaround_substitution",
     "sop_id": "SOP-02",
     "step_id": 5,
     "note_id": "N108",
@@ -247,7 +247,7 @@
     "suggested_fix": null
   },
   {
-    "flag_id": "flag-20",
+    "flag_id": "N128-SOP-03-1-skipped_step",
     "sop_id": "SOP-03",
     "step_id": 1,
     "note_id": "N128",
@@ -260,7 +260,7 @@
     "suggested_fix": null
   },
   {
-    "flag_id": "flag-21",
+    "flag_id": "N131-SOP-01-2-workaround_substitution",
     "sop_id": "SOP-01",
     "step_id": 2,
     "note_id": "N131",
@@ -273,7 +273,7 @@
     "suggested_fix": null
   },
   {
-    "flag_id": "flag-22",
+    "flag_id": "N137-SOP-01-2-workaround_substitution",
     "sop_id": "SOP-01",
     "step_id": 2,
     "note_id": "N137",
@@ -286,7 +286,7 @@
     "suggested_fix": null
   },
   {
-    "flag_id": "flag-23",
+    "flag_id": "N140-SOP-02-1-skipped_step",
     "sop_id": "SOP-02",
     "step_id": 1,
     "note_id": "N140",
@@ -299,7 +299,7 @@
     "suggested_fix": null
   },
   {
-    "flag_id": "flag-24",
+    "flag_id": "N146-SOP-03-5-sop_outdated_or_impractical",
     "sop_id": "SOP-03",
     "step_id": 5,
     "note_id": "N146",
@@ -312,7 +312,7 @@
     "suggested_fix": null
   },
   {
-    "flag_id": "flag-25",
+    "flag_id": "N149-SOP-01-8-workaround_substitution",
     "sop_id": "SOP-01",
     "step_id": 8,
     "note_id": "N149",
@@ -325,7 +325,7 @@
     "suggested_fix": null
   },
   {
-    "flag_id": "flag-26",
+    "flag_id": "N154-SOP-03-10-workaround_substitution",
     "sop_id": "SOP-03",
     "step_id": 10,
     "note_id": "N154",
@@ -338,7 +338,7 @@
     "suggested_fix": null
   },
   {
-    "flag_id": "flag-27",
+    "flag_id": "N164-SOP-01-7-skipped_step",
     "sop_id": "SOP-01",
     "step_id": 7,
     "note_id": "N164",
@@ -351,7 +351,7 @@
     "suggested_fix": null
   },
   {
-    "flag_id": "flag-28",
+    "flag_id": "N169-SOP-03-7-workaround_substitution",
     "sop_id": "SOP-03",
     "step_id": 7,
     "note_id": "N169",
@@ -364,7 +364,7 @@
     "suggested_fix": null
   },
   {
-    "flag_id": "flag-29",
+    "flag_id": "N190-SOP-03-2-reordered_steps",
     "sop_id": "SOP-03",
     "step_id": 2,
     "note_id": "N190",

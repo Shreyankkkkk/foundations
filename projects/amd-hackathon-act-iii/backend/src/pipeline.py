@@ -11,12 +11,15 @@ It does no thinking itself. It calls the other files in order, one note at a tim
 
 Run it from the backend/ folder:
     python -m src.pipeline --fake --limit 10    pretend model, first 10 notes
-    python -m src.pipeline                      real model, all notes
+    python -m src.pipeline                      real model, all notes, one at a time
+    python -m src.pipeline --workers 8          real model, 8 notes at the same time (faster)
 """
 
 import argparse
 import json
+import os
 import time
+from concurrent.futures import ThreadPoolExecutor
 
 from src import config
 from src.models.fake_model import FakeModel
@@ -75,9 +78,19 @@ def process_note(note, steps, model):
     return kept, len(proposals)
 
 
-def run(model, limit=None):
-    """Run the notes through the stages. limit = only the first N notes (for tests)."""
+def run(model, limit=None, workers=1):
+    """Run the notes through the stages. limit = only the first N notes (for tests).
+
+    workers = how many notes are sent to the model at the same time. 1 = one after
+    the other. A vLLM server handles several requests at once, so more workers raise
+    notes per minute; the best number is measured (run with 1, 4, 8 and compare).
+    Results are always handled in note order, so the flags are the same either way.
+    """
+    if workers < 1:
+        raise ValueError("workers must be 1 or more.")
     steps = load_sop_steps()
+    if not steps:
+        raise ValueError("sop.json has no steps, so there is nothing to compare the notes against.")
     notes = load_notes()
     if limit is not None:
         notes = notes[:limit]
@@ -86,25 +99,40 @@ def run(model, limit=None):
     proposed_total = 0
     verified_total = 0
     failed_note_ids = []
+    slowest_note_seconds = 0.0  # measured, so a request timeout can be calculated from it
 
-    start = time.perf_counter()  # stopwatch, to measure notes per minute
-    for note in notes:
+    def work(note):
+        """One note through the stages. A failure is returned, not raised, so one bad note cannot stop the run."""
+        began = time.perf_counter()
         try:
             kept, proposed = process_note(note, steps, model)
+            return note, kept, proposed, None, time.perf_counter() - began
         except Exception as error:
-            # One bad note must not stop the whole run. Record it and move on.
-            failed_note_ids.append(note["note_id"])
-            print(f"note {note['note_id']} failed: {error}")
-            continue
-        proposed_total += proposed
-        verified_total += len(kept)
-        for proposal in kept:
-            flag = build_flag(note, proposal)
-            old = flags_by_id.get(flag["flag_id"])
-            # Same note, step and drift type twice = one finding; keep the more confident copy.
-            if old is None or flag["confidence"] > old["confidence"]:
-                flags_by_id[flag["flag_id"]] = flag
+            return note, [], 0, error, time.perf_counter() - began
+
+    start = time.perf_counter()  # stopwatch, to measure notes per minute
+    pool = ThreadPoolExecutor(max_workers=workers)
+    try:
+        # pool.map hands the results back in note order, however many run at once
+        for position, (note, kept, proposed, error, took) in enumerate(pool.map(work, notes), 1):
+            slowest_note_seconds = max(slowest_note_seconds, took)
+            print(f"{position}/{len(notes)} notes", end="\r", flush=True)
+            if error is not None:
+                failed_note_ids.append(note["note_id"])
+                print(f"\nnote {note['note_id']} failed: {error}")
+                continue
+            proposed_total += proposed
+            verified_total += len(kept)
+            for proposal in kept:
+                flag = build_flag(note, proposal)
+                old = flags_by_id.get(flag["flag_id"])
+                # Same note, step and drift type twice = one finding; keep the more confident copy.
+                if old is None or flag["confidence"] > old["confidence"]:
+                    flags_by_id[flag["flag_id"]] = flag
+    finally:
+        pool.shutdown(wait=False, cancel_futures=True)  # Ctrl+C stops quickly instead of finishing every queued note
     seconds = time.perf_counter() - start
+    print()  # ends the progress line
 
     flags = list(flags_by_id.values())
     notes_done = len(notes) - len(failed_note_ids)
@@ -120,14 +148,18 @@ def run(model, limit=None):
         "flags_kept": len(flags),                   # flags written to flags.json
         "flags_dropped": proposed_total - verified_total,  # dropped by the quote check
         "seconds": seconds,
+        "slowest_note_seconds": slowest_note_seconds,
+        "workers": workers,                         # notes sent to the model at the same time
         "notes_per_minute": notes_per_minute,
     }
     return flags, stats
 
 
 def save_json(path, data):
-    with open(path, "w", encoding="utf-8") as file:
+    temp = f"{path}.tmp"  # write a temp file, then swap it in, so a crash never leaves half a file
+    with open(temp, "w", encoding="utf-8") as file:
         json.dump(data, file, indent=2, ensure_ascii=False)
+    os.replace(temp, path)
 
 
 def main():
@@ -136,6 +168,8 @@ def main():
                         help="use the pretend model (no GPU needed); results go to output/fake/")
     parser.add_argument("--limit", type=int, default=None,
                         help="only process the first N notes")
+    parser.add_argument("--workers", type=int, default=1,
+                        help="notes sent to the model at the same time (default 1, one after the other)")
     args = parser.parse_args()
 
     if args.fake:
@@ -145,8 +179,15 @@ def main():
         config.require_judge_settings()
         model = make_real_model()
         out_dir = config.OUTPUT_DIR
+        if config.judge_limits()[0] is None:
+            print("NOTE: JUDGE_TIMEOUT_S is not set, so one stuck request would wait forever.")
 
-    flags, stats = run(model, args.limit)
+    flags, stats = run(model, args.limit, args.workers)
+    if stats["failed_note_ids"] and stats["notes_done"] == 0:
+        # nothing is written, so a good earlier result is never overwritten by an empty one
+        raise SystemExit("Every note failed, so nothing was saved. Check JUDGE_BASE_URL, JUDGE_MODEL and that the model server is running.")
+    if stats["failed_note_ids"]:
+        print(f"WARNING: {len(stats['failed_note_ids'])} notes failed. publish.py will refuse this run until it is run again without failures.")
     stats["used_fake_model"] = args.fake
     stats["judge_model"] = None if args.fake else config.JUDGE_MODEL
 

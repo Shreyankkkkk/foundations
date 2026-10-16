@@ -17,6 +17,7 @@ Numbers from a --fake run say nothing about the real model.
 
 import argparse
 import json
+import os
 
 from src import config
 from src.stages.judge import DRIFT_TYPES
@@ -32,8 +33,10 @@ def load_json(path):
 
 
 def save_json(path, data):
-    with open(path, "w", encoding="utf-8") as file:
+    temp = f"{path}.tmp"  # write a temp file, then swap it in, so a crash never leaves half a file
+    with open(temp, "w", encoding="utf-8") as file:
         json.dump(data, file, indent=2, ensure_ascii=False)
+    os.replace(temp, path)
 
 
 def drift_key(item):

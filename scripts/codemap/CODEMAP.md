@@ -1,4 +1,4 @@
-# CODEMAP (auto-generated, do not edit) | L<n> = line number, may lag behind edits | 76 files listed, 20 without functions/classes omitted
+# CODEMAP (auto-generated, do not edit) | L<n> = line number, may lag behind edits | 78 files listed, 20 without functions/classes omitted
 learning/programming/data-analysis/exercises/pandas_basics_excercise.py
   list_functions(module) L3
 learning/programming/python/data-structure-algorithm/LinkedList.py
@@ -151,15 +151,16 @@ projects/amd-hackathon-act-iii/backend/scripts/check_data.py
   norm(s) L27
   load(name) L32
 projects/amd-hackathon-act-iii/backend/src/config.py
-  require_judge_settings() L52
+  judge_limits() L57
+  require_judge_settings() L69
 projects/amd-hackathon-act-iii/backend/src/evaluation/benchmark.py
-  load_json(path) L29
-  save_json(path, data) L34
-  drift_key(item) L39
-  score_flags(flags, answer_key) L44
-  build_results(flags, answer_key, notes, stats, gpu=None) L84
-  real_run_problem(stats) L149
-  main() L162
+  load_json(path) L30
+  save_json(path, data) L35
+  drift_key(item) L42
+  score_flags(flags, answer_key) L47
+  build_results(flags, answer_key, notes, stats, gpu=None) L87
+  real_run_problem(stats) L152
+  main() L165
 projects/amd-hackathon-act-iii/backend/src/evaluation/publish.py
   _is_number(value) L42
   _is_whole(value) L46
@@ -179,29 +180,29 @@ projects/amd-hackathon-act-iii/backend/src/models/fake_model.py
     __init__(self, misbehave=True) L69
     ask(self, prompt) L73
 projects/amd-hackathon-act-iii/backend/src/pipeline.py
-  flag_id_for(note_id, sop_id, step_id, drift_type) L29
-  build_flag(note, proposal) L38
-  process_note(note, steps, model) L55
-  run(model, limit=None) L78
-  save_json(path, data) L128
-  main() L133
+  flag_id_for(note_id, sop_id, step_id, drift_type) L32
+  build_flag(note, proposal) L41
+  process_note(note, steps, model) L58
+  run(model, limit=None, workers=1) L81
+  save_json(path, data) L158
+  main() L165
 projects/amd-hackathon-act-iii/backend/src/stages/judge.py
   build_prompt(note, candidates) L29
   parse_reply(reply_text) L66
-  is_valid_proposal(item, candidates) L77
-  judge_note(note, candidates, model) L98
-  class RealModel L111
-    __init__(self, base_url, model_name, api_key=None) L114
-    ask(self, prompt) L120
-  make_real_model() L140
+  is_valid_proposal(item, candidates) L91
+  judge_note(note, candidates, model) L112
+  class RealModel L125
+    __init__(self, base_url, model_name, api_key=None, timeout=None, retries=0) L128
+    ask(self, prompt) L138
+  make_real_model() L163
 projects/amd-hackathon-act-iii/backend/src/stages/loader.py
-  _read_json_list(path) L22
-  _check_fields(items, required, label, path) L31
-  load_sop_steps(path=None) L41
-  load_notes(path=None) L49
+  _read_json_list(path) L16
+  _check_fields(items, required, label, path) L25
+  load_sop_steps(path=None) L37
+  load_notes(path=None) L45
 projects/amd-hackathon-act-iii/backend/src/stages/matcher.py
-  _words(text) L24
-  pick_candidate_steps(note, steps, top_n=None) L29
+  _words(text) L19
+  pick_candidate_steps(note, steps, top_n=None) L24
 projects/amd-hackathon-act-iii/backend/src/stages/quote_check.py
   _tokens(text) L36
   words_of(text) L46
@@ -263,29 +264,48 @@ projects/amd-hackathon-act-iii/backend/tests/test_judge.py
   test_parse_reply_without_a_list_raises() L108
   test_parse_brackets_in_wrong_order_raises() L113
   test_parse_broken_json_raises() L118
-  test_good_item_is_valid() L125
-  test_extra_fields_are_allowed() L129
-  test_missing_field_is_invalid(missing) L134
-  test_non_dict_is_invalid(bad) L141
-  test_step_not_shown_to_the_model_is_invalid() L145
-  test_step_from_the_wrong_sop_is_invalid() L149
-  test_step_id_as_text_is_invalid() L154
-  test_unknown_drift_type_is_invalid() L159
-  test_bad_quote_is_invalid(quote) L164
-  test_confidence_inside_0_to_1_is_valid(confidence) L169
-  test_bad_confidence_is_invalid(confidence) L174
-  test_judge_note_returns_valid_proposals() L180
-  test_judge_note_sends_the_note_text_to_the_model() L187
-  test_judge_note_empty_reply_means_no_flags() L194
-  test_judge_note_drops_invalid_items_and_keeps_valid_ones() L198
-  test_judge_note_without_candidates_does_not_call_the_model() L209
-  test_judge_note_reply_without_a_list_raises() L215
+  test_parse_skips_brackets_in_the_words_before_the_list() L123
+  test_parse_skips_a_broken_bracket_before_the_list() L128
+  test_parse_prefers_the_list_of_objects_over_a_list_of_numbers() L132
+  test_parse_still_returns_a_list_that_has_no_objects() L136
+  test_good_item_is_valid() L142
+  test_extra_fields_are_allowed() L146
+  test_missing_field_is_invalid(missing) L151
+  test_non_dict_is_invalid(bad) L158
+  test_step_not_shown_to_the_model_is_invalid() L162
+  test_step_from_the_wrong_sop_is_invalid() L166
+  test_step_id_as_text_is_invalid() L171
+  test_unknown_drift_type_is_invalid() L176
+  test_bad_quote_is_invalid(quote) L181
+  test_confidence_inside_0_to_1_is_valid(confidence) L186
+  test_bad_confidence_is_invalid(confidence) L191
+  test_judge_note_returns_valid_proposals() L197
+  test_judge_note_sends_the_note_text_to_the_model() L204
+  test_judge_note_empty_reply_means_no_flags() L211
+  test_judge_note_drops_invalid_items_and_keeps_valid_ones() L215
+  test_judge_note_without_candidates_does_not_call_the_model() L226
+  test_judge_note_reply_without_a_list_raises() L232
+  class FakeResponse L239
+    raise_for_status(self) L240
+    json(self) L243
+  class FakeRequests L247
+    __init__(self, fail) L256
+    post(self, url, headers, json, timeout) L260
+  real_model_with(monkeypatch, fail, **settings) L267
+  test_real_model_retries_a_connection_failure_then_succeeds(monkeypatch) L275
+  test_real_model_gives_up_when_the_retries_run_out(monkeypatch) L281
+  test_real_model_does_not_retry_by_default(monkeypatch) L288
+  test_real_model_passes_the_timeout_on(monkeypatch) L295
+  test_judge_limits_read_the_environment_values(monkeypatch) L303
+  test_judge_limits_when_nothing_is_set(monkeypatch) L310
+  test_judge_limits_reject_bad_values(monkeypatch, timeout, retries) L318
 projects/amd-hackathon-act-iii/backend/tests/test_loader.py
   count_in_file(path) L13
   test_loads_every_step() L19
   test_loads_every_note() L23
   test_note_ids_are_unique() L27
   test_missing_field_gives_clear_error(tmp_path) L32
+  test_item_that_is_not_an_object_gives_clear_error(tmp_path) L39
 projects/amd-hackathon-act-iii/backend/tests/test_matcher.py
   make_step(step_id, text) L9
   test_picks_the_step_that_shares_words() L13
@@ -318,6 +338,12 @@ projects/amd-hackathon-act-iii/backend/tests/test_pipeline.py
   test_run_with_the_fake_model_gives_flags_with_real_quotes_only(small_data, monkeypatch) L184
   test_save_json_round_trip_keeps_text_as_is(tmp_path) L205
   test_main_fake_mode_writes_flags_and_stats_to_the_fake_folder(small_data, monkeypatch, tmp_path) L213
+  test_run_records_the_slowest_note_time(small_data) L228
+  test_run_refuses_an_empty_sop(monkeypatch) L233
+  test_main_stops_and_writes_nothing_when_every_note_failed(small_data, monkeypatch, tmp_path) L239
+  test_run_with_several_workers_gives_the_same_flags_in_the_same_order(small_data, monkeypatch) L255
+  test_run_with_several_workers_still_survives_a_failed_note(small_data) L266
+  test_run_refuses_fewer_than_one_worker(small_data, workers) L274
 projects/amd-hackathon-act-iii/backend/tests/test_publish.py
   problems(sop=SOP, notes=NOTES, flags=FLAGS, bench=BENCH) L31
   with_flag(**changes) L35
@@ -372,9 +398,12 @@ projects/amd-hackathon-act-iii/backend/tests/test_quote_check.py
 projects/amd-hackathon-act-iii/frontend/scripts/sync_backend_data.py
   main() L14
 projects/amd-hackathon-act-iii/frontend/src/data_loader.py
-  _read(k) L7
-  _live(k) L10
-  get_data(want_demo) L18
+  class DataError L11
+  _read(k) L14
+  _live(k) L24
+  read_decisions() L31
+  save_decision(flag_id, status) L39
+  get_data(want_demo) L48
 projects/amd-hackathon-act-iii/frontend/src/ingest.py
   _ext(name) L17
   read_text(name, data) L20
@@ -401,28 +430,44 @@ projects/amd-hackathon-act-iii/frontend/src/theme.py
   banner(mode) L67
 projects/amd-hackathon-act-iii/frontend/src/views/analytics.py
   _frame(d) L9
-  _pct(x) L18
-  _npm(b) L21
-  _show(x) L24
-  _run_line(b) L27
-  _trend(f, label) L32
-  overview(d) L40
-  heat_strip(d) L60
-  benchmark(d) L101
-  amd(d) L128
+  _week_label(w) L21
+  _pct(x) L24
+  _npm(b) L27
+  _show(x) L30
+  _run_line(b) L33
+  _trend(f, label) L38
+  overview(d) L46
+  heat_strip(d) L66
+  benchmark(d) L109
+  amd(d) L135
 projects/amd-hackathon-act-iii/frontend/src/views/review.py
-  _save(fid, status) L9
-  _goto(fid) L16
-  _note(r, notes) L19
-  _chips(r) L27
-  _fix(r) L32
-  review_queue(d) L37
-  evidence_viewer(d) L71
+  _save(fid, status) L8
+  _goto(fid) L11
+  _note(r, notes) L14
+  _chips(r) L22
+  _fix(r) L27
+  review_queue(d) L32
+  evidence_viewer(d) L66
 projects/amd-hackathon-act-iii/frontend/src/views/upload.py
   _plate(n, text) L12
   _safe(f, parse) L15
   _sig(*parts) L24
   add_documents(d) L27
+projects/amd-hackathon-act-iii/frontend/tests/test_analytics.py
+  flag(flag_id, date, step_id=1) L9
+  test_weeks_stay_in_order_across_new_year() L15
+  test_flag_for_a_step_missing_from_the_sop_still_gets_a_label() L20
+  test_week_label_shows_the_monday_of_that_week() L26
+projects/amd-hackathon-act-iii/frontend/tests/test_data_loader.py
+  decisions(tmp_path, monkeypatch) L11
+  test_missing_decisions_file_means_no_decisions(decisions) L18
+  test_damaged_decisions_file_means_no_decisions(decisions) L22
+  test_decisions_file_that_is_not_an_object_means_no_decisions(decisions) L27
+  test_save_decision_keeps_earlier_decisions(decisions) L32
+  test_save_decision_replaces_a_damaged_file(decisions) L39
+  test_amd_file_is_optional(tmp_path, monkeypatch) L45
+  test_other_missing_file_names_the_file(tmp_path, monkeypatch) L51
+  test_file_that_is_not_json_names_the_file(tmp_path, monkeypatch) L57
 projects/amd-hackathon-act-iii/frontend/tests/test_ingest.py
   test_numbered_steps_and_titles() L5
   test_no_numbering_falls_back_to_paragraphs() L10

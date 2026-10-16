@@ -1,17 +1,12 @@
 """Review screens: Review Queue, Evidence Viewer, SOP-fix box (always labelled DRAFT)."""
-import json, pandas as pd, streamlit as st
+import pandas as pd, streamlit as st
 from theme import esc, title
-from config import DATA_DIR as D
-from data_loader import get_data
+from data_loader import save_decision
 from views.analytics import TYPES, _frame
 from quote import quote_span
 
 def _save(fid, status):
-    p = D / "decisions.json"
-    m = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
-    m[str(fid)] = status
-    p.write_text(json.dumps(m, indent=1), encoding="utf-8")
-    get_data.clear()
+    save_decision(fid, status)
 
 def _goto(fid):
     st.session_state["page"], st.session_state["ev_flag"] = "Evidence Viewer", fid
@@ -26,7 +21,7 @@ def _note(r, notes):
 
 def _chips(r):
     low = r["confidence"] < .7
-    return (f"<span class='chip'>{TYPES.get(r['drift_type'], r['drift_type'])}</span>"
+    return (f"<span class='chip'>{esc(TYPES.get(r['drift_type'], r['drift_type']))}</span>"
             f"<span class='chip {'low' if low else ''}'>{'&#9650; Look closely. ' if low else ''}Confidence {r['confidence']:.0%}</span>")
 
 def _fix(r):
@@ -59,7 +54,7 @@ def review_queue(d):
                   f"<div class='stepbox'>{esc(r['text'])}</div><div class='note rise'>{body}</div>{chip}", unsafe_allow_html=True)
     with right:
         st.markdown(f"<h3 class='sec' style='margin-top:1.6rem'>AI proposed</h3><div class='card'>{_chips(r)}<div class='meta'>{esc(r['shift'])} shift, {r['date']:%d %b}. "
-                    f"Now: <b>{r['status']}</b></div></div>", unsafe_allow_html=True)
+                    f"Now: <b>{esc(r['status'])}</b></div></div>", unsafe_allow_html=True)
         a, b = st.columns(2); fid = r["flag_id"]
         a.button("Approve", key=f"ok{fid}", type="primary", width="stretch", on_click=_save, args=(fid, "approved"))
         b.button("Reject", key=f"no{fid}", width="stretch", on_click=_save, args=(fid, "rejected"))
@@ -75,6 +70,8 @@ def evidence_viewer(d):
         st.info("No flags yet. Run the pipeline, or switch Demo mode on in the sidebar."); return
     f = f.sort_values("confidence", ascending=False)
     lab = {x.flag_id: f"{x.flag_id}: {x.label} ({x.shift}, {x.date:%d %b})" for x in f.itertuples()}
+    if st.session_state.get("ev_flag") not in lab:  # a flag chosen before the data changed no longer exists
+        st.session_state.pop("ev_flag", None)
     fid = st.selectbox("Flag", list(lab), format_func=lab.get, key="ev_flag")
     r = f[f.flag_id == fid].iloc[0]
     body, chip = _note(r, notes)
@@ -82,7 +79,7 @@ def evidence_viewer(d):
     c1.markdown(f"<div class='lbl'>Written step</div><h3 class='sec' style='margin-top:.6rem'><span class='plate'>{int(r['step_id'])}</span></h3>"
                 f"<b>{esc(r['label'])}</b><div class='stepbox rise'>{esc(r['text'])}</div>", unsafe_allow_html=True)
     c2.markdown(f"<div class='lbl'>What the note says</div><div class='note'>{body}</div>{chip}{_chips(r)}"
-                f"<div class='meta'>{esc(r['shift'])} shift, {r['date']:%d %b}, status {r['status']}</div>", unsafe_allow_html=True)
+                f"<div class='meta'>{esc(r['shift'])} shift, {r['date']:%d %b}, status {esc(r['status'])}</div>", unsafe_allow_html=True)
     o = f[(f.sop_id == r["sop_id"]) & (f.step_id == r["step_id"]) & (f["shift"] != r["shift"])].sort_values("date", ascending=False).head(4)
     cards = "".join(f"<div class='card rise' style='animation-delay:{.12 * (k + 1):.2f}s'><div class='meta'>{esc(x.shift)} shift, {x.date:%d %b}</div>{esc(x.quote)}</div>" for k, x in enumerate(o.itertuples()))
     c3.markdown(f"<div class='lbl'>Same step, other shifts</div><div style='height:.8rem'></div>{cards or '<div class=meta>No similar notes from other shifts.</div>'}", unsafe_allow_html=True)

@@ -34,3 +34,10 @@ def test_missing_field_gives_clear_error(tmp_path):
     bad_file.write_text('[{"note_id": "N1"}]', encoding="utf-8")
     with pytest.raises(ValueError):
         load_notes(bad_file)
+
+
+def test_item_that_is_not_an_object_gives_clear_error(tmp_path):
+    bad_file = tmp_path / "bad_notes.json"
+    bad_file.write_text('["just text"]', encoding="utf-8")
+    with pytest.raises(ValueError):
+        load_notes(bad_file)

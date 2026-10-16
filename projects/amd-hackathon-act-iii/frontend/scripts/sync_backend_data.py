@@ -14,7 +14,7 @@ RESULTS = {"fake": BACK / "output" / "fake", "real": BACK / "output", "demo": BA
 def main():
     p = argparse.ArgumentParser(description="Copy backend data and results into frontend/data.")
     p.add_argument("--source", choices=RESULTS, default="fake", help="which results to copy (default: fake)")
-    p.add_argument("--keep-decisions", action="store_true", help="keep data/decisions.json (flag ids restart each run, so old decisions usually no longer match)")
+    p.add_argument("--keep-decisions", action="store_true", help="keep data/decisions.json. By default it is backed up and cleared, because a decision made on one run's evidence should not carry over to another run (for example from the pretend model to the real one)")
     a = p.parse_args()
     jobs = [(BACK / "data" / n, FRONT / "data" / n) for n in ("sop.json", "notes.json")] + [(RESULTS[a.source] / n, FRONT / "data" / n) for n in ("flags.json", "benchmark.json")]
     missing = [str(s) for s, _ in jobs if not s.exists()]
@@ -24,7 +24,7 @@ def main():
         shutil.copyfile(s, t); print(f"copied {s.relative_to(FRONT.parent)} -> {t.relative_to(FRONT.parent)}")
     dec = FRONT / "data" / "decisions.json"
     if dec.exists() and not a.keep_decisions:
-        dec.rename(dec.with_name("decisions.backup.json")); print("old decisions saved as decisions.backup.json")
+        dec.replace(dec.with_name("decisions.backup.json")); print("old decisions saved as decisions.backup.json")  # replace, not rename: rename fails on Windows when a backup already exists
 
 if __name__ == "__main__":
     main()

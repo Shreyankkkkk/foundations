@@ -45,8 +45,25 @@ JUDGE_BASE_URL = os.environ.get("JUDGE_BASE_URL")
 JUDGE_MODEL = os.environ.get("JUDGE_MODEL")
 JUDGE_API_KEY = os.environ.get("JUDGE_API_KEY")
 
-# Not set yet (PLACEHOLDER): retry limit and request timeout.
-# They come from measured run times on the AMD machine; add them here then.
+#   JUDGE_TIMEOUT_S: seconds to wait for one answer before giving up on that note
+#   JUDGE_RETRIES  : extra tries after a connection failure or timeout (0 if not set)
+# These two have no default on purpose: the right values come from the measured
+# run times (run_stats.json records slowest_note_seconds). Until they are set, a
+# stuck request would wait forever, and the pipeline prints a note saying so.
+JUDGE_TIMEOUT_S = os.environ.get("JUDGE_TIMEOUT_S")
+JUDGE_RETRIES = os.environ.get("JUDGE_RETRIES")
+
+
+def judge_limits():
+    """(timeout in seconds or None, retries) read from the environment. A bad value stops with a clear message."""
+    try:
+        timeout = float(JUDGE_TIMEOUT_S) if JUDGE_TIMEOUT_S else None
+        retries = int(JUDGE_RETRIES) if JUDGE_RETRIES else 0
+    except ValueError:
+        raise RuntimeError("JUDGE_TIMEOUT_S must be a number and JUDGE_RETRIES a whole number.") from None
+    if (timeout is not None and timeout <= 0) or retries < 0:
+        raise RuntimeError("JUDGE_TIMEOUT_S must be above 0 and JUDGE_RETRIES 0 or more.")
+    return timeout, retries
 
 
 def require_judge_settings():

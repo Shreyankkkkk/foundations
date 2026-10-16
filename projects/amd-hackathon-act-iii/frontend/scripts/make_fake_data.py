@@ -36,7 +36,8 @@ while len(notes) < 100:
     notes.append(dict(note_id=f"N{len(notes) + 1:03d}", date=str(d), shift=random.choice(SH), source=random.choice(SRC),
                       text=random.choice([f"Lockout on line {n} done with every check completed.", f"Charger bay {n} used, gloves and shield worn.", f"Confined-space entry {n} finished, readings normal."])))
 low = [f["flag_id"] for f in sorted(flags, key=lambda f: f["confidence"])[:3]]
-bench = dict(precision=.84, recall=.76, quote_verified_rate=1.0, notes_per_minute=212.4, matcher_model="Qwen3-4B", judge_model="Qwen3-32B", gpu="AMD Instinct MI300X", false_alarms=low)
+# Pretend numbers for screen testing only. Model, GPU and speed stay empty so the app shows its pretend-model warning.
+bench = dict(precision=.84, recall=.76, quote_verified_rate=None, notes_per_minute=None, matcher_model=None, judge_model=None, gpu=None, false_alarms=low)
 amd = dict(endpoint_status=None, cost_per_1000_notes=None, evolus_api_calls=None, evolus_blocks=[])
 for k, v in dict(sop=sop, notes=notes, flags=flags, benchmark=bench, amd=amd).items():
     (DATA / f"{k}.json").write_text(json.dumps(v, indent=1), encoding="utf-8")

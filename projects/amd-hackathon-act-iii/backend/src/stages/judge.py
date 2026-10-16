@@ -65,13 +65,27 @@ def build_prompt(note, candidates):
 
 def parse_reply(reply_text):
     """Turn the model's reply text into a Python list. Raises ValueError if it is not a JSON list."""
-    # Models sometimes add words or ```json fences around the list.
-    # Keep only the part from the first '[' to the last ']'.
-    start = reply_text.find("[")
-    end = reply_text.rfind("]")
-    if start == -1 or end == -1 or end < start:
-        raise ValueError(f"no JSON list in model reply: {reply_text[:200]!r}")
-    return json.loads(reply_text[start : end + 1])
+    # Models sometimes add words or ```json fences around the list, and the words
+    # can contain brackets too ("see note [1]"). So try each '[' in turn and take
+    # the first one that is a proper JSON list. A list of objects is preferred over
+    # a list of anything else (such as the [1] in the words).
+    decoder = json.JSONDecoder()
+    first_list = None
+    for start, char in enumerate(reply_text):
+        if char != "[":
+            continue
+        try:
+            value, _ = decoder.raw_decode(reply_text, start)
+        except ValueError:
+            continue
+        if isinstance(value, list):
+            if all(isinstance(item, dict) for item in value):
+                return value
+            if first_list is None:
+                first_list = value
+    if first_list is not None:
+        return first_list
+    raise ValueError(f"no JSON list in model reply: {reply_text[:200]!r}")
 
 
 def is_valid_proposal(item, candidates):
@@ -111,11 +125,15 @@ def judge_note(note, candidates, model):
 class RealModel:
     """Talks to a vLLM server (or any server with the same OpenAI-style address)."""
 
-    def __init__(self, base_url, model_name, api_key=None):
+    def __init__(self, base_url, model_name, api_key=None, timeout=None, retries=0):
         # base_url normally ends in /v1, e.g. http://<machine-address>:8000/v1
+        # timeout = seconds to wait for one answer (None = wait forever); retries = extra tries
+        # after a connection failure or timeout. Both come from config.judge_limits().
         self.base_url = base_url.rstrip("/")
         self.model_name = model_name
         self.api_key = api_key
+        self.timeout = timeout
+        self.retries = retries
 
     def ask(self, prompt):
         import requests  # imported here so fake-model runs do not need it installed
@@ -128,16 +146,22 @@ class RealModel:
             "messages": [{"role": "user", "content": prompt}],
             "temperature": config.TEMPERATURE,
         }
-        # No timeout and no retry yet: both are PLACEHOLDERS until we have
-        # measured how long one request takes on the AMD machine.
-        response = requests.post(
-            f"{self.base_url}/chat/completions", headers=headers, json=body
-        )
-        response.raise_for_status()
-        return response.json()["choices"][0]["message"]["content"]
+        last_error = None
+        for _ in range(self.retries + 1):
+            try:
+                response = requests.post(
+                    f"{self.base_url}/chat/completions", headers=headers, json=body, timeout=self.timeout
+                )
+            except (requests.ConnectionError, requests.Timeout) as error:
+                last_error = error  # server busy or unreachable: try again if retries are left
+                continue
+            response.raise_for_status()  # an error reply from the server is not retried
+            return response.json()["choices"][0]["message"]["content"]
+        raise last_error
 
 
 def make_real_model():
     """Build the real model from the environment variables in config.py."""
     config.require_judge_settings()
-    return RealModel(config.JUDGE_BASE_URL, config.JUDGE_MODEL, config.JUDGE_API_KEY)
+    timeout, retries = config.judge_limits()
+    return RealModel(config.JUDGE_BASE_URL, config.JUDGE_MODEL, config.JUDGE_API_KEY, timeout, retries)

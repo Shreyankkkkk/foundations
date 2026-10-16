@@ -120,6 +120,23 @@ def test_parse_broken_json_raises():
         parse_reply("[not json at all]")
 
 
+def test_parse_skips_brackets_in_the_words_before_the_list():
+    reply = 'As asked in note [1], here is the answer: [{"a": 1}]'
+    assert parse_reply(reply) == [{"a": 1}]
+
+
+def test_parse_skips_a_broken_bracket_before_the_list():
+    assert parse_reply('Steps [see below: [{"a": 1}]') == [{"a": 1}]
+
+
+def test_parse_prefers_the_list_of_objects_over_a_list_of_numbers():
+    assert parse_reply('Used [1, 2] first. Answer: [{"a": 1}]') == [{"a": 1}]
+
+
+def test_parse_still_returns_a_list_that_has_no_objects():
+    assert parse_reply("[1, 2]") == [1, 2]
+
+
 # ---------- is_valid_proposal ----------
 
 def test_good_item_is_valid():
@@ -215,3 +232,92 @@ def test_judge_note_without_candidates_does_not_call_the_model():
 def test_judge_note_reply_without_a_list_raises():
     with pytest.raises(ValueError):
         judge_note(NOTE, STEPS, StubModel("I cannot answer that."))
+
+
+# ---------- RealModel: timeout and retries (the requests library is replaced, no network) ----------
+
+class FakeResponse:
+    def raise_for_status(self):
+        pass
+
+    def json(self):
+        return {"choices": [{"message": {"content": "[]"}}]}
+
+
+class FakeRequests:
+    """Stands in for the requests library: the first `fail` calls raise ConnectionError, then it answers."""
+
+    class ConnectionError(Exception):
+        pass
+
+    class Timeout(Exception):
+        pass
+
+    def __init__(self, fail):
+        self.fail = fail
+        self.timeouts = []
+
+    def post(self, url, headers, json, timeout):
+        self.timeouts.append(timeout)
+        if len(self.timeouts) <= self.fail:
+            raise self.ConnectionError("server down")
+        return FakeResponse()
+
+
+def real_model_with(monkeypatch, fail, **settings):
+    import sys
+    from src.stages.judge import RealModel
+    fake = FakeRequests(fail)
+    monkeypatch.setitem(sys.modules, "requests", fake)
+    return RealModel("http://example/v1", "m", **settings), fake
+
+
+def test_real_model_retries_a_connection_failure_then_succeeds(monkeypatch):
+    model, fake = real_model_with(monkeypatch, fail=2, retries=2)
+    assert model.ask("hi") == "[]"
+    assert len(fake.timeouts) == 3  # two failures, then the answer
+
+
+def test_real_model_gives_up_when_the_retries_run_out(monkeypatch):
+    model, fake = real_model_with(monkeypatch, fail=5, retries=2)
+    with pytest.raises(FakeRequests.ConnectionError):
+        model.ask("hi")
+    assert len(fake.timeouts) == 3  # first try plus 2 retries
+
+
+def test_real_model_does_not_retry_by_default(monkeypatch):
+    model, fake = real_model_with(monkeypatch, fail=1)
+    with pytest.raises(FakeRequests.ConnectionError):
+        model.ask("hi")
+    assert len(fake.timeouts) == 1
+
+
+def test_real_model_passes_the_timeout_on(monkeypatch):
+    model, fake = real_model_with(monkeypatch, fail=0, timeout=7.5)
+    model.ask("hi")
+    assert fake.timeouts == [7.5]
+
+
+# ---------- config.judge_limits ----------
+
+def test_judge_limits_read_the_environment_values(monkeypatch):
+    from src import config
+    monkeypatch.setattr(config, "JUDGE_TIMEOUT_S", "30")
+    monkeypatch.setattr(config, "JUDGE_RETRIES", "2")
+    assert config.judge_limits() == (30.0, 2)
+
+
+def test_judge_limits_when_nothing_is_set(monkeypatch):
+    from src import config
+    monkeypatch.setattr(config, "JUDGE_TIMEOUT_S", None)
+    monkeypatch.setattr(config, "JUDGE_RETRIES", None)
+    assert config.judge_limits() == (None, 0)
+
+
+@pytest.mark.parametrize("timeout, retries", [("abc", None), ("0", None), ("-5", None), (None, "1.5"), (None, "-1")])
+def test_judge_limits_reject_bad_values(monkeypatch, timeout, retries):
+    from src import config
+    monkeypatch.setattr(config, "JUDGE_TIMEOUT_S", timeout)
+    monkeypatch.setattr(config, "JUDGE_RETRIES", retries)
+    with pytest.raises(RuntimeError):
+        config.judge_limits()

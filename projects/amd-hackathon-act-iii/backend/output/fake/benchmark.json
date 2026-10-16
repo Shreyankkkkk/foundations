@@ -2,13 +2,13 @@
   "precision": 0.27586206896551724,
   "recall": 0.32,
   "quote_verified_rate": 0.3815789473684211,
-  "notes_per_minute": 185175.75493907242,
+  "notes_per_minute": 134476.23189695954,
   "matcher_model": "word-overlap matcher (plain Python, no model)",
   "judge_model": null,
   "gpu": null,
   "false_alarms": [
     {
-      "flag_id": "flag-1",
+      "flag_id": "N003-SOP-01-1-reordered_steps",
       "note_id": "N003",
       "sop_id": "SOP-01",
       "step_id": 1,
@@ -18,7 +18,7 @@
       "trap_why": null
     },
     {
-      "flag_id": "flag-2",
+      "flag_id": "N006-SOP-01-1-skipped_step",
       "note_id": "N006",
       "sop_id": "SOP-01",
       "step_id": 1,
@@ -28,7 +28,7 @@
       "trap_why": "skipped refers to a break, not an SOP step"
     },
     {
-      "flag_id": "flag-3",
+      "flag_id": "N009-SOP-03-4-workaround_substitution",
       "note_id": "N009",
       "sop_id": "SOP-03",
       "step_id": 4,
@@ -38,7 +38,7 @@
       "trap_why": "different line, no SOP in this set covers it"
     },
     {
-      "flag_id": "flag-5",
+      "flag_id": "N021-SOP-01-2-workaround_substitution",
       "note_id": "N021",
       "sop_id": "SOP-01",
       "step_id": 2,
@@ -48,7 +48,7 @@
       "trap_why": "no SOP in this set covers climbing"
     },
     {
-      "flag_id": "flag-6",
+      "flag_id": "N026-SOP-01-4-workaround_substitution",
       "note_id": "N026",
       "sop_id": "SOP-01",
       "step_id": 4,
@@ -58,7 +58,7 @@
       "trap_why": "goes beyond the SOP, not a deviation"
     },
     {
-      "flag_id": "flag-7",
+      "flag_id": "N036-SOP-01-8-reordered_steps",
       "note_id": "N036",
       "sop_id": "SOP-01",
       "step_id": 8,
@@ -68,7 +68,7 @@
       "trap_why": null
     },
     {
-      "flag_id": "flag-8",
+      "flag_id": "N039-SOP-01-2-skipped_step",
       "note_id": "N039",
       "sop_id": "SOP-01",
       "step_id": 2,
@@ -78,7 +78,7 @@
       "trap_why": "without refers to the crowd"
     },
     {
-      "flag_id": "flag-9",
+      "flag_id": "N041-SOP-01-10-skipped_step",
       "note_id": "N041",
       "sop_id": "SOP-01",
       "step_id": 10,
@@ -88,7 +88,7 @@
       "trap_why": null
     },
     {
-      "flag_id": "flag-11",
+      "flag_id": "N059-SOP-02-9-skipped_step",
       "note_id": "N059",
       "sop_id": "SOP-02",
       "step_id": 9,
@@ -98,7 +98,7 @@
       "trap_why": "step was done"
     },
     {
-      "flag_id": "flag-13",
+      "flag_id": "N073-SOP-02-9-workaround_substitution",
       "note_id": "N073",
       "sop_id": "SOP-02",
       "step_id": 9,
@@ -108,7 +108,7 @@
       "trap_why": "tool choice not covered by the SOP"
     },
     {
-      "flag_id": "flag-14",
+      "flag_id": "N075-SOP-03-10-workaround_substitution",
       "note_id": "N075",
       "sop_id": "SOP-03",
       "step_id": 10,
@@ -118,7 +118,7 @@
       "trap_why": "equivalent strips, step done"
     },
     {
-      "flag_id": "flag-16",
+      "flag_id": "N085-SOP-02-3-skipped_step",
       "note_id": "N085",
       "sop_id": "SOP-02",
       "step_id": 3,
@@ -128,7 +128,7 @@
       "trap_why": "PPE step in SOP-03 only applies to caustic work"
     },
     {
-      "flag_id": "flag-18",
+      "flag_id": "N106-SOP-02-9-skipped_step",
       "note_id": "N106",
       "sop_id": "SOP-02",
       "step_id": 9,
@@ -138,7 +138,7 @@
       "trap_why": null
     },
     {
-      "flag_id": "flag-19",
+      "flag_id": "N108-SOP-02-5-workaround_substitution",
       "note_id": "N108",
       "sop_id": "SOP-02",
       "step_id": 5,
@@ -148,7 +148,7 @@
       "trap_why": "low battery correctly not used"
     },
     {
-      "flag_id": "flag-20",
+      "flag_id": "N128-SOP-03-1-skipped_step",
       "note_id": "N128",
       "sop_id": "SOP-03",
       "step_id": 1,
@@ -158,7 +158,7 @@
       "trap_why": null
     },
     {
-      "flag_id": "flag-21",
+      "flag_id": "N131-SOP-01-2-workaround_substitution",
       "note_id": "N131",
       "sop_id": "SOP-01",
       "step_id": 2,
@@ -168,7 +168,7 @@
       "trap_why": null
     },
     {
-      "flag_id": "flag-22",
+      "flag_id": "N137-SOP-01-2-workaround_substitution",
       "note_id": "N137",
       "sop_id": "SOP-01",
       "step_id": 2,
@@ -178,7 +178,7 @@
       "trap_why": "pedestrian behaviour, not an SOP step"
     },
     {
-      "flag_id": "flag-23",
+      "flag_id": "N140-SOP-02-1-skipped_step",
       "note_id": "N140",
       "sop_id": "SOP-02",
       "step_id": 1,
@@ -188,7 +188,7 @@
       "trap_why": null
     },
     {
-      "flag_id": "flag-25",
+      "flag_id": "N149-SOP-01-8-workaround_substitution",
       "note_id": "N149",
       "sop_id": "SOP-01",
       "step_id": 8,
@@ -198,7 +198,7 @@
       "trap_why": "equivalent tester, step done"
     },
     {
-      "flag_id": "flag-26",
+      "flag_id": "N154-SOP-03-10-workaround_substitution",
       "note_id": "N154",
       "sop_id": "SOP-03",
       "step_id": 10,
@@ -208,7 +208,7 @@
       "trap_why": "longer than minimum, compliant"
     },
     {
-      "flag_id": "flag-29",
+      "flag_id": "N190-SOP-03-2-reordered_steps",
       "note_id": "N190",
       "sop_id": "SOP-03",
       "step_id": 2,

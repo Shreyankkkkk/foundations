@@ -2,10 +2,14 @@
   "notes_done": 200,
   "failed_note_ids": [],
   "flags_proposed": 76,
+  "quotes_verified": 29,
+  "flags_duplicate": 0,
   "flags_kept": 29,
   "flags_dropped": 47,
-  "seconds": 0.06480329999976675,
-  "notes_per_minute": 185175.75493907242,
+  "seconds": 0.08923509999294765,
+  "slowest_note_seconds": 0.02391879999777302,
+  "workers": 4,
+  "notes_per_minute": 134476.23189695954,
   "used_fake_model": true,
   "judge_model": null
 }

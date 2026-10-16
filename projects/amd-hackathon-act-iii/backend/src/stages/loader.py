@@ -1,9 +1,3 @@
-"""loader.py: reads data/sop.json and data/notes.json into Python lists and checks the fields.
-Input: the two JSON files. Output: SOP steps and notes for matcher.py and pipeline.py.
-
-Status: empty skeleton, code comes in the build stage listed in STATE.md.
-"""
-
 """loader.py: reads sop.json and notes.json and checks they are in the right shape.
 
 Same job as sensors.cpp in the sumo robot: raw values come in, clean values go out.
@@ -31,6 +25,8 @@ def _read_json_list(path):
 def _check_fields(items, required, label, path):
     """Raise a clear error if any item is missing a required field."""
     for position, item in enumerate(items):
+        if not isinstance(item, dict):
+            raise ValueError(f"{path}: {label} number {position + 1} is not an object")
         missing = [name for name in required if name not in item]
         if missing:
             raise ValueError(

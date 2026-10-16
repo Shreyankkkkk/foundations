@@ -223,3 +223,54 @@ def test_main_fake_mode_writes_flags_and_stats_to_the_fake_folder(small_data, mo
     assert stats["used_fake_model"] is True
     assert stats["judge_model"] is None
     assert stats["notes_done"] == 1
+
+
+def test_run_records_the_slowest_note_time(small_data):
+    _, stats = pipeline.run(StubModel())
+    assert stats["slowest_note_seconds"] >= 0
+
+
+def test_run_refuses_an_empty_sop(monkeypatch):
+    monkeypatch.setattr(pipeline, "load_sop_steps", lambda: [])
+    with pytest.raises(ValueError):
+        pipeline.run(StubModel())
+
+
+def test_main_stops_and_writes_nothing_when_every_note_failed(small_data, monkeypatch, tmp_path):
+    class AlwaysFails:
+        def ask(self, prompt):
+            raise RuntimeError("server down")
+
+    fake_dir = tmp_path / "fake"
+    monkeypatch.setattr(pipeline, "FakeModel", AlwaysFails)
+    monkeypatch.setattr(config, "FAKE_OUTPUT_DIR", fake_dir)
+    monkeypatch.setattr(sys, "argv", ["pipeline", "--fake"])
+    with pytest.raises(SystemExit):
+        pipeline.main()
+    assert not fake_dir.exists()  # an earlier good result would not be overwritten by an empty one
+
+
+# ---------- several notes at the same time ----------
+
+def test_run_with_several_workers_gives_the_same_flags_in_the_same_order(small_data, monkeypatch):
+    notes = [make_note(f"N{i}", "We skipped the lockout step today.") for i in range(1, 21)]
+    monkeypatch.setattr(pipeline, "load_notes", lambda: notes)
+    one, stats_one = pipeline.run(StubModel(), workers=1)
+    many, stats_many = pipeline.run(StubModel(), workers=4)
+    assert [f["flag_id"] for f in many] == [f["flag_id"] for f in one]
+    assert many == one
+    assert stats_many["workers"] == 4 and stats_one["workers"] == 1
+    assert stats_many["flags_kept"] == stats_one["flags_kept"]
+
+
+def test_run_with_several_workers_still_survives_a_failed_note(small_data):
+    flags, stats = pipeline.run(StubModel(), workers=3)
+    assert stats["failed_note_ids"] == ["N2"]
+    assert stats["notes_done"] == 2
+    assert len(flags) == 1
+
+
+@pytest.mark.parametrize("workers", [0, -2])
+def test_run_refuses_fewer_than_one_worker(small_data, workers):
+    with pytest.raises(ValueError):
+        pipeline.run(StubModel(), workers=workers)

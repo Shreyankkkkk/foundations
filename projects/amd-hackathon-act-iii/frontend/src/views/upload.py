@@ -22,7 +22,7 @@ def _safe(f, parse):
     return []
 
 def _sig(*parts):
-    return hashlib.md5(json.dumps(parts, default=str).encode()).hexdigest()[:8]  # new files = fresh table
+    return hashlib.sha256(json.dumps(parts, default=str).encode()).hexdigest()[:8]  # new files = fresh table
 
 def add_documents(d):
     st.markdown(title("Are these documents ready for the pipeline?", "Add SOPs and shift notes as Word, PDF, text, CSV or JSON. We turn them into the backend's two input files and check them before you export."), unsafe_allow_html=True)

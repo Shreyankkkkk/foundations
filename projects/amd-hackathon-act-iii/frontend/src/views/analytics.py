@@ -12,8 +12,14 @@ def _frame(d):
         return f, s
     s["label"] = s.sop_id.str.replace("SOP-", "") + " " + s.step_id.astype(str) + ". " + s.title
     f["date"] = pd.to_datetime(f["date"])
-    f["week"] = f["date"].dt.isocalendar().week.astype(int)  # week numbers come from the date
-    return f.merge(s[["sop_id", "step_id", "text", "label"]], on=["sop_id", "step_id"], how="left"), s
+    f["week"] = f["date"].dt.to_period("W").map(lambda p: p.ordinal)  # one whole number per calendar week, so New Year does not break the order
+    m = f.merge(s[["sop_id", "step_id", "text", "label"]], on=["sop_id", "step_id"], how="left")
+    m["label"] = m["label"].fillna("Unknown step")  # a flag whose step is not in sop.json must not crash a page
+    m["text"] = m["text"].fillna("")
+    return m, s
+
+def _week_label(w):
+    return "w/c " + pd.Period(ordinal=int(w), freq="W").start_time.strftime("%d %b")  # w/c = week commencing (the Monday)
 
 def _pct(x):
     return "n/a" if x is None else f"{x:.0%}"
@@ -73,7 +79,7 @@ def heat_strip(d):
     weeks = list(range(int(f.week.min()), int(f.week.max()) + 1))
     labels = list(s[s.sop_id.isin(sops)].label)
     z = g.pivot_table(index="label", columns="week", values="flag_id", aggfunc="count", fill_value=0).reindex(index=labels, columns=weeks, fill_value=0)
-    fig = go.Figure(go.Heatmap(z=z.values, x=[f"Week {w}" for w in weeks], y=labels, xgap=4, ygap=4, showscale=False,
+    fig = go.Figure(go.Heatmap(z=z.values, x=[_week_label(w) for w in weeks], y=labels, xgap=4, ygap=4, showscale=False,
                                colorscale=[[0, "#DCE3E6"], [1, INK]], text=z.astype(str).where(z > 0, "").values, texttemplate="%{text}",
                                hovertemplate="%{y}<br>%{x}: %{z} flags<extra></extra>"))
     fig.update_layout(height=70 + 44 * len(labels), margin=dict(l=0, r=0, t=30, b=0), dragmode=False,
@@ -84,7 +90,9 @@ def heat_strip(d):
     ev = st.plotly_chart(fig, key="heat", on_select="rerun", selection_mode="points", config={"displayModeBar": False})
     pts = ev.selection.points if ev and ev.selection else []
     clicked = pts[0].get("y") if pts else None
-    ranked = list(g.groupby("label").size().sort_values(ascending=False).index)
+    ranked = [x for x in g.groupby("label").size().sort_values(ascending=False).index if x in labels]
+    if not ranked:
+        st.info("These flags point at steps that are not in sop.json, so there is no step to show."); return
     default = clicked if clicked in labels else ranked[0]
     pick = st.selectbox("Step", labels, index=labels.index(default))
     sel = g[g.label == pick].sort_values("date", ascending=False)
@@ -94,7 +102,7 @@ def heat_strip(d):
     if sel.empty:
         st.info("No flags for this step with the current filters."); return
     for k, r in enumerate(sel.itertuples()):
-        st.markdown(f"<div class='flag rise' style='animation-delay:{min(k, 8) * .07:.2f}s'><span class='chip'>{TYPES.get(r.drift_type, r.drift_type)}</span><span class='chip'>{r.status}</span>"
+        st.markdown(f"<div class='flag rise' style='animation-delay:{min(k, 8) * .07:.2f}s'><span class='chip'>{esc(TYPES.get(r.drift_type, r.drift_type))}</span><span class='chip'>{esc(r.status)}</span>"
                     f"<blockquote>{esc(r.quote)}</blockquote><div class='meta'>{r.date:%d %b}, {esc(r.shift)} shift. "
                     f"Confidence {r.confidence:.0%}.</div></div>", unsafe_allow_html=True)
 
@@ -103,9 +111,8 @@ def benchmark(d):
     st.markdown(title("How accurate is it, and where is it wrong?", "Scored against drifts we planted on purpose, with an answer key. False alarms are listed in full below."), unsafe_allow_html=True)
     if not b.get("judge_model"):
         st.warning("These numbers come from the pretend model (no real AI, no GPU). They say nothing about the real system.")
-    
     vals = [(_pct(b.get("precision")), "precision"), (_pct(b.get("recall")), "recall"),
-            (_pct(b.get("quote check pass rate")), "quote check pass rate"), (_npm(b), "notes per minute")]
+            (_pct(b.get("quote_verified_rate")), "quote check pass rate"), (_npm(b), "notes per minute")]
     for col, (v, l) in zip(st.columns(4), vals):
         col.markdown(big(v, l), unsafe_allow_html=True)
     st.markdown("<h3 class='sec'>Results</h3>", unsafe_allow_html=True)
