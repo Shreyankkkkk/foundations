@@ -1,0 +1,7 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    { "label": "Rebuild code map", "type": "shell", "command": "python scripts/codemap/codemap.py", "problemMatcher": [] },
+    { "label": "Repo health check", "type": "shell", "command": "python scripts/repo_health.py", "problemMatcher": [] }
+  ]
+}

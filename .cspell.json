@@ -1,0 +1,6 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "ignorePaths": ["coursework/**", "_local/**", "_to_delete/**", "scripts/codemap/CODEMAP.md", "**/PORTABLE.md"],
+  "words": ["Arduino", "TCRT5000", "GP2Y0A21", "SumoX", "Streamlit", "vLLM", "pytest", "Numba", "Shreyank", "UOWD", "robocopy", "codemap", "Techbots", "Besomi", "freeCodeCamp", "kebab"]
+}
