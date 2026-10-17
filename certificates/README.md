@@ -27,3 +27,4 @@ File names: `issuer-credential.pdf`. Dates are blank where not yet confirmed; fi
 | Certificate | Issuer | Date | File |
 |---|---|---|---|
 | Wired and Fired | EA | | `general/ea-wired-and-fired.pdf` |
+| Augmented Engineering | EA | | `general/ea-augmented-engineering.pdf` |

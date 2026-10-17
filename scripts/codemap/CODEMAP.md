@@ -1,5 +1,5 @@
 # CODEMAP (auto-generated, do not edit) | L<n> = line number, may lag behind edits | 78 files listed, 20 without functions/classes omitted
-learning/programming/data-analysis/exercises/pandas_basics_excercise.py
+learning/programming/data-analysis/exercises/pandas_basics_exercise.py
   list_functions(module) L3
 learning/programming/python/data-structure-algorithm/LinkedList.py
   class LinkedList L6
