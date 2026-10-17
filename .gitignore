@@ -8,10 +8,14 @@ scripts/codemap/CODEMAP.tmp
 
 # Python / Numba caches
 __pycache__/
+.pytest_cache/
 *.pyc
 *.pyo
 *.nbi
 *.nbc
+
+# Files waiting for manual deletion
+_to_delete/
 
 # Office lock files and OS clutter
 ~$*
