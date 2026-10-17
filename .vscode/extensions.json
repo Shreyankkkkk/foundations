@@ -1,0 +1,15 @@
+{
+  "recommendations": [
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "charliermarsh.ruff",
+    "ms-toolsai.jupyter",
+    "ms-vscode.cpptools",
+    "streetsidesoftware.code-spell-checker",
+    "EditorConfig.EditorConfig",
+    "DavidAnson.vscode-markdownlint",
+    "yzhang.markdown-all-in-one",
+    "usernamehw.errorlens",
+    "mhutchie.git-graph"
+  ]
+}

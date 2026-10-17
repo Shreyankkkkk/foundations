@@ -1,0 +1,24 @@
+{
+  // Stop scanning big/private folders (saves RAM)
+  "files.watcherExclude": {
+    "**/_local/**": true,
+    "**/_to_delete/**": true,
+    "**/__pycache__/**": true,
+    "**/.pytest_cache/**": true
+  },
+  "search.exclude": { "**/_local": true, "**/_to_delete": true },
+  "files.exclude": { "**/__pycache__": true, "**/.pytest_cache": true },
+  "files.autoSave": "afterDelay",
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "editor.formatOnSave": true,
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.ruff": "explicit",
+      "source.organizeImports.ruff": "explicit"
+    }
+  },
+  // Markdown uses trailing spaces as line breaks
+  "[markdown]": { "files.trimTrailingWhitespace": false }
+}
