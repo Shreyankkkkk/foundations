@@ -7,7 +7,7 @@ st.set_page_config(page_title="Procedure Drift Finder", layout="wide")
 st.markdown(CSS, unsafe_allow_html=True)
 
 PAGES = {"Overview": analytics.overview, "Heat Strip": analytics.heat_strip, "Review Queue": None,
-         "Evidence Viewer": None, "Benchmark": analytics.benchmark, "AMD and Evolus": analytics.amd}
+         "Evidence Viewer": None, "Benchmark": analytics.benchmark, "AMD": analytics.amd}
 try:  # views/review.py exposes a PAGES dict {"Review Queue": fn, ...}
     from views import review
     PAGES.update(review.PAGES)

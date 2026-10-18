@@ -1,0 +1,47 @@
+﻿Step,Drift type,Quote,Confidence,Why it is wrong
+02 2. Walk around,Skipped step,Tightened loose guard bolts on Line 3 discharge.,90%,clean note
+01 9. Do the work,Workaround or substitution,Line 2 fitter used a group lock box during the belt change.,90%,trap note
+02 6. Seat belt and horn,Workaround or substitution,Replaced the horn on truck 2 and tested it with the seat belt fitted.,90%,clean note
+02 9. Sign the log,Skipped step,Entry in the truck log.,70%,clean note
+02 5. Battery,Skipped step,Serviced truck 4 battery connector. Restraint checked and secure.,90%,clean note
+01 7. Try to start,Skipped step,"Isolation and lock applied, tested at zero volts.",90%,clean note
+01 2. Stop the line,Skipped step,Operator climbed on the conveyor to clear a jam instead of using the step.,90%,trap note
+01 6. Release stored energy,Reordered steps,"tested for zero energy first,",90%,clean note
+01 4. Apply your lock,Skipped step,"Used an extra danger sign and a second lock on the Line 3 isolator in addition to each fitter's own lock, more than the SOP asks.",90%,trap note
+02 1. Read the truck log,SOP outdated or impractical,"Operators are using the tablet checklist for the truck checks now, but the SOP still says paper log and nobody has the log book at the bay.",95%,"drift note, wrong step or drift type"
+01 3. Isolate energy,Reordered steps,"Tested the terminals with the meter first, then bled the air line afterwards",90%,"drift note, wrong step or drift type"
+01 10. Remove your lock,Skipped step,trucks 4 and 6 started without the tyre check.,90%,"drift note, wrong step or drift type"
+01 5. Attach your tag,Skipped step,"Full lockout, zero volts confirmed.",90%,trap note
+01 1. Notify the crew,Skipped step,Operator tripped on a cable lead.,10%,clean note
+01 2. Stop the line,Reordered steps,"Line 3 film tracking adjusted by the operator at the panel, line stopped first.",90%,clean note
+02 6. Seat belt and horn,Skipped step,"almost skipped the horn test because of a phone call, noticed and did it before moving.",20%,trap note
+02 8. Brakes and steering,Skipped step,brake and steering tested in the yard before release.,90%,clean note
+03 2. Put on PPE,Workaround or substitution,"Glove torn during the caustic hose connection, replaced before the caustic flowed.",90%,clean note
+01 5. Attach your tag,Workaround or substitution,Fitter used a torque wrench instead of a spanner on the Line 3 guard bolts to match the new spec.,90%,trap note
+01 10. Remove your lock,Reordered steps,Line locked out first.,80%,trap note
+03 10. Check rinse water,Workaround or substitution,"Instead of the usual pH strips the lab supplied a new brand with the same range, 0 to 14.",90%,trap note
+03 2. Put on PPE,Skipped step,The operator put the face shield and gloves on after connecting the hoses,95%,"drift note, wrong step or drift type"
+02 8. Brakes and steering,Workaround or substitution,"Adjusted brake pedal free play on truck 2. Retested in the yard, fine.",90%,clean note
+03 5. Connect hoses,Workaround or substitution,Checked caustic hose clamps on both M2 hoses and replaced one worn clamp.,90%,clean note
+03 3. Pre-rinse,Workaround or substitution,"Pre-rinse on M2 was longer than normal, 15 minutes, as the drain was cloudy. Went on once it ran clear.",90%,trap note
+02 4. Tyres,Workaround or substitution,"found a loose wheel nut on the front left. Tightened, re-checked,",90%,clean note
+01 6. Release stored energy,Skipped step,Tank empty and permit signed before work.,90%,clean note
+01 8. Verify zero energy,Skipped step,"Voltage tester used on all terminals, zero reading,",20%,clean note
+03 11. Disconnect and cap,Skipped step,Replaced gasket on the M2 caustic return hose coupling. Line vented first.,90%,clean note
+02 5. Battery,Workaround or substitution,Truck 3 battery was at 28 percent in the evening and was put on charge instead of going out.,100%,trap note
+01 6. Release stored energy,Skipped step,"Air valve locked, line bled to zero on the gauge, then work started.",90%,clean note
+03 4. Check caustic strength,Workaround or substitution,Topped up CIP tank with fresh caustic. Strength 1.9 percent by titration.,90%,clean note
+02 9. Sign the log,Skipped step,Tags were written up after the work started because the tag book was in the office.,90%,"drift note, wrong step or drift type"
+01 1. Notify the crew,Skipped step,Operators informed at the board.,90%,clean note
+03 1. Confirm tank empty and permit,Skipped step,The permit was already signed by the supervisor so the CIP on M2 started right away with no wait.,90%,trap note
+01 8. Verify zero energy,Reordered steps,tested at the terminals with the voltage tester first.,90%,clean note
+03 4. Check caustic strength,Workaround or substitution,"M2 caustic strength came in at 1.4 percent, below range, so the batch was topped up and retested before use.",90%,trap note
+01 2. Stop the line,Skipped step,Pedestrian walked through the forklift lane instead of using the walkway.,90%,trap note
+01 7. Try to start,SOP unclear,Not clear whether drain the line means opening the low point valve or just letting it run back. Two of us did it differently.,90%,"drift note, wrong step or drift type"
+01 2. Stop the line,Skipped step,"Dust from the carton cutting area, extraction cleaned.",20%,clean note
+03 4. Check caustic strength,Workaround or substitution,The crew titrated the caustic after it was already circulating because the kit was in the lab.,90%,"drift note, wrong step or drift type"
+03 10. Check rinse water,Workaround or substitution,Replaced the pH probe in the M2 outlet. Probe calibrated with two buffers before use.,90%,clean note
+03 2. Put on PPE,Workaround or substitution,operators asked for a second pair of gloves in size L.,90%,clean note
+01 11. Restart and inform,Reordered steps,"Crew told the line was running, panel start used,",90%,trap note
+02 4. Tyres,Workaround or substitution,Replaced front tyre on truck 6. Wheel nuts torqued and rechecked after the first hour.,90%,clean note
+02 7. Lights and alarm,Reordered steps,Truck 6 did the brake test before the light check because the yard was clear and the lights needed the dark.,90%,"drift note, wrong step or drift type"

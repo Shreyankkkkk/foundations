@@ -137,6 +137,14 @@ def test_parse_still_returns_a_list_that_has_no_objects():
     assert parse_reply("[1, 2]") == [1, 2]
 
 
+def test_parse_treats_one_bare_object_as_a_list_of_one():
+    assert parse_reply('{"a": 1}') == [{"a": 1}]
+
+
+def test_parse_finds_a_bare_object_after_words():
+    assert parse_reply('Here you go: {"a": 1} done') == [{"a": 1}]
+
+
 # ---------- is_valid_proposal ----------
 
 def test_good_item_is_valid():
@@ -237,8 +245,13 @@ def test_judge_note_reply_without_a_list_raises():
 # ---------- RealModel: timeout and retries (the requests library is replaced, no network) ----------
 
 class FakeResponse:
+    def __init__(self, status_code=200, retry_after=None):
+        self.status_code = status_code
+        self.headers = {} if retry_after is None else {"Retry-After": str(retry_after)}
+
     def raise_for_status(self):
-        pass
+        if self.status_code >= 400:
+            raise FakeRequests.HTTPError(f"status {self.status_code}")
 
     def json(self):
         return {"choices": [{"message": {"content": "[]"}}]}
@@ -251,6 +264,9 @@ class FakeRequests:
         pass
 
     class Timeout(Exception):
+        pass
+
+    class HTTPError(Exception):
         pass
 
     def __init__(self, fail):
@@ -296,6 +312,54 @@ def test_real_model_passes_the_timeout_on(monkeypatch):
     model, fake = real_model_with(monkeypatch, fail=0, timeout=7.5)
     model.ask("hi")
     assert fake.timeouts == [7.5]
+
+
+# ---------- too many requests (429): wait as long as the server says, then try again ----------
+
+def scripted_model(monkeypatch, responses, retries):
+    import sys
+    import time
+    from src.stages.judge import RealModel
+
+    class Scripted(FakeRequests):
+        def post(self, url, headers, json, timeout):
+            self.timeouts.append(timeout)
+            return responses.pop(0)
+
+    fake = Scripted(fail=0)
+    waits = []
+    monkeypatch.setitem(sys.modules, "requests", fake)
+    monkeypatch.setattr(time, "sleep", waits.append)
+    return RealModel("http://example/v1", "m", retries=retries), fake, waits
+
+
+def test_real_model_waits_for_retry_after_on_429_then_succeeds(monkeypatch):
+    model, fake, waits = scripted_model(monkeypatch, [FakeResponse(429, retry_after=60), FakeResponse(200)], retries=2)
+    assert model.ask("hi") == "[]"
+    assert waits == [60.0]
+    assert len(fake.timeouts) == 2
+
+
+def test_real_model_gives_up_on_429_when_retries_run_out(monkeypatch):
+    model, fake, waits = scripted_model(monkeypatch, [FakeResponse(429, retry_after=1)] * 3, retries=2)
+    with pytest.raises(FakeRequests.HTTPError):
+        model.ask("hi")
+    assert len(fake.timeouts) == 3
+    assert waits == [1.0, 1.0]  # no wait after the last try
+
+
+def test_real_model_does_not_retry_429_when_retries_is_zero(monkeypatch):
+    model, fake, waits = scripted_model(monkeypatch, [FakeResponse(429, retry_after=60)], retries=0)
+    with pytest.raises(FakeRequests.HTTPError):
+        model.ask("hi")
+    assert waits == []
+
+
+def test_real_model_never_retries_a_400(monkeypatch):
+    model, fake, waits = scripted_model(monkeypatch, [FakeResponse(400)], retries=5)
+    with pytest.raises(FakeRequests.HTTPError):
+        model.ask("hi")
+    assert len(fake.timeouts) == 1 and waits == []
 
 
 # ---------- config.judge_limits ----------

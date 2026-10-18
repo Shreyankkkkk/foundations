@@ -169,9 +169,9 @@ projects/amd-hackathon-act-iii/backend/src/evaluation/publish.py
   _is_share(value) L61
   _wrong_fields(item, expected) L65
   check_contract(sop, notes, flags, bench) L75
-  check_real_run(stats, bench, details, flags, notes) L157
-  build_amd(stats, price_per_hour=None) L178
-  main() L195
+  check_real_run(stats, bench, details, flags, notes, allowed_failed=0) L157
+  build_amd(stats, price_per_hour=None) L184
+  main() L201
 projects/amd-hackathon-act-iii/backend/src/models/fake_model.py
   read_first_step(prompt) L41
   read_note_text(prompt) L49
@@ -189,12 +189,12 @@ projects/amd-hackathon-act-iii/backend/src/pipeline.py
 projects/amd-hackathon-act-iii/backend/src/stages/judge.py
   build_prompt(note, candidates) L29
   parse_reply(reply_text) L66
-  is_valid_proposal(item, candidates) L91
-  judge_note(note, candidates, model) L112
-  class RealModel L125
-    __init__(self, base_url, model_name, api_key=None, timeout=None, retries=0) L128
-    ask(self, prompt) L138
-  make_real_model() L163
+  is_valid_proposal(item, candidates) L102
+  judge_note(note, candidates, model) L123
+  class RealModel L136
+    __init__(self, base_url, model_name, api_key=None, timeout=None, retries=0) L139
+    ask(self, prompt) L149
+  make_real_model() L180
 projects/amd-hackathon-act-iii/backend/src/stages/loader.py
   _read_json_list(path) L16
   _check_fields(items, required, label, path) L25
@@ -268,37 +268,45 @@ projects/amd-hackathon-act-iii/backend/tests/test_judge.py
   test_parse_skips_a_broken_bracket_before_the_list() L128
   test_parse_prefers_the_list_of_objects_over_a_list_of_numbers() L132
   test_parse_still_returns_a_list_that_has_no_objects() L136
-  test_good_item_is_valid() L142
-  test_extra_fields_are_allowed() L146
-  test_missing_field_is_invalid(missing) L151
-  test_non_dict_is_invalid(bad) L158
-  test_step_not_shown_to_the_model_is_invalid() L162
-  test_step_from_the_wrong_sop_is_invalid() L166
-  test_step_id_as_text_is_invalid() L171
-  test_unknown_drift_type_is_invalid() L176
-  test_bad_quote_is_invalid(quote) L181
-  test_confidence_inside_0_to_1_is_valid(confidence) L186
-  test_bad_confidence_is_invalid(confidence) L191
-  test_judge_note_returns_valid_proposals() L197
-  test_judge_note_sends_the_note_text_to_the_model() L204
-  test_judge_note_empty_reply_means_no_flags() L211
-  test_judge_note_drops_invalid_items_and_keeps_valid_ones() L215
-  test_judge_note_without_candidates_does_not_call_the_model() L226
-  test_judge_note_reply_without_a_list_raises() L232
-  class FakeResponse L239
-    raise_for_status(self) L240
-    json(self) L243
-  class FakeRequests L247
-    __init__(self, fail) L256
-    post(self, url, headers, json, timeout) L260
-  real_model_with(monkeypatch, fail, **settings) L267
-  test_real_model_retries_a_connection_failure_then_succeeds(monkeypatch) L275
-  test_real_model_gives_up_when_the_retries_run_out(monkeypatch) L281
-  test_real_model_does_not_retry_by_default(monkeypatch) L288
-  test_real_model_passes_the_timeout_on(monkeypatch) L295
-  test_judge_limits_read_the_environment_values(monkeypatch) L303
-  test_judge_limits_when_nothing_is_set(monkeypatch) L310
-  test_judge_limits_reject_bad_values(monkeypatch, timeout, retries) L318
+  test_parse_treats_one_bare_object_as_a_list_of_one() L140
+  test_parse_finds_a_bare_object_after_words() L144
+  test_good_item_is_valid() L150
+  test_extra_fields_are_allowed() L154
+  test_missing_field_is_invalid(missing) L159
+  test_non_dict_is_invalid(bad) L166
+  test_step_not_shown_to_the_model_is_invalid() L170
+  test_step_from_the_wrong_sop_is_invalid() L174
+  test_step_id_as_text_is_invalid() L179
+  test_unknown_drift_type_is_invalid() L184
+  test_bad_quote_is_invalid(quote) L189
+  test_confidence_inside_0_to_1_is_valid(confidence) L194
+  test_bad_confidence_is_invalid(confidence) L199
+  test_judge_note_returns_valid_proposals() L205
+  test_judge_note_sends_the_note_text_to_the_model() L212
+  test_judge_note_empty_reply_means_no_flags() L219
+  test_judge_note_drops_invalid_items_and_keeps_valid_ones() L223
+  test_judge_note_without_candidates_does_not_call_the_model() L234
+  test_judge_note_reply_without_a_list_raises() L240
+  class FakeResponse L247
+    __init__(self, status_code=200, retry_after=None) L248
+    raise_for_status(self) L252
+    json(self) L256
+  class FakeRequests L260
+    __init__(self, fail) L272
+    post(self, url, headers, json, timeout) L276
+  real_model_with(monkeypatch, fail, **settings) L283
+  test_real_model_retries_a_connection_failure_then_succeeds(monkeypatch) L291
+  test_real_model_gives_up_when_the_retries_run_out(monkeypatch) L297
+  test_real_model_does_not_retry_by_default(monkeypatch) L304
+  test_real_model_passes_the_timeout_on(monkeypatch) L311
+  scripted_model(monkeypatch, responses, retries) L319
+  test_real_model_waits_for_retry_after_on_429_then_succeeds(monkeypatch) L336
+  test_real_model_gives_up_on_429_when_retries_run_out(monkeypatch) L343
+  test_real_model_does_not_retry_429_when_retries_is_zero(monkeypatch) L351
+  test_real_model_never_retries_a_400(monkeypatch) L358
+  test_judge_limits_read_the_environment_values(monkeypatch) L367
+  test_judge_limits_when_nothing_is_set(monkeypatch) L374
+  test_judge_limits_reject_bad_values(monkeypatch, timeout, retries) L382
 projects/amd-hackathon-act-iii/backend/tests/test_loader.py
   count_in_file(path) L13
   test_loads_every_step() L19

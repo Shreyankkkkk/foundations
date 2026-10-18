@@ -1,0 +1,24 @@
+﻿Step,Drift type,Quote,Confidence,Why it is wrong
+01 2. Stop the line,Workaround or substitution,"Checked the emergency stop on Line 3 operates correctly,",90%,clean note
+01 9. Do the work,Workaround or substitution,Line 2 fitter used a group lock box during the belt change.,90%,trap note
+01 6. Release stored energy,Reordered steps,"tested for zero energy first,",90%,clean note
+01 4. Apply your lock,SOP outdated or impractical,"Used an extra danger sign and a second lock on the Line 3 isolator in addition to each fitter's own lock, more than the SOP asks.",80%,trap note
+02 1. Read the truck log,SOP outdated or impractical,"Operators are using the tablet checklist for the truck checks now, but the SOP still says paper log and nobody has the log book at the bay.",100%,"drift note, wrong step or drift type"
+01 8. Verify zero energy,Reordered steps,"Tested the terminals with the meter first,",100%,"drift note, wrong step or drift type"
+01 3. Isolate energy,Reordered steps,then bled the air line afterwards,100%,"drift note, wrong step or drift type"
+03 2. Put on PPE,Workaround or substitution,"Glove torn during the caustic hose connection, replaced before the caustic flowed.",80%,clean note
+01 10. Remove your lock,Workaround or substitution,Fitter used a torque wrench instead of a spanner on the Line 3 guard bolts to match the new spec.,90%,trap note
+03 10. Check rinse water,Workaround or substitution,"Instead of the usual pH strips the lab supplied a new brand with the same range, 0 to 14.",100%,trap note
+02 5. Battery,Workaround or substitution,Truck 3 battery was at 28 percent in the evening and was put on charge instead of going out.,100%,trap note
+01 3. Isolate energy,Reordered steps,"Air valve locked, line bled to zero on the gauge, then work started.",90%,clean note
+01 9. Do the work,Reordered steps,Tags were written up after the work started because the tag book was in the office.,90%,"drift note, wrong step or drift type"
+02 6. Seat belt and horn,SOP unclear,Colleague asked why the horn test comes after the seat belt.,80%,trap note
+03 10. Check rinse water,Workaround or substitution,we signed off without pH strips as the tub was empty.,100%,"drift note, wrong step or drift type"
+01 8. Verify zero energy,Reordered steps,tested at the terminals with the voltage tester first.,90%,clean note
+03 4. Check caustic strength,SOP outdated or impractical,"M2 caustic strength came in at 1.4 percent, below range, so the batch was topped up and retested before use.",80%,trap note
+03 10. Check rinse water,Workaround or substitution,Replaced the pH probe in the M2 outlet. Probe calibrated with two buffers before use.,90%,clean note
+02 7. Lights and alarm,Workaround or substitution,Fitted new reversing alarm on truck 4. Tested,80%,clean note
+02 4. Tyres,Workaround or substitution,Forklift tyres on truck 3 changed by the contractor.,90%,clean note
+02 4. Tyres,Workaround or substitution,Replaced front tyre on truck 6.,90%,clean note
+02 8. Brakes and steering,SOP outdated or impractical,Truck 4 drifted slightly under braking in the yard.,80%,clean note
+02 7. Lights and alarm,Reordered steps,Truck 6 did the brake test before the light check,100%,"drift note, wrong step or drift type"

@@ -85,6 +85,17 @@ def parse_reply(reply_text):
                 first_list = value
     if first_list is not None:
         return first_list
+    # Some models answer with ONE flag as a bare object {...} instead of a list [{...}].
+    # That is still a clear answer, so it counts as a list of one item.
+    for start, char in enumerate(reply_text):
+        if char != "{":
+            continue
+        try:
+            value, _ = decoder.raw_decode(reply_text, start)
+        except ValueError:
+            continue
+        if isinstance(value, dict):
+            return [value]
     raise ValueError(f"no JSON list in model reply: {reply_text[:200]!r}")
 
 
@@ -147,7 +158,7 @@ class RealModel:
             "temperature": config.TEMPERATURE,
         }
         last_error = None
-        for _ in range(self.retries + 1):
+        for attempt in range(self.retries + 1):
             try:
                 response = requests.post(
                     f"{self.base_url}/chat/completions", headers=headers, json=body, timeout=self.timeout
@@ -155,7 +166,13 @@ class RealModel:
             except (requests.ConnectionError, requests.Timeout) as error:
                 last_error = error  # server busy or unreachable: try again if retries are left
                 continue
-            response.raise_for_status()  # an error reply from the server is not retried
+            # 429 = too many requests, 502 and 503 = server busy. The AMD Token Factory manual says to retry
+            # exactly these and to wait as long as the Retry-After header says. Other errors are not retried.
+            if response.status_code in (429, 502, 503) and attempt < self.retries:
+                import time
+                time.sleep(float(response.headers.get("Retry-After", 0)))
+                continue
+            response.raise_for_status()
             return response.json()["choices"][0]["message"]["content"]
         raise last_error
 

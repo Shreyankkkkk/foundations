@@ -1,4 +1,4 @@
-"""Analytics screens: Overview, Heat Strip, Benchmark, AMD and Evolus."""
+"""Analytics screens: Overview, Heat Strip, Benchmark, AMD."""
 import pandas as pd, plotly.graph_objects as go, streamlit as st
 from theme import INK, esc, title, big
 
@@ -33,7 +33,7 @@ def _show(x):
 def _run_line(b):
     if not b.get("judge_model"):
         return "This run used the pretend model with no GPU, so the speed is not an AMD figure yet."
-    return f"The judging model runs on {b.get('gpu') or 'an AMD GPU'}; the full run reads {_npm(b)} notes per minute. Matching is plain Python."
+    return f"The judging model runs on {b.get('gpu') or 'the model server named in the saved run'}; the full run reads {_npm(b)} notes per minute. Matching is plain Python."
 
 def _trend(f, label):
     wk, g = f.week.max(), f[f.label == label]
@@ -134,13 +134,12 @@ def benchmark(d):
 
 def amd(d):
     a, b = d["amd"], d["benchmark"]
-    st.markdown(title("What runs on AMD, and how fast?", "Only the judging model runs on the AMD GPU. Matching is plain Python. Figures come from the last saved run."), unsafe_allow_html=True)
-    cost, calls = a.get("cost_per_1000_notes"), a.get("evolus_api_calls")
+    st.markdown(title("Where does it run, and how fast?", "Matching is plain Python. Only the judging model needs a model server. Where it ran, and its speed, come from the last saved run."), unsafe_allow_html=True)
+    cost = a.get("cost_per_1000_notes")
     tiles = [((a.get("endpoint_status") or "not measured").capitalize(), "endpoint status"),
              (_npm(b), "notes per minute"),
-             ("not measured" if cost is None else f"${cost:.2f}", "cost per 1,000 notes"),
-             ("not measured" if calls is None else f"{calls:,}", "Evolus API calls")]
-    for col, (v, l) in zip(st.columns(4), tiles):
+             ("not measured" if cost is None else f"${cost:.2f}", "cost per 1,000 notes")]
+    for col, (v, l) in zip(st.columns(3), tiles):
         col.markdown(big(v, l), unsafe_allow_html=True)
     st.markdown("<h3 class='sec'>What runs where</h3>", unsafe_allow_html=True)
     st.dataframe(pd.DataFrame({"Job": ["Match notes to steps", "Judge drift"],
@@ -149,9 +148,3 @@ def amd(d):
                  hide_index=True, width="stretch")
     if not b.get("judge_model"):
         st.caption("This run used the pretend model, so the model, GPU and speed are not real AMD figures yet.")
-    blocks = a.get("evolus_blocks") or []
-    if blocks:
-        st.markdown("<h3 class='sec'>Evolus building blocks used</h3>" + "".join(f"<span class='chip'>{esc(x)}</span>" for x in blocks), unsafe_allow_html=True)
-    else:
-        st.markdown("<h3 class='sec'>Evolus building blocks used</h3>", unsafe_allow_html=True)
-        st.caption("None recorded yet. This fills in once the Evolus part has run.")

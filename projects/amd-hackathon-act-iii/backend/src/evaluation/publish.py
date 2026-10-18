@@ -154,17 +154,23 @@ def check_contract(sop, notes, flags, bench):
     return problems
 
 
-def check_real_run(stats, bench, details, flags, notes):
-    """Everything that says this is NOT a finished, consistent real run, as a list of messages."""
+def check_real_run(stats, bench, details, flags, notes, allowed_failed=0):
+    """Everything that says this is NOT a finished, consistent real run, as a list of messages.
+
+    allowed_failed = how many failed notes (for example a model server timeout) are accepted. 0 = none.
+    The notes that failed are then not counted as processed, and the caller must say so out loud.
+    """
     problem = real_run_problem(stats)
     if problem:
         return [problem]
     problems = []
     if isinstance(bench, dict) and stats["judge_model"] != bench.get("judge_model"):
         problems.append("benchmark.json names a different judge_model than run_stats.json: run the benchmark again")
-    if stats.get("failed_note_ids"):
-        problems.append(f"{len(stats['failed_note_ids'])} notes failed in the run ({stats['failed_note_ids'][:5]}...): run again")
-    if stats.get("notes_done") != len(notes):
+    failed = stats.get("failed_note_ids") or []
+    if len(failed) > allowed_failed:
+        problems.append(f"{len(failed)} notes failed in the run ({failed[:5]}...): run again")
+    expected_done = len(notes) - len(failed) if 0 < len(failed) <= allowed_failed else len(notes)
+    if stats.get("notes_done") != expected_done:
         problems.append(f"the run processed {stats.get('notes_done')} notes but notes.json has {len(notes)} (a --limit run, or stale files)")
     if stats.get("flags_kept") != len(flags):
         problems.append("flags.json does not match run_stats.json: it was changed or is from another run")
@@ -197,6 +203,8 @@ def main():
     parser.add_argument("--price-per-hour", type=float, default=None,
                         help="AMD machine price in dollars per hour (from the AMD console); gives cost_per_1000_notes")
     parser.add_argument("--check-only", action="store_true", help="run the checks, copy nothing")
+    parser.add_argument("--allow-failed-notes", type=int, default=0,
+                        help="publish even if up to N notes failed (for example server timeouts). Say so in the submission. Default 0")
     args = parser.parse_args()
     if args.price_per_hour is not None and args.price_per_hour <= 0:
         raise SystemExit("--price-per-hour must be above 0.")
@@ -216,7 +224,9 @@ def main():
     bench, details = load_json(paths["benchmark"]), load_json(paths["details"])
     sop, notes = load_json(config.SOP_FILE), load_json(config.NOTES_FILE)
 
-    problems = check_real_run(stats, bench, details, flags, notes) + check_contract(sop, notes, flags, bench)
+    if args.allow_failed_notes < 0:
+        raise SystemExit("--allow-failed-notes must be 0 or more.")
+    problems = check_real_run(stats, bench, details, flags, notes, args.allow_failed_notes) + check_contract(sop, notes, flags, bench)
     if problems:
         for problem in problems[:20]:
             print("PROBLEM:", problem)
@@ -225,6 +235,9 @@ def main():
 
     amd = build_amd(stats, args.price_per_hour)
     print(f"Checks passed: {len(flags)} flags, {len(notes)} notes, judge {stats['judge_model']}, gpu {bench['gpu']}.")
+    if stats.get("failed_note_ids"):
+        print(f"WARNING: published WITH {len(stats['failed_note_ids'])} failed notes {stats['failed_note_ids']}: "
+              f"say '{stats['notes_done']} of {len(notes)} notes processed' in the submission.")
     if amd["cost_per_1000_notes"] is None:
         print("cost_per_1000_notes is empty: pass --price-per-hour to fill it.")
     if args.check_only:
