@@ -41,8 +41,7 @@ frontend/
 │   └── sync_backend_data.py   copies the backend's data and results into data/ (real pipeline output)
 ├── data/                      what goes in: sop, notes, flags, benchmark, amd (.json), decisions.json
 ├── tests/                     test_ingest.py (run: python -m pytest)
-└── docs/
-    └── sample_uploads/       synthetic Word, PDF, CSV and text files to try Add Documents with
+└── sample_uploads/            synthetic Word, PDF, CSV and text files to try Add Documents with
 ```
 
 Rule of thumb: **`src/` is what runs, `scripts/` is what you run by hand, `data/` is what goes in, `tests/` proves it works.**
@@ -81,7 +80,7 @@ Open **Add Documents** (or the button in the sidebar). The page turns files into
 3. Fix anything in the tables, then download `sop.json` and `notes.json` (or save a copy in `data/uploads/`, which Git ignores).
 4. Hand them to the backend: copy the two files into `backend/data/`, run `python -m src.pipeline --fake` from `backend/`, then run `python scripts/sync_backend_data.py --source fake` here. The screens now show the results.
 
-Try it with the files in `docs/sample_uploads/`. Benchmark scores only make sense for the sample notes, because `answer_key.json` belongs to them. Never upload real plant data to a public repo.
+Try it with the files in `sample_uploads/`. Benchmark scores only make sense for the sample notes, because `answer_key.json` belongs to them. Never upload real plant data to a public repo.
 
 ## See the backend's real data
 

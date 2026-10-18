@@ -6,3 +6,8 @@ venv/
 # Raw run results: the committed copies live in backend/data/demo/
 backend/output/*.json
 backend/output/*.log
+
+# Python caches and secrets
+__pycache__/
+*.pyc
+.env
