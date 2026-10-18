@@ -4,7 +4,8 @@ Project documents that stay in Foundations. They are not published to the team r
 
 | Folder | What is in it |
 |---|---|
-| `guides/` | Team Playbook, Front-End Guide and data contract, as received from the team |
+| `guides/` | Team Playbook, Front-End Guide, data contract and approach breakdown, as received from the team |
+| `submission/` | Cover image and pitch deck made for the competition entry (see its README for a claim to check) |
 | `notes/` | Research and learning notes written during the event |
-| `research/` | Event brief, opportunity report and primary-research checklist |
+| `research/` | Event brief, opportunity report, primary-research checklist and the final-pick decision document |
 | `results/` | CSV exports of false alarms from the final runs |
