@@ -1,0 +1,776 @@
+// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+//@version=6
+indicator("Simple Breaks — Selectable Timeframes", shorttitle="MTF BREAK", overlay=true, max_labels_count=500, max_lines_count=500, max_bars_back=50, dynamic_requests=true)
+
+// BREAK swings require two bullish then two bearish candles for a HIGH, and
+// two bearish then two bullish candles for a LOW. Dojis inherit direction.
+GROUP_GENERAL = "General Settings"
+GROUP_VISIBLE_TF = "Visible Timeframes"
+
+Hide_Breaks = input.bool(false, "Hide all breaks", group=GROUP_GENERAL)
+Show_Swing_Labels = input.bool(false, "Show swing HIGH / LOW labels", group=GROUP_GENERAL)
+Bull_Break_Color = input.color(color.green, "Bullish break color", group=GROUP_GENERAL)
+Bear_Break_Color = input.color(color.red, "Bearish break color", group=GROUP_GENERAL)
+Max_Visible_Breaks = input.int(2, "Maximum visible breaks", minval=1, maxval=166, group=GROUP_GENERAL)
+Max_Visible_NC_S = input.int(2, "Maximum visible NC + S marks", minval=0, maxval=166, group=GROUP_GENERAL)
+Max_Swing_Age_Bars = input.int(96, "Maximum bars from swing to first touch", minval=1, maxval=1000, group=GROUP_GENERAL, tooltip="A swing expires if it is not first-tested within this many bars of its own timeframe. At 96 bars, a 15-minute swing expires after 24 hours.")
+Doji_Body_Range_Percent = input.float(10.0, "Doji body threshold (% of range)", minval=0.0, maxval=50.0, step=0.5, group=GROUP_GENERAL, tooltip="Candles whose body is at or below this percentage of the full high-low range are ignored for touch tests and inherit the prior candle direction for swing counting.")
+Overlap_Tolerance_Ticks = input.int(3, "Higher-timeframe overlap tolerance (ticks)", minval=0, maxval=100, group=GROUP_GENERAL, tooltip="A lower-timeframe break is treated as the same swing when its pivot time is within one higher-timeframe bar and its level is within this many ticks.")
+Break_Line_Style = input.string("Solid", "Break line style", options=["Solid", "Dashed", "Dotted"], group=GROUP_GENERAL)
+Break_Line_Width = input.int(1, "Break line width", minval=1, maxval=5, group=GROUP_GENERAL)
+Protected_Line_Style = input.string("Solid", "Protected structure line style", options=["Solid", "Dashed", "Dotted"], group=GROUP_GENERAL)
+Protected_Line_Color = input.color(color.rgb(156, 156, 156), "Protected structure color", group=GROUP_GENERAL)
+var array<line> Break_Lines = array.new<line>()
+var array<label> Break_Labels = array.new<label>()
+var array<int> Break_Directions = array.new<int>()
+var array<float> Break_Levels = array.new<float>()
+var array<int> Break_Event_Times = array.new<int>()
+var array<int> Break_Timeframe_Seconds = array.new<int>()
+var array<label> Break_Protected_Labels = array.new<label>()
+var array<line> Break_Protected_Lines = array.new<line>()
+var array<line> NC_S_Lines = array.new<line>()
+var array<label> NC_S_Labels = array.new<label>()
+var array<int> Chart_Bar_Times = array.new<int>()
+var array<float> Chart_Bar_Highs = array.new<float>()
+var array<float> Chart_Bar_Lows = array.new<float>()
+var array<string> Higher_Break_Keys = array.new<string>()
+var array<int> Higher_Break_Directions = array.new<int>()
+var array<float> Higher_Break_Levels = array.new<float>()
+var array<int> Higher_Break_Times = array.new<int>()
+var array<int> Higher_Break_Durations = array.new<int>()
+var array<int> Higher_Break_Ranks = array.new<int>()
+MAX_STORED_SWINGS_PER_SIDE = 16
+
+array.push(Chart_Bar_Times, time)
+array.push(Chart_Bar_Highs, high)
+array.push(Chart_Bar_Lows, low)
+if array.size(Chart_Bar_Times) > Max_Swing_Age_Bars + 10
+    array.shift(Chart_Bar_Times)
+    array.shift(Chart_Bar_Highs)
+    array.shift(Chart_Bar_Lows)
+
+Show_Min1 = input.bool(false, "1 minute", group=GROUP_VISIBLE_TF)
+Show_Min2 = input.bool(false, "2 minutes", group=GROUP_VISIBLE_TF)
+Show_Min3 = input.bool(false, "3 minutes", group=GROUP_VISIBLE_TF)
+Show_Min5 = input.bool(false, "5 minutes", group=GROUP_VISIBLE_TF)
+Show_Min10 = input.bool(false, "10 minutes", group=GROUP_VISIBLE_TF)
+Show_Min15 = input.bool(true, "15 minutes", group=GROUP_VISIBLE_TF)
+Show_Min30 = input.bool(false, "30 minutes", group=GROUP_VISIBLE_TF)
+Show_Min45 = input.bool(false, "45 minutes", group=GROUP_VISIBLE_TF)
+Show_Hr1 = input.bool(true, "1 hour", group=GROUP_VISIBLE_TF)
+Show_Hr2 = input.bool(false, "2 hours", group=GROUP_VISIBLE_TF)
+Show_Hr3 = input.bool(false, "3 hours", group=GROUP_VISIBLE_TF)
+Show_Hr4 = input.bool(true, "4 hours", group=GROUP_VISIBLE_TF)
+Show_Day1 = input.bool(true, "1 day", group=GROUP_VISIBLE_TF)
+Show_Week1 = input.bool(true, "1 week", group=GROUP_VISIBLE_TF)
+Show_Month1 = input.bool(false, "1 month", group=GROUP_VISIBLE_TF)
+Show_Month3 = input.bool(false, "3 months", group=GROUP_VISIBLE_TF)
+Show_Month6 = input.bool(false, "6 months", group=GROUP_VISIBLE_TF)
+Show_Month12 = input.bool(false, "12 months", group=GROUP_VISIBLE_TF)
+
+f_line_style(string style) =>
+    switch style
+        "Dashed" => line.style_dashed
+        "Dotted" => line.style_dotted
+        => line.style_solid
+
+f_range_extreme(int startTime, int endTime, bool findHigh) =>
+    float extremePrice = na
+    int extremeTime = na
+    if not na(startTime) and not na(endTime) and array.size(Chart_Bar_Times) > 0
+        for i = array.size(Chart_Bar_Times) - 1 to 0
+            int barTime = array.get(Chart_Bar_Times, i)
+            if barTime >= startTime and barTime <= endTime
+                float value = findHigh ? array.get(Chart_Bar_Highs, i) : array.get(Chart_Bar_Lows, i)
+                bool moreExtreme = na(extremePrice) or (findHigh ? value > extremePrice : value < extremePrice)
+                if moreExtreme
+                    extremePrice := value
+                    extremeTime := barTime
+    [extremePrice, extremeTime]
+
+f_remove_aligned_nc(float protectedPrice, int protectedStart, int protectedEnd, array<line> ncLines, array<label> ncLabels) =>
+    if not na(protectedPrice) and array.size(ncLines) > 0
+        for i = array.size(ncLines) - 1 to 0
+            line ncLine = array.get(ncLines, i)
+            bool samePrice = math.abs(line.get_y1(ncLine) - protectedPrice) <= syminfo.mintick * Overlap_Tolerance_Ticks
+            bool timeOverlaps = line.get_x1(ncLine) <= protectedEnd and line.get_x2(ncLine) >= protectedStart
+            if samePrice and timeOverlaps
+                line.delete(ncLine)
+                label.delete(array.get(ncLabels, i))
+                array.remove(ncLines, i)
+                array.remove(ncLabels, i)
+
+f_is_protected_level(float level, int eventStart, int eventEnd, array<line> protectedLines) =>
+    bool matches = false
+    if not na(level) and array.size(protectedLines) > 0
+        for i = 0 to array.size(protectedLines) - 1
+            line protectedLine = array.get(protectedLines, i)
+            bool samePrice = math.abs(line.get_y1(protectedLine) - level) <= syminfo.mintick * Overlap_Tolerance_Ticks
+            bool timeOverlaps = line.get_x1(protectedLine) <= eventEnd and line.get_x2(protectedLine) >= eventStart
+            if samePrice and timeOverlaps
+                matches := true
+    matches
+
+type TFEvent
+    bool newHigh
+    float highPrice
+    int highTime
+    bool newLow
+    float lowPrice
+    int lowTime
+    bool bullBreak
+    bool bearBreak
+    int bullTime
+    float bullLevel
+    int bearTime
+    float bearLevel
+    int bullStartTime
+    int bearStartTime
+    bool ncSweep
+
+f_is_duplicate(int direction, float level, int pivotTime, int timeframeSeconds, array<int> higherDirections, array<float> higherLevels, array<int> higherTimes, array<int> higherDurations, array<int> higherRanks) =>
+    bool duplicate = false
+    if array.size(higherDirections) > 0
+        for i = 0 to array.size(higherDirections) - 1
+            bool sameDirection = array.get(higherDirections, i) == direction
+            bool samePrice = math.abs(array.get(higherLevels, i) - level) <= syminfo.mintick * Overlap_Tolerance_Ticks
+            bool closeInTime = math.abs(array.get(higherTimes, i) - pivotTime) <= array.get(higherDurations, i)
+            bool higherTimeframe = array.get(higherRanks, i) > timeframeSeconds
+            if sameDirection and samePrice and closeInTime and higherTimeframe
+                duplicate := true
+    duplicate
+
+f_register_higher_break(bool triggered, int direction, float level, int eventTime, int pivotTime, int timeframeSeconds, array<string> keys, array<int> higherDirections, array<float> higherLevels, array<int> higherTimes, array<int> higherDurations, array<int> higherRanks, array<line> breakLines, array<label> breakLabels, array<label> protectedLabels, array<line> protectedLines, array<int> breakDirections, array<float> breakLevels, array<int> breakTimes, array<int> breakRanks) =>
+    if triggered and not na(level) and not na(eventTime) and timeframeSeconds > timeframe.in_seconds(timeframe.period)
+        string key = str.tostring(timeframeSeconds) + "_" + str.tostring(direction) + "_" + str.tostring(eventTime)
+        if not array.includes(keys, key)
+            array.push(keys, key)
+            array.push(higherDirections, direction)
+            array.push(higherLevels, level)
+            array.push(higherTimes, pivotTime)
+            array.push(higherDurations, timeframeSeconds * 1000)
+            array.push(higherRanks, timeframeSeconds)
+            if array.size(keys) > 500
+                array.shift(keys)
+                array.shift(higherDirections)
+                array.shift(higherLevels)
+                array.shift(higherTimes)
+                array.shift(higherDurations)
+                array.shift(higherRanks)
+            if array.size(breakLines) > 0
+                for i = array.size(breakLines) - 1 to 0
+                    bool sameDirection = array.get(breakDirections, i) == direction
+                    bool samePrice = math.abs(array.get(breakLevels, i) - level) <= syminfo.mintick * Overlap_Tolerance_Ticks
+                    bool closeInTime = math.abs(array.get(breakTimes, i) - pivotTime) <= timeframeSeconds * 1000
+                    bool lowerTimeframe = array.get(breakRanks, i) < timeframeSeconds
+                    if sameDirection and samePrice and closeInTime and lowerTimeframe
+                        line.delete(array.get(breakLines, i))
+                        label.delete(array.get(breakLabels, i))
+                        label protectedLabel = array.get(protectedLabels, i)
+                        if not na(protectedLabel)
+                            label.delete(protectedLabel)
+                        line protectedLine = array.get(protectedLines, i)
+                        if not na(protectedLine)
+                            line.delete(protectedLine)
+                        array.remove(breakLines, i)
+                        array.remove(breakLabels, i)
+                        array.remove(protectedLabels, i)
+                        array.remove(protectedLines, i)
+                        array.remove(breakDirections, i)
+                        array.remove(breakLevels, i)
+                        array.remove(breakTimes, i)
+                        array.remove(breakRanks, i)
+
+f_track_timeframe(TFEvent event, bool selected, int timeframeSeconds) =>
+    f_register_higher_break(selected and event.bullBreak, 1, event.bullLevel, event.bullTime, event.bullStartTime, timeframeSeconds, Higher_Break_Keys, Higher_Break_Directions, Higher_Break_Levels, Higher_Break_Times, Higher_Break_Durations, Higher_Break_Ranks, Break_Lines, Break_Labels, Break_Protected_Labels, Break_Protected_Lines, Break_Directions, Break_Levels, Break_Event_Times, Break_Timeframe_Seconds)
+    f_register_higher_break(selected and event.bearBreak, -1, event.bearLevel, event.bearTime, event.bearStartTime, timeframeSeconds, Higher_Break_Keys, Higher_Break_Directions, Higher_Break_Levels, Higher_Break_Times, Higher_Break_Durations, Higher_Break_Ranks, Break_Lines, Break_Labels, Break_Protected_Labels, Break_Protected_Lines, Break_Directions, Break_Levels, Break_Event_Times, Break_Timeframe_Seconds)
+
+f_tf_events() =>
+    // Ignore small-bodied dojis in test logic and inherit the last real direction.
+    var int previousDirection = 0
+    float candleBody = math.abs(close - open)
+    float candleRange = high - low
+    bool isDoji = candleRange == 0.0 or candleBody <= candleRange * Doji_Body_Range_Percent / 100.0
+    int candleDirection = isDoji ? previousDirection : close > open ? 1 : close < open ? -1 : previousDirection
+    previousDirection := candleDirection
+
+    // Each qualifying swing is stored independently. A new swing does not
+    // overwrite an older swing that is still waiting for its first test.
+    var int direction = 0
+    var int runLength = 0
+    var float runHigh = na
+    var float runLow = na
+    var int runHighTime = na
+    var int runLowTime = na
+    var int pendingDirection = 0
+    var int pendingRunLength = 0
+    var float pendingHigh = na
+    var float pendingLow = na
+    var int pendingHighTime = na
+    var int pendingLowTime = na
+    var float lastHigh = na
+    var float lastLow = na
+    var int lastHighTime = na
+    var int lastLowTime = na
+    var array<float> highLevels = array.new<float>()
+    var array<int> highPivotTimes = array.new<int>()
+    var array<int> highConfirmedTimes = array.new<int>()
+    var array<bool> highFollowUps = array.new<bool>()
+    var array<float> highTestOpens = array.new<float>()
+    var array<int> highTestTimes = array.new<int>()
+    var array<float> lowLevels = array.new<float>()
+    var array<int> lowPivotTimes = array.new<int>()
+    var array<int> lowConfirmedTimes = array.new<int>()
+    var array<bool> lowFollowUps = array.new<bool>()
+    var array<float> lowTestOpens = array.new<float>()
+    var array<int> lowTestTimes = array.new<int>()
+    // NC + S has a separate 1-2 / 2-1 reversal detector; BREAK uses 2-2.
+    var array<float> ncHighLevels = array.new<float>()
+    var array<int> ncHighPivotTimes = array.new<int>()
+    var array<int> ncHighConfirmedTimes = array.new<int>()
+    var array<bool> ncHighFollowUps = array.new<bool>()
+    var array<float> ncHighTestOpens = array.new<float>()
+    var array<int> ncHighTestTimes = array.new<int>()
+    var array<float> ncLowLevels = array.new<float>()
+    var array<int> ncLowPivotTimes = array.new<int>()
+    var array<int> ncLowConfirmedTimes = array.new<int>()
+    var array<bool> ncLowFollowUps = array.new<bool>()
+    var array<float> ncLowTestOpens = array.new<float>()
+    var array<int> ncLowTestTimes = array.new<int>()
+    var int ncRunDirection = 0
+    var int ncRunLength = 0
+    var float ncRunHigh = na
+    var float ncRunLow = na
+    var int ncRunHighTime = na
+    var int ncRunLowTime = na
+    var int ncPriorDirection = 0
+    var int ncPriorRunLength = 0
+    var float ncPriorHigh = na
+    var float ncPriorLow = na
+    var int ncPriorHighTime = na
+    var int ncPriorLowTime = na
+    var bool ncPatternRecorded = false
+    bool newHigh = false
+    bool newLow = false
+    bool bullBreak = false
+    bool bearBreak = false
+    bool ncSweep = false
+    int bullBreakTime = na
+    float bullBreakLevel = na
+    int bearBreakTime = na
+    float bearBreakLevel = na
+    int ncSweepTime = na
+    float ncSweepLevel = na
+    int ncSweepStartTime = na
+    int bullBreakStartTime = na
+    int bearBreakStartTime = na
+
+    // NC + S has its own reversal pattern: 1 bullish then 2 bearish, or
+    // 2 bullish then 1 bearish for a HIGH; reverse the directions for a LOW.
+    // Dojis inherit direction through candleDirection just like Break swings.
+    if candleDirection != 0
+        if ncRunDirection == 0
+            ncRunDirection := candleDirection
+            ncRunLength := 1
+            ncRunHigh := high
+            ncRunLow := low
+            ncRunHighTime := time
+            ncRunLowTime := time
+        else if candleDirection == ncRunDirection
+            ncRunLength += 1
+            if high > ncRunHigh
+                ncRunHigh := high
+                ncRunHighTime := time
+            if low < ncRunLow
+                ncRunLow := low
+                ncRunLowTime := time
+        else
+            ncPriorDirection := ncRunDirection
+            ncPriorRunLength := ncRunLength
+            ncPriorHigh := ncRunHigh
+            ncPriorLow := ncRunLow
+            ncPriorHighTime := ncRunHighTime
+            ncPriorLowTime := ncRunLowTime
+            ncRunDirection := candleDirection
+            ncRunLength := 1
+            ncRunHigh := high
+            ncRunLow := low
+            ncRunHighTime := time
+            ncRunLowTime := time
+            ncPatternRecorded := false
+
+        bool ncHighPattern = ncRunDirection == -1 and ncPriorDirection == 1 and ((ncPriorRunLength >= 1 and ncRunLength >= 2) or (ncPriorRunLength >= 2 and ncRunLength >= 1))
+        bool ncLowPattern = ncRunDirection == 1 and ncPriorDirection == -1 and ((ncPriorRunLength >= 1 and ncRunLength >= 2) or (ncPriorRunLength >= 2 and ncRunLength >= 1))
+        if not ncPatternRecorded and ncHighPattern
+            float candidateHigh = math.max(ncPriorHigh, ncRunHigh)
+            int candidateHighTime = ncPriorHigh >= ncRunHigh ? ncPriorHighTime : ncRunHighTime
+            array.push(ncHighLevels, candidateHigh)
+            array.push(ncHighPivotTimes, candidateHighTime)
+            array.push(ncHighConfirmedTimes, time_close)
+            array.push(ncHighFollowUps, false)
+            array.push(ncHighTestOpens, na)
+            array.push(ncHighTestTimes, na)
+            if array.size(ncHighLevels) > MAX_STORED_SWINGS_PER_SIDE
+                array.shift(ncHighLevels)
+                array.shift(ncHighPivotTimes)
+                array.shift(ncHighConfirmedTimes)
+                array.shift(ncHighFollowUps)
+                array.shift(ncHighTestOpens)
+                array.shift(ncHighTestTimes)
+            ncPatternRecorded := true
+        else if not ncPatternRecorded and ncLowPattern
+            float candidateLow = math.min(ncPriorLow, ncRunLow)
+            int candidateLowTime = ncPriorLow <= ncRunLow ? ncPriorLowTime : ncRunLowTime
+            array.push(ncLowLevels, candidateLow)
+            array.push(ncLowPivotTimes, candidateLowTime)
+            array.push(ncLowConfirmedTimes, time_close)
+            array.push(ncLowFollowUps, false)
+            array.push(ncLowTestOpens, na)
+            array.push(ncLowTestTimes, na)
+            if array.size(ncLowLevels) > MAX_STORED_SWINGS_PER_SIDE
+                array.shift(ncLowLevels)
+                array.shift(ncLowPivotTimes)
+                array.shift(ncLowConfirmedTimes)
+                array.shift(ncLowFollowUps)
+                array.shift(ncLowTestOpens)
+                array.shift(ncLowTestTimes)
+            ncPatternRecorded := true
+
+    if candleDirection != 0
+        if direction == 0
+            direction := candleDirection
+            runLength := 1
+            runHigh := high
+            runLow := low
+            runHighTime := time
+            runLowTime := time
+        else if candleDirection == direction
+            runLength += 1
+            if high > runHigh
+                runHigh := high
+                runHighTime := time
+            if low < runLow
+                runLow := low
+                runLowTime := time
+        else
+            if runLength >= 1
+                pendingDirection := direction
+                pendingRunLength := runLength
+                pendingHigh := runHigh
+                pendingLow := runLow
+                pendingHighTime := runHighTime
+                pendingLowTime := runLowTime
+            else
+                pendingDirection := 0
+                pendingRunLength := 0
+            direction := candleDirection
+            runLength := 1
+            runHigh := high
+            runLow := low
+            runHighTime := time
+            runLowTime := time
+
+        bool highPattern = pendingDirection == 1 and pendingRunLength >= 2 and runLength >= 2
+        bool lowPattern = pendingDirection == -1 and pendingRunLength >= 2 and runLength >= 2
+        if highPattern
+            float structureHigh = math.max(pendingHigh, runHigh)
+            int structureHighTime = pendingHigh >= runHigh ? pendingHighTime : runHighTime
+            lastHigh := structureHigh
+            lastHighTime := structureHighTime
+            array.push(highLevels, structureHigh)
+            array.push(highPivotTimes, structureHighTime)
+            array.push(highConfirmedTimes, time_close)
+            array.push(highFollowUps, false)
+            array.push(highTestOpens, na)
+            array.push(highTestTimes, na)
+            if array.size(highLevels) > MAX_STORED_SWINGS_PER_SIDE
+                array.shift(highLevels)
+                array.shift(highPivotTimes)
+                array.shift(highConfirmedTimes)
+                array.shift(highFollowUps)
+                array.shift(highTestOpens)
+                array.shift(highTestTimes)
+            newHigh := true
+            pendingDirection := 0
+            pendingRunLength := 0
+        else if lowPattern
+            float structureLow = math.min(pendingLow, runLow)
+            int structureLowTime = pendingLow <= runLow ? pendingLowTime : runLowTime
+            lastLow := structureLow
+            lastLowTime := structureLowTime
+            array.push(lowLevels, structureLow)
+            array.push(lowPivotTimes, structureLowTime)
+            array.push(lowConfirmedTimes, time_close)
+            array.push(lowFollowUps, false)
+            array.push(lowTestOpens, na)
+            array.push(lowTestTimes, na)
+            if array.size(lowLevels) > MAX_STORED_SWINGS_PER_SIDE
+                array.shift(lowLevels)
+                array.shift(lowPivotTimes)
+                array.shift(lowConfirmedTimes)
+                array.shift(lowFollowUps)
+                array.shift(lowTestOpens)
+                array.shift(lowTestTimes)
+            newLow := true
+            pendingDirection := 0
+            pendingRunLength := 0
+
+    // Process HIGH swing records newest-first. A wick touch is the first test.
+    // If it misses, keep evaluating each same-direction candle until a body
+    // confirms the break or a real opposite-direction candle ends the attempt.
+    if array.size(highLevels) > 0
+        for i = array.size(highLevels) - 1 to 0
+            float level = array.get(highLevels, i)
+            bool followUpPending = array.get(highFollowUps, i)
+            bool removeLevel = false
+            int confirmedAt = array.get(highConfirmedTimes, i)
+            bool expired = not followUpPending and time - confirmedAt > timeframe.in_seconds() * 1000 * Max_Swing_Age_Bars
+            if expired
+                removeLevel := true
+            else if followUpPending and time > array.get(highTestTimes, i)
+                float firstOpen = array.get(highTestOpens, i)
+                bool combinedBodyPasses = close >= 2.0 * level - firstOpen
+                bool currentBodyPasses = close >= 2.0 * level - open
+                if not isDoji and close > open
+                    if combinedBodyPasses or currentBodyPasses
+                        if not bullBreak
+                            bullBreak := true
+                            bullBreakTime := time_close
+                            bullBreakLevel := level
+                            bullBreakStartTime := array.get(highPivotTimes, i)
+                        removeLevel := true
+                else if not isDoji and close < open
+                    removeLevel := true
+            else if not followUpPending and not isDoji and time >= array.get(highConfirmedTimes, i) and high >= level
+                if close >= 2.0 * level - open
+                    if not bullBreak
+                        bullBreak := true
+                        bullBreakTime := time_close
+                        bullBreakLevel := level
+                        bullBreakStartTime := array.get(highPivotTimes, i)
+                    removeLevel := true
+                else
+                    array.set(highFollowUps, i, true)
+                    array.set(highTestOpens, i, open)
+                    array.set(highTestTimes, i, time)
+            if removeLevel
+                array.remove(highLevels, i)
+                array.remove(highPivotTimes, i)
+                array.remove(highConfirmedTimes, i)
+                array.remove(highFollowUps, i)
+                array.remove(highTestOpens, i)
+                array.remove(highTestTimes, i)
+
+    // Process LOW swing records with the mirrored continuation rule.
+    if array.size(lowLevels) > 0
+        for i = array.size(lowLevels) - 1 to 0
+            float level = array.get(lowLevels, i)
+            bool followUpPending = array.get(lowFollowUps, i)
+            bool removeLevel = false
+            int confirmedAt = array.get(lowConfirmedTimes, i)
+            bool expired = not followUpPending and time - confirmedAt > timeframe.in_seconds() * 1000 * Max_Swing_Age_Bars
+            if expired
+                removeLevel := true
+            else if followUpPending and time > array.get(lowTestTimes, i)
+                float firstOpen = array.get(lowTestOpens, i)
+                bool combinedBodyPasses = close <= 2.0 * level - firstOpen
+                bool currentBodyPasses = close <= 2.0 * level - open
+                if not isDoji and close < open
+                    if combinedBodyPasses or currentBodyPasses
+                        if not bearBreak
+                            bearBreak := true
+                            bearBreakTime := time_close
+                            bearBreakLevel := level
+                            bearBreakStartTime := array.get(lowPivotTimes, i)
+                        removeLevel := true
+                else if not isDoji and close > open
+                    removeLevel := true
+            else if not followUpPending and not isDoji and time >= array.get(lowConfirmedTimes, i) and low <= level
+                if close <= 2.0 * level - open
+                    if not bearBreak
+                        bearBreak := true
+                        bearBreakTime := time_close
+                        bearBreakLevel := level
+                        bearBreakStartTime := array.get(lowPivotTimes, i)
+                    removeLevel := true
+                else
+                    array.set(lowFollowUps, i, true)
+                    array.set(lowTestOpens, i, open)
+                    array.set(lowTestTimes, i, time)
+            if removeLevel
+                array.remove(lowLevels, i)
+                array.remove(lowPivotTimes, i)
+                array.remove(lowConfirmedTimes, i)
+                array.remove(lowFollowUps, i)
+                array.remove(lowTestOpens, i)
+                array.remove(lowTestTimes, i)
+
+    // Evaluate first tests and failed continuation sequences against the
+    // separately-qualified NC + S swing candidates.
+    if array.size(ncHighLevels) > 0
+        for i = array.size(ncHighLevels) - 1 to 0
+            float level = array.get(ncHighLevels, i)
+            bool followUpPending = array.get(ncHighFollowUps, i)
+            bool removeLevel = false
+            int confirmedAt = array.get(ncHighConfirmedTimes, i)
+            bool expired = not followUpPending and time - confirmedAt > timeframe.in_seconds() * 1000 * Max_Swing_Age_Bars
+            if expired
+                removeLevel := true
+            else if followUpPending and time > array.get(ncHighTestTimes, i)
+                float firstOpen = array.get(ncHighTestOpens, i)
+                bool combinedBodyPasses = close >= 2.0 * level - firstOpen
+                bool currentBodyPasses = close >= 2.0 * level - open
+                if not isDoji and close > open
+                    if combinedBodyPasses or currentBodyPasses
+                        removeLevel := true
+                else if not isDoji and close < open
+                    if not ncSweep
+                        ncSweep := true
+                        ncSweepTime := time_close
+                        ncSweepLevel := level
+                        ncSweepStartTime := array.get(ncHighPivotTimes, i)
+                    removeLevel := true
+            else if not followUpPending and not isDoji and time >= confirmedAt and high >= level
+                if close >= 2.0 * level - open
+                    removeLevel := true
+                else
+                    array.set(ncHighFollowUps, i, true)
+                    array.set(ncHighTestOpens, i, open)
+                    array.set(ncHighTestTimes, i, time)
+            if removeLevel
+                array.remove(ncHighLevels, i)
+                array.remove(ncHighPivotTimes, i)
+                array.remove(ncHighConfirmedTimes, i)
+                array.remove(ncHighFollowUps, i)
+                array.remove(ncHighTestOpens, i)
+                array.remove(ncHighTestTimes, i)
+
+    if array.size(ncLowLevels) > 0
+        for i = array.size(ncLowLevels) - 1 to 0
+            float level = array.get(ncLowLevels, i)
+            bool followUpPending = array.get(ncLowFollowUps, i)
+            bool removeLevel = false
+            int confirmedAt = array.get(ncLowConfirmedTimes, i)
+            bool expired = not followUpPending and time - confirmedAt > timeframe.in_seconds() * 1000 * Max_Swing_Age_Bars
+            if expired
+                removeLevel := true
+            else if followUpPending and time > array.get(ncLowTestTimes, i)
+                float firstOpen = array.get(ncLowTestOpens, i)
+                bool combinedBodyPasses = close <= 2.0 * level - firstOpen
+                bool currentBodyPasses = close <= 2.0 * level - open
+                if not isDoji and close < open
+                    if combinedBodyPasses or currentBodyPasses
+                        removeLevel := true
+                else if not isDoji and close > open
+                    if not ncSweep
+                        ncSweep := true
+                        ncSweepTime := time_close
+                        ncSweepLevel := level
+                        ncSweepStartTime := array.get(ncLowPivotTimes, i)
+                    removeLevel := true
+            else if not followUpPending and not isDoji and time >= confirmedAt and low <= level
+                if close <= 2.0 * level - open
+                    removeLevel := true
+                else
+                    array.set(ncLowFollowUps, i, true)
+                    array.set(ncLowTestOpens, i, open)
+                    array.set(ncLowTestTimes, i, time)
+            if removeLevel
+                array.remove(ncLowLevels, i)
+                array.remove(ncLowPivotTimes, i)
+                array.remove(ncLowConfirmedTimes, i)
+                array.remove(ncLowFollowUps, i)
+                array.remove(ncLowTestOpens, i)
+                array.remove(ncLowTestTimes, i)
+
+    // Return only the previous source-timeframe bar's values. The security
+    // calls below use lookahead_on, so these are confirmed bars, not live bars.
+    int breakCode = bullBreak[1] ? (bearBreak[1] ? 2 : 1) : bearBreak[1] ? -1 : ncSweep[1] ? 3 : 0
+    int eventTime = breakCode == 3 ? ncSweepTime[1] : breakCode != 0 ? (bullBreak[1] ? bullBreakTime[1] : bearBreakTime[1]) : na
+    float returnedBullLevel = breakCode == 3 ? ncSweepLevel[1] : bullBreakLevel[1]
+    int returnedBullStart = breakCode == 3 ? ncSweepStartTime[1] : bullBreakStartTime[1]
+    [breakCode, returnedBullLevel, breakCode == 3 ? na : bearBreakLevel[1], eventTime, returnedBullStart, breakCode == 3 ? na : bearBreakStartTime[1]]
+
+f_request_events(string sourceTf, bool selected, int timeframeSeconds) =>
+    if selected and timeframe.in_seconds(timeframe.period) <= timeframeSeconds
+        request.security(syminfo.tickerid, sourceTf, f_tf_events(), gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_on, calc_bars_count=1000)
+    else
+        [0, na, na, na, na, na]
+
+[Min1Code, Min1BullLevel, Min1BearLevel, Min1Time, Min1BullStart, Min1BearStart] = f_request_events("1", Show_Min1, 60)
+TFEvent ev_Min1 = TFEvent.new(false, na, na, false, na, na, Min1Code == 1 or Min1Code == 2, Min1Code == -1 or Min1Code == 2, Min1Time, Min1BullLevel, Min1Time, Min1BearLevel, Min1BullStart, Min1BearStart, Min1Code == 3)
+[Min2Code, Min2BullLevel, Min2BearLevel, Min2Time, Min2BullStart, Min2BearStart] = f_request_events("2", Show_Min2, 120)
+TFEvent ev_Min2 = TFEvent.new(false, na, na, false, na, na, Min2Code == 1 or Min2Code == 2, Min2Code == -1 or Min2Code == 2, Min2Time, Min2BullLevel, Min2Time, Min2BearLevel, Min2BullStart, Min2BearStart, Min2Code == 3)
+[Min3Code, Min3BullLevel, Min3BearLevel, Min3Time, Min3BullStart, Min3BearStart] = f_request_events("3", Show_Min3, 180)
+TFEvent ev_Min3 = TFEvent.new(false, na, na, false, na, na, Min3Code == 1 or Min3Code == 2, Min3Code == -1 or Min3Code == 2, Min3Time, Min3BullLevel, Min3Time, Min3BearLevel, Min3BullStart, Min3BearStart, Min3Code == 3)
+[Min5Code, Min5BullLevel, Min5BearLevel, Min5Time, Min5BullStart, Min5BearStart] = f_request_events("5", Show_Min5, 300)
+TFEvent ev_Min5 = TFEvent.new(false, na, na, false, na, na, Min5Code == 1 or Min5Code == 2, Min5Code == -1 or Min5Code == 2, Min5Time, Min5BullLevel, Min5Time, Min5BearLevel, Min5BullStart, Min5BearStart, Min5Code == 3)
+[Min10Code, Min10BullLevel, Min10BearLevel, Min10Time, Min10BullStart, Min10BearStart] = f_request_events("10", Show_Min10, 600)
+TFEvent ev_Min10 = TFEvent.new(false, na, na, false, na, na, Min10Code == 1 or Min10Code == 2, Min10Code == -1 or Min10Code == 2, Min10Time, Min10BullLevel, Min10Time, Min10BearLevel, Min10BullStart, Min10BearStart, Min10Code == 3)
+[Min15Code, Min15BullLevel, Min15BearLevel, Min15Time, Min15BullStart, Min15BearStart] = f_request_events("15", Show_Min15, 900)
+TFEvent ev_Min15 = TFEvent.new(false, na, na, false, na, na, Min15Code == 1 or Min15Code == 2, Min15Code == -1 or Min15Code == 2, Min15Time, Min15BullLevel, Min15Time, Min15BearLevel, Min15BullStart, Min15BearStart, Min15Code == 3)
+[Min30Code, Min30BullLevel, Min30BearLevel, Min30Time, Min30BullStart, Min30BearStart] = f_request_events("30", Show_Min30, 1800)
+TFEvent ev_Min30 = TFEvent.new(false, na, na, false, na, na, Min30Code == 1 or Min30Code == 2, Min30Code == -1 or Min30Code == 2, Min30Time, Min30BullLevel, Min30Time, Min30BearLevel, Min30BullStart, Min30BearStart, Min30Code == 3)
+[Min45Code, Min45BullLevel, Min45BearLevel, Min45Time, Min45BullStart, Min45BearStart] = f_request_events("45", Show_Min45, 2700)
+TFEvent ev_Min45 = TFEvent.new(false, na, na, false, na, na, Min45Code == 1 or Min45Code == 2, Min45Code == -1 or Min45Code == 2, Min45Time, Min45BullLevel, Min45Time, Min45BearLevel, Min45BullStart, Min45BearStart, Min45Code == 3)
+[Hr1Code, Hr1BullLevel, Hr1BearLevel, Hr1Time, Hr1BullStart, Hr1BearStart] = f_request_events("60", Show_Hr1, 3600)
+TFEvent ev_Hr1 = TFEvent.new(false, na, na, false, na, na, Hr1Code == 1 or Hr1Code == 2, Hr1Code == -1 or Hr1Code == 2, Hr1Time, Hr1BullLevel, Hr1Time, Hr1BearLevel, Hr1BullStart, Hr1BearStart, Hr1Code == 3)
+[Hr2Code, Hr2BullLevel, Hr2BearLevel, Hr2Time, Hr2BullStart, Hr2BearStart] = f_request_events("120", Show_Hr2, 7200)
+TFEvent ev_Hr2 = TFEvent.new(false, na, na, false, na, na, Hr2Code == 1 or Hr2Code == 2, Hr2Code == -1 or Hr2Code == 2, Hr2Time, Hr2BullLevel, Hr2Time, Hr2BearLevel, Hr2BullStart, Hr2BearStart, Hr2Code == 3)
+[Hr3Code, Hr3BullLevel, Hr3BearLevel, Hr3Time, Hr3BullStart, Hr3BearStart] = f_request_events("180", Show_Hr3, 10800)
+TFEvent ev_Hr3 = TFEvent.new(false, na, na, false, na, na, Hr3Code == 1 or Hr3Code == 2, Hr3Code == -1 or Hr3Code == 2, Hr3Time, Hr3BullLevel, Hr3Time, Hr3BearLevel, Hr3BullStart, Hr3BearStart, Hr3Code == 3)
+[Hr4Code, Hr4BullLevel, Hr4BearLevel, Hr4Time, Hr4BullStart, Hr4BearStart] = f_request_events("240", Show_Hr4, 14400)
+TFEvent ev_Hr4 = TFEvent.new(false, na, na, false, na, na, Hr4Code == 1 or Hr4Code == 2, Hr4Code == -1 or Hr4Code == 2, Hr4Time, Hr4BullLevel, Hr4Time, Hr4BearLevel, Hr4BullStart, Hr4BearStart, Hr4Code == 3)
+[Day1Code, Day1BullLevel, Day1BearLevel, Day1Time, Day1BullStart, Day1BearStart] = f_request_events("D", Show_Day1, 86400)
+TFEvent ev_Day1 = TFEvent.new(false, na, na, false, na, na, Day1Code == 1 or Day1Code == 2, Day1Code == -1 or Day1Code == 2, Day1Time, Day1BullLevel, Day1Time, Day1BearLevel, Day1BullStart, Day1BearStart, Day1Code == 3)
+[Week1Code, Week1BullLevel, Week1BearLevel, Week1Time, Week1BullStart, Week1BearStart] = f_request_events("W", Show_Week1, 604800)
+TFEvent ev_Week1 = TFEvent.new(false, na, na, false, na, na, Week1Code == 1 or Week1Code == 2, Week1Code == -1 or Week1Code == 2, Week1Time, Week1BullLevel, Week1Time, Week1BearLevel, Week1BullStart, Week1BearStart, Week1Code == 3)
+[Month1Code, Month1BullLevel, Month1BearLevel, Month1Time, Month1BullStart, Month1BearStart] = f_request_events("1M", Show_Month1, 2592000)
+TFEvent ev_Month1 = TFEvent.new(false, na, na, false, na, na, Month1Code == 1 or Month1Code == 2, Month1Code == -1 or Month1Code == 2, Month1Time, Month1BullLevel, Month1Time, Month1BearLevel, Month1BullStart, Month1BearStart, Month1Code == 3)
+[Month3Code, Month3BullLevel, Month3BearLevel, Month3Time, Month3BullStart, Month3BearStart] = f_request_events("3M", Show_Month3, 7776000)
+TFEvent ev_Month3 = TFEvent.new(false, na, na, false, na, na, Month3Code == 1 or Month3Code == 2, Month3Code == -1 or Month3Code == 2, Month3Time, Month3BullLevel, Month3Time, Month3BearLevel, Month3BullStart, Month3BearStart, Month3Code == 3)
+[Month6Code, Month6BullLevel, Month6BearLevel, Month6Time, Month6BullStart, Month6BearStart] = f_request_events("6M", Show_Month6, 15552000)
+TFEvent ev_Month6 = TFEvent.new(false, na, na, false, na, na, Month6Code == 1 or Month6Code == 2, Month6Code == -1 or Month6Code == 2, Month6Time, Month6BullLevel, Month6Time, Month6BearLevel, Month6BullStart, Month6BearStart, Month6Code == 3)
+[Month12Code, Month12BullLevel, Month12BearLevel, Month12Time, Month12BullStart, Month12BearStart] = f_request_events("12M", Show_Month12, 31536000)
+TFEvent ev_Month12 = TFEvent.new(false, na, na, false, na, na, Month12Code == 1 or Month12Code == 2, Month12Code == -1 or Month12Code == 2, Month12Time, Month12BullLevel, Month12Time, Month12BearLevel, Month12BullStart, Month12BearStart, Month12Code == 3)
+
+f_draw(string tfName, string sourceTf, int tfSeconds, bool enabled, string style, int width, bool newHigh, float highPrice, int highTime, bool newLow, float lowPrice, int lowTime, bool bullBreak, bool bearBreak, bool ncSweep, int bullEventTime, float bullEventLevel, int bearEventTime, float bearEventLevel, int bullStartTime, int bearStartTime, array<line> breakLines, array<label> breakLabels, array<label> protectedLabels, array<int> breakDirections, array<float> breakLevels, array<int> breakTimes, array<int> breakRanks, array<int> higherDirections, array<float> higherLevels, array<int> higherTimes, array<int> higherDurations, array<int> higherRanks, array<line> ncLines, array<label> ncLabels, int maxVisibleBreaks, int maxVisibleNCS) =>
+    bool sameTimeframe = timeframe.in_seconds(timeframe.period) == timeframe.in_seconds(sourceTf)
+    bool canDraw = enabled and sameTimeframe
+    array<line> protectedLines = Break_Protected_Lines
+    if canDraw and Show_Swing_Labels and newHigh
+        label.new(highTime, highPrice, "HIGH " + tfName, xloc=xloc.bar_time, color=color.new(color.white, 100), style=label.style_label_down, textcolor=Bear_Break_Color, size=size.small, force_overlay=true)
+    if canDraw and Show_Swing_Labels and newLow
+        label.new(lowTime, lowPrice, "LOW " + tfName, xloc=xloc.bar_time, color=color.new(color.white, 100), style=label.style_label_up, textcolor=Bull_Break_Color, size=size.small, force_overlay=true)
+    bool duplicateBull = bullBreak and f_is_duplicate(1, bullEventLevel, bullStartTime, tfSeconds, higherDirections, higherLevels, higherTimes, higherDurations, higherRanks)
+    bool duplicateBear = bearBreak and f_is_duplicate(-1, bearEventLevel, bearStartTime, tfSeconds, higherDirections, higherLevels, higherTimes, higherDurations, higherRanks)
+    if canDraw and not Hide_Breaks and bullBreak and not duplicateBull
+        [protectedLowPrice, protectedLowTime] = f_range_extreme(bullStartTime, bullEventTime, false)
+        line bullLineId = line.new(bullStartTime, bullEventLevel, bullEventTime, bullEventLevel, xloc=xloc.bar_time, extend=extend.none, color=Bull_Break_Color, style=f_line_style(style), width=width, force_overlay=true)
+        label bullLabelId = label.new(bullStartTime, bullEventLevel - syminfo.mintick * 5, tfName + " Break", xloc=xloc.bar_time, color=color.new(color.white, 100), style=label.style_label_left, textcolor=Bull_Break_Color, size=size.small, textalign=text.align_left, force_overlay=true)
+        label protectedLowLabel = na
+        line protectedLowLine = na
+        if not na(protectedLowPrice) and not na(protectedLowTime)
+            protectedLowLabel := label.new(protectedLowTime, protectedLowPrice, tfName + " Protected Low", xloc=xloc.bar_time, color=color.new(color.white, 100), style=label.style_label_up, textcolor=Protected_Line_Color, size=size.small, force_overlay=true)
+            protectedLowLine := line.new(protectedLowTime, protectedLowPrice, bullEventTime, protectedLowPrice, xloc=xloc.bar_time, extend=extend.none, color=Protected_Line_Color, style=f_line_style(Protected_Line_Style), width=1, force_overlay=true)
+            f_remove_aligned_nc(protectedLowPrice, protectedLowTime, bullEventTime, ncLines, ncLabels)
+        array.push(breakLines, bullLineId)
+        array.push(breakLabels, bullLabelId)
+        array.push(protectedLabels, protectedLowLabel)
+        array.push(protectedLines, protectedLowLine)
+        array.push(breakDirections, 1)
+        array.push(breakLevels, bullEventLevel)
+        array.push(breakTimes, bullStartTime)
+        array.push(breakRanks, tfSeconds)
+        if array.size(breakLines) > maxVisibleBreaks
+            line.delete(array.shift(breakLines))
+            label.delete(array.shift(breakLabels))
+            label oldProtectedLabel = array.shift(protectedLabels)
+            if not na(oldProtectedLabel)
+                label.delete(oldProtectedLabel)
+            line oldProtectedLine = array.shift(protectedLines)
+            if not na(oldProtectedLine)
+                line.delete(oldProtectedLine)
+            array.shift(breakDirections)
+            array.shift(breakLevels)
+            array.shift(breakTimes)
+            array.shift(breakRanks)
+    if canDraw and not Hide_Breaks and bearBreak and not duplicateBear
+        [protectedHighPrice, protectedHighTime] = f_range_extreme(bearStartTime, bearEventTime, true)
+        line bearLineId = line.new(bearStartTime, bearEventLevel, bearEventTime, bearEventLevel, xloc=xloc.bar_time, extend=extend.none, color=Bear_Break_Color, style=f_line_style(style), width=width, force_overlay=true)
+        label bearLabelId = label.new(bearStartTime, bearEventLevel - syminfo.mintick * 5, tfName + " Break", xloc=xloc.bar_time, color=color.new(color.white, 100), style=label.style_label_left, textcolor=Bear_Break_Color, size=size.small, textalign=text.align_left, force_overlay=true)
+        label protectedHighLabel = na
+        line protectedHighLine = na
+        if not na(protectedHighPrice) and not na(protectedHighTime)
+            protectedHighLabel := label.new(protectedHighTime, protectedHighPrice, tfName + " Protected High", xloc=xloc.bar_time, color=color.new(color.white, 100), style=label.style_label_down, textcolor=Protected_Line_Color, size=size.small, force_overlay=true)
+            protectedHighLine := line.new(protectedHighTime, protectedHighPrice, bearEventTime, protectedHighPrice, xloc=xloc.bar_time, extend=extend.none, color=Protected_Line_Color, style=f_line_style(Protected_Line_Style), width=1, force_overlay=true)
+            f_remove_aligned_nc(protectedHighPrice, protectedHighTime, bearEventTime, ncLines, ncLabels)
+        array.push(breakLines, bearLineId)
+        array.push(breakLabels, bearLabelId)
+        array.push(protectedLabels, protectedHighLabel)
+        array.push(protectedLines, protectedHighLine)
+        array.push(breakDirections, -1)
+        array.push(breakLevels, bearEventLevel)
+        array.push(breakTimes, bearStartTime)
+        array.push(breakRanks, tfSeconds)
+        if array.size(breakLines) > maxVisibleBreaks
+            line.delete(array.shift(breakLines))
+            label.delete(array.shift(breakLabels))
+            label oldProtectedLabel = array.shift(protectedLabels)
+            if not na(oldProtectedLabel)
+                label.delete(oldProtectedLabel)
+            line oldProtectedLine = array.shift(protectedLines)
+            if not na(oldProtectedLine)
+                line.delete(oldProtectedLine)
+            array.shift(breakDirections)
+            array.shift(breakLevels)
+            array.shift(breakTimes)
+            array.shift(breakRanks)
+    bool ncMatchesProtected = f_is_protected_level(bullEventLevel, bullStartTime, bullEventTime, protectedLines)
+    if canDraw and not Hide_Breaks and ncSweep and maxVisibleNCS > 0 and not ncMatchesProtected
+        color ncColor = color.rgb(156, 156, 156)
+        line ncLineId = line.new(bullStartTime, bullEventLevel, bullEventTime, bullEventLevel, xloc=xloc.bar_time, extend=extend.none, color=ncColor, style=f_line_style(style), width=width, force_overlay=true)
+        label ncLabelId = label.new(bullStartTime, bullEventLevel - syminfo.mintick * 5, tfName + " NC + S", xloc=xloc.bar_time, color=color.new(color.white, 100), style=label.style_label_left, textcolor=ncColor, size=size.small, textalign=text.align_left, force_overlay=true)
+        array.push(ncLines, ncLineId)
+        array.push(ncLabels, ncLabelId)
+        if array.size(ncLines) > maxVisibleNCS
+            line.delete(array.shift(ncLines))
+            label.delete(array.shift(ncLabels))
+
+f_track_timeframe(ev_Min1, Show_Min1, 60)
+f_track_timeframe(ev_Min2, Show_Min2, 120)
+f_track_timeframe(ev_Min3, Show_Min3, 180)
+f_track_timeframe(ev_Min5, Show_Min5, 300)
+f_track_timeframe(ev_Min10, Show_Min10, 600)
+f_track_timeframe(ev_Min15, Show_Min15, 900)
+f_track_timeframe(ev_Min30, Show_Min30, 1800)
+f_track_timeframe(ev_Min45, Show_Min45, 2700)
+f_track_timeframe(ev_Hr1, Show_Hr1, 3600)
+f_track_timeframe(ev_Hr2, Show_Hr2, 7200)
+f_track_timeframe(ev_Hr3, Show_Hr3, 10800)
+f_track_timeframe(ev_Hr4, Show_Hr4, 14400)
+f_track_timeframe(ev_Day1, Show_Day1, 86400)
+f_track_timeframe(ev_Week1, Show_Week1, 604800)
+f_track_timeframe(ev_Month1, Show_Month1, 2592000)
+f_track_timeframe(ev_Month3, Show_Month3, 7776000)
+f_track_timeframe(ev_Month6, Show_Month6, 15552000)
+f_track_timeframe(ev_Month12, Show_Month12, 31536000)
+
+f_draw("1m", "1", 60, Show_Min1, Break_Line_Style, Break_Line_Width, ev_Min1.newHigh, ev_Min1.highPrice, ev_Min1.highTime, ev_Min1.newLow, ev_Min1.lowPrice, ev_Min1.lowTime, ev_Min1.bullBreak, ev_Min1.bearBreak, ev_Min1.ncSweep, ev_Min1.bullTime, ev_Min1.bullLevel, ev_Min1.bearTime, ev_Min1.bearLevel, ev_Min1.bullStartTime, ev_Min1.bearStartTime, Break_Lines, Break_Labels, Break_Protected_Labels, Break_Directions, Break_Levels, Break_Event_Times, Break_Timeframe_Seconds, Higher_Break_Directions, Higher_Break_Levels, Higher_Break_Times, Higher_Break_Durations, Higher_Break_Ranks, NC_S_Lines, NC_S_Labels, Max_Visible_Breaks, Max_Visible_NC_S)
+f_draw("2m", "2", 120, Show_Min2, Break_Line_Style, Break_Line_Width, ev_Min2.newHigh, ev_Min2.highPrice, ev_Min2.highTime, ev_Min2.newLow, ev_Min2.lowPrice, ev_Min2.lowTime, ev_Min2.bullBreak, ev_Min2.bearBreak, ev_Min2.ncSweep, ev_Min2.bullTime, ev_Min2.bullLevel, ev_Min2.bearTime, ev_Min2.bearLevel, ev_Min2.bullStartTime, ev_Min2.bearStartTime, Break_Lines, Break_Labels, Break_Protected_Labels, Break_Directions, Break_Levels, Break_Event_Times, Break_Timeframe_Seconds, Higher_Break_Directions, Higher_Break_Levels, Higher_Break_Times, Higher_Break_Durations, Higher_Break_Ranks, NC_S_Lines, NC_S_Labels, Max_Visible_Breaks, Max_Visible_NC_S)
+f_draw("3m", "3", 180, Show_Min3, Break_Line_Style, Break_Line_Width, ev_Min3.newHigh, ev_Min3.highPrice, ev_Min3.highTime, ev_Min3.newLow, ev_Min3.lowPrice, ev_Min3.lowTime, ev_Min3.bullBreak, ev_Min3.bearBreak, ev_Min3.ncSweep, ev_Min3.bullTime, ev_Min3.bullLevel, ev_Min3.bearTime, ev_Min3.bearLevel, ev_Min3.bullStartTime, ev_Min3.bearStartTime, Break_Lines, Break_Labels, Break_Protected_Labels, Break_Directions, Break_Levels, Break_Event_Times, Break_Timeframe_Seconds, Higher_Break_Directions, Higher_Break_Levels, Higher_Break_Times, Higher_Break_Durations, Higher_Break_Ranks, NC_S_Lines, NC_S_Labels, Max_Visible_Breaks, Max_Visible_NC_S)
+f_draw("5m", "5", 300, Show_Min5, Break_Line_Style, Break_Line_Width, ev_Min5.newHigh, ev_Min5.highPrice, ev_Min5.highTime, ev_Min5.newLow, ev_Min5.lowPrice, ev_Min5.lowTime, ev_Min5.bullBreak, ev_Min5.bearBreak, ev_Min5.ncSweep, ev_Min5.bullTime, ev_Min5.bullLevel, ev_Min5.bearTime, ev_Min5.bearLevel, ev_Min5.bullStartTime, ev_Min5.bearStartTime, Break_Lines, Break_Labels, Break_Protected_Labels, Break_Directions, Break_Levels, Break_Event_Times, Break_Timeframe_Seconds, Higher_Break_Directions, Higher_Break_Levels, Higher_Break_Times, Higher_Break_Durations, Higher_Break_Ranks, NC_S_Lines, NC_S_Labels, Max_Visible_Breaks, Max_Visible_NC_S)
+f_draw("10m", "10", 600, Show_Min10, Break_Line_Style, Break_Line_Width, ev_Min10.newHigh, ev_Min10.highPrice, ev_Min10.highTime, ev_Min10.newLow, ev_Min10.lowPrice, ev_Min10.lowTime, ev_Min10.bullBreak, ev_Min10.bearBreak, ev_Min10.ncSweep, ev_Min10.bullTime, ev_Min10.bullLevel, ev_Min10.bearTime, ev_Min10.bearLevel, ev_Min10.bullStartTime, ev_Min10.bearStartTime, Break_Lines, Break_Labels, Break_Protected_Labels, Break_Directions, Break_Levels, Break_Event_Times, Break_Timeframe_Seconds, Higher_Break_Directions, Higher_Break_Levels, Higher_Break_Times, Higher_Break_Durations, Higher_Break_Ranks, NC_S_Lines, NC_S_Labels, Max_Visible_Breaks, Max_Visible_NC_S)
+f_draw("15m", "15", 900, Show_Min15, Break_Line_Style, Break_Line_Width, ev_Min15.newHigh, ev_Min15.highPrice, ev_Min15.highTime, ev_Min15.newLow, ev_Min15.lowPrice, ev_Min15.lowTime, ev_Min15.bullBreak, ev_Min15.bearBreak, ev_Min15.ncSweep, ev_Min15.bullTime, ev_Min15.bullLevel, ev_Min15.bearTime, ev_Min15.bearLevel, ev_Min15.bullStartTime, ev_Min15.bearStartTime, Break_Lines, Break_Labels, Break_Protected_Labels, Break_Directions, Break_Levels, Break_Event_Times, Break_Timeframe_Seconds, Higher_Break_Directions, Higher_Break_Levels, Higher_Break_Times, Higher_Break_Durations, Higher_Break_Ranks, NC_S_Lines, NC_S_Labels, Max_Visible_Breaks, Max_Visible_NC_S)
+f_draw("30m", "30", 1800, Show_Min30, Break_Line_Style, Break_Line_Width, ev_Min30.newHigh, ev_Min30.highPrice, ev_Min30.highTime, ev_Min30.newLow, ev_Min30.lowPrice, ev_Min30.lowTime, ev_Min30.bullBreak, ev_Min30.bearBreak, ev_Min30.ncSweep, ev_Min30.bullTime, ev_Min30.bullLevel, ev_Min30.bearTime, ev_Min30.bearLevel, ev_Min30.bullStartTime, ev_Min30.bearStartTime, Break_Lines, Break_Labels, Break_Protected_Labels, Break_Directions, Break_Levels, Break_Event_Times, Break_Timeframe_Seconds, Higher_Break_Directions, Higher_Break_Levels, Higher_Break_Times, Higher_Break_Durations, Higher_Break_Ranks, NC_S_Lines, NC_S_Labels, Max_Visible_Breaks, Max_Visible_NC_S)
+f_draw("45m", "45", 2700, Show_Min45, Break_Line_Style, Break_Line_Width, ev_Min45.newHigh, ev_Min45.highPrice, ev_Min45.highTime, ev_Min45.newLow, ev_Min45.lowPrice, ev_Min45.lowTime, ev_Min45.bullBreak, ev_Min45.bearBreak, ev_Min45.ncSweep, ev_Min45.bullTime, ev_Min45.bullLevel, ev_Min45.bearTime, ev_Min45.bearLevel, ev_Min45.bullStartTime, ev_Min45.bearStartTime, Break_Lines, Break_Labels, Break_Protected_Labels, Break_Directions, Break_Levels, Break_Event_Times, Break_Timeframe_Seconds, Higher_Break_Directions, Higher_Break_Levels, Higher_Break_Times, Higher_Break_Durations, Higher_Break_Ranks, NC_S_Lines, NC_S_Labels, Max_Visible_Breaks, Max_Visible_NC_S)
+f_draw("1H", "60", 3600, Show_Hr1, Break_Line_Style, Break_Line_Width, ev_Hr1.newHigh, ev_Hr1.highPrice, ev_Hr1.highTime, ev_Hr1.newLow, ev_Hr1.lowPrice, ev_Hr1.lowTime, ev_Hr1.bullBreak, ev_Hr1.bearBreak, ev_Hr1.ncSweep, ev_Hr1.bullTime, ev_Hr1.bullLevel, ev_Hr1.bearTime, ev_Hr1.bearLevel, ev_Hr1.bullStartTime, ev_Hr1.bearStartTime, Break_Lines, Break_Labels, Break_Protected_Labels, Break_Directions, Break_Levels, Break_Event_Times, Break_Timeframe_Seconds, Higher_Break_Directions, Higher_Break_Levels, Higher_Break_Times, Higher_Break_Durations, Higher_Break_Ranks, NC_S_Lines, NC_S_Labels, Max_Visible_Breaks, Max_Visible_NC_S)
+f_draw("2H", "120", 7200, Show_Hr2, Break_Line_Style, Break_Line_Width, ev_Hr2.newHigh, ev_Hr2.highPrice, ev_Hr2.highTime, ev_Hr2.newLow, ev_Hr2.lowPrice, ev_Hr2.lowTime, ev_Hr2.bullBreak, ev_Hr2.bearBreak, ev_Hr2.ncSweep, ev_Hr2.bullTime, ev_Hr2.bullLevel, ev_Hr2.bearTime, ev_Hr2.bearLevel, ev_Hr2.bullStartTime, ev_Hr2.bearStartTime, Break_Lines, Break_Labels, Break_Protected_Labels, Break_Directions, Break_Levels, Break_Event_Times, Break_Timeframe_Seconds, Higher_Break_Directions, Higher_Break_Levels, Higher_Break_Times, Higher_Break_Durations, Higher_Break_Ranks, NC_S_Lines, NC_S_Labels, Max_Visible_Breaks, Max_Visible_NC_S)
+f_draw("3H", "180", 10800, Show_Hr3, Break_Line_Style, Break_Line_Width, ev_Hr3.newHigh, ev_Hr3.highPrice, ev_Hr3.highTime, ev_Hr3.newLow, ev_Hr3.lowPrice, ev_Hr3.lowTime, ev_Hr3.bullBreak, ev_Hr3.bearBreak, ev_Hr3.ncSweep, ev_Hr3.bullTime, ev_Hr3.bullLevel, ev_Hr3.bearTime, ev_Hr3.bearLevel, ev_Hr3.bullStartTime, ev_Hr3.bearStartTime, Break_Lines, Break_Labels, Break_Protected_Labels, Break_Directions, Break_Levels, Break_Event_Times, Break_Timeframe_Seconds, Higher_Break_Directions, Higher_Break_Levels, Higher_Break_Times, Higher_Break_Durations, Higher_Break_Ranks, NC_S_Lines, NC_S_Labels, Max_Visible_Breaks, Max_Visible_NC_S)
+f_draw("4H", "240", 14400, Show_Hr4, Break_Line_Style, Break_Line_Width, ev_Hr4.newHigh, ev_Hr4.highPrice, ev_Hr4.highTime, ev_Hr4.newLow, ev_Hr4.lowPrice, ev_Hr4.lowTime, ev_Hr4.bullBreak, ev_Hr4.bearBreak, ev_Hr4.ncSweep, ev_Hr4.bullTime, ev_Hr4.bullLevel, ev_Hr4.bearTime, ev_Hr4.bearLevel, ev_Hr4.bullStartTime, ev_Hr4.bearStartTime, Break_Lines, Break_Labels, Break_Protected_Labels, Break_Directions, Break_Levels, Break_Event_Times, Break_Timeframe_Seconds, Higher_Break_Directions, Higher_Break_Levels, Higher_Break_Times, Higher_Break_Durations, Higher_Break_Ranks, NC_S_Lines, NC_S_Labels, Max_Visible_Breaks, Max_Visible_NC_S)
+f_draw("1D", "D", 86400, Show_Day1, Break_Line_Style, Break_Line_Width, ev_Day1.newHigh, ev_Day1.highPrice, ev_Day1.highTime, ev_Day1.newLow, ev_Day1.lowPrice, ev_Day1.lowTime, ev_Day1.bullBreak, ev_Day1.bearBreak, ev_Day1.ncSweep, ev_Day1.bullTime, ev_Day1.bullLevel, ev_Day1.bearTime, ev_Day1.bearLevel, ev_Day1.bullStartTime, ev_Day1.bearStartTime, Break_Lines, Break_Labels, Break_Protected_Labels, Break_Directions, Break_Levels, Break_Event_Times, Break_Timeframe_Seconds, Higher_Break_Directions, Higher_Break_Levels, Higher_Break_Times, Higher_Break_Durations, Higher_Break_Ranks, NC_S_Lines, NC_S_Labels, Max_Visible_Breaks, Max_Visible_NC_S)
+f_draw("1W", "W", 604800, Show_Week1, Break_Line_Style, Break_Line_Width, ev_Week1.newHigh, ev_Week1.highPrice, ev_Week1.highTime, ev_Week1.newLow, ev_Week1.lowPrice, ev_Week1.lowTime, ev_Week1.bullBreak, ev_Week1.bearBreak, ev_Week1.ncSweep, ev_Week1.bullTime, ev_Week1.bullLevel, ev_Week1.bearTime, ev_Week1.bearLevel, ev_Week1.bullStartTime, ev_Week1.bearStartTime, Break_Lines, Break_Labels, Break_Protected_Labels, Break_Directions, Break_Levels, Break_Event_Times, Break_Timeframe_Seconds, Higher_Break_Directions, Higher_Break_Levels, Higher_Break_Times, Higher_Break_Durations, Higher_Break_Ranks, NC_S_Lines, NC_S_Labels, Max_Visible_Breaks, Max_Visible_NC_S)
+f_draw("1M", "1M", 2592000, Show_Month1, Break_Line_Style, Break_Line_Width, ev_Month1.newHigh, ev_Month1.highPrice, ev_Month1.highTime, ev_Month1.newLow, ev_Month1.lowPrice, ev_Month1.lowTime, ev_Month1.bullBreak, ev_Month1.bearBreak, ev_Month1.ncSweep, ev_Month1.bullTime, ev_Month1.bullLevel, ev_Month1.bearTime, ev_Month1.bearLevel, ev_Month1.bullStartTime, ev_Month1.bearStartTime, Break_Lines, Break_Labels, Break_Protected_Labels, Break_Directions, Break_Levels, Break_Event_Times, Break_Timeframe_Seconds, Higher_Break_Directions, Higher_Break_Levels, Higher_Break_Times, Higher_Break_Durations, Higher_Break_Ranks, NC_S_Lines, NC_S_Labels, Max_Visible_Breaks, Max_Visible_NC_S)
+f_draw("3M", "3M", 7776000, Show_Month3, Break_Line_Style, Break_Line_Width, ev_Month3.newHigh, ev_Month3.highPrice, ev_Month3.highTime, ev_Month3.newLow, ev_Month3.lowPrice, ev_Month3.lowTime, ev_Month3.bullBreak, ev_Month3.bearBreak, ev_Month3.ncSweep, ev_Month3.bullTime, ev_Month3.bullLevel, ev_Month3.bearTime, ev_Month3.bearLevel, ev_Month3.bullStartTime, ev_Month3.bearStartTime, Break_Lines, Break_Labels, Break_Protected_Labels, Break_Directions, Break_Levels, Break_Event_Times, Break_Timeframe_Seconds, Higher_Break_Directions, Higher_Break_Levels, Higher_Break_Times, Higher_Break_Durations, Higher_Break_Ranks, NC_S_Lines, NC_S_Labels, Max_Visible_Breaks, Max_Visible_NC_S)
+f_draw("6M", "6M", 15552000, Show_Month6, Break_Line_Style, Break_Line_Width, ev_Month6.newHigh, ev_Month6.highPrice, ev_Month6.highTime, ev_Month6.newLow, ev_Month6.lowPrice, ev_Month6.lowTime, ev_Month6.bullBreak, ev_Month6.bearBreak, ev_Month6.ncSweep, ev_Month6.bullTime, ev_Month6.bullLevel, ev_Month6.bearTime, ev_Month6.bearLevel, ev_Month6.bullStartTime, ev_Month6.bearStartTime, Break_Lines, Break_Labels, Break_Protected_Labels, Break_Directions, Break_Levels, Break_Event_Times, Break_Timeframe_Seconds, Higher_Break_Directions, Higher_Break_Levels, Higher_Break_Times, Higher_Break_Durations, Higher_Break_Ranks, NC_S_Lines, NC_S_Labels, Max_Visible_Breaks, Max_Visible_NC_S)
+f_draw("12M", "12M", 31536000, Show_Month12, Break_Line_Style, Break_Line_Width, ev_Month12.newHigh, ev_Month12.highPrice, ev_Month12.highTime, ev_Month12.newLow, ev_Month12.lowPrice, ev_Month12.lowTime, ev_Month12.bullBreak, ev_Month12.bearBreak, ev_Month12.ncSweep, ev_Month12.bullTime, ev_Month12.bullLevel, ev_Month12.bearTime, ev_Month12.bearLevel, ev_Month12.bullStartTime, ev_Month12.bearStartTime, Break_Lines, Break_Labels, Break_Protected_Labels, Break_Directions, Break_Levels, Break_Event_Times, Break_Timeframe_Seconds, Higher_Break_Directions, Higher_Break_Levels, Higher_Break_Times, Higher_Break_Durations, Higher_Break_Ranks, NC_S_Lines, NC_S_Labels, Max_Visible_Breaks, Max_Visible_NC_S)
+
+bool canShowMin1 = timeframe.in_seconds(timeframe.period) == timeframe.in_seconds("1")
+bool canShowMin2 = timeframe.in_seconds(timeframe.period) == timeframe.in_seconds("2")
+bool canShowMin3 = timeframe.in_seconds(timeframe.period) == timeframe.in_seconds("3")
+bool canShowMin5 = timeframe.in_seconds(timeframe.period) == timeframe.in_seconds("5")
+bool canShowMin10 = timeframe.in_seconds(timeframe.period) == timeframe.in_seconds("10")
+bool canShowMin15 = timeframe.in_seconds(timeframe.period) == timeframe.in_seconds("15")
+bool canShowMin30 = timeframe.in_seconds(timeframe.period) == timeframe.in_seconds("30")
+bool canShowMin45 = timeframe.in_seconds(timeframe.period) == timeframe.in_seconds("45")
+bool canShowHr1 = timeframe.in_seconds(timeframe.period) == timeframe.in_seconds("60")
+bool canShowHr2 = timeframe.in_seconds(timeframe.period) == timeframe.in_seconds("120")
+bool canShowHr3 = timeframe.in_seconds(timeframe.period) == timeframe.in_seconds("180")
+bool canShowHr4 = timeframe.in_seconds(timeframe.period) == timeframe.in_seconds("240")
+bool canShowDay1 = timeframe.in_seconds(timeframe.period) == timeframe.in_seconds("D")
+bool canShowWeek1 = timeframe.in_seconds(timeframe.period) == timeframe.in_seconds("W")
+bool canShowMonth1 = timeframe.in_seconds(timeframe.period) == timeframe.in_seconds("1M")
+bool canShowMonth3 = timeframe.in_seconds(timeframe.period) == timeframe.in_seconds("3M")
+bool canShowMonth6 = timeframe.in_seconds(timeframe.period) == timeframe.in_seconds("6M")
+bool canShowMonth12 = timeframe.in_seconds(timeframe.period) == timeframe.in_seconds("12M")
+
