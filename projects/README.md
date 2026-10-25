@@ -11,3 +11,4 @@ Each project has `STATE.md` (where it stands now), `LOG.md` (dated changes: what
 | `amd-hackathon-act-iii` | Day 0 (pre-kickoff 2026-10-12; AMD sign-up done) | `STATE.md`, `docs/brief.md` |
 
 New project or resume: follow `WORKFLOW.md` in this folder (stages, session loop, git routine, prompts).
+
