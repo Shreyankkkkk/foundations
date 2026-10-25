@@ -17,8 +17,8 @@ __pycache__/
 # MATLAB autosave backups
 *.asv
 
-# projectile-motion-year-1-project
-projects\projectile-motion
+# projectile-motion-year-1-project (hold back until pre-publish checks are done)
+projects/projectile-motion/
 
 # Files waiting for manual deletion
 _to_delete/
