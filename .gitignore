@@ -14,6 +14,12 @@ __pycache__/
 *.nbi
 *.nbc
 
+# MATLAB autosave backups
+*.asv
+
+# projectile-motion-year-1-project
+projects\projectile-motion
+
 # Files waiting for manual deletion
 _to_delete/
 
